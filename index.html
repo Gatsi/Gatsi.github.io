@@ -90,6 +90,7 @@ button{cursor:pointer}
 .hd.sect2{margin-top:4px}
 .hd.sub2 h2{font-size:19px}
 .hd.sub2{margin-bottom:10px}
+.hd.gapTop{margin-top:30px}
 .card{background:var(--s1);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
 .pad{padding:20px}
 .muted{color:var(--t2);font-size:15px;line-height:1.6}
@@ -429,7 +430,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>When your lion loses, it has a <b>20% chance of dying there and then</b>. Four times in five it gets dragged out alive, carrying the loss, and the championship run is over. The fifth time it does not get up, and it is gone permanently — its record goes to the hall of fame and you roll a new lion.</p>
       <h6>Medallions</h6>
       <p>Each belt grants one random perk: a few percent more health, damage, speed, armour, faster cooldowns or slow regeneration. They stack across belts but stay deliberately small.</p>
-      <h6>Nature</h6>
+      <h6>Personality</h6>
       <p>Every lion is born with <b>two personality traits</b> out of twenty-three, and they never change. Some bend how it thinks — Bold closes and stays closed, Wary fights at arm's length, Patient reads the fight quicker. Some are physical. Some only matter in particular moments: Bloodscent finishes wounded animals, Grudge grows angrier with every scar it carries, Showman swings faster while the crowd is up, Houndsbane was built for the pack. Two touch your career directly — Lucky drops the death chance on a lost bout to 12%, Reckless raises it to 30% and hits harder for it. Opposites never appear on the same lion.</p>
       <h6>IV</h6>
       <p>Every lion is born with an individual value from 1 to 10 that never changes. It shifts health and damage by roughly two percent either way. Between neighbouring numbers it is noise. A 10 against a 1 wins about seven times in ten, all else equal — but a better loadout beats a better IV every time.</p>
@@ -932,7 +933,7 @@ function lionSummaryText(c){
     (sc?(' \u00b7 '+sc+' scar'+(sc>1?'s':'')):''));
   if(isHog(c)){L.push('');L.push('AWAKENED \u2014 this one answers to the wrong name');}
   L.push('');
-  L.push('NATURE');
+  L.push('PERSONALITY');
   const tr=(c.traits||[]).filter(id=>TRAITS[id]);
   if(tr.length)tr.forEach(id=>L.push('  '+TRAITS[id].name+' ('+TRAITS[id].g.toLowerCase()+') \u2014 '+TRAITS[id].desc));
   else L.push('  none');
@@ -1087,11 +1088,16 @@ function editorHTML(scope,c,title,career){
       row('pick','abil','Abilities',c.abil.map(k=>ABILITIES[k].name).join(' + '),
         c.abil.map(k=>ABILITIES[k].desc).join(' '),locked)+
       row('pick','brain','Mind',BRAINS[c.brain].name,BRAINS[c.brain].desc,locked)+
-      row('pick','pelt','Coat',PELTS[c.pelt||0].name,'Free to change',false,dotFor)+
+      row('pick','traits','Personality',traitNames(c),'Born with them. Nothing changes them.',false)+
+    '</div>'+
+    '<div class="hd sub2 gapTop"><h2>Cosmetics</h2><span>Looks only. Free to change, changes nothing.</span></div>'+
+    '<div class="card">'+
+      row('pick','pelt','Coat',PELTS[c.pelt||0].name,'Eight to choose from',false,dotFor)+
       row('pick','mane','Mane',MANES[c.mane||0].name,MANES[c.mane||0].note,false)+
       row('pick','tail','Tail',TAILS[c.tail||0].name,TAILS[c.tail||0].note,false)+
-      row('pick','traits','Nature',traitNames(c),'Born with them. Nothing changes them.',false)+
-      row('pick','summary','Summary','Everything at a glance','Names, nature, numbers, record and code',false)+
+    '</div>'+
+    '<div class="card">'+
+      row('pick','summary','Summary','Everything at a glance','Build, personality, numbers, record and code',false)+
     '</div>'+
     '<div class="card pad">'+statBars(c)+'</div>'+
     '<div class="hd" style="margin-top:18px"><h2>Lion code</h2><span>copy, save, share</span></div>'+
@@ -1155,7 +1161,7 @@ function optionsFor(field,c){
     }).join('')+
     '<div class="grp">how it works</div>'+
     '<div class="opt" style="cursor:default"><span class="txt"><small>Every lion is rolled two of twenty-three. '+
-    'Opposites never land together, and nature travels inside the lion code.</small></span></div>';
+    'Opposites never land together, and personality travels inside the lion code.</small></span></div>';
   if(field==='arena')return Object.keys(ARENAS).map(k=>
     '<button class="opt" data-val="'+k+'" aria-pressed="'+(MATCH.arena===k)+'">'+
     '<span class="txt"><b>'+ARENAS[k].name+'</b></span><span class="tick">\u2713</span></button>').join('');
@@ -1209,7 +1215,7 @@ function lionSheetText(c){
     '\n'+encodeLion(c,c.record||null)+
     '\n\nPaste that code into a duel slot in Lion Simulator, or open this file in Lion Designer.\n';
 }
-const SHEET_TITLE={tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Nature',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
+const SHEET_TITLE={tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Personality',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
   pelt:'Coat',mane:'Mane',arena:'Arena',closing:'Closing walls'};
 function openSheet(kind,field){
   const career=(MATCH.mode==='career');
@@ -1365,15 +1371,20 @@ function renderEditorMode(){
       row('pick','abil','Abilities',c.abil.map(k=>ABILITIES[k].name).join(' + '),
         c.abil.map(k=>ABILITIES[k].desc).join(' '),false)+
       row('pick','brain','Mind',BRAINS[c.brain].name,BRAINS[c.brain].desc,false)+
-      row('pick','traits','Nature',traitNames(c),'Pick two. Opposites cannot sit together.',false)+
+      row('pick','traits','Personality',traitNames(c),'Pick two. Opposites cannot sit together.',false)+
       row('pick','iv','IV',(c.iv||5)+' of 10','Nudges health, damage and speed a little',false)+
-      row('pick','pelt','Coat',PELTS[c.pelt||0].name,'Free to change',false,
+    '</div>'+
+    '<div class="hd sub2 gapTop"><h2>Cosmetics</h2><span>Looks only. None of this changes a fight.</span></div>'+
+    '<div class="card">'+
+      row('pick','pelt','Coat',PELTS[c.pelt||0].name,'Eight to choose from',false,
         '<span class="dot" style="background:'+PELTS[c.pelt||0].hex+'"></span>')+
       row('pick','mane','Mane',MANES[c.mane||0].name,MANES[c.mane||0].note,false)+
       row('pick','tail','Tail',TAILS[c.tail||0].name,TAILS[c.tail||0].note,false)+
       row('pick','scars','Scars',(c.scars||[]).length?((c.scars.length)+' mark'+(c.scars.length>1?'s':'')):'None',
         'Half face, half body',false)+
-      row('pick','summary','Summary','Everything at a glance','Names, nature, numbers and code',false)+
+    '</div>'+
+    '<div class="card">'+
+      row('pick','summary','Summary','Everything at a glance','Build, personality, numbers and code',false)+
     '</div>'+
     '<div class="hd"><h2>Numbers</h2><span>What this build actually is.</span></div>'+
     '<div class="card pad">'+statBars(c)+'</div>'+
@@ -1814,9 +1825,17 @@ function kill(t,by){
     return;
   }
   if(G.ctx==='king'){
-    log('<em class="blood">'+t.name+' is put down.</em>');
+    const tookTheCrown=!!t.boss;
+    if(tookTheCrown){
+      G.winner=G.lions[0];G.method='the crown';
+      G.slow=RM?0:1.7;G.flash=.7;
+      log('<em class="gold">The Lion King falls.</em>');
+      SFX.champ();crowdReact(2);
+    } else {
+      log('<em class="blood">'+t.name+' is put down.</em>');
+    }
     const tk=G.token;
-    setTimeout(function(){if(G.token===tk)kingOver(false);},RM?400:1700);
+    setTimeout(function(){if(G.token===tk)kingOver(tookTheCrown);},RM?400:1800);
     return;
   }
   log('<em class="blood">'+t.name+' goes down.</em> '+t.foe.name+' stands.');
