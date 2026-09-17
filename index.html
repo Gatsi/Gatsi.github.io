@@ -68,6 +68,10 @@ button{cursor:pointer}
 .hd{margin:0 4px 14px}
 .hd h2{font-size:24px;font-weight:600;letter-spacing:-.022em;line-height:1.16}
 .hd span{display:block;font-size:15px;color:var(--t2);margin-top:3px;letter-spacing:-.01em}
+.rule{height:1px;background:var(--sep);margin:34px 4px 30px}
+.hd.sect2{margin-top:4px}
+.hd.sub2 h2{font-size:19px}
+.hd.sub2{margin-bottom:10px}
 .card{background:var(--s1);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
 .pad{padding:20px}
 .muted{color:var(--t2);font-size:15px;line-height:1.6}
@@ -376,16 +380,14 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 
   <nav class="nav" id="modeSeg">
     <button data-mode="duel" aria-pressed="true"><span class="navico" data-i="duel"></span>Duel</button>
-    <button data-mode="career" aria-pressed="false"><span class="navico" data-i="lion"></span>Lion</button>
+    <button data-mode="career" aria-pressed="false"><span class="navico" data-i="lion"></span>Championship</button>
     <button data-mode="pack" aria-pressed="false"><span class="navico" data-i="pack"></span>Challenges</button>
-    <button data-mode="sanctuary" aria-pressed="false"><span class="navico" data-i="sanctuary"></span>Sanctuary</button>
   </nav>
 
   <section id="duel"></section>
   <section id="career" class="hidden"></section>
   <section id="editor" class="hidden"></section>
   <section id="pack" class="hidden"></section>
-  <section id="sanctuary" class="hidden"></section>
 
   <div class="dock" id="launchBar"></div>
   <div class="sheetWrap hidden" id="sheetWrap"><div class="sheetPanel" id="sheetPanel"></div></div>
@@ -417,8 +419,6 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Your career lion alone against waves of dogs and hyenas, recovering only a sliver of health between them. Each wave is larger and slightly stronger. You are playing for a number: how many waves it lasts and how many it puts down. Nothing there is permanent — the lion always walks away, whatever the pack does to it.</p>
       <h6>Challenges</h6>
       <p>Two of them, and neither touches your championship record. <b>The pack</b> throws waves of dogs and hyenas at you until you go down. <b>The Lion King</b> is a single fight against a titan in black plate with a great maul, far bigger than anything you will ever own. You can bring up to two other lions along for either: roll a stranger, open a saved .txt, or paste a code.</p>
-      <h6>Sanctuary</h6>
-      <p>Somewhere for your lion to simply exist between championships. It wanders. Tap near it and it will bolt. There is nothing else to do there yet.</p>
       <h6>Lion codes</h6>
       <p>Every career lion has a code carrying its build, coat, IV, medallions and record. Copy it or save it as a text file, and it can be pasted into any duel slot on any device.</p>
     </div>
@@ -1359,7 +1359,7 @@ function renderPack(){
   if(!L){
     host.innerHTML='<div class="hd"><h2>Challenges</h2><span>You need a lion of your own first.</span></div>'+
       '<div class="card pad"><p class="muted">Challenges are for a lion you already own. '+
-      'Roll one under <b>Lion</b> and they open up.</p></div>';
+      'Roll one under <b>Championship</b> and they open up.</p></div>';
     return;
   }
   const rec=L.record||{};
@@ -1376,43 +1376,27 @@ function renderPack(){
       '<div><b>'+(rec.champs||0)+'</b><span>Belts</span></div>'+
       '<div><b>'+(L.iv||5)+'</b><span>IV</span></div></div>'+
       '<div class="act"><button data-act="summary" class="key">'+ico('summary')+'Summary</button></div>'})+
-    '<div class="hd"><h2>Your side</h2><span>Bring another lion along if you want the help.</span></div>'+
+    '<div class="hd sect2"><h2>Your side</h2><span>Bring another lion along if you want the help.</span></div>'+
     '<div class="card">'+allyCards+
       (ALLIES.length<2?('<button class="row" data-act="addAlly"><span class="rico">'+ico('plus')+'</span>'+
         '<span class="v">Add a lion<small>Roll one, or paste a lion code</small></span>'+
         '<span class="go">\u203a</span></button>'):'')+
       (ALLIES.length?'':'')+
     '</div>'+
-    '<div class="hd"><h2>The pack</h2><span>Waves of dogs and hyenas. Last as long as you can.</span></div>'+
+    '<div class="rule"></div>'+
+    '<div class="hd sect2"><h2>Pick a challenge</h2><span>Neither of these touches your championship record.</span></div>'+
+    '<div class="hd sub2"><h2>The pack</h2><span>Waves of dogs and hyenas. Last as long as you can.</span></div>'+
     '<div class="card"><button class="row" data-act="startPack">'+
       '<span class="rico">'+ico('pack')+'</span><span class="v">Face the pack'+
       '<small>Best wave '+(rec.bestWave||0)+' \u00b7 most killed '+(rec.packKills||0)+'</small></span>'+
       '<span class="go">\u203a</span></button></div>'+
-    '<div class="hd"><h2>Lion King</h2><span>One fight. He is bigger than anything you own.</span></div>'+
+    '<div class="hd sub2"><h2>Lion King</h2><span>One fight. He is bigger than anything you own.</span></div>'+
     '<div class="card"><button class="row" data-act="startKing">'+
       '<span class="rico">'+ico('crown')+'</span><span class="v">Challenge the Lion King'+
       '<small>'+((rec.kingKills||0)?((rec.kingKills)+' crown'+(rec.kingKills>1?'s':'')+' taken'):
         ((rec.kingTries||0)?('Beaten '+rec.kingTries+' time'+(rec.kingTries>1?'s':'')):'Never faced'))+
       '</small></span><span class="go">\u203a</span></button></div>'+
-    '<div class="card pad"><p class="muted">Dogs come first, thin and fast and everywhere at once. '+
-    '<b>Hyenas</b> start turning up from the third wave, heavier and more patient. Each wave is bigger and a '+
-    'little stronger than the last, and there is no rest between them beyond the walk across the sand.</p>'+
-    '<p class="muted" style="margin-top:10px">It gets a breath and a little of its health back between waves, '+
-    'and nothing more. It goes until it goes down. '+
-    'This is an exhibition, so whatever happens it walks away \u2014 the only thing at stake is the number.</p></div>';
-}
-function renderSanctuaryShell(){
-  const host=$('sanctuary'),L=CAREER.lion;
-  if(!L){
-    host.innerHTML='<div class="hd"><h2>Sanctuary</h2><span>Empty ground.</span></div>'+
-      '<div class="card pad"><p class="muted">The sanctuary is for a lion you already own. '+
-      'Roll one under <b>Lion</b> and it will be here, doing nothing in particular.</p></div>';
-    return;
-  }
-  host.innerHTML='<div class="hd"><h2>Sanctuary</h2><span>'+esc(L.name)+' has the run of the place.</span></div>'+
-    '<div class="card"><canvas class="sancCv" id="sancCv"></canvas>'+
-    '<div class="sancSay" id="sancSay">'+esc(L.name)+' has the run of the place. <b>Tap near it</b> and see what happens.</div></div>';
-  requestAnimationFrame(fitSanctuary);
+    '';
 }
 /* ---------- launch dock ---------- */
 function renderLaunch(){
@@ -1426,11 +1410,6 @@ function renderLaunch(){
   }
   if(UI.view==='edit'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Done</button>';return;}
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+'Send them in</button>';return;}
-  if(MATCH.mode==='sanctuary'){
-    if(L){bar.style.display='none';bar.innerHTML='';}
-    else bar.innerHTML='<button class="go1" data-act="roll">'+ico('dice')+'Roll a lion</button>';
-    return;
-  }
   if(MATCH.mode==='pack'){
     if(L){bar.style.display='none';bar.innerHTML='';}
     else bar.innerHTML='<button class="go1" data-act="roll">'+ico('dice')+'Roll a lion</button>';
@@ -1440,16 +1419,15 @@ function renderLaunch(){
   if(!CAREER.champ){bar.innerHTML='<button class="go1" data-act="startChamp">'+ico('play')+'Enter a championship</button>';return;}
   bar.innerHTML='<button class="go1" data-act="nextBout">'+ico('play')+'Fight bout '+(CAREER.champ.i+1)+'</button>';
 }
-const MODE_NOTES={duel:'',career:'',sanctuary:''};
+const MODE_NOTES={duel:'',career:''};
 function refresh(){
-  ['duel','career','pack','sanctuary','editor'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
+  ['duel','career','pack','editor'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
   $('modeSeg').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===MATCH.mode));
   $('editorBtn').setAttribute('aria-pressed',MATCH.mode==='editor');
   if(MATCH.mode==='editor')renderEditorMode();
   else if(MATCH.mode==='duel')renderDuel();
   else if(MATCH.mode==='career')renderCareer();
-  else if(MATCH.mode==='pack')renderPack();
-  else renderSanctuaryShell();
+  else renderPack();
   renderLaunch();
   bindPreviews();
   requestAnimationFrame(bindPreviews);
@@ -1543,7 +1521,7 @@ $('soundBtn').onclick=function(e){
   if(MATCH.sound){SFX.unlock();SFX.bell();toast('Sound on');}else toast('Sound off');
 };
 addEventListener('resize',function(){
-  if($('fight').classList.contains('hidden')){bindPreviews();fitSanctuary();}else fitCanvas();
+  if($('fight').classList.contains('hidden'))bindPreviews();else fitCanvas();
 });
 
 /* ========== 9. CAREER LOGIC ========== */
@@ -1640,7 +1618,7 @@ function makeLion(c,x,y,ang,light){
 }
 function startFight(ctxName){
   G.ctx=ctxName;
-  ['duel','career','pack','sanctuary','editor','launchBar','modeSeg'].forEach(id=>$(id).classList.add('hidden'));
+  ['duel','career','pack','editor','launchBar','modeSeg'].forEach(id=>$(id).classList.add('hidden'));
   closeSheet();
   $('fight').classList.remove('hidden');$('result').classList.add('hidden');
   fitCanvas();
@@ -3030,194 +3008,14 @@ function stepPreviews(dt){
   }
 }
 
-/* ========== 14c. SANCTUARY ========== */
-/* The first winner, kept in stone. Built from the lion's own code. */
-const JB_CODE='LION1-QXNoZmFuZ3w0fDN8MTN8MTAuNnwxfHx8N3wxMHwwfA';
-const STONE={mane:'#8b8b91',body:'#55555c',edge:'#a6a6ae',muz:'#c2c2c9',plate:'#b2b2ba'};
-let JB=null;
-function jbLion(){
-  if(!JB)JB=decodeLion(JB_CODE)||{name:'JB Lion',build:'titan',armor:'plate',weapon:'beam',
-    abil:['regrow','vanish'],brain:'duelist',pelt:7,mane:0,iv:10,scars:[]};
-  return JB;
-}
-function drawStatue(g,S){
-  const st=S.statue;if(!st)return;
-  const jb=jbLion(),R=st.R;
-  g.save();g.translate(st.x,st.y);
-  g.fillStyle='rgba(0,0,0,.5)';
-  g.beginPath();g.ellipse(0,R*1.02,R*1.6,R*.5,0,0,7);g.fill();
-  g.fillStyle='#1b1b21';g.fillRect(-R*1.42,R*.62,R*2.84,R*.46);
-  g.fillStyle='#26262d';g.fillRect(-R*1.2,R*.34,R*2.4,R*.30);
-  g.fillStyle='#2e2e36';g.fillRect(-R*1.2,R*.34,R*2.4,3);
-  g.restore();
-  paintLion(g,{x:st.x,y:st.y-R*.16,R:R,ang:st.ang,t:0,cols:STONE,
-    mane:jb.mane||0,tail:jb.tail||0,seed:hashStr('JB Lion'),armor:jb.armor,scars:jb.scars||[]});
-  g.save();
-  g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=1;
-  g.beginPath();g.moveTo(st.x-R*.6,st.y-R*.1);g.lineTo(st.x+R*.5,st.y+R*.15);g.stroke();
-  g.restore();
-}
-function drawPlaque(g,S){
-  const st=S.statue;if(!st)return;
-  const lines=['Monument commemorating first','winner in Lion battle'];
-  g.save();
-  g.font="700 11px 'JetBrains Mono',monospace";
-  let w=g.measureText('JB LION').width;
-  g.font="10px 'JetBrains Mono',monospace";
-  lines.forEach(l=>{w=Math.max(w,g.measureText(l).width);});
-  const pad=11,bw=w+pad*2,bh=54;
-  let bx=st.x-bw/2, by=st.y-st.R*1.5-bh-8;
-  bx=clamp(bx,6,S.w-bw-6); if(by<6)by=st.y+st.R*1.3;
-  g.fillStyle='rgba(10,10,13,.94)';g.strokeStyle='rgba(255,255,255,.18)';g.lineWidth=1;
-  g.beginPath();
-  if(g.roundRect)g.roundRect(bx,by,bw,bh,7);else g.rect(bx,by,bw,bh);
-  g.fill();g.stroke();
-  g.fillStyle='#f0a83c';g.font="700 11px 'JetBrains Mono',monospace";
-  g.fillText('JB LION',bx+pad,by+18);
-  g.fillStyle='#9d9a94';g.font="10px 'JetBrains Mono',monospace";
-  g.fillText(lines[0],bx+pad,by+34);
-  g.fillText(lines[1],bx+pad,by+47);
-  g.restore();
-}
-const SANC={g:null,el:null,w:0,h:0,m:60,x:0,y:0,ang:0,tx:0,ty:0,wait:0,flee:0,fleeAng:0,
-  t:0,anim:0,startled:0,scares:[],dust:[],rocks:[],tufts:[],sayT:0};
-const SCARED=['{n} bolts.','{n} is gone before you finish moving.','{n} breaks left and does not look back.',
-  'Something moved. {n} did not wait to find out what.','{n} runs. It will settle again in a minute.'];
-const CALM=['{n} lifts its head, then goes back to nothing.','Too far away to bother {n}.',
-  '{n} notices, and decides it does not care.'];
-function fitSanctuary(){
-  const el=$('sancCv');if(!el||!CAREER.lion)return;
-  const w=el.clientWidth||el.parentNode.clientWidth||320, h=el.clientHeight||300;
-  if(!w||!h)return;
-  const dpr=Math.min(devicePixelRatio||1,2);
-  el.width=w*dpr;el.height=h*dpr;
-  const g=el.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
-  const fresh=(SANC.el!==el||SANC.w!==w||SANC.h!==h);
-  SANC.g=g;SANC.el=el;SANC.w=w;SANC.h=h;
-  SANC.m=BUILDS[CAREER.lion.build].r*2.4+14;
-  const sr=clamp(Math.min(w,h)*.10,20,34);
-  SANC.statue={x:w*.80,y:h*.30,R:sr,ang:Math.PI*.82};
-  if(fresh){
-    SANC.x=w*.5;SANC.y=h*.55;SANC.tx=SANC.x;SANC.ty=SANC.y;SANC.wait=.8;SANC.flee=0;
-    SANC.rocks=[];SANC.tufts=[];
-    for(let i=0;i<5;i++)SANC.rocks.push({x:rnd(30,w-30),y:rnd(30,h-30),r:rnd(9,22)});
-    for(let i=0;i<34;i++)SANC.tufts.push({x:rnd(8,w-8),y:rnd(8,h-8),a:rnd(-.5,.5),l:rnd(4,9)});
-    el.onpointerdown=function(ev){
-      const r=el.getBoundingClientRect();
-      const px=ev.clientX-r.left,py=ev.clientY-r.top;
-      if(overStatue(px,py)){
-        SANC.plaque=3.2;SANC.hover=true;
-        sancSay('<b>JB Lion</b> \u2014 monument commemorating first winner in Lion battle.');
-        SANC.sayT=3.2;ev.preventDefault();return;
-      }
-      scareAt(px,py);
-      ev.preventDefault();
-    };
-    el.onpointermove=function(ev){
-      const r=el.getBoundingClientRect();
-      SANC.hover=overStatue(ev.clientX-r.left,ev.clientY-r.top);
-      el.style.cursor=SANC.hover?'help':'crosshair';
-    };
-    el.onpointerleave=function(){SANC.hover=false;};
-  }
-}
-function overStatue(px,py){
-  const st=SANC.statue;if(!st)return false;
-  return Math.hypot(px-st.x,py-(st.y-st.R*.15))<st.R*1.5;
-}
-function sancSay(t){
-  const el=$('sancSay');if(!el)return;
-  el.innerHTML=t.replace('{n}','<b>'+CAREER.lion.name+'</b>');
-}
-function scareAt(px,py){
-  const S=SANC,L=CAREER.lion;if(!L)return;
-  S.scares.push({x:px,y:py,rad:4,life:.75});
-  const d=Math.hypot(S.x-px,S.y-py), R=205+BUILDS[L.build].r*2.2;
-  if(d<R){
-    S.fleeAng=Math.atan2(S.y-py,S.x-px)+rnd(-.3,.3);
-    S.flee=Math.max(S.flee,1.0+(1-d/R)*1.8);
-    S.startled=.5;S.anim=.25;
-    if(S.sayT<=0){sancSay(pickOne(SCARED));S.sayT=1.4;}
-    SFX.blink();
-  } else if(S.sayT<=0){sancSay(pickOne(CALM));S.sayT=2;}
-}
-function stepSanctuary(dt){
-  const S=SANC,L=CAREER.lion;
-  if(!S.g||!L||!S.w)return;
-  const B=BUILDS[L.build],walk=44*B.spd;
-  S.t+=dt;S.anim=Math.max(0,S.anim-dt);S.startled=Math.max(0,S.startled-dt);S.sayT-=dt;
-  for(let i=S.scares.length-1;i>=0;i--){const r=S.scares[i];r.life-=dt;r.rad+=180*dt;if(r.life<=0)S.scares.splice(i,1);}
-  for(let i=S.dust.length-1;i>=0;i--){const q=S.dust[i];q.life-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;if(q.life<=0)S.dust.splice(i,1);}
-  let moving=0;
-  if(S.flee>0){
-    S.flee-=dt;
-    const sp=walk*3.4;
-    S.x+=Math.cos(S.fleeAng)*sp*dt;S.y+=Math.sin(S.fleeAng)*sp*dt;
-    S.ang+=clamp(angDiff(S.fleeAng,S.ang),-9*dt,9*dt);
-    if(S.x<S.m||S.x>S.w-S.m||S.y<S.m||S.y>S.h-S.m)
-      S.fleeAng=Math.atan2(S.h/2-S.y,S.w/2-S.x)+rnd(-.7,.7);
-    moving=1.6;
-    if(S.flee<=0){S.wait=rnd(.7,2.2);S.tx=S.x;S.ty=S.y;sancSay(pickOne(['{n} stops, ribs going.','{n} settles, still watching you.','{n} looks back once.']));S.sayT=2.5;}
-  } else if(S.wait>0){
-    S.wait-=dt;
-    if(S.wait<=0){S.tx=rnd(S.m,S.w-S.m);S.ty=rnd(S.m,S.h-S.m);}
-    if(Math.random()<dt*.12)S.anim=.4;
-  } else {
-    const dx=S.tx-S.x,dy=S.ty-S.y,d=Math.hypot(dx,dy);
-    if(d<9){S.wait=rnd(1,3.6);}
-    else{S.x+=dx/d*walk*dt;S.y+=dy/d*walk*dt;
-      S.ang+=clamp(angDiff(Math.atan2(dy,dx),S.ang),-2.4*dt,2.4*dt);moving=.55;}
-  }
-  S.x=clamp(S.x,S.m,Math.max(S.m+1,S.w-S.m));
-  S.y=clamp(S.y,S.m,Math.max(S.m+1,S.h-S.m));
-  const st=S.statue;
-  if(st){
-    const keep=st.R*1.15+B.r*.95, dd=Math.hypot(S.x-st.x,S.y-st.y);
-    if(dd<keep&&dd>0){const a=Math.atan2(S.y-st.y,S.x-st.x);
-      S.x=st.x+Math.cos(a)*keep;S.y=st.y+Math.sin(a)*keep;}
-    if(Math.hypot(S.tx-st.x,S.ty-st.y)<keep){
-      S.tx=rnd(S.m,Math.max(S.m+1,S.w-S.m));S.ty=rnd(S.m,Math.max(S.m+1,S.h-S.m));}
-  }
-  S.plaque=Math.max(0,(S.plaque||0)-dt);
-  if(moving&&Math.random()<dt*26*moving&&S.dust.length<70)
-    S.dust.push({x:S.x-Math.cos(S.ang)*B.r*.7,y:S.y-Math.sin(S.ang)*B.r*.7,
-      vx:rnd(-12,12),vy:rnd(-12,12),life:rnd(.3,.7),max:.7,r:rnd(1,3)});
-
-  const g=S.g;
-  g.clearRect(0,0,S.w,S.h);
-  g.fillStyle='#0b0b0d';g.fillRect(0,0,S.w,S.h);
-  g.strokeStyle='#16161b';g.lineWidth=1;
-  for(let i=0;i<S.tufts.length;i++){const t=S.tufts[i];
-    g.beginPath();g.moveTo(t.x,t.y);g.lineTo(t.x+Math.sin(t.a)*t.l,t.y-t.l);g.stroke();}
-  for(let i=0;i<S.rocks.length;i++){const o=S.rocks[i];
-    g.fillStyle='#111116';g.beginPath();g.arc(o.x+1,o.y+2,o.r,0,7);g.fill();
-    g.fillStyle='#191920';g.beginPath();g.arc(o.x,o.y,o.r,0,7);g.fill();
-    g.strokeStyle='#26262e';g.lineWidth=1;g.stroke();}
-  g.strokeStyle='#22222a';g.lineWidth=1;g.strokeRect(.5,.5,S.w-1,S.h-1);
-  for(let i=0;i<S.dust.length;i++){const q=S.dust[i];
-    g.globalAlpha=(q.life/q.max)*.35;g.fillStyle='#6a675f';
-    g.beginPath();g.arc(q.x,q.y,q.r,0,7);g.fill();g.globalAlpha=1;}
-  for(let i=0;i<S.scares.length;i++){const r=S.scares[i];
-    g.globalAlpha=(r.life/.75)*.7;g.strokeStyle=BONE;g.lineWidth=1.6;
-    g.beginPath();g.arc(r.x,r.y,r.rad,0,7);g.stroke();g.globalAlpha=1;}
-  drawStatue(g,S);
-  paintLion(g,{x:S.x,y:S.y,R:B.r*.92,ang:S.ang,t:S.t,pelt:L.pelt||0,mane:L.mane||0,tail:L.tail||0,
-    seed:hashStr(L.name),scars:L.scars||[],armor:'none',
-    cols:isHog(L)?KINGCOLS:null,eyes:isHog(L)?FX.blood:null,anim:S.anim>0});
-  if(S.startled>0){
-    g.globalAlpha=S.startled/.5;g.strokeStyle=FX.blood;g.lineWidth=1.6;
-    g.beginPath();g.arc(S.x,S.y,B.r*1.5+6,0,7);g.stroke();g.globalAlpha=1;
-  }
-  if(S.hover||(S.plaque||0)>0)drawPlaque(g,S);
-}
-
+/* ========== 14c. (sanctuary removed) ========== */
 /* ========== 15. FLOW ========== */
 let last=0,acc=0;
 function loop(ts){
   requestAnimationFrame(loop);
   const raw=Math.min(.05,(ts-last)/1000||0);last=ts;
   if($('fight').classList.contains('hidden')||!G||!G.lions){
-    if(MATCH.mode==='sanctuary'){stepSanctuary(raw);}else{stepPreviews(raw);}
+    stepPreviews(raw);
     return;
   }
   if(!G.paused){
