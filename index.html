@@ -131,6 +131,22 @@ button{cursor:pointer}
 .badge.gold{color:var(--gold);background:rgba(255,214,10,.18)}
 .badge.blood{color:var(--blood);background:rgba(255,90,77,.18)}
 .badge.belt{display:inline-flex;align-items:center;gap:5px}
+.vsSep{text-align:center;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.14em;padding:2px 0 4px;
+  text-transform:uppercase;border-top:1px solid var(--sep)}
+.tSlot .rico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.tSlot .v .badge{font-size:12px;padding:3px 8px;margin-left:6px;vertical-align:2px}
+.tSlot .v .badge .ico{width:13px;height:13px}
+.tMatch{margin-bottom:12px}
+.tMatch.next{box-shadow:0 0 0 1.5px var(--amber)}
+.tLine{display:flex;align-items:center;gap:12px;padding:14px 18px;font-size:16px;font-weight:500}
+.tLine+.tLine{border-top:1px solid var(--sep)}
+.tLine .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tLine .dot{width:14px;height:14px;border-radius:5px;vertical-align:0}
+.tLine b{font-variant-numeric:tabular-nums;color:var(--t2);font-weight:500}
+.tLine.win .tn,.tLine.win b{color:var(--amber);font-weight:600}
+.tLine.lose{opacity:.42}
+.tLine.tbd .tn{color:var(--t3);font-weight:400}
+.tTag{font-size:12px;color:var(--amber);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .badge.belt .ico{width:16px;height:16px}
 .topBadges{display:flex;gap:8px;align-items:center}
 .beltRow{display:flex;gap:3px;align-items:center;color:var(--gold);flex-wrap:wrap}
@@ -418,12 +434,14 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <button data-mode="duel" aria-pressed="true"><span class="navico" data-i="duel"></span>Duel</button>
     <button data-mode="career" aria-pressed="false"><span class="navico" data-i="lion"></span>Championship</button>
     <button data-mode="pack" aria-pressed="false"><span class="navico" data-i="pack"></span>Challenges</button>
+    <button data-mode="tourn" aria-pressed="false"><span class="navico" data-i="trophy"></span>Tournament</button>
   </nav>
 
   <section id="duel"></section>
   <section id="career" class="hidden"></section>
   <section id="editor" class="hidden"></section>
   <section id="pack" class="hidden"></section>
+  <section id="tourn" class="hidden"></section>
 
   <div class="dock" id="launchBar"></div>
   <div class="sheetWrap hidden" id="sheetWrap"><div class="sheetPanel" id="sheetPanel"></div></div>
@@ -439,6 +457,8 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Bigger frames carry slightly more health, hit harder, and swing and move noticeably slower. Smaller frames are the reverse. Across the whole size range the damage per second comes out close, so what you are really choosing is tempo. Weapons have weight too: claws let you move at 1.16×, a Sunbeam drags you down to 0.86×. Reach costs you your legs.</p>
       <h6>Duel</h6>
       <p>Best of three, no exceptions. Both lions return to full health at the start of every round. Paste a lion code into either slot to fight someone else's lion.</p>
+      <h6>Tournament</h6>
+      <p>Eight lions of your choosing in a knockout bracket. Every match is best of three, winners go through, and three rounds later there is one champion. Edit, roll or paste a code into any slot before it starts. Nothing in a tournament touches your championship lion.</p>
       <h6>Career</h6>
       <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them, so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion.</p>
@@ -528,6 +548,8 @@ const TAILS=[
   {name:'Plume',   note:'a heavy feathered brush on the end'},
   {name:'Ringed',  note:'banded along its length'},
   {name:'Kinked',  note:'broken once and never set straight'},
+  {name:'Split',   note:'one tail, the tip frayed into two teardrops'},
+  {name:'Bushy',   note:'thick and full the whole way down, like a fox'},
 ];
 const MANES=[
   {name:'Full',   note:'the standard crown, thick and even'},
@@ -537,6 +559,7 @@ const MANES=[
   {name:'Cropped',note:'close and tidy, barely there'},
   {name:'Shaggy', note:'long, slow waves, never brushed'},
   {name:'Long',    note:'a teardrop, drawn to a point down the back'},
+  {name:'Crest',   note:'cropped at the sides, a spiked ridge down the spine'},
 ];
 const TRAITS={
   bold:      {name:'Bold',        g:'Temperament',svg:'<path d="M2.2 8h8.6M7.6 4.6 11 8l-3.4 3.4"/>',opp:'wary',
@@ -714,6 +737,9 @@ const cfg={
   B:{side:'B',name:'Ashfang',build:'heavy',armor:'scale',weapon:'fireball',abil:['aegis','roar'],brain:'adaptive',perks:[],pelt:1,mane:2,tail:3,iv:5,scars:[1284,617],traits:['bold','thicknecked']},
 };
 let SCRATCH=null;
+/* the tournament: eight lions, three rounds, one left */
+const TOURN={lions:[],br:null};
+function tournLions(){while(TOURN.lions.length<8)TOURN.lions.push(randomLion('A'));return TOURN.lions;}
 function scratchLion(){if(!SCRATCH)SCRATCH=randomLion('A');return SCRATCH;}
 const MATCH={mode:'duel',arena:'colonnade',rounds:3,closing:true,sound:false,tab:'A'};
 const CAREER={lion:null,locked:false,champ:null,hall:[]};
@@ -724,11 +750,11 @@ const Store={
   async load(){
     if(typeof window.storage==='undefined')return;
     try{const r=await window.storage.get('lionsim:hall');if(r&&r.value){const d=JSON.parse(r.value);
-      CAREER.hall=d.hall||[];if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}}}catch(e){}
+      CAREER.hall=d.hall||[];if(d.tourn&&d.tourn.lions&&d.tourn.lions.length===8){TOURN.lions=d.tourn.lions;TOURN.br=d.tourn.br||null;}if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}}}catch(e){}
   },
   async save(){
     if(typeof window.storage==='undefined')return;
-    try{await window.storage.set('lionsim:hall',JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ}));}catch(e){}
+    try{await window.storage.set('lionsim:hall',JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null}));}catch(e){}
   }
 };
 
@@ -932,6 +958,7 @@ const ICONS={
   reach:'<path d="M2.4 8h11.2M4.6 5.8 2.4 8l2.2 2.2M11.4 5.8 13.6 8l-2.2 2.2"/>',
   crown:'<path d="M2.6 12.2h10.8M2.6 12.2 1.9 5.2l3.5 2.6L8 3.4l2.6 4.4 3.5-2.6-.7 7"/>',
   plus:'<path d="M8 3.2v9.6M3.2 8h9.6"/>',
+  trophy:'<path d="M5 2.6h6v3.4a3 3 0 0 1-6 0z"/><path d="M5 3.8H3.2a1.9 1.9 0 0 0 2 2.8M11 3.8h1.8a1.9 1.9 0 0 1-2 2.8M8 9v2.4M5.4 13.4h5.2M6.4 11.4h3.2v2H6.4z"/>',
   belt:'<path d="M1 6.2h3.7M1 9.8h3.7M11.3 6.2H15M11.3 9.8H15M1 6.2v3.6M15 6.2v3.6"/><ellipse cx="8" cy="8" rx="3.3" ry="4.3"/><path d="m8 5.9.6 1.3 1.4.1-1.1.9.4 1.4L8 8.8l-1.3.8.4-1.4-1.1-.9 1.4-.1z"/>',
   flame:'<path d="M8.4 2.2c2.1 2.7 3.3 4.1 3.3 6.1a3.7 3.7 0 0 1-7.4 0c0-1.4.7-2.5 1.7-3.4.1 1 .6 1.6 1.1 1.8-.3-1.9.3-3.2 1.3-4.5Z"/>',
 };
@@ -1101,7 +1128,9 @@ function editorHTML(scope,c,title,career){
   const creating=career&&!CAREER.locked;
   const pc=PELTS[c.pelt||0].hex;
   const dotFor='<span class="dot" style="background:'+pc+';margin-right:9px"></span>';
-  return (creating?'':'<button class="back" data-act="back">‹ Back to '+(career?'the den':'the card')+'</button>')+
+  const tourn=!career&&MATCH.mode==='tourn';
+  const prevKey=career?'career':(tourn?'t'+(UI.tslot|0):UI.side);
+  return (creating?'':'<button class="back" data-act="back">‹ Back to '+(career?'the den':(tourn?'the draw':'the card'))+'</button>')+
     '<div class="hd"><h2>'+title+'</h2>'+
       (career?'<span class="editsLeft'+(locked?' none':'')+'" id="editsPill">'+
         (locked?'locked in':'new lion')+'</span>':
@@ -1109,14 +1138,15 @@ function editorHTML(scope,c,title,career){
     (creating?'<p class="muted" style="padding:0 2px 12px">Build it however you like, or hit <b>Roll</b> and let chance decide. '+
       'Once you press <b>Finish lion</b> it is locked until it dies or you retire it.</p>':'')+
     '<div class="card">'+
-      '<canvas class="lionCv prevCv" data-prev="'+(career?'career':UI.side)+'"></canvas>'+
+      '<canvas class="lionCv prevCv" data-prev="'+prevKey+'"></canvas>'+
       '<div class="nameRow"><label class="nameWrap">'+
         '<input class="nameField" data-scope="'+scope+'" value="'+esc(c.name)+
         '" maxlength="16" aria-label="Rename this lion"'+(locked?' readonly':'')+'>'+
         (locked?'':'<span class="nameEdit" title="Rename">'+ico('edit')+'</span>')+'</label>'+
         '<span class="badge amber">IV '+(c.iv||5)+'</span>'+
         (career?(creating?'<button class="badge" data-act="careerRoll">Roll</button>':'')
-               :'<button class="badge" data-act="rollside" data-side="'+UI.side+'">Roll</button>')+'</div>'+
+               :(tourn?'<button class="badge" data-act="tRoll">Roll</button>'
+                      :'<button class="badge" data-act="rollside" data-side="'+UI.side+'">Roll</button>'))+'</div>'+
       row('pick','build','Frame',BUILDS[c.build].name,BUILD_NOTE[c.build],locked)+
       row('pick','armor','Armour',ARMORS[c.armor].name,ARMOR_NOTE(c.armor),locked)+
       row('pick','weapon','Weapon',WEAPONS[c.weapon].name,WEAPONS[c.weapon].desc,locked)+
@@ -1260,6 +1290,8 @@ function loadCode(c){
 function placeLoaded(c){
   if(MATCH.mode==='editor'){
     c.side='A';SCRATCH=c;delete PREVMEM.scratch;
+  } else if(MATCH.mode==='tourn'){
+    c.side='A';tournLions()[UI.tslot|0]=c;delete PREVMEM['t'+(UI.tslot|0)];
   } else {
     c.side=UI.side;Object.assign(cfg[UI.side],c);delete PREVMEM[UI.side];
   }
@@ -1290,7 +1322,7 @@ function answerCareer(keep){
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
-function currentLion(){return MATCH.mode==='editor'?scratchLion():(MATCH.mode==='career'?CAREER.lion:cfg[UI.side]);}
+function currentLion(){return MATCH.mode==='editor'?scratchLion():(MATCH.mode==='career'?CAREER.lion:(MATCH.mode==='tourn'?tournLions()[UI.tslot|0]:cfg[UI.side]));}
 function lionSheetText(c){
   return c.name+'\n'+BUILDS[c.build].name+' \u00b7 '+ARMORS[c.armor].name+' \u00b7 '+WEAPONS[c.weapon].name+'\n'+
     c.abil.map(k=>ABILITIES[k].name).join(' + ')+' \u00b7 '+BRAINS[c.brain].name+' mind\n'+
@@ -1399,9 +1431,10 @@ function renderCareer(){
       '<div class="card">'+ch.foes.map(function(f,i){
         const st=i<ch.i?'done':(i===ch.i?'now':'');
         return '<div class="listRow '+st+'"><span class="num">'+(i+1)+'</span><div>'+
-          (i<=ch.i?('<h4>'+esc(f.name)+'</h4><small>'+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
+          (i<=ch.i?('<h4>'+esc(f.name)+' '+beltBadge(f)+'</h4><small>'+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
             ' \u00b7 '+BRAINS[f.brain].name+' mind</small>')
-           :'<h4 style="color:var(--dim)">Unannounced</h4><small>steps out when it is time</small>')+
+           :(beltsOf(f)?'<h4 style="color:var(--dim)">Unannounced '+beltBadge(f)+'</h4><small>a belt holder waits at the end</small>'
+             :'<h4 style="color:var(--dim)">Unannounced</h4><small>steps out when it is time</small>'))+
           '</div><span></span></div>';
       }).join('')+'</div>'):'')+
     hallHTML();
@@ -1516,6 +1549,93 @@ function renderPack(){
       '</small></span><span class="go">\u203a</span></button></div>'+
     '';
 }
+/* ---------- tournament ---------- */
+const TROUND=[{name:'Quarter-finals',one:'Quarter-final'},{name:'Semi-finals',one:'Semi-final'},{name:'Final',one:'Final'}];
+function tCopy(i,side){const c=JSON.parse(JSON.stringify(tournLions()[i]));c.side=side;return c;}
+function tournStart(){
+  tournLions();
+  TOURN.br={rounds:[
+    [0,1,2,3].map(k=>({a:2*k,b:2*k+1,w:null,sa:0,sb:0})),
+    [0,1].map(()=>({a:null,b:null,w:null,sa:0,sb:0})),
+    [{a:null,b:null,w:null,sa:0,sb:0}]]};
+  UI.view='home';Store.save();refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
+}
+function tournNext(){
+  const br=TOURN.br;if(!br)return null;
+  for(let r=0;r<br.rounds.length;r++)for(let m=0;m<br.rounds[r].length;m++){
+    const x=br.rounds[r][m];
+    if(x.w===null&&x.a!==null&&x.b!==null)return {r:r,m:m,match:x};
+  }
+  return null;
+}
+function tournChamp(){const br=TOURN.br;return br?br.rounds[2][0].w:null;}
+function tournMatchOver(){
+  const cur=TOURN.cur,br=TOURN.br;
+  if(!cur||!br){showResult('duel');return;}
+  const x=br.rounds[cur.r][cur.m];
+  const aWon=G.wins.A>G.wins.B;
+  x.w=aWon?x.a:x.b;x.sa=G.wins.A;x.sb=G.wins.B;
+  if(cur.r<2){const nx=br.rounds[cur.r+1][cur.m>>1];if(cur.m%2===0)nx.a=x.w;else nx.b=x.w;}
+  Store.save();
+  showResult(cur.r===2?'tchamp':'tmatch');
+}
+function tSlotRow(i){
+  const c=tournLions()[i],pc=PELTS[c.pelt||0].hex;
+  const n=(c.scars||[]).length;
+  return '<button class="row tSlot" data-act="tEdit" data-i="'+i+'">'+
+    '<span class="rico" style="background:'+pc+'22;color:'+pc+'">'+ico('lion')+'</span>'+
+    '<span class="v">'+esc(c.name)+beltBadge(c)+(n?'<span class="badge blood">'+n+' scar'+(n>1?'s':'')+'</span>':'')+
+      '<small>'+BUILDS[c.build].name+' \u00b7 '+WEAPONS[c.weapon].name+' \u00b7 '+BRAINS[c.brain].name+' mind \u00b7 threat '+derive(c).threat+'</small></span>'+
+    '<span class="go">\u203a</span></button>';
+}
+function tLine(i,won,lost,score,fallback){
+  if(i===null)return '<div class="tLine tbd"><span class="dot" style="background:var(--s3)"></span><span class="tn">'+fallback+'</span><b></b></div>';
+  const c=tournLions()[i];
+  return '<div class="tLine'+(won?' win':(lost?' lose':''))+'"><span class="dot" style="background:'+PELTS[c.pelt||0].hex+'"></span>'+
+    '<span class="tn">'+esc(c.name)+'</span>'+beltBadge(c)+'<b>'+(score===null?'':score)+'</b></div>';
+}
+function renderTourn(){
+  const host=$('tourn'),L=tournLions();
+  if(!TOURN.br&&UI.view==='edit'){
+    const i=UI.tslot|0;
+    host.innerHTML=editorHTML('t'+i,L[i],'Slot '+(i+1)+' <span class="hdSep">|</span> '+esc(L[i].name),false);
+    return;
+  }
+  if(!TOURN.br){
+    host.innerHTML='<div class="hd"><h2>Tournament</h2><span>Eight lions, best of three every match, winners move on until one is left.</span></div>'+
+      '<div class="card"><div class="act" style="padding:14px 16px"><button data-act="tRollAll">'+ico('dice')+'Roll all eight</button>'+
+        '<button data-act="tShuffle">'+ico('refresh')+'Shuffle the draw</button></div></div>'+
+      [0,1,2,3].map(k=>'<div class="hd sub2"><h2>Quarter-final '+(k+1)+'</h2></div>'+
+        '<div class="card">'+tSlotRow(2*k)+'<div class="vsSep">vs</div>'+tSlotRow(2*k+1)+'</div>').join('')+
+      '<p class="muted" style="padding:0 2px 8px">Tap any lion to edit it, roll it, or paste a lion code into its slot. '+
+      'Copy and save work the same as in a duel. Once the tournament starts the draw is locked.</p>';
+    return;
+  }
+  const br=TOURN.br,nx=tournNext(),ch=tournChamp();
+  let html='';
+  if(ch!==null){
+    html+='<div class="hd"><h2>Champion</h2><span>Eight went in. This one came out.</span></div>'+
+      lionCard(L[ch],{prev:'t'+ch,badges:['<span class="badge gold belt">'+ico('trophy')+'Tournament champion</span>'].concat(scarBadge(L[ch]))});
+  } else {
+    html+='<div class="hd"><h2>Tournament</h2><span>'+TROUND[nx.r].name+' \u00b7 best of three.</span></div>';
+  }
+  const feed=['','Winner of QF','Winner of SF'];
+  br.rounds.forEach(function(rd,r){
+    html+='<div class="hd sub2'+(r===0&&ch===null?'':' gapTop')+'"><h2>'+TROUND[r].name+'</h2></div>';
+    rd.forEach(function(x,m){
+      const isNext=nx&&nx.r===r&&nx.m===m,done=x.w!==null;
+      html+='<div class="card tMatch'+(isNext?' next':'')+'">'+
+        (isNext?'<div style="padding:12px 18px 0"><span class="tTag">Up next</span></div>':'')+
+        tLine(x.a,done&&x.w===x.a,done&&x.w!==x.a,done?x.sa:null,feed[r]+' '+(m*2+1))+
+        tLine(x.b,done&&x.w===x.b,done&&x.w!==x.b,done?x.sb:null,feed[r]+' '+(m*2+2))+'</div>';
+    });
+  });
+  html+='<div class="card" style="margin-top:22px"><button class="row" data-act="tAbandon"><span class="rico">'+ico('refresh')+'</span>'+
+    '<span class="v">'+(ch!==null?'Back to the draw':'Scrap this tournament')+'<small>Your eight lions stay as they are</small></span>'+
+    '<span class="go">\u203a</span></button></div>';
+  host.innerHTML=html;
+}
 /* ---------- launch dock ---------- */
 function renderLaunch(){
   const bar=$('launchBar'),L=CAREER.lion;
@@ -1528,6 +1648,14 @@ function renderLaunch(){
   }
   if(UI.view==='edit'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Done</button>';return;}
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+'Send them in</button>';return;}
+  if(MATCH.mode==='tourn'){
+    if(!TOURN.br){bar.innerHTML='<button class="go1" data-act="tStart">'+ico('trophy')+'Start the tournament</button>';return;}
+    const nx=tournNext();
+    if(nx)bar.innerHTML='<button class="go1" data-act="tFight">'+ico('play')+(nx.r===2?'Fight the final':'Fight '+TROUND[nx.r].one.toLowerCase())+
+      (nx.r<2?' '+(nx.m+1):'')+'</button>';
+    else bar.innerHTML='<button class="go1" data-act="tNew">'+ico('refresh')+'Run it again</button>';
+    return;
+  }
   if(MATCH.mode==='pack'){
     if(L&&CAREER.locked){bar.style.display='none';bar.innerHTML='';}
     else bar.innerHTML='<button class="go1" data-act="create">'+ico('plus')+(L?'Finish your lion':'Create a lion')+'</button>';
@@ -1545,12 +1673,13 @@ function renderLaunch(){
 }
 const MODE_NOTES={duel:'',career:''};
 function refresh(){
-  ['duel','career','pack','editor'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
+  ['duel','career','pack','editor','tourn'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
   $('modeSeg').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===MATCH.mode));
   $('editorBtn').setAttribute('aria-pressed',MATCH.mode==='editor');
   if(MATCH.mode==='editor')renderEditorMode();
   else if(MATCH.mode==='duel')renderDuel();
   else if(MATCH.mode==='career')renderCareer();
+  else if(MATCH.mode==='tourn')renderTourn();
   else renderPack();
   renderLaunch();
   bindPreviews();
@@ -1690,6 +1819,14 @@ function startChampionship(){
     for(let q=0;q<marks;q++)f.scars.push((Math.random()<.5?1000:0)+((Math.random()*1000)|0));
     foes.push(f);
   }
+  /* once you own a belt, the last lion in the run is a belt holder too */
+  if(L.record.champs>0){
+    const last=foes[4],belts=1+Math.floor((L.record.champs-1)/2);
+    last.record={champs:belts,wins:belts*5,fights:belts*5+((Math.random()*4)|0)};
+    last.perks=[];
+    for(let q=0;q<belts;q++)last.perks.push(pickOne(PERKS).k);
+    last.epithet='the belt holder';
+  }
   CAREER.champ={n:n,i:0,foes:foes};
   refresh();
 }
@@ -1750,6 +1887,17 @@ function handleAct(a,el){
       return;}
     UI.finishAt=0;finishCareerLion();return;}
   if(a==='startDuel'){SFX.unlock();startFight('duel');return;}
+  if(a==='tEdit'){SFX.ui();UI.tslot=+el.dataset.i;UI.view='edit';refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
+  if(a==='tRoll'){SFX.ui();const i=UI.tslot|0;tournLions()[i]=randomLion('A');delete PREVMEM['t'+i];refresh();return;}
+  if(a==='tRollAll'){SFX.ui();TOURN.lions=[];tournLions();for(let i=0;i<8;i++)delete PREVMEM['t'+i];refresh();toast('Eight new lions');return;}
+  if(a==='tShuffle'){SFX.ui();const L=tournLions();
+    for(let i=L.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;const x=L[i];L[i]=L[j];L[j]=x;}
+    for(let i=0;i<8;i++)delete PREVMEM['t'+i];refresh();toast('Draw shuffled');return;}
+  if(a==='tStart'){SFX.unlock();SFX.bell();tournStart();return;}
+  if(a==='tFight'){SFX.unlock();startFight('tourn');return;}
+  if(a==='tNew'||a==='tAbandon'){SFX.ui();TOURN.br=null;TOURN.cur=null;UI.view='home';Store.save();refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='startPack'){SFX.unlock();startFight('survival');return;}
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
   if(a==='startChamp'){if(!CAREER.locked)return;SFX.unlock();startChampionship();Store.save();return;}
@@ -1787,7 +1935,7 @@ function makeLion(c,x,y,ang,light){
 }
 function startFight(ctxName){
   G.ctx=ctxName;
-  ['duel','career','pack','editor','launchBar','modeSeg'].forEach(id=>$(id).classList.add('hidden'));
+  ['duel','career','pack','editor','tourn','launchBar','modeSeg'].forEach(id=>$(id).classList.add('hidden'));
   closeSheet();
   $('fight').classList.remove('hidden');$('result').classList.add('hidden');
   fitCanvas();
@@ -1796,6 +1944,10 @@ function startFight(ctxName){
     const ch=CAREER.champ;
     G.aCfg=CAREER.lion;G.bCfg=ch.foes[ch.i];G.rounds=1;
   } else if(ctxName==='survival'||ctxName==='king'){G.aCfg=CAREER.lion;G.bCfg=null;G.rounds=1;}
+  else if(ctxName==='tourn'){
+    const nx=tournNext();if(!nx){showHome();return;}
+    TOURN.cur=nx;G.aCfg=tCopy(nx.match.a,'A');G.bCfg=tCopy(nx.match.b,'B');G.rounds=3;
+  }
   else {G.aCfg=cfg.A;G.bCfg=cfg.B;G.rounds=3;}
   newRound();
 }
@@ -1931,6 +2083,7 @@ function kill(t,by){
     if(Math.random()<.35)log(t.name+' drops.');
     return;
   }
+  if(G.over)return;                  /* a double knockout: the first to fall already decided it */
   G.over=true;G.winner=t.foe;G.method=by;
   G.slow=RM?0:1.35;G.shake=RM?0:13;G.flash=.55;G.freeze=RM?0:.16;
   G.kill={x:t.x,y:t.y};
@@ -2877,6 +3030,38 @@ function drawTail(g,C,R,t,type){
     g.fillStyle=C.mane;g.beginPath();g.arc(-R*2.25,wag*1.1,R*.19,0,7);g.fill();
     return;
   }
+  if(type===6){                                   /* split end: one tail, the tip fraying into two teardrops */
+    g.lineWidth=Math.max(2,R*.14);
+    const tx=-R*2.05,ty=wag*1.25;
+    g.beginPath();g.moveTo(-R*.85,0);
+    g.quadraticCurveTo(-R*1.6,wag,tx,ty);g.stroke();
+    const dir=Math.atan2(ty-wag,tx+R*1.6);
+    g.fillStyle=C.mane;
+    [-1,1].forEach(function(k){
+      g.save();g.translate(tx,ty);g.rotate(dir+k*.5);
+      const L2=R*.62,r=R*.17;
+      g.beginPath();g.moveTo(0,0);
+      g.bezierCurveTo(L2*.35,-r*1.05,L2,-r*1.25,L2,0);
+      g.bezierCurveTo(L2,r*1.25,L2*.35,r*1.05,0,0);
+      g.fill();
+      g.restore();
+    });
+    return;
+  }
+  if(type===7){                                   /* bushy: fat the whole way, like a fox */
+    g.fillStyle=C.mane;
+    const pts=9;
+    for(let i=0;i<=pts;i++){
+      const k=i/pts;
+      const x=(1-k)*(1-k)*(-R*.8)+2*(1-k)*k*(-R*1.6)+k*k*(-R*2.2);
+      const y=2*(1-k)*k*wag+k*k*wag*1.3;
+      const r=R*(.16+.2*Math.sin(Math.min(1,k*1.15)*Math.PI*.85));
+      g.beginPath();g.arc(x,y,r,0,7);g.fill();
+    }
+    g.fillStyle=C.muz;
+    g.beginPath();g.arc(-R*2.22,wag*1.32,R*.13,0,7);g.fill();
+    return;
+  }
   g.lineWidth=Math.max(2,R*.14);                  /* tufted */
   g.beginPath();g.moveTo(-R*.85,0);
   g.quadraticCurveTo(-R*1.7,wag,-R*2.25,wag*1.4);g.stroke();
@@ -2885,6 +3070,28 @@ function drawTail(g,C,R,t,type){
 function drawMane(g,C,R,lunge,type,seed){
   const cx=R*.42+lunge, base=R*.78;
   g.fillStyle=C.mane;g.strokeStyle=C.edge;g.lineWidth=1.2;
+  if(type===7){                                   /* crest: cropped sides, a spiked ridge down the spine */
+    const ridge=R*1.05,sp=6;
+    g.beginPath();
+    g.moveTo(cx-base*.5,-R*.13);
+    for(let i=0;i<=sp;i++){
+      const x=cx-base*.5-ridge*i/sp;
+      g.lineTo(x+ridge/sp*.5,-R*(.1+.14*(1-i/sp))-R*.05);
+      g.lineTo(x,-R*.06);
+    }
+    for(let i=sp;i>=0;i--){
+      const x=cx-base*.5-ridge*i/sp;
+      g.lineTo(x,R*.06);
+      g.lineTo(x+ridge/sp*.5,R*(.1+.14*(1-i/sp))+R*.05);
+    }
+    g.closePath();g.fill();g.stroke();
+    const n=Math.max(12,Math.round(R*.85));
+    g.beginPath();
+    for(let i=0;i<n;i++){const ang=i/n*6.283,rr=base*(.86+(i%2?.04:0));
+      const px=cx+Math.cos(ang)*rr,py=Math.sin(ang)*rr;if(i)g.lineTo(px,py);else g.moveTo(px,py);}
+    g.closePath();g.fill();g.stroke();
+    return;
+  }
   if(type===1){                                   /* curly: a calm scallop of small curls */
     const n=15,rr=base*.94;
     g.beginPath();g.arc(cx,0,base*.93,0,7);g.fill();
@@ -3173,7 +3380,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='scratch')?scratchLion():((key==='career'||key==='pack')?CAREER.lion:cfg[key]);
+    const conf=(key==='scratch')?scratchLion():((key==='career'||key==='pack')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -3286,7 +3493,7 @@ function roundOver(){
     return;
   }
   const need=Math.ceil(G.rounds/2);
-  if(G.wins.A>=need||G.wins.B>=need){showResult('duel');return;}
+  if(G.wins.A>=need||G.wins.B>=need){if(G.ctx==='tourn'){tournMatchOver();return;}showResult('duel');return;}
   banner(G.winner.name.toUpperCase()+' TAKES THE ROUND',1.3);SFX.win();
   setTimeout(newRound,1500);
 }
@@ -3311,6 +3518,20 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       (G.rounds>1?(' · '+G.wins.A+'–'+G.wins.B):'')+' · '+Math.round(w.hp)+' health left';
     B.innerHTML='<button class="primary" data-act="again">Run it back</button><button data-act="home">Edit lions</button>';
     SFX.win();
+  }
+  else if(kind==='tmatch'||kind==='tchamp'){
+    const cur=TOURN.cur;
+    if(kind==='tchamp'){
+      V.textContent=w.name.toUpperCase()+' WINS THE TOURNAMENT';V.className='verdict gold';
+      M.textContent='Three best-of-threes, eight lions, one left standing \u00b7 '+G.wins.A+'\u2013'+G.wins.B+' in the final';
+      SFX.champ();
+    } else {
+      V.textContent=w.name.toUpperCase()+' GOES THROUGH';
+      M.textContent=TROUND[cur.r].one+(TOURN.br.rounds[cur.r].length>1?' '+(cur.m+1):'')+' \u00b7 '+G.wins.A+'\u2013'+G.wins.B+
+        ' \u00b7 '+(G.method||'attrition');
+      SFX.win();
+    }
+    B.innerHTML='<button class="primary" data-act="home">'+(kind==='tchamp'?'See the bracket':'Back to the bracket')+'</button>';
   }
   else if(kind==='bout'){
     const ch=CAREER.champ;
