@@ -400,6 +400,65 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .resBtns button:hover{background:var(--s3)}
 .resBtns button.primary{background:var(--amber);color:#241701;font-weight:600}
 .infoSheet{max-width:600px}
+/* ---------- tutorial ---------- */
+.cutWrap{position:fixed;inset:0;z-index:35;display:flex;align-items:flex-end;justify-content:center;
+  padding:20px 16px 34px;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));animation:cutIn 1.2s ease}
+@keyframes cutIn{from{opacity:0}to{opacity:1}}
+.cutBox{width:100%;max-width:560px;display:flex;gap:14px;align-items:flex-start;background:rgba(28,28,30,.96);
+  border:1px solid var(--sep);border-radius:20px;padding:16px;cursor:pointer;box-shadow:var(--shadow)}
+#cutCv{width:92px;height:92px;flex:none;border-radius:16px;background:#0c0c0e;filter:saturate(.6)}
+.cutTxt{flex:1;min-width:0}
+.cutTxt b{display:block;font-size:14px;color:var(--t3);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.cutTxt p{margin:6px 0 0;font-size:17px;line-height:1.5;color:var(--t1);min-height:52px;font-style:italic}
+.cutTxt .caret{display:inline-block;width:2px;height:1em;background:var(--t2);vertical-align:-2px;margin-left:2px;animation:tutBlink .8s steps(1) infinite}
+.cutNext{display:block;text-align:right;color:var(--t3);font-size:14px;margin-top:6px}
+.tutCard{width:100%;max-width:520px;background:var(--s1);border-radius:22px;padding:20px 20px 18px;box-shadow:var(--shadow)}
+.tutTop{display:flex;gap:14px;align-items:center}
+#tutCv{width:92px;height:92px;flex:none;border-radius:20px;background:#0c0c0e;display:block}
+.tutWho b{display:block;font-size:17px;font-weight:600;letter-spacing:-.02em}
+.tutWho small{display:block;color:var(--t3);font-size:13px;margin-top:2px}
+.tutSkip{margin-left:auto;align-self:flex-start;color:var(--t3);font-size:14px;padding:6px 10px;border-radius:12px}
+.tutSkip:hover{color:var(--t1);background:var(--s2)}
+.tutTitle{font-size:22px;font-weight:700;letter-spacing:-.025em;margin:16px 2px 10px}
+.tutBubble{position:relative;background:var(--s2);border-radius:16px;padding:14px 16px;font-size:15.5px;
+  line-height:1.5;color:var(--t1);min-height:96px;cursor:pointer}
+.tutBubble::before{content:"";position:absolute;left:34px;top:-8px;border:8px solid transparent;border-top:0;border-bottom-color:var(--s2)}
+.tutBubble .caret{display:inline-block;width:2px;height:1em;background:var(--amber);vertical-align:-2px;margin-left:2px;animation:tutBlink .8s steps(1) infinite}
+@keyframes tutBlink{50%{opacity:0}}
+.tutVis{margin-top:14px}
+.tutChips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tutChip{background:var(--bg);border:1px solid var(--sep);border-radius:14px;padding:11px 12px;display:flex;gap:10px;align-items:center;min-width:0}
+.tutChip .ci{color:var(--amber);flex:none;display:flex}
+.tutChip .ci .ico,.tutChip .ci .tico{width:20px;height:20px}
+.tutChip b{display:block;font-size:14px;font-weight:600}
+.tutChip small{display:block;font-size:12.5px;color:var(--t2);line-height:1.35;margin-top:1px}
+.tutChip.red .ci{color:var(--blood)} .tutChip.gold .ci{color:var(--gold)}
+#tutArena{width:100%;height:150px;border-radius:14px;background:#0c0c0e;display:block}
+.tutCode{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--amber);background:var(--bg);
+  border:1px solid var(--sep);border-radius:12px;padding:10px 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px}
+.tutBracket{display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--bg);
+  border:1px solid var(--sep);border-radius:14px;padding:14px}
+.tutBracket .col{display:flex;flex-direction:column;gap:6px;align-items:center}
+.tutBracket .col i{display:block;width:34px;height:10px;border-radius:5px;background:var(--s3)}
+.tutBracket .col.w i{background:var(--amber)}
+.tutBracket .col small{font-size:11px;color:var(--t3);margin-top:4px}
+.tutBracket .arrow{color:var(--t3)}
+.tutBracket .cup{color:var(--gold)} .tutBracket .cup .ico{width:28px;height:28px}
+.tutTips{margin:0;padding:0;list-style:none}
+.tutTips li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--sep);font-size:14.5px;color:var(--t2);line-height:1.4}
+.tutTips li:first-child{border-top:0}
+.tutTips li b{color:var(--amber);font-weight:600;flex:none}
+.tutDots{display:flex;gap:6px;justify-content:center;margin:16px 0 12px}
+.tutDots i{width:6px;height:6px;border-radius:3px;background:var(--s3);transition:.25s}
+.tutDots i.on{width:20px;background:var(--amber)}
+.tutNav{display:flex;gap:10px}
+.tutNav button{flex:1;height:48px;border-radius:14px;font-size:16px;font-weight:600;background:var(--s2);color:var(--t1)}
+.tutNav button.key{background:var(--amber);color:#241701}
+.tutNav button[disabled]{opacity:.35}
+@media (max-width:430px){.hdr{gap:8px}.hdrBtns{gap:6px}.hdrBtns button{padding:0;min-width:34px;width:34px;height:34px}
+  .hdrBtns .ico{width:17px;height:17px}.editorBtn{padding:0 12px;height:34px;gap:6px}.mark{font-size:17px;gap:7px}
+  .mark .logoIco .ico{width:23px;height:23px}}
+@media (max-width:380px){.mark span{display:none}}
 .infoBody{margin:24px 0 4px;max-height:58vh;overflow:auto;padding-right:10px}
 .infoBody h6{font-size:17px;font-weight:600;color:var(--t1);margin:28px 0 8px;letter-spacing:-.02em}
 .infoBody h6:first-child{margin-top:0}
@@ -425,6 +484,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <h1 class="mark"><span class="logoIco"></span>LION<span>SIM</span></h1>
     <button class="editorBtn" id="editorBtn"><span class="eico"></span><span class="elabel">Editor</span></button>
     <div class="hdrBtns">
+      <button id="helpBtn" aria-label="Tutorial with Old Lion"></button>
       <button id="infoBtn" aria-label="How it works"></button>
       <button id="soundBtn" aria-pressed="false" aria-label="Sound"></button>
     </div>
@@ -448,6 +508,11 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   <div class="sheetWrap hidden" id="askWrap"><div class="sheetPanel" id="askPanel"></div></div>
   <div class="toast" id="toast"></div>
 
+  <div id="cut" class="cutWrap hidden"><div class="cutBox" data-act="cutNext">
+    <canvas id="cutCv"></canvas>
+    <div class="cutTxt"><b>Old Lion</b><p id="cutSay"></p><span class="cutNext" id="cutNext">…</span></div>
+  </div></div>
+  <div id="tut" class="overlay hidden"><div class="tutCard" id="tutCard"></div></div>
   <div id="info" class="overlay hidden"><div class="result infoSheet">
     <div class="verdict" style="font-size:clamp(24px,6vw,36px)">HOW IT WORKS</div>
     <div class="infoBody">
@@ -475,7 +540,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>The pack</h6>
       <p>Your career lion alone against waves of dogs and hyenas, recovering only a sliver of health between them. Each wave is larger and slightly stronger. You are playing for a number: how many waves it lasts and how many it puts down. Nothing there is permanent — the lion always walks away, whatever the pack does to it.</p>
       <h6>Challenges</h6>
-      <p>Two of them, and neither touches your championship record. <b>The pack</b> throws waves of dogs and hyenas at you until you go down. <b>The Lion King</b> is a single fight against a titan in black plate with a great maul, far bigger than anything you will ever own. You can bring up to two other lions along for either: roll a stranger, open a saved .txt, or paste a code.</p>
+      <p>Four of them, and none touches your championship record. <b>The pack</b> throws waves of dogs and hyenas at you until you go down. <b>The Lion King</b> is a single fight against a titan in black plate with a great maul, far bigger than anything you will ever own. <b>The Ancient Lion</b> is older still: a navy-and-gold giant, half as big again as a titan, slow as a glacier, and it answers anything close with a gold nova and anything far away with falling stars. <b>Old Lion</b> comes out of retirement for one last fight, and he has not forgotten a thing. You can bring up to two other lions along for any of them: roll a stranger, open a saved .txt, or paste a code.</p>
       <h6>Lion codes</h6>
       <p>Every career lion has a code carrying its build, coat, IV, medallions and record. Copy it or save it as a text file, and it can be pasted into any duel slot on any device. Belts show as a gold belt on the lion and in its stats. When you load a career lion into a duel, the Editor or as an ally, you're asked whether to bring its medallions and buffs along or load it as a blank slate.</p>
     </div>
@@ -741,7 +806,7 @@ let SCRATCH=null;
 const TOURN={lions:[],br:null};
 function tournLions(){while(TOURN.lions.length<8)TOURN.lions.push(randomLion('A'));return TOURN.lions;}
 function scratchLion(){if(!SCRATCH)SCRATCH=randomLion('A');return SCRATCH;}
-const MATCH={mode:'duel',arena:'colonnade',rounds:3,closing:true,sound:false,tab:'A'};
+const MATCH={mode:'duel',arena:'colonnade',rounds:3,closing:true,sound:false,music:true,tab:'A'};
 const CAREER={lion:null,locked:false,champ:null,hall:[]};
 let G={speed:1};
 
@@ -814,8 +879,182 @@ const SFX=(()=>{
     bell:()=>{tone(880,880,.18,'square',.10);tone(1320,1320,.3,'triangle',.07,.1);},
     ui:()=>tone(520,520,.03,'square',.04),
     warn:()=>{tone(150,150,.2,'square',.13);tone(150,150,.2,'square',.13,.26);},
-    unlock:()=>on()
+    unlock:()=>on(),
+    audio:()=>(on()?{ac:ac,master:master}:null)
   };
+})();
+
+/* ========== 4b. MUSIC ========== */
+/* Four original pieces, all synthesised on the spot: no files, no samples.
+   menu   "Pride of the Pit"   warm savanna theme, kalimba and flute over a heartbeat drum
+   fight  "Into the Sand"      driving tribal drums, a bass ostinato and a riff
+   boss   "Something Older"    taiko, low brass, a darker key
+   sad    "Time Beats Us All"  a music box for the Old Lion */
+const MUSIC=(()=>{
+  const mf=n=>440*Math.pow(2,(n-69)/12);
+  let NOISE=null;
+  function noiseBuf(ac){
+    if(NOISE&&NOISE.sampleRate===ac.sampleRate)return NOISE;
+    const len=ac.sampleRate,b=ac.createBuffer(1,len,ac.sampleRate),d=b.getChannelData(0);
+    for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+    NOISE=b;return b;
+  }
+  function env(ac,g,t,a,peak,dur,rel){
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(peak,t+a);
+    g.gain.setValueAtTime(peak,t+Math.max(a,dur));
+    g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(a,dur)+rel);
+  }
+  /* ---- instruments: each takes the context, a destination and a start time ---- */
+  const I={
+    kick(ac,o,t,v){const s=ac.createOscillator(),g=ac.createGain();s.type='sine';
+      s.frequency.setValueAtTime(140,t);s.frequency.exponentialRampToValueAtTime(42,t+.2);
+      g.gain.setValueAtTime(.9*v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.32);
+      s.connect(g);g.connect(o);s.start(t);s.stop(t+.35);},
+    tom(ac,o,t,f,v){const s=ac.createOscillator(),g=ac.createGain();s.type='sine';
+      s.frequency.setValueAtTime(f,t);s.frequency.exponentialRampToValueAtTime(f*.62,t+.24);
+      g.gain.setValueAtTime(.55*v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.3);
+      s.connect(g);g.connect(o);s.start(t);s.stop(t+.32);},
+    taiko(ac,o,t,v){I.tom(ac,o,t,88,v*1.4);
+      const n=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();
+      n.buffer=noiseBuf(ac);f.type='lowpass';f.frequency.value=380;
+      g.gain.setValueAtTime(.45*v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.4);
+      n.connect(f);f.connect(g);g.connect(o);n.start(t,Math.random()*.5,.45);},
+    noiseHit(ac,o,t,type,freq,q,dur,v){
+      const n=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();
+      n.buffer=noiseBuf(ac);f.type=type;f.frequency.value=freq;f.Q.value=q;
+      g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      n.connect(f);f.connect(g);g.connect(o);n.start(t,Math.random()*.5,dur+.02);},
+    clap(ac,o,t,v){I.noiseHit(ac,o,t,'bandpass',1500,.8,.14,.42*v);I.noiseHit(ac,o,t+.012,'bandpass',1900,.9,.1,.25*v);},
+    hat(ac,o,t,v){I.noiseHit(ac,o,t,'highpass',7200,.7,.04,.16*v);},
+    shaker(ac,o,t,v){I.noiseHit(ac,o,t,'bandpass',5200,1.2,.07,.13*v);},
+    bass(ac,o,t,n,dur,v){
+      const s=ac.createOscillator(),s2=ac.createOscillator(),f=ac.createBiquadFilter(),g=ac.createGain();
+      s.type='triangle';s2.type='sine';s.frequency.value=mf(n);s2.frequency.value=mf(n-12);
+      f.type='lowpass';f.frequency.value=700;env(ac,g,t,.012,.42*v,dur*.9,Math.min(.5,dur*.25));
+      s.connect(f);s2.connect(f);f.connect(g);g.connect(o);
+      s.start(t);s2.start(t);s.stop(t+dur+.6);s2.stop(t+dur+.6);},
+    pluck(ac,o,t,n,v){                             /* kalimba */
+      const s=ac.createOscillator(),s2=ac.createOscillator(),g=ac.createGain(),g2=ac.createGain();
+      s.type='sine';s2.type='sine';s.frequency.value=mf(n);s2.frequency.value=mf(n)*3.01;
+      g.gain.setValueAtTime(.3*v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.9);
+      g2.gain.setValueAtTime(.08*v,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.18);
+      s.connect(g);s2.connect(g2);g.connect(o);g2.connect(o);
+      s.start(t);s2.start(t);s.stop(t+1);s2.stop(t+.25);},
+    flute(ac,o,t,n,dur,v){
+      const s=ac.createOscillator(),l=ac.createOscillator(),lg=ac.createGain(),g=ac.createGain(),f=ac.createBiquadFilter();
+      s.type='triangle';s.frequency.value=mf(n);l.frequency.value=5.2;lg.gain.value=mf(n)*.006;
+      l.connect(lg);lg.connect(s.frequency);f.type='lowpass';f.frequency.value=2600;
+      env(ac,g,t,.07,.2*v,dur*.9,.25);s.connect(f);f.connect(g);g.connect(o);
+      s.start(t);l.start(t);s.stop(t+dur+.4);l.stop(t+dur+.4);},
+    brass(ac,o,t,n,dur,v){
+      const f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.Q.value=2;
+      f.frequency.setValueAtTime(300,t);f.frequency.linearRampToValueAtTime(1300,t+.25);f.frequency.linearRampToValueAtTime(700,t+dur);
+      env(ac,g,t,.09,.2*v,dur*.9,.3);f.connect(g);g.connect(o);
+      [-7,7].forEach(function(c){const s=ac.createOscillator();s.type='sawtooth';s.frequency.value=mf(n);s.detune.value=c;
+        s.connect(f);s.start(t);s.stop(t+dur+.45);});},
+    riff(ac,o,t,n,dur,v){
+      const s=ac.createOscillator(),f=ac.createBiquadFilter(),g=ac.createGain();
+      s.type='square';s.frequency.value=mf(n);f.type='lowpass';f.frequency.value=1800;
+      env(ac,g,t,.01,.1*v,dur*.7,.08);s.connect(f);f.connect(g);g.connect(o);s.start(t);s.stop(t+dur+.12);},
+    pad(ac,o,t,notes,dur,v){
+      const f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.frequency.value=900;f.Q.value=.3;
+      env(ac,g,t,Math.min(.22,dur*.2),.07*v,dur,Math.min(1.4,dur*.5));f.connect(g);g.connect(o);
+      notes.forEach(function(n){[-8,8].forEach(function(c){
+        const s=ac.createOscillator();s.type='sawtooth';s.frequency.value=mf(n);s.detune.value=c;
+        s.connect(f);s.start(t);s.stop(t+dur+1.5);});});},
+    box(ac,o,t,n,v){                               /* music box */
+      [[1,.26,2.2],[2,.06,.9],[4.1,.03,.4]].forEach(function(p){
+        const s=ac.createOscillator(),g=ac.createGain();s.type='sine';s.frequency.value=mf(n)*p[0];
+        g.gain.setValueAtTime(p[1]*v,t);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);
+        s.connect(g);g.connect(o);s.start(t);s.stop(t+p[2]+.05);});}
+  };
+  /* ---- the pieces: step is a sixteenth note, a loop is four bars ---- */
+  const Dm=[50,57,62,65],Bb=[46,53,58,62],F=[41,53,57,60],C=[48,55,60,64],A=[45,52,57,61];
+  const MEL_MENU=[[[0,74,4],[4,72,2],[6,69,2],[8,74,6]],[[0,70,4],[4,69,2],[6,65,2],[8,70,6]],
+                  [[0,72,3],[3,69,3],[6,72,2],[8,77,6]],[[0,76,4],[4,74,2],[6,72,2],[8,76,8]]];
+  const MEL_SAD=[[[0,74,4],[4,77,4],[8,76,4],[12,74,4]],[[0,70,6],[6,72,2],[8,74,8]],
+                 [[0,72,4],[4,69,4],[8,65,4],[12,69,4]],[[0,73,8],[8,69,8]]];
+  const TR={
+    menu:{bpm:90,bars:[Dm,Bb,F,C],roots:[38,34,41,36],play(ac,o,st,t,d){
+      const bar=(st>>4)&3,s=st&15,loop=st>>6,ch=this.bars[bar];
+      if(s===0){I.pad(ac,o,t,ch,d*16,1);I.bass(ac,o,t,this.roots[bar],d*16,.9);}
+      if(s===0||s===3)I.tom(ac,o,t,s?96:78,.55);
+      if(s%2===0)I.shaker(ac,o,t,s%4===2?1:.5);
+      const arp=[ch[1]+12,ch[2]+12,ch[3]+12,ch[2]+12,ch[1]+24,ch[3]+12];
+      const ai=[0,3,6,8,11,14].indexOf(s);if(ai>=0)I.pluck(ac,o,t,arp[ai],loop%2?.6:.9);
+      if(loop%2===1)MEL_MENU[bar].forEach(function(m){if(m[0]===s)I.flute(ac,o,t,m[1],m[2]*d,1);});}},
+    fight:{bpm:126,bars:[Dm,Dm,Bb,C],roots:[38,38,34,36],play(ac,o,st,t,d){
+      const bar=(st>>4)&3,s=st&15,loop=st>>6,r=this.roots[bar];
+      if(s===0||s===3||s===8||s===11)I.kick(ac,o,t,s%8?.7:1);
+      if(s===4||s===12)I.clap(ac,o,t,1);
+      I.hat(ac,o,t,s%2?.45:.9);
+      if(s===6||s===14)I.tom(ac,o,t,150,.45);
+      if(bar===3&&s>=13)I.tom(ac,o,t,[210,165,125][s-13],.8);
+      if(s%2===0){const pat=[0,0,12,0,10,0,7,5];I.bass(ac,o,t,r+pat[s>>1],d*1.7,.85);}
+      if(s===0||s===10)I.pad(ac,o,t,this.bars[bar],d*3,1.2);
+      if(loop%2===1){const R=[[0,74],[2,77],[4,76],[6,74],[7,69],[10,72],[12,74]];
+        R.forEach(function(m){if(m[0]===s)I.riff(ac,o,t,m[1]-(bar===2?4:0),d*1.6,1);});}}},
+    boss:{bpm:104,bars:[[48,55,60,63],[49,56,61,65],[48,55,60,63],[43,55,59,62]],roots:[36,37,36,31],play(ac,o,st,t,d){
+      const bar=(st>>4)&3,s=st&15,loop=st>>6;
+      if(s===0||s===8||s===10)I.taiko(ac,o,t,s===0?1:.75);
+      if(s===3||s===11||s===14)I.tom(ac,o,t,120,.6);
+      if(s===12)I.clap(ac,o,t,1.1);
+      if(s%2===0)I.hat(ac,o,t,.55);
+      if(s===0){I.pad(ac,o,t,this.bars[bar].map(n=>n-12),d*16,1.3);I.bass(ac,o,t,this.roots[bar],d*15,1);}
+      const BR=[[[0,60,8],[8,63,8]],[[0,61,16]],[[0,60,6],[6,55,2],[8,60,8]],[[0,59,8],[8,62,8]]];
+      BR[bar].forEach(function(m){if(m[0]===s)I.brass(ac,o,t,m[1]-(loop%2?0:12),m[2]*d,1);});}},
+    sad:{bpm:64,bars:[Dm,Bb,F,A],roots:[38,34,41,33],play(ac,o,st,t,d){
+      const bar=(st>>4)&3,s=st&15;
+      if(s===0){I.pad(ac,o,t,this.bars[bar],d*16,.7);I.bass(ac,o,t,this.roots[bar],d*15,.45);}
+      MEL_SAD[bar].forEach(function(m){if(m[0]===s)I.box(ac,o,t,m[1],1);});
+      if(s===8)I.box(ac,o,t,this.bars[bar][1]+12,.35);}}
+  };
+  /* ---- the player: a look-ahead scheduler and a crossfade between pieces ---- */
+  let bus=null,comp=null,cur=null,tg=null,step=0,nextT=0,timer=null,live=false;
+  function audio(){return (typeof SFX!=='undefined'&&SFX.audio)?SFX.audio():null;}
+  function tick(){
+    const a=audio();if(!a||!cur||!tg){return;}
+    const tr=TR[cur],d=60/tr.bpm/4,ac=a.ac;
+    if(nextT<ac.currentTime-.3)nextT=ac.currentTime+.05;   /* woke up late: do not pile notes up */
+    while(nextT<ac.currentTime+.15){tr.play(ac,tg,step,nextT,d);nextT+=d;step++;}
+  }
+  function play(name){
+    if(!MATCH.sound||!MATCH.music){stop();return;}
+    const a=audio();if(!a)return;const ac=a.ac;
+    if(!bus){comp=ac.createDynamicsCompressor();comp.threshold.value=-18;comp.ratio.value=3;
+      bus=ac.createGain();bus.gain.value=.62;bus.connect(comp);comp.connect(a.master);}
+    if(name===cur&&live)return;
+    const t=ac.currentTime;
+    if(tg){const old=tg;old.gain.cancelScheduledValues(t);old.gain.setValueAtTime(old.gain.value,t);
+      old.gain.linearRampToValueAtTime(0,t+.7);setTimeout(function(){try{old.disconnect();}catch(e){}},1500);}
+    tg=ac.createGain();tg.gain.setValueAtTime(0,t);tg.gain.linearRampToValueAtTime(1,t+1.1);tg.connect(bus);
+    cur=name;step=0;nextT=t+.08;live=true;
+    if(!timer)timer=setInterval(tick,25);
+    tick();
+  }
+  function stop(){
+    live=false;cur=null;
+    const a=audio();
+    if(tg&&a){const t=a.ac.currentTime,old=tg;old.gain.cancelScheduledValues(t);old.gain.setValueAtTime(old.gain.value,t);
+      old.gain.linearRampToValueAtTime(0,t+.5);setTimeout(function(){try{old.disconnect();}catch(e){}},900);}
+    tg=null;if(timer){clearInterval(timer);timer=null;}
+  }
+  let sadLock=false;
+  function auto(){
+    if(!MATCH.sound||!MATCH.music){stop();return;}
+    const fight=!$('fight').classList.contains('hidden');
+    if(sadLock)play('sad');
+    else if(fight)play(G.ctx==='king'?'boss':'fight');
+    else play('menu');
+  }
+  /* render a stretch of a piece offline (used to preview the pieces) */
+  function renderInto(ac,dest,name,seconds){
+    const tr=TR[name],d=60/tr.bpm/4;let st=0;
+    for(let t=.05;t<seconds;t+=d){tr.play(ac,dest,st,t,d);st++;}
+  }
+  return{play:play,stop:stop,auto:auto,renderInto:renderInto,
+    sad:function(on){sadLock=!!on;auto();},get current(){return cur;},tracks:Object.keys(TR)};
 })();
 
 /* ========== 5. DERIVE ========== */
@@ -823,6 +1062,17 @@ const SFX=(()=>{
 function isHog(c){
   return String((c&&c.name)||'').trim().toLowerCase()==='hogrider';
 }
+/* and say the right one, and something rises */
+function isGabName(c){
+  return String((c&&c.name)||'').trim().toLowerCase()==='gabrielion';
+}
+function isGab(c){return !!(c&&(c.ancient||isGabName(c)));}
+const GABCOLS={mane:'#ffc72c',body:'#14244f',edge:'#ffd95a',muz:'#ffe48a',plate:'#ffc72c'};
+const GAB={nova:{cd:5.2,reach:150,max:180,life:.55,dmg:30,stun:.65,kb:430},
+           star:{cd:4.0,n:3,delay:.9,r:48,dmg:21}};
+/* what a lion looks like: the two named ones override their coat, mane and tail */
+function colsOf(c){return (c&&c.old)?OLDCOLS:(isGab(c)?GABCOLS:(isHog(c)?KINGCOLS:peltCols((c&&c.pelt)||0)));}
+function lookOf(c,k){if(isGab(c))return k==='mane'?1:3;return (c&&c[k])||0;}
 function perkTotals(c){
   const t={hp:1,spd:1,dmg:1,dr:0,cdr:1,atk:1,regen:0};
   (c.perks||[]).forEach(function(pk){
@@ -836,13 +1086,13 @@ function derive(c,scale){
   scale=scale||1;
   const B=BUILDS[c.build],A=ARMORS[c.armor],W=WEAPONS[c.weapon],P=perkTotals(c);
   const v=ivFactor(c.iv),tm=traitMods(c);
-  const hog=isHog(c);
-  const hpS=scale*(hog?2.4:1);
-  const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1);
+  const hog=isHog(c),gab=isGabName(c);
+  const hpS=scale*(hog?2.4:1)*(gab?2.6:1);
+  const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1)*(gab?1.55:1);
   const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp;
-  const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1);
+  const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1);
   const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg;
-  const dr=clamp(A.dr+P.dr,0,.62);
+  const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0),0,.62);
   const atk=B.atk*P.atk*(A.atk||1);
   const wdps=(W.dmg*dmgMult)/(W.cd*atk)+(6*dmgMult)/(.95*atk);
   const ehp=maxHp/(1-dr);
@@ -929,6 +1179,7 @@ const ICONS={
   info:'<circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v4M8 4.9v.1"/>',
   sound:'<path d="M3 6.2h2.4L8.6 3.6v8.8L5.4 9.8H3z"/><path d="M11 6.1a3 3 0 0 1 0 3.8M12.9 4.4a5.4 5.4 0 0 1 0 7.2"/>',
   mute:'<path d="M3 6.2h2.4L8.6 3.6v8.8L5.4 9.8H3z"/><path d="m11.2 6.6 3.2 2.8M14.4 6.6l-3.2 2.8"/>',
+  music:'<path d="M6 12.2V3.6l7-1.4v8.6"/><circle cx="4.4" cy="12.2" r="1.7"/><circle cx="11.4" cy="10.8" r="1.7"/><path d="M6 6.2l7-1.4"/>',
   edit:'<path d="m11.1 2.6 2.3 2.3-8 8-3 .7.7-3z"/><path d="m9.8 3.9 2.3 2.3"/>',
   summary:'<path d="M3.2 4.2h9.6M3.2 8h9.6M3.2 11.8h6.4"/>',
   dice:'<rect x="2.8" y="2.8" width="10.4" height="10.4" rx="2.4"/><path d="M5.9 5.9v.1M8 8v.1M10.1 10.1v.1"/>',
@@ -958,6 +1209,7 @@ const ICONS={
   reach:'<path d="M2.4 8h11.2M4.6 5.8 2.4 8l2.2 2.2M11.4 5.8 13.6 8l-2.2 2.2"/>',
   crown:'<path d="M2.6 12.2h10.8M2.6 12.2 1.9 5.2l3.5 2.6L8 3.4l2.6 4.4 3.5-2.6-.7 7"/>',
   plus:'<path d="M8 3.2v9.6M3.2 8h9.6"/>',
+  help:'<path d="M5.3 5.7a2.7 2.7 0 1 1 3.8 2.5c-.7.3-1.1.9-1.1 1.6v.7"/><circle cx="8" cy="13" r=".75" fill="currentColor" stroke="none"/>',
   trophy:'<path d="M5 2.6h6v3.4a3 3 0 0 1-6 0z"/><path d="M5 3.8H3.2a1.9 1.9 0 0 0 2 2.8M11 3.8h1.8a1.9 1.9 0 0 1-2 2.8M8 9v2.4M5.4 13.4h5.2M6.4 11.4h3.2v2H6.4z"/>',
   belt:'<path d="M1 6.2h3.7M1 9.8h3.7M11.3 6.2H15M11.3 9.8H15M1 6.2v3.6M15 6.2v3.6"/><ellipse cx="8" cy="8" rx="3.3" ry="4.3"/><path d="m8 5.9.6 1.3 1.4.1-1.1.9.4 1.4L8 8.8l-1.3.8.4-1.4-1.1-.9 1.4-.1z"/>',
   flame:'<path d="M8.4 2.2c2.1 2.7 3.3 4.1 3.3 6.1a3.7 3.7 0 0 1-7.4 0c0-1.4.7-2.5 1.7-3.4.1 1 .6 1.6 1.1 1.8-.3-1.9.3-3.2 1.3-4.5Z"/>',
@@ -981,6 +1233,7 @@ function lionSummaryText(c){
   L.push(PELTS[c.pelt||0].name+' coat \u00b7 '+MANES[c.mane||0].name+' mane \u00b7 '+TAILS[c.tail||0].name+' tail \u00b7 IV '+(c.iv||5)+' of 10'+
     (sc?(' \u00b7 '+sc+' scar'+(sc>1?'s':'')):''));
   if(isHog(c)){L.push('');L.push('AWAKENED \u2014 this one answers to the wrong name');}
+  if(isGab(c)){L.push('');L.push('ASCENDED \u2014 navy and gold, slow as a king, and it brings the stars down');}
   L.push('');
   L.push('PERSONALITY');
   const tr=(c.traits||[]).filter(id=>TRAITS[id]);
@@ -1064,6 +1317,7 @@ function lionCard(c,opts){
       '<small>'+BUILDS[c.build].name+' \u00b7 '+WEAPONS[c.weapon].name+'</small></div>'+
       '<span class="topBadges">'+beltBadge(c)+'<span class="badge amber">IV '+(c.iv||5)+'</span></span></div>'+
     (isHog(c)?'<div class="badges"><span class="badge blood">Awakened</span></div>':'')+
+    (isGab(c)?'<div class="badges"><span class="badge gold">Ascended</span></div>':'')+
     ((c.traits&&c.traits.length)?'<div class="traitRow">'+traitBadges(c)+
       '<span class="traitTxt">'+traitNames(c)+'</span></div>':'')+
     (badges.length?'<div class="badges">'+badges.join('')+'</div>':'')+
@@ -1535,7 +1789,7 @@ function renderPack(){
       (ALLIES.length?'':'')+
     '</div>'+
     '<div class="rule"></div>'+
-    '<div class="hd sect2"><h2>Pick a challenge</h2><span>Neither of these touches your championship record.</span></div>'+
+    '<div class="hd sect2"><h2>Pick a challenge</h2><span>None of these touch your championship record.</span></div>'+
     '<div class="hd sub2"><h2>The pack</h2><span>Waves of dogs and hyenas. Last as long as you can.</span></div>'+
     '<div class="card"><button class="row" data-act="startPack">'+
       '<span class="rico">'+ico('pack')+'</span><span class="v">Face the pack'+
@@ -1546,6 +1800,18 @@ function renderPack(){
       '<span class="rico">'+ico('crown')+'</span><span class="v">Challenge the Lion King'+
       '<small>'+((rec.kingKills||0)?((rec.kingKills)+' crown'+(rec.kingKills>1?'s':'')+' taken'):
         ((rec.kingTries||0)?('Beaten '+rec.kingTries+' time'+(rec.kingTries>1?'s':'')):'Never faced'))+
+      '</small></span><span class="go">\u203a</span></button></div>'+
+    '<div class="hd sub2"><h2>Ancient Lion</h2><span>Older than the arena. Slow, enormous, and it brings the stars down.</span></div>'+
+    '<div class="card"><button class="row" data-act="startAncient">'+
+      '<span class="rico" style="color:#ffc72c">'+ico('spark')+'</span><span class="v">Wake the Ancient Lion'+
+      '<small>'+((rec.ancientKills||0)?('Felled '+rec.ancientKills+' time'+(rec.ancientKills>1?'s':'')):
+        ((rec.ancientTries||0)?('Beaten '+rec.ancientTries+' time'+(rec.ancientTries>1?'s':'')):'Never faced'))+
+      '</small></span><span class="go">\u203a</span></button></div>'+
+    '<div class="hd sub2"><h2>Old Lion</h2><span>He taught you everything. Now he wants to see if you were listening.</span></div>'+
+    '<div class="card"><button class="row" data-act="startOld">'+
+      '<span class="rico" style="color:#d2cbbd">'+ico('lion')+'</span><span class="v">Challenge Old Lion'+
+      '<small>'+((rec.oldKills||0)?('Beaten him '+rec.oldKills+' time'+(rec.oldKills>1?'s':'')+'. He\u2019s fine. Probably.'):
+        ((rec.oldTries||0)?('He\u2019s won '+rec.oldTries+' time'+(rec.oldTries>1?'s':'')):'Never faced'))+
       '</small></span><span class="go">\u203a</span></button></div>'+
     '';
 }
@@ -1765,19 +2031,29 @@ document.addEventListener('input',function(e){
 });
 const lg=document.querySelector('.logoIco');if(lg)lg.innerHTML=ico('lion');
 document.querySelectorAll('.navico').forEach(function(el){el.innerHTML=ico(el.dataset.i);});
-function paintSoundIcon(){$('soundBtn').innerHTML=ico(MATCH.sound?'sound':'mute');}
-$('infoBtn').innerHTML=ico('info');paintSoundIcon();
+function paintSoundIcon(){$('soundBtn').innerHTML=ico(!MATCH.sound?'mute':(MATCH.music?'music':'sound'));}
+$('infoBtn').innerHTML=ico('info');$('helpBtn').innerHTML=ico('help');
+$('helpBtn').onclick=function(){SFX.ui();openTut();};paintSoundIcon();
 $('editorBtn').querySelector('.eico').innerHTML=ico('edit');
 $('editorBtn').onclick=function(){handleAct('openEditor');};
 $('infoBtn').onclick=function(){SFX.ui();$('info').classList.remove('hidden');};
 $('infoClose').onclick=function(){$('info').classList.add('hidden');};
 $('info').addEventListener('click',function(e){if(e.target===$('info'))$('info').classList.add('hidden');});
+/* off -> sound and music -> sound only -> off */
 $('soundBtn').onclick=function(e){
-  MATCH.sound=!MATCH.sound;
+  if(!MATCH.sound){MATCH.sound=true;MATCH.music=true;}
+  else if(MATCH.music){MATCH.music=false;}
+  else{MATCH.sound=false;}
   const b=$('soundBtn');b.setAttribute('aria-pressed',MATCH.sound);
   paintSoundIcon();
-  if(MATCH.sound){SFX.unlock();SFX.bell();toast('Sound on');}else toast('Sound off');
+  if(MATCH.sound){SFX.unlock();SFX.bell();toast(MATCH.music?'Sound and music on':'Music off \u00b7 sound on');}
+  else toast('Sound off');
+  MUSIC.auto();
 };
+document.addEventListener('visibilitychange',function(){
+  const a=MATCH.sound?SFX.audio():null;
+  if(a&&a.ac){if(document.hidden)a.ac.suspend();else{a.ac.resume();MUSIC.auto();}}
+});
 addEventListener('resize',function(){
   if($('fight').classList.contains('hidden'))bindPreviews();else fitCanvas();
 });
@@ -1850,6 +2126,7 @@ function buryLion(killer,boutN,champN){
 }
 function addAlly(c){c.side='A';if(ALLIES.length<2)ALLIES.push(c);refresh();toast(c.name+' joins you');}
 function handleAct(a,el){
+  if(a.indexOf('tut')===0&&tutAct(a))return;
   if(a==='askYes'){SFX.ui();answerCareer(true);return;}
   if(a==='askNo'){SFX.ui();answerCareer(false);return;}
   if(a==='allyPasteKey'){
@@ -1900,10 +2177,13 @@ function handleAct(a,el){
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='startPack'){SFX.unlock();startFight('survival');return;}
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
+  if(a==='startAncient'){SFX.unlock();startFight('ancient');return;}
+  if(a==='startOld'){SFX.unlock();startFight('old');return;}
+  if(a==='cutNext'){cutAdvance();return;}
   if(a==='startChamp'){if(!CAREER.locked)return;SFX.unlock();startChampionship();Store.save();return;}
   if(a==='nextBout'){SFX.unlock();startFight('career');return;}
   if(a==='home'){$('result').classList.add('hidden');showHome();return;}
-  if(a==='again'){$('result').classList.add('hidden');startFight(G.ctx);return;}
+  if(a==='again'){$('result').classList.add('hidden');startFight(G.ctx==='king'?BOSSKIND:G.ctx);return;}
   if(a==='continue'){$('result').classList.add('hidden');showHome();return;}
 }
 
@@ -1929,11 +2209,13 @@ function makeLion(c,x,y,ang,light){
     barrier:0,barrierT:0,burn:0,burnDps:0,poison:0,poisonStacks:0,slow:0,slowMult:1,stun:0,invuln:0,
     frenzy:0,hidden:0,ambush:0,abil:c.abil.slice(),cd:{},brain:BRAINS[c.brain],
     strafe:Math.random()<.5?1:-1,strafeT:0,thinkT:0,aimErr:0,lastSeen:{x:x,y:y},
-    dark:isHog(c)?1:0,
+    dark:isHog(c)?1:0,gab:isGab(c)?1:0,novaCd:2.2,starCd:3,
     dead:false,anim:0,hitFlash:0,trail:0,moveX:0,moveY:0,ghosts:[],ghostT:0,
     stats:{dealt:0,taken:0,hits:0,shots:0,big:0,healed:0,abil:0,dist:0}};
 }
 function startFight(ctxName){
+  if(ctxName==='ancient'||ctxName==='old'){BOSSKIND=ctxName;ctxName='king';}
+  else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
   ['duel','career','pack','editor','tourn','launchBar','modeSeg'].forEach(id=>$(id).classList.add('hidden'));
   closeSheet();
@@ -1950,17 +2232,19 @@ function startFight(ctxName){
   }
   else {G.aCfg=cfg.A;G.bCfg=cfg.B;G.rounds=3;}
   newRound();
+  MUSIC.sad(false);
 }
 function showHome(){
   $('fight').classList.add('hidden');$('result').classList.add('hidden');
   $('launchBar').classList.remove('hidden');$('modeSeg').classList.remove('hidden');
   refresh();
+  MUSIC.sad(false);
 }
 function newRound(){
   const obs=ARENAS[MATCH.arena].make().map(a=>({x:a[0],y:a[1],r:a[2]}));
   const keep={speed:G.speed,ctx:G.ctx,aCfg:G.aCfg,bCfg:G.bCfg,wins:G.wins,round:(G.round||0)+1,rounds:G.rounds};
   G=Object.assign({t:0,over:false,winner:null,slow:0,shake:0,paused:false,
-    lions:[],projectiles:[],parts:[],beams:[],pets:[],nums:[],decals:[],obstacles:obs,
+    lions:[],projectiles:[],parts:[],beams:[],gfx:[],pets:[],nums:[],decals:[],obstacles:obs,
     log:[],wall:WALL0,warned:false,starting:1.2,method:'',
     cam:{x:ARENA/2,y:ARENA/2,z:1},kill:null,freeze:0,flash:0},keep);
   if(G.ctx==='survival'||G.ctx==='king'){
@@ -1977,11 +2261,16 @@ function newRound(){
     G.token=++ROUND_TOKEN;
     makeCrowd();crowdReact(.5);
     if(G.ctx==='king'){
-      const k=makeLion(kingCfg(),ARENA/2,160,Math.PI/2);
-      k.boss=1;k.dark=1;k.foe=G.lions[0];G.lions.push(k);
+      const anc=BOSSKIND==='ancient',old=BOSSKIND==='old';
+      const k=makeLion(anc?ancientCfg():(old?oldCfg():kingCfg()),ARENA/2,160,Math.PI/2);
+      k.boss=1;k.dark=(anc||old)?0:1;k.foe=G.lions[0];G.lions.push(k);
+      if(anc){k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;}
+      if(old){k.r*=OLD.size;k.mass*=1.4;}
       KING.maxHp=k.maxHp;
-      banner('THE LION KING',1.7,true);SFX.roar();crowdReact(1.5);
-      log('<em class="blood">The Lion King</em> comes out of the dark.');
+      banner(old?'OLD LION':(anc?'THE ANCIENT LION':'THE LION KING'),1.7,true);SFX.roar();crowdReact(1.5);
+      log(old?'<em class="gold">Old Lion</em> pushes his glasses up. \u201cLet\u2019s see if you were listening.\u201d'
+        :(anc?'<em class="gold">The Ancient Lion</em> wakes. The sand goes still.'
+             :'<em class="blood">The Lion King</em> comes out of the dark.'));
       buildHud();
       return;
     }
@@ -2005,6 +2294,7 @@ function newRound(){
     : a.name+' and '+b.name+' enter '+ARENAS[MATCH.arena].name+'.');
   G.lions.forEach(function(e){
     if(e.dark&&!e.boss)log('<em class="blood">'+e.name+'</em> should not be here.');
+    if(e.gab&&!e.boss)log('<em class="gold">'+e.name+'</em> has arrived. The crowd goes quiet.');
   });
   banner(G.rounds>1?('ROUND '+G.round):'',.9);
   SFX.bell();
@@ -2099,7 +2389,14 @@ function kill(t,by){
     if(tookTheCrown){
       G.winner=G.lions[0];G.method='the crown';
       G.slow=RM?0:1.7;G.flash=.7;
-      log('<em class="gold">The Lion King falls.</em>');
+      if(BOSSKIND==='old'){
+        log('<em>Old Lion goes down slowly. The crowd goes quiet.</em>');
+        G.slow=RM?0:2.4;crowdReact(0);
+        const tk0=G.token;
+        setTimeout(function(){if(G.token===tk0)oldCutscene();},RM?400:2000);
+        return;
+      }
+      log('<em class="gold">'+bossName()+' falls.</em>');
       SFX.champ();crowdReact(2);
     } else {
       log('<em class="blood">'+t.name+' is put down.</em>');
@@ -2123,6 +2420,117 @@ function spark(x,y,col,n,dir){
 }
 function num(x,y,txt,col,size){G.nums.push({x:x,y:y,txt:txt,col:col||BONE,life:.85,max:.85,s:size||12});}
 
+/* ---- Gabrielion: a gold nova up close, falling stars at range ---- */
+function gabFoes(e){return G.lions.filter(l=>l!==e&&!l.dead&&l.side!==e.side);}
+function gabStep(e,dt){
+  e.novaCd-=dt;e.starCd-=dt;
+  const f=e.foe;if(!f||f.dead)return;
+  const d=Math.hypot(f.x-e.x,f.y-e.y);
+  const reach=GAB.nova.reach+(e.cfg.ancient?e.r:0);
+  if(e.novaCd<=0&&d<reach){
+    e.novaCd=GAB.nova.cd;e.anim=.3;e.stats.abil++;
+    G.gfx.push({k:'nova',x:e.x,y:e.y,t:0,life:GAB.nova.life,src:e,hit:{},max:GAB.nova.max+(e.cfg.ancient?e.r:0)});
+    num(e.x,e.y-e.r-18,'NOVA',FX.gold,17);SFX.hit(1.4);G.shake=Math.min(9,G.shake+5);crowdReact(.7,e.x,e.y);
+  } else if(e.starCd<=0&&d>=reach*.8){
+    e.starCd=GAB.star.cd;e.stats.abil++;
+    const lead=.45;
+    for(let i=0;i<GAB.star.n;i++){
+      const a=i/GAB.star.n*6.283+Math.random(),off=i?rnd(26,54):0;
+      G.gfx.push({k:'star',x:f.x+(f.vx||0)*lead+Math.cos(a)*off,y:f.y+(f.vy||0)*lead+Math.sin(a)*off,
+        t:0,life:GAB.star.delay+i*.14,src:e});
+    }
+    num(e.x,e.y-e.r-18,'STARFALL',FX.gold,15);
+  }
+}
+function stepGab(dt){
+  for(let i=G.gfx.length-1;i>=0;i--){
+    const g=G.gfx[i];g.t+=dt;
+    if(g.k==='nova'){
+      const r=(g.max||GAB.nova.max)*Math.min(1,g.t/g.life);
+      gabFoes(g.src).forEach(function(l){
+        if(g.hit[l.uid])return;
+        const dd=Math.hypot(l.x-g.x,l.y-g.y);
+        if(dd<=r+l.r){
+          g.hit[l.uid]=1;
+          hurt(l,GAB.nova.dmg*g.src.dmgMult*(g.src.cfg.ancient?ANC.nova:1),g.src,{col:FX.gold,by:'a gold nova'});
+          const ang=Math.atan2(l.y-g.y,l.x-g.x);knock(l,ang,GAB.nova.kb);
+          if(!l.dead)l.stun=Math.max(l.stun,GAB.nova.stun);
+          spark(l.x,l.y,FX.gold,10,ang);
+          if(l.hp<=0&&!l.dead)kill(l,'a gold nova');
+        }
+      });
+    } else if(g.k==='star'&&!g.done&&g.t>=g.life){
+      g.done=1;g.boom=0;
+      spark(g.x,g.y,FX.gold,14);spark(g.x,g.y,'#6f8fff',6);SFX.hit(.9);G.shake=Math.min(9,G.shake+2.5);
+      gabFoes(g.src).forEach(function(l){
+        if(Math.hypot(l.x-g.x,l.y-g.y)<=GAB.star.r+l.r*.5){
+          hurt(l,GAB.star.dmg*g.src.dmgMult*(g.src.cfg.ancient?ANC.star:1),g.src,{col:FX.gold,by:'a falling star'});
+          if(l.hp<=0&&!l.dead)kill(l,'a falling star');
+        }
+      });
+    }
+    if(g.k==='star'&&g.done){g.boom+=dt;if(g.boom>.35)G.gfx.splice(i,1);}
+    else if(g.k==='nova'&&g.t>=g.life)G.gfx.splice(i,1);
+  }
+}
+function drawGabFx(){
+  if(!G.gfx)return;
+  for(let i=0;i<G.gfx.length;i++){
+    const g=G.gfx[i];
+    if(g.k==='nova'){
+      const k=Math.min(1,g.t/g.life),r=(g.max||GAB.nova.max)*k;
+      ctx.save();
+      ctx.globalAlpha=(1-k)*.9;ctx.strokeStyle='#ffd24a';ctx.lineWidth=10*(1-k)+2;
+      ctx.beginPath();ctx.arc(g.x,g.y,r,0,7);ctx.stroke();
+      ctx.globalAlpha=(1-k)*.35;ctx.strokeStyle='#6f8fff';ctx.lineWidth=22*(1-k)+2;
+      ctx.beginPath();ctx.arc(g.x,g.y,r*.86,0,7);ctx.stroke();
+      ctx.restore();
+    } else if(g.k==='star'){
+      ctx.save();
+      if(!g.done){
+        const k=g.t/g.life;
+        ctx.globalAlpha=.25+.45*k;ctx.strokeStyle='#ffd24a';ctx.lineWidth=2;ctx.setLineDash([6,6]);
+        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r,0,7);ctx.stroke();ctx.setLineDash([]);
+        ctx.globalAlpha=.12+.2*k;ctx.fillStyle='#ffd24a';
+        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r*k,0,7);ctx.fill();
+        /* the star on its way down */
+        const h=(1-k)*140;ctx.globalAlpha=.9;ctx.fillStyle='#fff3b0';
+        drawStar(ctx,g.x,g.y-h,7+k*4,g.t*6);
+      } else {
+        const k=g.boom/.35;
+        ctx.globalAlpha=(1-k)*.8;ctx.fillStyle='#ffd24a';
+        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r*(.6+k*.7),0,7);ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+}
+function drawStar(g,x,y,r,rot){
+  g.beginPath();
+  for(let i=0;i<10;i++){const a=rot+i*Math.PI/5,rr=i%2?r*.45:r;
+    const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;if(i)g.lineTo(px,py);else g.moveTo(px,py);}
+  g.closePath();g.fill();
+}
+/* the aura: navy haze, a slow gold halo, and rays turning round it */
+function gabAura(g,x,y,R,t){
+  const pulse=.5+.5*Math.sin(t*2);
+  g.save();
+  const gr=g.createRadialGradient(x,y,R*.6,x,y,R*2.7+pulse*6);
+  gr.addColorStop(0,'rgba(255,205,60,.34)');
+  gr.addColorStop(.45,'rgba(70,100,220,.18)');
+  gr.addColorStop(1,'rgba(40,60,160,0)');
+  g.fillStyle=gr;g.beginPath();g.arc(x,y,R*2.7+pulse*6,0,7);g.fill();
+  g.globalAlpha=.22+pulse*.12;g.fillStyle='#ffd24a';
+  for(let i=0;i<8;i++){
+    const a=t*.6+i*Math.PI/4;
+    g.beginPath();g.moveTo(x+Math.cos(a-.09)*R*1.05,y+Math.sin(a-.09)*R*1.05);
+    g.lineTo(x+Math.cos(a)*R*(2.1+pulse*.3),y+Math.sin(a)*R*(2.1+pulse*.3));
+    g.lineTo(x+Math.cos(a+.09)*R*1.05,y+Math.sin(a+.09)*R*1.05);g.closePath();g.fill();
+  }
+  g.globalAlpha=.55+pulse*.3;g.strokeStyle='#ffd24a';g.lineWidth=1.6;
+  g.beginPath();g.arc(x,y,R*1.3+pulse*2.5,0,7);g.stroke();
+  g.restore();
+}
 /* ---- geometry ---- */
 function losBlocked(x1,y1,x2,y2,pad){
   for(let i=0;i<G.obstacles.length;i++){
@@ -2265,6 +2673,26 @@ function kingCfg(){
     traits:['bold','thicknecked'],scale:KING_SCALE,dmgScale:KING_DMG,boss:1};
 }
 const KING_SCALE=3.2, KING_DMG=.75;
+/* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
+const ANC={scale:1.8,dmg:.36,spd:.80,size:1.5,nova:.5,star:.4};
+let BOSSKIND='king';
+function ancientCfg(){
+  return {side:'P',name:'Ancient Lion',build:'titan',armor:'scale',weapon:'claws',
+    abil:['aegis','roar'],brain:'adaptive',perks:[],pelt:0,mane:1,tail:3,iv:10,scars:[],
+    traits:['patient','thicknecked'],scale:ANC.scale,dmgScale:ANC.dmg,boss:1,ancient:1};
+}
+const BOSSES={
+  king:   {name:'The Lion King',   hud:'THE LION KING',col:'#ff5a4d',meta:'Titan \u00b7 Plate \u00b7 Great Maul',kk:'kingKills',kt:'kingTries'},
+  ancient:{name:'The Ancient Lion',hud:'ANCIENT LION', col:'#ffc72c',meta:'Titan \u00b7 Nova \u00b7 Starfall',kk:'ancientKills',kt:'ancientTries'},
+  old:    {name:'Old Lion',        hud:'OLD LION',     col:'#d2cbbd',meta:'Retired champion \u00b7 still got it',kk:'oldKills',kt:'oldTries'}};
+function bossName(){return BOSSES[BOSSKIND].name;}
+/* Old Lion: your tutor, out of retirement for one last fight */
+const OLD={scale:1.5,dmg:.62,size:1.2};
+function oldCfg(){
+  return {side:'P',name:'Old Lion',build:'prime',armor:'hide',weapon:'claws',
+    abil:['roar','aegis'],brain:'duelist',perks:[],pelt:0,mane:0,tail:0,iv:9,scars:[1284,617,1401,220],
+    traits:['patient','grudge'],scale:OLD.scale,dmgScale:OLD.dmg,boss:1,old:1};
+}
 const BEASTS={
   dog:  {name:'Dog',   build:'cub', weapon:'fang',scale:.40,abil:['dash'],  brain:'berserk',pelt:3,note:'fast, thin, everywhere at once'},
   hyena:{name:'Hyena', build:'lean',weapon:'jaws',scale:.55,abil:['frenzy'],brain:'duelist',pelt:7,note:'heavier, patient, bites deeper'}
@@ -2526,6 +2954,7 @@ function step(dt){
     if(frozen||!e.foe){e.moveX=0;e.moveY=0;}
     else if(e.stun<=0)think(e,dt);
     else{e.moveX=0;e.moveY=0;}
+    if(e.gab&&!frozen&&!G.over&&e.stun<=0)gabStep(e,dt);
 
     if(e.charge>0&&!frozen){
       e.charge-=dt;
@@ -2655,6 +3084,7 @@ function step(dt){
   }
   for(let i=G.nums.length-1;i>=0;i--){const n=G.nums[i];n.life-=dt;n.y-=26*dt;if(n.life<=0)G.nums.splice(i,1);}
   for(let i=G.beams.length-1;i>=0;i--){G.beams[i].life-=dt;if(G.beams[i].life<=0)G.beams.splice(i,1);}
+  if(G.gfx&&G.gfx.length)stepGab(dt);
   G.shake*=Math.pow(.02,dt);
   G.flash=Math.max(0,(G.flash||0)-dt*5);
   camUpdate(dt);
@@ -2892,6 +3322,7 @@ function draw(){
     ctx.globalAlpha=1;
   }
 
+  drawGabFx();
   for(let i=0;i<G.beams.length;i++){
     const b=G.beams[i],a=b.life/b.max;
     ctx.strokeStyle=b.col;ctx.globalAlpha=a*.95;ctx.lineWidth=b.w*a+1;
@@ -3228,19 +3659,29 @@ function drawLion(e){
         vx:rnd(-8,8),vy:-18-Math.random()*22,life:.5,max:.5,col:FX.blood,r:1+Math.random()*1.6});
     }
   }
+  if(e.gab&&!e.dead){
+    gabAura(ctx,e.x,e.y,R,G.t);
+    if(!RM&&Math.random()<.4&&G.parts.length<240){
+      const a=Math.random()*7,rr=R*(1+Math.random()*.9);
+      G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,
+        life:.6,max:.6,col:Math.random()<.7?'#ffd24a':'#8aa4ff',r:1+Math.random()*1.5});
+    }
+  }
   if(e.ghosts&&e.ghosts.length&&!e.dead){
     for(let q=0;q<e.ghosts.length;q++){
       const gh=e.ghosts[q];
       ctx.globalAlpha=(gh.life/.26)*.22;
-      paintLion(ctx,{x:gh.x,y:gh.y,R:R,ang:gh.ang,t:G.t,pelt:e.cfg.pelt||0,
-        mane:e.cfg.mane||0,tail:e.cfg.tail||0,seed:hashStr(e.name),armor:e.cfg.armor,scars:[]});
+      paintLion(ctx,{x:gh.x,y:gh.y,R:R,ang:gh.ang,t:G.t,pelt:e.cfg.pelt||0,cols:e.gab?GABCOLS:null,
+        mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),armor:e.cfg.armor,scars:[]});
     }
     ctx.globalAlpha=1;
   }
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:G.t,pelt:e.cfg.pelt||0,armor:e.cfg.armor,
-    cols:e.dark?KINGCOLS:null,eyes:e.dark?FX.blood:null,
-    mane:e.cfg.mane||0,tail:e.cfg.tail||0,seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
+    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':null),
+    mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
+  if(e.cfg.old){ctx.save();if(e.hidden>0)ctx.globalAlpha=.16;if(e.dead)ctx.globalAlpha=.28;
+    drawOldBits(ctx,e.x,e.y,R,e.ang,G.t,false,e.anim>0?R*.18:0);ctx.restore();}
   ctx.save();ctx.translate(e.x,e.y);
   if(e.hidden>0)ctx.globalAlpha=.16;
   if(e.dead)ctx.globalAlpha=.28;
@@ -3285,22 +3726,23 @@ function hudPips(h,e){
 }
 function buildHud(){
   if(G.ctx==='survival'||G.ctx==='king'){
-    const me=G.lions[0],pc=peltCols(me.cfg.pelt||0),h=$('hudA'),hb=$('hudB');
+    const me=G.lions[0],pc=colsOf(me.cfg),h=$('hudA'),hb=$('hudB');
     h.querySelector('.fname').textContent=me.name;
     h.querySelector('.fname').style.color=pc.mane;
     h.querySelector('.hpFill').style.background=pc.mane;
     h.querySelector('.fmeta').textContent=BUILDS[me.cfg.build].name+' \u00b7 '+ARMORS[me.cfg.armor].name+
       ' \u00b7 '+me.W.name+' \u00b7 IV '+(me.cfg.iv||5)+(beltsOf(me.cfg)?' \u00b7 '+beltsOf(me.cfg)+' belt'+(beltsOf(me.cfg)>1?'s':''):'');
     hudPips(h,me);
-    hb.querySelector('.fname').textContent=(G.ctx==='king')?'THE LION KING':'THE PACK';
-    hb.querySelector('.fname').style.color='#ff5a4d';
-    hb.querySelector('.hpFill').style.background='#ff5a4d';
+    const BH=BOSSES[BOSSKIND],bc=G.ctx==='king'?BH.col:'#ff5a4d';
+    hb.querySelector('.fname').textContent=(G.ctx==='king')?BH.hud:'THE PACK';
+    hb.querySelector('.fname').style.color=bc;
+    hb.querySelector('.hpFill').style.background=bc;
     hb.querySelector('.pips').innerHTML='';
     $('roundPips').innerHTML='';
     return;
   }
   G.lions.forEach(function(e){
-    const h=$('hud'+e.side),pc=peltCols(e.cfg.pelt||0);
+    const h=$('hud'+e.side),pc=colsOf(e.cfg);
     h.querySelector('.fname').textContent=e.name;
     h.querySelector('.fname').style.color=pc.mane;
     h.querySelector('.hpFill').style.background=pc.mane;
@@ -3343,7 +3785,7 @@ function updateHud(){
       hb.querySelector('.hpFill').style.transform='scaleX('+kr+')';
       hb.querySelector('.hpGhost').style.transform='scaleX('+kr+')';
       hb.querySelector('.shieldFill').style.transform='scaleX('+(k?Math.min(1,k.barrier/k.maxHp):0)+')';
-      hb.querySelector('.fmeta').textContent='Titan \u00b7 Plate \u00b7 Great Maul';
+      hb.querySelector('.fmeta').textContent=BOSSES[BOSSKIND].meta;
       $('roundLbl').textContent=alliesUp()>1?(alliesUp()+' of you'):'';
     } else {
       const alive=packAlive();
@@ -3416,9 +3858,10 @@ function stepPreviews(dt){
     g.fillStyle='#0a0a0c';g.fillRect(0,0,p.w,p.h);
     g.fillStyle='#17171c';
     for(let x=14;x<p.w;x+=26)for(let y=14;y<p.h;y+=26){g.fillRect(x,y,1.5,1.5);}
+    if(isGab(p.cfg))gabAura(g,p.x,p.y,p.R,p.t);
     paintLion(g,{x:p.x,y:p.y,R:p.R,ang:p.ang,t:p.t,pelt:p.cfg.pelt||0,
-      mane:p.cfg.mane||0,tail:p.cfg.tail||0,seed:hashStr(p.cfg.name),scars:p.cfg.scars||[],belts:beltsOf(p.cfg),armor:p.cfg.armor,
-      cols:isHog(p.cfg)?KINGCOLS:null,eyes:isHog(p.cfg)?FX.blood:null,anim:p.anim>0});
+      mane:lookOf(p.cfg,'mane'),tail:lookOf(p.cfg,'tail'),seed:hashStr(p.cfg.name),scars:p.cfg.scars||[],belts:beltsOf(p.cfg),armor:p.cfg.armor,
+      cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:isHog(p.cfg)?FX.blood:(isGab(p.cfg)?'#ffe14d':null),anim:p.anim>0});
   }
 }
 
@@ -3447,8 +3890,9 @@ requestAnimationFrame(loop);
 function kingOver(won){
   const L=CAREER.lion;
   if(L&&L.record){
-    if(won)L.record.kingKills=(L.record.kingKills||0)+1;
-    else L.record.kingTries=(L.record.kingTries||0)+1;
+    const kk=BOSSES[BOSSKIND].kk,kt=BOSSES[BOSSKIND].kt;
+    if(won)L.record[kk]=(L.record[kk]||0)+1;
+    else L.record[kt]=(L.record[kt]||0)+1;
     Store.save();
   }
   showResult(won?'kingWin':'kingLoss');
@@ -3510,6 +3954,7 @@ function statSheet(w,l){
 }
 function showResult(kind,perk,dead,killer,boutN,champN,where){
   const V=$('verdict'),M=$('method'),P=$('perkSlot'),B=$('resBtns');
+  if(V.style)V.style.color='';
   const w=G.winner,l=w?w.foe:null,s=Math.floor(G.t);
   V.className='verdict';P.innerHTML='';
   if(kind==='duel'){
@@ -3558,11 +4003,28 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       ' — you will see it from now on. It can enter another championship whenever you are ready.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
   }
+  else if(kind==='kingWin'&&BOSSKIND==='old'){
+    V.textContent='YOU WON, BUT AT WHAT COST\u2026';V.className='verdict';V.style.color='var(--t2)';
+    M.textContent='Old Lion \u00b7 retired champion \u00b7 taught you everything he knew';
+    P.innerHTML='<div class="perkCard neutral"><h5>Rest easy, old timer</h5>'+
+      '<p>He showed you how the pit works. Then you used it on him. Somewhere, a pair of tiny glasses lies in the sand.</p></div>';
+    B.innerHTML='<button class="primary" data-act="home">Pay respects</button>'+
+      '<button data-act="again">Again (he\u2019s fine)</button>';
+  }
+  else if(kind==='kingLoss'&&BOSSKIND==='old'){
+    const k=G.lions.filter(x=>x.boss)[0];
+    V.textContent='THE OLD LION STILL HAS IT';V.className='verdict gold';
+    M.textContent='beaten in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' \u00b7 he finished on '+Math.round(k?k.hp:0)+' health';
+    P.innerHTML='<div class="perkCard neutral"><h5>\u201cBack in my day\u2026\u201d</h5>'+
+      '<p>He dusts off his glasses and tells you exactly what you did wrong. For forty minutes. Bring a friend next time.</p></div>';
+    B.innerHTML='<button class="primary" data-act="again">Again</button><button data-act="home">Back to the den</button>';
+  }
   else if(kind==='kingWin'){
-    const L=CAREER.lion,n=(L&&L.record&&L.record.kingKills)||1;
-    V.textContent='THE KING IS DEAD';V.className='verdict gold';
+    const anc=BOSSKIND==='ancient';
+    const L=CAREER.lion,n=(L&&L.record&&L.record[anc?'ancientKills':'kingKills'])||1;
+    V.textContent=anc?'THE ANCIENT LION FALLS':'THE KING IS DEAD';V.className='verdict gold';
     M.textContent='killed in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
-      ' \u00b7 '+n+' crown'+(n>1?'s':'')+' taken';
+      ' \u00b7 '+(anc?(n+' time'+(n>1?'s':'')+' now'):(n+' crown'+(n>1?'s':'')+' taken'));
     P.innerHTML='<div class="perkCard"><h5>It stood over him</h5>'+
       '<p>Very few lions manage this. Nothing changes on the record, but everyone in the pit saw it.</p></div>';
     B.innerHTML='<button class="primary" data-act="again">Again</button>'+
@@ -3571,7 +4033,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   }
   else if(kind==='kingLoss'){
     const k=G.lions.filter(x=>x.boss)[0];
-    V.textContent='THE KING STANDS';V.className='verdict blood';
+    V.textContent=BOSSKIND==='ancient'?'THE ANCIENT LION STANDS':'THE KING STANDS';V.className='verdict blood';
     M.textContent='beaten in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
       ' \u00b7 he finished on '+Math.round(k?k.hp:0)+' health';
     P.innerHTML='<div class="perkCard neutral"><h5>Back on its feet</h5>'+
@@ -3615,6 +4077,211 @@ addEventListener('keydown',function(ev){
   if(document.activeElement&&/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
   if(ev.code==='Space'&&!$('fight').classList.contains('hidden')){ev.preventDefault();$('pauseBtn').click();}
   if(ev.key==='Escape'&&!$('fight').classList.contains('hidden'))showHome();
+});
+
+/* ========== 16. OLD LION'S TUTORIAL ========== */
+const OLDCOLS={mane:'#b9b2a4',body:'#5e5850',edge:'#d2cbbd',muz:'#eee8dc',plate:'#b5ad9e'};
+function chip(icon,label,note,cls,raw){
+  return '<div class="tutChip'+(cls?' '+cls:'')+'"><span class="ci">'+(raw||ico(icon))+'</span>'+
+    '<span><b>'+label+'</b><small>'+note+'</small></span></div>';
+}
+const TUT=[
+  {t:'Well, well. A new owner.',
+   say:"Name's Old Lion. I've been fighting in this pit since before sand was invented. Pull up a rock and I'll show you how it all works. Won't take long. I'm old, not slow. Well... both.",
+   vis:()=>'<div class="tutChips">'+chip('duel','Duel','two lions, best of three')+chip('lion','Championship','your lion, your career')+
+     chip('pack','Challenges','bosses and hyenas')+chip('trophy','Tournament','eight lions, one winner')+'</div>'},
+  {t:'Rule one: paws off',
+   say:"You don't fight. Your lion does. It picks its range, dodges shots and uses its moves all on its own. Your job is to build it well, then watch and shout at it. Shouting doesn't help. My owner tried for years.",
+   vis:()=>'<canvas id="tutArena"></canvas>'},
+  {t:'Build it right',
+   say:"Little lions are quick. Big ones hit like falling trees, and turn like them too. Long-range weapons slow your legs down. Nothing in this pit is free, kid.",
+   vis:()=>'<div class="tutChips">'+chip('frame','Frame','cub to titan: speed vs. weight')+chip('sword','Weapon','more reach, slower feet')+
+     chip('spark','Abilities','pick two: dash, shield, heal…')+chip('mind','Mind','how it thinks in a fight')+'</div>'},
+  {t:'Personality and looks',
+   say:"Every lion's born with two quirks. Some help, some are just character. Mine are Grumpy and Grumpier. Coats, manes and tails are for looking good and change nothing. I still look good.",
+   vis:()=>'<div class="tutChips">'+
+     ['grudge','showman','lucky','bold'].filter(k=>TRAITS[k]).slice(0,4).map(k=>chip('',TRAITS[k].name,TRAITS[k].desc,'',traitIco(TRAITS[k]))).join('')+'</div>'},
+  {t:'Duel',
+   say:"Two lions, best of three, full health every round. Tap Edit to change either one, or paste in a friend's lion and settle the argument properly.",
+   vis:()=>'<div class="tutChips">'+chip('duel','Best of three','first to two rounds wins')+chip('heart','Full health','every round starts fresh')+
+     chip('paste','Paste a code','fight anybody\'s lion')+chip('summary','Summary','read a lion at a glance')+'</div>'},
+  {t:'Championship',
+   say:"Build your own lion, then lock it in for good. Win five fights in a row and it takes a belt. Lose and it gets a scar. Lose and get unlucky, one time in five, and it comes to live on the wall with me.",
+   vis:()=>'<div class="tutChips">'+chip('belt','5 wins = belt','plus a medallion buff','gold')+chip('scar','Lose, get a scar','it\'s yours forever')+
+     chip('retire','1 in 5 losses','your lion dies for good','red')+chip('lion','Then','build the next one')+'</div>'},
+  {t:'Challenges',
+   say:"Nothing here touches your record, so go wild. Bring up to two friends. No shame in it. I had friends once.",
+   vis:()=>'<div class="tutChips">'+chip('pack','The pack','waves of dogs and hyenas')+chip('crown','Lion King','big, dark and rude','red')+
+     chip('spark','Ancient Lion','older than me. Somehow.','gold')+chip('plus','Allies','up to two lions help you')+'</div>'},
+  {t:'Tournament',
+   say:"Eight lions, knockout bracket, best of three every match. Edit them, roll them, shuffle the draw. Perfect for settling who's actually best in the group chat.",
+   vis:()=>'<div class="tutBracket"><div class="col"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><small>8</small></div>'+
+     '<span class="arrow">\u203a</span><div class="col"><i></i><i></i><i></i><i></i><small>4</small></div>'+
+     '<span class="arrow">\u203a</span><div class="col"><i></i><i></i><small>2</small></div>'+
+     '<span class="arrow">\u203a</span><div class="col w"><i></i><small>1</small></div><span class="cup">'+ico('trophy')+'</span></div>'},
+  {t:'Lion codes',
+   say:"Every lion fits into one line of text. Copy it, send it, paste it anywhere. Career lions bring their belts and scars. Pasting belts into the Editor? Nice try. Belts are earned.",
+   vis:()=>'<div class="tutCode">LION1-R29sZG1hbmV8NHwyfDN8MTEuNXwzfDAuMnwy\u2026</div><div class="tutChips">'+
+     chip('copy','Copy','send it to a mate')+chip('save','Save','keep it as a .txt')+'</div>'},
+  {t:"Old Lion's tips",
+   say:"Here's what four hundred years in the pit taught me. Write it down. Or don't, I'm not your dad.",
+   vis:()=>'<ul class="tutTips">'+
+     '<li><b>1</b>Ranged lions struggle against Dash and Blink. Close the gap and they panic.</li>'+
+     '<li><b>2</b>Berserkers charge straight in. A Kiter with a bow makes them pay for it.</li>'+
+     '<li><b>3</b>Not sure what to pick? An Adaptive mind is never a bad call.</li>'+
+     '<li><b>4</b>Losing to a boss? Bring allies. Pride never won a fight.</li>'+
+     '<li><b>5</b>Hit Roll when you\'re stuck. Some of my best lions were accidents.</li></ul>'},
+  {t:'Off you go',
+   say:"That's everything. Go build something ferocious. Oh, and some names are... special. Type the right one and something wakes up. I'm not saying which. I'm old, not a snitch.",
+   vis:()=>''}
+];
+const TS={i:0,shown:0,full:'',raf:0,t:0,last:0,arena:null};
+function openTut(){TS.i=0;$('tut').classList.remove('hidden');renderTut();
+  if(!TS.raf&&typeof requestAnimationFrame!=='undefined')TS.raf=requestAnimationFrame(tutTick);}
+function closeTut(){$('tut').classList.add('hidden');}
+function renderTut(){
+  const st=TUT[TS.i],last=TS.i===TUT.length-1;
+  TS.full=st.say;TS.shown=0;
+  $('tutCard').innerHTML=
+    '<div class="tutTop"><canvas id="tutCv"></canvas><div class="tutWho"><b>Old Lion</b><small>retired champion</small><small>'+(TS.i+1)+' / '+TUT.length+'</small></div>'+
+      '<button class="tutSkip" data-act="tutClose">Skip</button></div>'+
+    '<div class="tutTitle">'+st.t+'</div>'+
+    '<div class="tutBubble" data-act="tutFinish" id="tutSay"></div>'+
+    '<div class="tutVis">'+st.vis()+'</div>'+
+    '<div class="tutDots">'+TUT.map((x,i)=>'<i class="'+(i===TS.i?'on':'')+'"></i>').join('')+'</div>'+
+    '<div class="tutNav"><button data-act="tutBack"'+(TS.i?'':' disabled')+'>Back</button>'+
+      '<button class="key" data-act="'+(last?'tutClose':'tutNext')+'">'+(last?'Let\'s go':'Next')+'</button></div>';
+  TS.arena=null;
+  const ac=$('tutArena');
+  if(ac&&ac.getContext){
+    const w=ac.clientWidth||320,h=ac.clientHeight||150,dpr=Math.min(devicePixelRatio||1,2);
+    ac.width=w*dpr;ac.height=h*dpr;const g=ac.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
+    TS.arena={g:g,w:w,h:h,a:randomLion('A'),b:randomLion('B')};
+  }
+  const pc=$('tutCv');
+  if(pc&&pc.getContext){const dpr=Math.min(devicePixelRatio||1,2);pc.width=92*dpr;pc.height=92*dpr;
+    TS.pg=pc.getContext('2d');TS.pg.setTransform(dpr,0,0,dpr,0,0);}
+  paintSay();
+}
+function paintSay(){
+  const el=$('tutSay');if(!el)return;
+  const done=TS.shown>=TS.full.length;
+  el.innerHTML=esc(TS.full.slice(0,Math.floor(TS.shown)))+(done?'':'<span class="caret"></span>');
+}
+/* Old Lion: drawn like every other lion, only greyer, with a beard and his reading glasses on */
+function drawOldPortrait(g,t,talking){
+  const R=24,ang=-.3+Math.sin(t*.8)*.08,x=44+Math.cos(ang)*R*.35,y=50+Math.sin(ang)*R*.35+Math.sin(t*2.2)*.8;
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t*.45,pelt:0,cols:OLDCOLS,mane:0,tail:0,seed:7,
+    scars:[1284,617],armor:'none',anim:talking&&Math.sin(t*14)>.3});
+  drawOldBits(g,x,y,R,ang,t,talking,(talking&&Math.sin(t*14)>.3)?R*.18:0);
+}
+/* his beard, eyebrows and glasses, on top of an ordinary lion */
+function drawOldBits(g,x,y,R,ang,t,talking,lunge){
+  g.save();g.translate(x,y);g.rotate(ang);
+  /* white beard hanging off the chin */
+  g.fillStyle='#f5f1e8';g.strokeStyle='#cfc8b8';g.lineWidth=.8;
+  const wv=Math.sin(t*3)*.5;
+  g.beginPath();g.moveTo(R*.74+lunge,-R*.26);
+  g.quadraticCurveTo(R*1.1+lunge,-R*.3,R*1.36+lunge,-R*.1+wv);
+  g.lineTo(R*1.2+lunge,-R*.02);
+  g.lineTo(R*1.42+lunge,R*.06+wv);
+  g.lineTo(R*1.2+lunge,R*.12);
+  g.lineTo(R*1.3+lunge,R*.24+wv);
+  g.quadraticCurveTo(R*1.0+lunge,R*.3,R*.74+lunge,R*.26);g.closePath();g.fill();g.stroke();
+  /* bushy white eyebrows */
+  g.strokeStyle='#ffffff';g.lineWidth=Math.max(1.6,R*.09);g.lineCap='round';
+  const lift=talking?Math.max(0,Math.sin(t*5))*R*.04:0;
+  [-1,1].forEach(function(sd){g.beginPath();g.moveTo(R*.5+lunge-lift,sd*R*.1);g.quadraticCurveTo(R*.44+lunge-lift,sd*R*.22,R*.47+lunge-lift,sd*R*.34);g.stroke();});
+  /* glasses over the eyes, arms back to the ears */
+  g.strokeStyle='#f3d27a';g.lineWidth=1.2;
+  g.fillStyle='rgba(190,225,255,.18)';
+  [-1,1].forEach(function(sd){g.beginPath();g.arc(R*.7+lunge,sd*R*.19,R*.13,0,7);g.fill();g.stroke();});
+  g.beginPath();g.moveTo(R*.7+lunge,-R*.06);g.lineTo(R*.7+lunge,R*.06);g.stroke();
+  g.restore();
+}
+/* ---- the last words ---- */
+const CUT={lines:[
+  'Heh\u2026 well. Would you look at that.',
+  'Forty seasons in this pit, and nobody ever put me down. Not the King. Not the hyenas. Not even my knees.',
+  'Well\u2026 I guess time beats us all.',
+  'Don\u2019t look at me like that. You did it right. I taught you, didn\u2019t I?',
+  'Look after that lion of yours, kid. And tell the Hall\u2026 I went out swinging.'],i:0,shown:0,t:0,raf:0,last:0,on:false};
+function oldCutscene(){
+  MUSIC.sad(true);
+  CUT.i=0;CUT.shown=0;CUT.t=0;CUT.on=true;
+  $('cut').classList.remove('hidden');
+  const pc=$('cutCv');
+  if(pc&&pc.getContext){const dpr=Math.min(devicePixelRatio||1,2);pc.width=92*dpr;pc.height=92*dpr;
+    CUT.pg=pc.getContext('2d');CUT.pg.setTransform(dpr,0,0,dpr,0,0);}
+  paintCut();
+  if(!CUT.raf&&typeof requestAnimationFrame!=='undefined')CUT.raf=requestAnimationFrame(cutTick);
+}
+function paintCut(){
+  const el=$('cutSay');if(!el)return;
+  const full=CUT.lines[CUT.i],done=CUT.shown>=full.length;
+  el.innerHTML=esc(full.slice(0,Math.floor(CUT.shown)))+(done?'':'<span class="caret"></span>');
+  const n=$('cutNext');if(n)n.textContent=CUT.i===CUT.lines.length-1?'Goodbye, Old Lion':'\u2026';
+}
+function cutAdvance(){
+  if(!CUT.on)return;
+  const full=CUT.lines[CUT.i];
+  if(CUT.shown<full.length){CUT.shown=full.length;paintCut();return;}
+  if(CUT.i<CUT.lines.length-1){CUT.i++;CUT.shown=0;paintCut();return;}
+  CUT.on=false;$('cut').classList.add('hidden');
+  kingOver(true);
+}
+function cutTick(ts){
+  if(!CUT.on){CUT.raf=0;return;}
+  const dt=Math.min(.05,(ts-(CUT.last||ts))/1000);CUT.last=ts;CUT.t+=dt;
+  const full=CUT.lines[CUT.i];
+  if(CUT.shown<full.length){CUT.shown+=dt*34;paintCut();}
+  if(CUT.pg){
+    const g=CUT.pg;g.clearRect(0,0,92,92);g.fillStyle='#0c0c0e';g.fillRect(0,0,92,92);
+    g.globalAlpha=1-CUT.i*.13;
+    drawOldPortrait(g,CUT.t*.5,CUT.shown<full.length);
+    g.globalAlpha=1;
+  }
+  CUT.raf=requestAnimationFrame(cutTick);
+}
+function tutTick(ts){
+  if($('tut').classList.contains('hidden')){TS.raf=0;return;}
+  const dt=Math.min(.05,(ts-(TS.last||ts))/1000);TS.last=ts;TS.t+=dt;
+  if(TS.shown<TS.full.length){TS.shown+=dt*62;paintSay();}
+  const talking=TS.shown<TS.full.length;
+  if(TS.pg){
+    const g=TS.pg;g.clearRect(0,0,92,92);g.fillStyle='#0c0c0e';g.fillRect(0,0,92,92);
+    drawOldPortrait(g,TS.t,talking);
+  }
+  const A=TS.arena;
+  if(A){
+    const g=A.g,w=A.w,h=A.h;g.clearRect(0,0,w,h);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
+    g.fillStyle='#17171c';for(let x=12;x<w;x+=24)for(let y=12;y<h;y+=24)g.fillRect(x,y,1.5,1.5);
+    const t=TS.t,cx=w/2,cy=h/2,rx=Math.min(w*.28,110),ry=h*.26;
+    const ax=cx+Math.cos(t*.9)*rx,ay=cy+Math.sin(t*.9)*ry,bx=cx+Math.cos(t*.9+Math.PI)*rx*.8,by=cy+Math.sin(t*.9+Math.PI)*ry*.8;
+    const aa=Math.atan2(by-ay,bx-ax),ba=aa+Math.PI;
+    const swA=(t%1.6)<.2,swB=((t+.8)%1.6)<.2;
+    paintLion(g,{x:ax,y:ay,R:15,ang:aa,t:t,pelt:A.a.pelt,mane:A.a.mane,tail:A.a.tail,seed:1,scars:[],armor:A.a.armor,anim:swA});
+    paintLion(g,{x:bx,y:by,R:15,ang:ba,t:t,pelt:A.b.pelt,mane:A.b.mane,tail:A.b.tail,seed:2,scars:[],armor:A.b.armor,anim:swB});
+    if(swA){g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=3;g.beginPath();g.arc(ax,ay,26,aa-.8,aa+.8);g.stroke();}
+    if(swB){g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=3;g.beginPath();g.arc(bx,by,26,ba-.8,ba+.8);g.stroke();}
+    g.fillStyle='#8e8e93';g.font='12px -apple-system,sans-serif';g.fillText('you: \u201cgo left!\u201d   lion: *goes right*',12,h-12);
+  }
+  TS.raf=requestAnimationFrame(tutTick);
+}
+function tutAct(a){
+  if(a==='tutFinish'){if(TS.shown<TS.full.length){TS.shown=TS.full.length;paintSay();}return true;}
+  if(a==='tutNext'){if(TS.shown<TS.full.length){TS.shown=TS.full.length;paintSay();return true;}
+    SFX.ui();TS.i=Math.min(TUT.length-1,TS.i+1);renderTut();return true;}
+  if(a==='tutBack'){SFX.ui();TS.i=Math.max(0,TS.i-1);renderTut();return true;}
+  if(a==='tutClose'){SFX.ui();closeTut();return true;}
+  return false;
+}
+$('tut').addEventListener('click',function(e){if(e.target===$('tut'))closeTut();});
+addEventListener('keydown',function(ev){
+  if($('tut').classList.contains('hidden'))return;
+  if(ev.key==='ArrowRight'||ev.key==='Enter')tutAct('tutNext');
+  else if(ev.key==='ArrowLeft')tutAct('tutBack');
+  else if(ev.key==='Escape')closeTut();
 });
 
 /* ========== BOOT ========== */
