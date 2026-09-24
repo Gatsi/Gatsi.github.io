@@ -48,6 +48,8 @@ Hit **Roll** anywhere to get a random lion in one tap.
 ### ⚔️ Duel
 Two lions, best of three. Build both, roll both, or paste in a friend's lion and settle it.
 
+Switch to **2v2** for tag-team fights: two teams of two, and a round only ends when both lions on one side are down. Teammates never hit each other.
+
 ### 🏆 Championship
 Build your own lion and send it through five-fight championships. Win all five and it earns a **gold belt** and a medallion that makes it a little stronger. Once it's yours, it's locked in. No tweaks.
 
@@ -55,9 +57,15 @@ Losing hurts. Every loss it survives leaves a **scar** you'll see on it forever.
 
 Win a belt and the last opponent of every championship after that is a belt holder too.
 
+Every win earns your lion **gold**, and so does every wave of the pack it survives. Spend it in the **Lion Store**, run by a red lion in a gold monocle: a new coat, a potion that rerolls one personality trait, or a whole new weapon. The gold belongs to that lion. When it's gone, so is the money.
+
 ### 🐾 Challenges
 **The pack.** Survive wave after wave of dogs and hyenas.
-**The Lion King.** One fight against a giant in black armour with red eyes. Bring up to two friends.
+**The Lion King.** One fight against a giant in black armour with red eyes.
+**The Ancient Lion.** A navy-and-gold colossus, half as big again as a titan. Get close and it blasts you with a gold nova. Stay back and it drops stars on you.
+**Old Lion.** Your tutor, out of retirement for one last fight. Beat him if you can... and if you can live with it.
+
+Bring up to two friends to any of them.
 
 ### 🥇 Tournament
 Eight lions, one bracket. Quarter-finals, semis, final, and every match is best of three. Edit any lion, roll them all, shuffle the draw and watch one come out on top.
@@ -81,8 +89,12 @@ Belts can only be won. The Editor always loads lions without them.
 ## Little things
 
 - A crowd of lions fills the stands and reacts to every big hit.
+- An original soundtrack, all generated live: a brooding pre-battle theme while your lion waits at the gate, war drums in the fights, something heavier for the bosses... and one very sad song. Tap the speaker to cycle sound + music, sound only, or off.
 - Every lion is drawn live, so scars, belts, manes and tails show up everywhere, including in the fights.
+- Open any lion's **Summary** to get its **lion card**: a trading-card picture with the lion, its badges, traits, stats, loadout and record. Copy it, save it or share it straight to your friends.
 - There's a free **Editor** (top left) for building anything you want, just for fun.
+- New here? Tap **?** and Old Lion will walk you through everything. He's been around a while.
+- Your progress saves in the browser, so your lion, gold and tournament are still there next time.
 
 ---
 
