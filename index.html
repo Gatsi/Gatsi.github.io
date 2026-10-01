@@ -215,6 +215,26 @@ button{cursor:pointer}
 .stat:last-child{margin-bottom:0}
 .bar{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--t1);border-radius:99px}
+.bar{display:flex}
+.bar i.ext{background:#5ee6a8;border-radius:0 99px 99px 0;margin-left:-3px;padding-left:3px;box-sizing:content-box}
+.stat b.trained{color:#5ee6a8}
+.trainIco,.trainIco .ico{color:#5ee6a8}
+.medal{width:30px;height:30px;border-radius:50%;flex:none;display:inline-grid;place-items:center;color:#ffd24a;
+  background:radial-gradient(circle at 35% 30%,#5a4614,#241a05 70%);box-shadow:inset 0 0 0 2px #e0b234,0 1px 4px rgba(0,0,0,.5)}
+.medal .ico{width:16px;height:16px}
+.medal.big{width:46px;height:46px}.medal.big .ico{width:24px;height:24px}
+.beltRow .medal{margin-right:3px}
+.medalRow{padding-top:10px}
+.perkList .medal{width:24px;height:24px;vertical-align:middle;margin-right:4px}.perkList .medal .ico{width:13px;height:13px}
+.trainCard{border-radius:var(--rs);padding:18px;margin-top:20px;background:rgba(94,230,168,.09);border:1px solid rgba(94,230,168,.28)}
+.trainCard h5{font-size:18px;font-weight:600;color:#5ee6a8;letter-spacing:-.02em}
+.trainCard p{color:var(--t2);font-size:14.5px;margin-top:6px;line-height:1.5}
+.trainGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.trainGrid button{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:12px;background:var(--s2);text-align:left;color:var(--t1)}
+.trainGrid button:hover{background:var(--s3)}
+.trainGrid button .ico{color:#5ee6a8;width:20px;height:20px;flex:none}
+.trainGrid button b{display:block;font-size:15px;font-weight:600}
+.trainGrid button small{display:block;font-size:12px;color:var(--t2)}
 .stat b{color:var(--t1);font-weight:500;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------- editor bits ---------- */
@@ -560,7 +580,11 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Losing a bout</h6>
       <p>When your lion loses, it has a <b>20% chance of dying there and then</b>. Four times in five it gets dragged out alive, carrying the loss, and the championship run is over. The fifth time it does not get up, and it is gone permanently — its record goes to the hall of fame and you build a new lion.</p>
       <h6>Medallions</h6>
-      <p>Each belt grants one random perk: a few percent more health, damage, speed, armour, faster cooldowns or slow regeneration. They stack across belts but stay deliberately small.</p>
+      <p>Each belt grants one random medallion, each with its own emblem: Ironheart (+9% health), Swiftpaw (+7% speed), Keen Fang (+9% damage), Scarhide (+6 armour), Quickened (−9% ability cooldowns), Ember Blood (heals 1 a second) or Loose Shoulder (−8% attack cooldown). They stack across belts.</p>
+      <h6>Training</h6>
+      <p>After every championship win there is a one-in-five chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
+      <h6>Loading a lion into the den</h6>
+      <p>Any lion code can be loaded into Championship from the den, with its belts, medallions, scars, training and gold. If you already have a lion, it retires to the hall to make room.</p>
       <h6>Personality</h6>
       <p>Every lion is born with <b>two personality traits</b> out of twenty-three, and they never change. Some bend how it thinks — Bold closes and stays closed, Wary fights at arm's length, Patient reads the fight quicker. Some are physical. Some only matter in particular moments: Bloodscent finishes wounded animals, Grudge grows angrier with every scar it carries, Showman swings faster while the crowd is up, Houndsbane was built for the pack. Two touch your career directly — Lucky drops the death chance on a lost bout to 12%, Reckless raises it to 30% and hits harder for it. Opposites never appear on the same lion.</p>
       <h6>IV</h6>
@@ -801,14 +825,31 @@ const ARENAS={
   gates:{name:'The Gates',make:()=>[[320,140,34],[320,500,34],[150,320,22],[490,320,22]]},
 };
 const PERKS=[
-  {k:'hp',name:'Ironheart',desc:'+6% health',mult:{hp:1.06}},
-  {k:'spd',name:'Swiftpaw',desc:'+5% movement speed',mult:{spd:1.05}},
-  {k:'dmg',name:'Keen Fang',desc:'+6% damage',mult:{dmg:1.06}},
-  {k:'dr',name:'Scarhide',desc:'+4 points of damage reduction',add:{dr:.04}},
-  {k:'cd',name:'Quickened',desc:'−6% ability cooldowns',mult:{cdr:.94}},
-  {k:'reg',name:'Ember Blood',desc:'Recovers 0.6 health a second',add:{regen:.6}},
-  {k:'atk',name:'Loose Shoulder',desc:'−5% attack cooldown',mult:{atk:.95}},
+  {k:'hp',name:'Ironheart',desc:'+9% health',mult:{hp:1.09},
+   ico:'<path d="M8 13.2S2.4 10 2.4 6.3A2.9 2.9 0 0 1 8 5a2.9 2.9 0 0 1 5.6 1.3c0 3.7-5.6 6.9-5.6 6.9Z"/>'},
+  {k:'spd',name:'Swiftpaw',desc:'+7% movement speed',mult:{spd:1.07},
+   ico:'<circle cx="8" cy="10" r="2.6"/><circle cx="4.2" cy="6.2" r="1.3"/><circle cx="8" cy="4.4" r="1.3"/><circle cx="11.8" cy="6.2" r="1.3"/>'},
+  {k:'dmg',name:'Keen Fang',desc:'+9% damage',mult:{dmg:1.09},
+   ico:'<path d="M4.4 3h7.2l-3.6 10.4z"/><path d="M6.4 6h3.2"/>'},
+  {k:'dr',name:'Scarhide',desc:'+6 points of damage reduction',add:{dr:.06},
+   ico:'<path d="M8 2.2 13 4.2v3.6c0 3-2 5.2-5 6.3-3-1.1-5-3.3-5-6.3V4.2Z"/><path d="m6 6.2 4 3.6"/>'},
+  {k:'cd',name:'Quickened',desc:'\u22129% ability cooldowns',mult:{cdr:.91},
+   ico:'<path d="M4.4 2.6h7.2M4.4 13.4h7.2M5.2 2.6c0 3.4 5.6 3.4 5.6 5.4s-5.6 2-5.6 5.4M10.8 2.6c0 3.4-5.6 3.4-5.6 5.4"/>'},
+  {k:'reg',name:'Ember Blood',desc:'Recovers 1 health a second',add:{regen:1},
+   ico:'<path d="M8.4 2.2c2.1 2.7 3.3 4.1 3.3 6.1a3.7 3.7 0 0 1-7.4 0c0-1.4.7-2.5 1.7-3.4.1 1 .6 1.6 1.1 1.8-.3-1.9.3-3.2 1.3-4.5Z"/>'},
+  {k:'atk',name:'Loose Shoulder',desc:'\u22128% attack cooldown',mult:{atk:.92},
+   ico:'<path d="M13.2 8a5.2 5.2 0 1 1-2.2-4.2"/><path d="M13.4 2.8v3.4H10"/>'},
 ];
+function perkOf(k){return PERKS.filter(p=>p.k===k)[0]||null;}
+function medalSvg(P){return '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+P.ico+'</svg>';}
+function medalHTML(k,big){const P=perkOf(k);if(!P)return '';
+  return '<span class="medal'+(big?' big':'')+'" title="'+P.name+' \u2014 '+P.desc+'">'+medalSvg(P)+'</span>';}
+/* training: after a championship win there is a one-in-five chance to work on one stat, a little */
+const TRAIN={hp:{name:'Health',ico:'heart',desc:'+3% health'},dmg:{name:'Damage',ico:'sword',desc:'+3% damage'},
+  spd:{name:'Speed',ico:'bolt',desc:'+2.5% speed'},atk:{name:'Swing',ico:'swing',desc:'3% faster attacks'},dr:{name:'Armour',ico:'shield',desc:'+2 points of damage reduction'}};
+const TRAIN_K=['hp','dmg','spd','atk','dr'];
+function trainOf(c){const t=(c&&c.train)||{};return {hp:t.hp|0,dmg:t.dmg|0,spd:t.spd|0,atk:t.atk|0,dr:t.dr|0};}
+function trainCount(c){const t=trainOf(c);return TRAIN_K.reduce((a,k)=>a+t[k],0);}
 const FIRST=['Gold','Ash','Bram','Sun','Kes','Vesp','Cin','Rav','Oz','Tawn','Mor','Dun','Sable','Rook','Yarr','Pell','Karn','Wend'];
 const LAST=['mane','fang','claw','spine','maw','paw','hide','tooth','shade','crest','tail','brow'];
 const EPITHET=['the Patient','the Unlucky','Third of the Line','the Quiet','of the Low Pit','the Loud','the Unbeaten','the Twice-Sold','the Late','the Stubborn'];
@@ -1174,11 +1215,12 @@ function derive(c,scale){
   const hog=isHog(c),gab=isGabName(c);
   const hpS=scale*(hog?2.4:1)*(gab?2.6:1);
   const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1)*(gab?1.55:1);
-  const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp;
-  const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1);
-  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg;
-  const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0),0,.62);
-  const atk=B.atk*P.atk*(A.atk||1);
+  const TRn=trainOf(c);
+  const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp);
+  const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
+  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg);
+  const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
+  const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk);
   const wdps=(W.dmg*dmgMult)/(W.cd*atk)+(6*dmgMult)/(.95*atk);
   const ehp=maxHp/(1-dr);
   const T={mend:1.13,aegis:1.11,siphon:1.09,regrow:1.06,thorns:1.05,frenzy:1.10,cub:1.08,dash:1.05,blink:1.05,roar:1.06,vanish:1.09,fury:1.07};
@@ -1204,7 +1246,9 @@ function encodeLion(c,rec){
     rec?[rec.champs||0,rec.wins||0,rec.fights||0].join('.'):'',
     c.pelt||0,c.iv||5,c.mane||0,(c.scars||[]).join('.'),
     (c.traits||[]).map(x=>TK.indexOf(x)).filter(i=>i>=0).join('.'),
-    c.tail||0];
+    c.tail||0,
+    TRAIN_K.map(k=>trainOf(c)[k]).join('.'),
+    c.gold|0];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
 }
 function decodeLion(str){
@@ -1222,6 +1266,8 @@ function decodeLion(str){
     if(!c.build||!c.armor||!c.weapon||!c.brain||!c.abil.length)return null;
     const r=(a[7]||'').split('.');
     c.record=a[7]?{champs:+r[0]||0,wins:+r[1]||0,fights:+r[2]||0}:null;
+    if(a[14]){const tv=a[14].split('.');const t={};TRAIN_K.forEach((k,i)=>{const n=clamp(+tv[i]||0,0,99);if(n)t[k]=n;});if(Object.keys(t).length)c.train=t;}
+    if(a[15])c.gold=clamp(+a[15]||0,0,999999);
     return c;
   }catch(e){return null;}
 }
@@ -1332,6 +1378,11 @@ function lionSummaryText(c){
   L.push('  Health '+Math.round(d.maxHp)+'   Speed '+Math.round(d.speed)+'   Swing '+(1/d.atk).toFixed(2)+'\u00d7');
   L.push('  Damage '+d.dps.toFixed(1)+'   Armour '+Math.round(d.dr*100)+'%   Reach '+Math.round(d.reach));
   L.push('  Threat '+d.threat);
+  if(trainCount(c)){
+    const t=trainOf(c);
+    L.push('');L.push('TRAINING');
+    TRAIN_K.filter(k=>t[k]).forEach(k=>L.push('  '+TRAIN[k].name+' \u00d7'+t[k]+' \u2014 '+TRAIN[k].desc+' each'));
+  }
   if(c.perks&&c.perks.length){
     L.push('');L.push('MEDALLIONS');
     c.perks.forEach(function(k){
@@ -1384,6 +1435,13 @@ function drawSvgIcon(g,svg,x,y,size,col,lw){
     if(stroke)g.stroke();if(fill)g.fill();
   }
   g.restore();
+}
+function drawMedal(g,x,y,r,P){
+  const gd=g.createRadialGradient(x-r*.3,y-r*.35,r*.1,x,y,r);gd.addColorStop(0,'#6b5418');gd.addColorStop(1,'#241a05');
+  g.fillStyle=gd;g.beginPath();g.arc(x,y,r,0,7);g.fill();
+  g.lineWidth=3.5;g.strokeStyle='#e0b234';g.beginPath();g.arc(x,y,r-1.8,0,7);g.stroke();
+  g.lineWidth=1;g.strokeStyle='rgba(255,230,150,.35)';g.beginPath();g.arc(x,y,r-6,0,7);g.stroke();
+  drawSvgIcon(g,P.ico,x-r*.55,y-r*.55,r*1.1,'#ffd24a',1.6);
 }
 function rr(g,x,y,w,h,r){g.beginPath();if(g.roundRect)g.roundRect(x,y,w,h,r);else g.rect(x,y,w,h);}
 function pill(g,x,y,txt,fg,bg,icon){
@@ -1456,21 +1514,28 @@ function drawLionCard(c){
     g.fillStyle='rgba(255,179,64,.12)';rr(g,bx,y,w,58,18);g.fill();
     drawSvgIcon(g,T.svg,bx+18,y+13,32,'#ffb340',1.5);
     g.fillStyle='#f5f5f7';g.fillText(T.name,bx+62,y+38);bx+=w+14;});
+  const meds=(c.perks||[]).map(perkOf).filter(Boolean);
+  if(meds.length){
+    const show=meds.slice(0,Math.max(1,Math.min(meds.length,Math.floor((W-76-bx)/66)))),r=27;
+    show.forEach(function(P,i){const mx=W-76-r-i*62,my=y+29;drawMedal(g,mx,my,r,P);});
+    if(meds.length>show.length){g.font='700 22px '+CARD_FONT;g.fillStyle='#ffd24a';g.textAlign='right';
+      g.fillText('+'+(meds.length-show.length),W-76-show.length*62-6,y+37);g.textAlign='left';}
+  }
   /* stats (left) and loadout (right) */
   y+=100;
-  const rows=[['Health',(d.maxHp-90)/80,Math.round(d.maxHp)],['Speed',(d.speed-80)/125,Math.round(d.speed)],
-    ['Swing',(1.45-d.atk)/.75,(1/d.atk).toFixed(2)+'×'],['Damage',(d.dps-16)/26,d.dps.toFixed(1)],
-    ['Armour',d.dr/.62,Math.round(d.dr*100)+'%'],['Reach',Math.min(1,d.reach/420),Math.round(d.reach)],
-    ['Threat',(d.threat-16)/30,d.threat]];
-  const sx=76,sw=470;
+  const rows=statRows(c);
+  const sx=76,sw=470,TRC='#5ee6a8';
   rows.forEach(function(r,i){const yy=y+i*47;
-    drawSvgIcon(g,ICONS[STAT_ICON[r[0]]]||'',sx,yy-22,26,'#8e8e93',1.5);
-    g.font='500 25px '+CARD_FONT;g.fillStyle='#a1a1a6';g.fillText(r[0],sx+38,yy);
+    drawSvgIcon(g,ICONS[STAT_ICON[r.n]]||'',sx,yy-22,26,'#8e8e93',1.5);
+    g.font='500 25px '+CARD_FONT;g.fillStyle='#a1a1a6';g.fillText(r.n,sx+38,yy);
     const bx0=sx+156,bw=sw-156-86;
     g.fillStyle='rgba(255,255,255,.08)';rr(g,bx0,yy-12,bw,12,6);g.fill();
-    const k=clamp(r[1],0,1);if(k>0){const bgd=g.createLinearGradient(bx0,0,bx0+bw,0);bgd.addColorStop(0,mix(accent,'#ffffff',.2));bgd.addColorStop(1,accent);
-      g.fillStyle=r[0]==='Threat'?'#ffb340':bgd;rr(g,bx0,yy-12,Math.max(12,bw*k),12,6);g.fill();}
-    g.font='700 25px '+CARD_FONT;g.fillStyle='#f5f5f7';g.textAlign='right';g.fillText(String(r[2]),sx+sw,yy);g.textAlign='left';});
+    if(r.up){g.fillStyle=TRC;rr(g,bx0,yy-12,Math.max(12,bw*r.f1),12,6);g.fill();}
+    if(r.f0>0){const bgd=g.createLinearGradient(bx0,0,bx0+bw,0);bgd.addColorStop(0,mix(accent,'#ffffff',.2));bgd.addColorStop(1,accent);
+      g.fillStyle=r.n==='Threat'?'#ffb340':bgd;rr(g,bx0,yy-12,Math.max(12,bw*r.f0),12,6);g.fill();}
+    g.font='700 25px '+CARD_FONT;g.fillStyle=r.up?TRC:'#f5f5f7';g.textAlign='right';g.fillText(r.v,sx+sw,yy);g.textAlign='left';});
+  if(trainCount(c)){g.fillStyle=TRC;rr(g,sx,y+7*47-26,14,14,4);g.fill();
+    g.font='500 20px '+CARD_FONT;g.fillStyle='#8e8e93';g.fillText('Trained ×'+trainCount(c),sx+22,y+7*47-14);}
   const lx0=590,lw=W-76-lx0;
   g.fillStyle='rgba(255,255,255,.045)';rr(g,lx0-18,y-40,lw+18,6*47+30,26);g.fill();
   const lo=[['frame','Frame',BUILDS[c.build].name],['shield','Armour',ARMORS[c.armor].name],['sword','Weapon',WEAPONS[c.weapon].name],
@@ -1525,6 +1590,19 @@ function cardShare(){
     return navigator.share({title:CARD.lion.name,text:encodeLion(CARD.lion,CARD.lion.record||null)});
   }).catch(function(){});
 }
+function trainOfferHTML(){
+  return '<div class="trainCard" id="trainCard"><h5>Training opportunity</h5><p>The win opened a door. Pick one thing to work on. It is a small gain, and it stays for good.</p>'+
+    '<div class="trainGrid">'+TRAIN_K.map(k=>'<button data-act="train" data-k="'+k+'">'+ico(TRAIN[k].ico)+'<span><b>'+TRAIN[k].name+'</b><small>'+TRAIN[k].desc+'</small></span></button>').join('')+'</div></div>';
+}
+function applyTrain(k){
+  const L=CAREER.lion;if(!L||!TRAIN[k]||!CAREER.trainChance)return;
+  L.train=trainOf(L);L.train[k]++;CAREER.trainChance=false;
+  Object.keys(L.train).forEach(x=>{if(!L.train[x])delete L.train[x];});
+  SFX.coin();Store.save();
+  const tc=$('trainCard');if(tc)tc.innerHTML='<h5>Trained: '+TRAIN[k].name+'</h5><p>'+TRAIN[k].desc+'. '+L.name+' has trained '+trainCount(L)+' time'+(trainCount(L)>1?'s':'')+' now.</p>';
+  if(CAREER.trainBtns){$('resBtns').innerHTML=CAREER.trainBtns;CAREER.trainBtns=null;}
+  toast(L.name+' trained '+TRAIN[k].name.toLowerCase());
+}
 /* ========== 7. INTERFACE ========== */
 const UI={view:'home',side:'A',sheet:null};
 const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -1539,23 +1617,34 @@ const BUILD_NOTE={cub:'Tiny and quick. Swings fastest, breaks easiest.',
   heavy:'Slower hands, heavier hands.',titan:'Slow as weather. Every swing counts.'};
 const ARMOR_NOTE=k=>Math.round(ARMORS[k].dr*100)+'% less damage taken · '+
   Math.round((1-ARMORS[k].spd)*100)+'% slower afoot';
+/* each stat with how much of it training added on top */
+function statRows(c){
+  const d=derive(c),b=trainCount(c)?derive(Object.assign({},c,{train:null})):d;
+  const R=[['Health',x=>(x.maxHp-90)/80,x=>Math.round(x.maxHp)],['Speed',x=>(x.speed-80)/125,x=>Math.round(x.speed)],
+    ['Swing',x=>(1.45-x.atk)/.75,x=>(1/x.atk).toFixed(2)+'\u00d7'],['Damage',x=>(x.dps-16)/26,x=>x.dps.toFixed(1)],
+    ['Armour',x=>x.dr/.62,x=>Math.round(x.dr*100)+'%'],['Reach',x=>Math.min(1,x.reach/420),x=>Math.round(x.reach)],
+    ['Threat',x=>(x.threat-16)/30,x=>x.threat]];
+  return R.map(function(r){const f0=clamp(r[1](b),0,1),f1=clamp(r[1](d),0,1);
+    return {n:r[0],f0:f0,f1:Math.max(f0,f1),v:String(r[2](d)),up:f1>f0+.002};});
+}
 function statBars(c){
-  const d=derive(c);
-  return [['Health',(d.maxHp-90)/80,Math.round(d.maxHp)],['Speed',(d.speed-80)/125,Math.round(d.speed)],
-    ['Swing',(1.45-d.atk)/.75,(1/d.atk).toFixed(2)+'\u00d7'],['Damage',(d.dps-16)/26,d.dps.toFixed(1)],
-    ['Armour',d.dr/.62,Math.round(d.dr*100)+'%'],['Reach',Math.min(1,d.reach/420),Math.round(d.reach)],
-    ['Threat',(d.threat-16)/30,d.threat]]
-    .map(r=>'<div class="stat"><span>'+ico(STAT_ICON[r[0]]||'')+r[0]+'</span><div class="bar"><i style="width:'+
-      (clamp(r[1],0,1)*100)+'%"></i></div><b>'+r[2]+'</b></div>').join('')+beltStat(c);
+  return statRows(c).map(r=>'<div class="stat"><span>'+ico(STAT_ICON[r.n]||'')+r.n+'</span><div class="bar"><i style="width:'+
+      (r.f0*100)+'%"></i>'+(r.up?'<i class="ext" style="width:'+((r.f1-r.f0)*100)+'%"></i>':'')+'</div><b'+(r.up?' class="trained"':'')+'>'+r.v+'</b></div>').join('')+
+    beltStat(c)+trainStat(c);
+}
+function trainStat(c){
+  const n=trainCount(c);if(!n)return '';
+  const t=trainOf(c);
+  return '<div class="stat"><span class="trainIco">'+ico('spark')+'Trained</span><div class="beltRow" style="color:var(--t2);font-size:13px">'+
+    TRAIN_K.filter(k=>t[k]).map(k=>TRAIN[k].name+' \u00d7'+t[k]).join(' \u00b7 ')+'</div><b class="trained">'+n+'</b></div>';
 }
 function beltStat(c){
-  const n=beltsOf(c);if(!n)return '';
+  const n=beltsOf(c);if(!n)return (c.perks&&c.perks.length)?'<div class="stat"><span>'+ico('spark')+'Medals</span><div class="beltRow">'+c.perks.map(k=>medalHTML(k)).join('')+'</div><b>'+c.perks.length+'</b></div>':'';
   let icons='';for(let i=0;i<Math.min(n,8);i++)icons+=ico('belt');
   const m=(c.perks||[]).length;
   return '<div class="stat"><span class="beltIco">'+ico('belt')+'Belts</span><div class="beltRow">'+icons+
     (n>8?'<small>+'+(n-8)+'</small>':'')+'</div><b>'+n+'</b></div>'+
-    (m?'<div class="stat"><span>'+ico('spark')+'Medals</span><div class="beltRow" style="color:var(--t2);font-size:13px">'+
-      c.perks.map(k=>{const P2=PERKS.filter(x=>x.k===k)[0];return P2?P2.name:'';}).filter(Boolean).join(' \u00b7 ')+
+    (m?'<div class="stat"><span>'+ico('spark')+'Medals</span><div class="beltRow">'+c.perks.map(k=>medalHTML(k)).join('')+
       '</div><b>'+m+'</b></div>':'');
 }
 /* ---------- summary card ---------- */
@@ -1573,6 +1662,8 @@ function lionCard(c,opts){
     (isGab(c)?'<div class="badges"><span class="badge gold">Ascended</span></div>':'')+
     ((c.traits&&c.traits.length)?'<div class="traitRow">'+traitBadges(c)+
       '<span class="traitTxt">'+traitNames(c)+'</span></div>':'')+
+    ((c.perks&&c.perks.length)?'<div class="traitRow medalRow">'+c.perks.map(k=>medalHTML(k)).join('')+
+      '<span class="traitTxt">'+c.perks.length+' medallion'+(c.perks.length>1?'s':'')+'</span></div>':'')+
     (badges.length?'<div class="badges">'+badges.join('')+'</div>':'')+
     '<div class="summary">'+
       '<span class="tag"><b>'+ARMORS[c.armor].name+'</b> armour</span>'+
@@ -1675,7 +1766,8 @@ function editorHTML(scope,c,title,career){
         (locked?'locked in':'new lion')+'</span>':
         '<span>A '+WEAPONS[c.weapon].cls+' build.</span>')+'</div>'+
     (creating?'<p class="muted" style="padding:0 2px 12px">Build it however you like, or hit <b>Roll</b> and let chance decide. '+
-      'Once you press <b>Finish lion</b> it is locked until it dies or you retire it.</p>':'')+
+      'Once you press <b>Finish lion</b> it is locked until it dies or you retire it. '+
+      'Got a saved lion? <button class="badge" data-act="careerLoad" style="vertical-align:1px">Load a code</button></p>':'')+
     '<div class="card">'+
       '<canvas class="lionCv prevCv" data-prev="'+prevKey+'"></canvas>'+
       '<div class="nameRow"><label class="nameWrap">'+
@@ -1761,6 +1853,14 @@ function optionsFor(field,c){
   if(field==='shopWeapon')return WCLASS.map(cl=>'<div class="grp">'+cl+'</div>'+
     Object.keys(WEAPONS).filter(k=>WEAPONS[k].cls===cl&&!WEAPONS[k].hidden)
       .map(k=>mk(k,WEAPONS[k].name,WEAPONS[k].desc)).join('')).join('');
+  if(field==='careerLoad'){
+    const cur=CAREER.lion&&CAREER.locked?CAREER.lion:null;
+    return '<div class="grp">paste any lion code, or open a saved .txt</div>'+
+      '<div class="codeRow"><input id="careerCode" placeholder="LION1-..." spellcheck="false">'+
+      '<button data-act="careerLoadGo">'+ico('paste')+'Load</button></div>'+
+      '<button class="opt" data-act="careerLoadFile"><span class="tick tickIco">'+ico('file')+'</span><span class="txt"><b>Open a saved lion</b><small>Any .txt with a lion code in it</small></span></button>'+
+      '<div class="grp">'+(cur?(esc(cur.name)+' retires to the hall when the new lion moves in.'):'It comes in with its belts, medallions, scars, training and gold.')+'</div>';
+  }
   if(field==='summary')return cardBlockHTML()+lionSummaryHTML(c);
   if(field==='traits'&&traitsEditable()){
     const groups={};
@@ -1831,7 +1931,7 @@ function loadPastedCode(){
 /* the Editor only ever takes a blank slate: belts and medallions are earned in championships */
 function loadCode(c){
   if(MATCH.mode==='editor'){
-    const had=hasCareer(c);c.perks=[];c.record=null;placeLoaded(c);
+    const had=hasCareer(c);c.perks=[];c.record=null;delete c.train;delete c.gold;placeLoaded(c);
     if(had)toast('Loaded blank \u2014 belts are earned, not pasted');
     return;}
   askCareer(c,placeLoaded);
@@ -1848,7 +1948,7 @@ function placeLoaded(c){
   SFX.bell();refresh();toast(c.name+' loaded');
 }
 /* a code from a career lion carries belts and medallions: ask before letting them in */
-function hasCareer(c){return !!((c.perks&&c.perks.length)||beltsOf(c));}
+function hasCareer(c){return !!((c.perks&&c.perks.length)||beltsOf(c)||trainCount(c));}
 function askCareer(c,apply){
   if(!hasCareer(c)){apply(c);return;}
   UI.ask={c:c,apply:apply};
@@ -1856,11 +1956,12 @@ function askCareer(c,apply){
   const bits=[];
   if(n)bits.push(n+' belt'+(n>1?'s':''));
   if(m)bits.push(m+' medallion'+(m>1?'s':''));
+  if(trainCount(c))bits.push(trainCount(c)+' training boost'+(trainCount(c)>1?'s':''));
   $('askPanel').innerHTML='<div class="sheetHd"><h3>Career lion</h3></div>'+
     '<div class="askBody"><p><b style="color:var(--t1)">'+esc(c.name)+'</b> was in career mode'+
       (bits.length?' \u2014 '+bits.join(', '):'')+'. Do you want to load in its career mode medallions and buffs?</p>'+
-    (m?'<ul class="perkList">'+c.perks.map(function(k){const P2=PERKS.filter(x=>x.k===k)[0];
-      return P2?'<li><b>'+P2.name+'</b> \u2014 '+P2.desc+'</li>':'';}).join('')+'</ul>':'')+
+    (m?'<ul class="perkList">'+c.perks.map(function(k){const P2=perkOf(k);
+      return P2?'<li>'+medalHTML(k)+' <b>'+P2.name+'</b> \u2014 '+P2.desc+'</li>':'';}).join('')+'</ul>':'')+
     '<div class="askBtns"><button data-act="askNo">No</button><button data-act="askYes" class="key">Yes</button></div></div>';
   $('askWrap').classList.remove('hidden');
 }
@@ -1868,7 +1969,7 @@ function answerCareer(keep){
   const q=UI.ask;UI.ask=null;$('askWrap').classList.add('hidden');
   if(!q)return;
   const c=q.c;
-  if(!keep){c.perks=[];c.record=null;}
+  if(!keep){c.perks=[];c.record=null;delete c.train;delete c.gold;}
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
@@ -1882,7 +1983,7 @@ function lionSheetText(c){
     '\n'+encodeLion(c,c.record||null)+
     '\n\nPaste that code into a duel slot in Lion Simulator, or open this file in Lion Designer.\n';
 }
-const SHEET_TITLE={shopCoat:'Colour Change \u00b7 20 gold',shopPotion:'Personality Potion \u00b7 30 gold',shopWeapon:'New weapon \u00b7 60 gold',tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Personality',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
+const SHEET_TITLE={careerLoad:'Load a lion into the den',shopCoat:'Colour Change \u00b7 20 gold',shopPotion:'Personality Potion \u00b7 30 gold',shopWeapon:'New weapon \u00b7 60 gold',tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Personality',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
   pelt:'Coat',mane:'Mane',arena:'Arena',closing:'Closing walls'};
 function openSheet(kind,field){
   const career=(MATCH.mode==='career');
@@ -1964,7 +2065,8 @@ function renderCareer(){
       '<div class="card pad"><p class="muted">Build your own lion from the ground up, or roll one and tweak it. '+
       'Its IV is drawn when you start and is not yours to touch. Once you finish it, it is <b>locked</b> '+
       'until it dies or you retire it. Then you make the next one.</p>'+
-      '<div class="act" style="padding:12px 0 0"><button data-act="create" class="key">'+ico('plus')+'Create a lion</button></div></div>'+hallHTML();
+      '<div class="act" style="padding:12px 0 0"><button data-act="create" class="key">'+ico('plus')+'Create a lion</button>'+
+      '<button data-act="careerLoad">'+ico('paste')+'Load a code</button></div></div>'+hallHTML();
     return;
   }
   if(!CAREER.locked){host.innerHTML=editorHTML('career',L,'Create your lion',true);return;}
@@ -1985,7 +2087,9 @@ function renderCareer(){
       '</div>'})+
     '<div class="card"><button class="row storeRow" data-act="openShop">'+shopIconHTML()+
       '<span class="v">Lion Store<small>The Red Lion is open for business. Bring gold.</small></span>'+
-      '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span><span class="go">\u203a</span></button></div>'+
+      '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span><span class="go">\u203a</span></button>'+
+      '<button class="row" data-act="careerLoad"><span class="rico">'+ico('paste')+'</span><span class="v">Load a lion from a code'+
+      '<small>Bring in any saved lion. '+esc(L.name)+' would retire to the hall.</small></span><span class="go">\u203a</span></button></div>'+
     (ch?('<div class="hd"><h2>Championship '+ch.n+'</h2><span>Bout '+Math.min(ch.i+1,5)+' of five.</span></div>'+
       '<div class="card">'+ch.foes.map(function(f,i){
         const st=i<ch.i?'done':(i===ch.i?'now':'');
@@ -2207,6 +2311,17 @@ function renderTourn(){
     '<span class="v">'+(ch!==null?'Back to the draw':'Scrap this tournament')+'<small>Your eight lions stay as they are</small></span>'+
     '<span class="go">\u203a</span></button></div>';
   host.innerHTML=html;
+}
+function careerLoadCode(txt){
+  const c=decodeLion(txt);
+  if(!c){toast('That code is not readable');return;}
+  if(CAREER.lion&&CAREER.locked)retireLion();
+  c.side='A';c.epithet=c.epithet||pickOne(EPITHET);
+  const r=c.record||{};c.record={champs:r.champs|0,wins:r.wins|0,fights:r.fights|0,losses:(c.scars||[]).length};
+  c.gold=c.gold|0;c.perks=c.perks||[];c.scars=c.scars||[];
+  CAREER.lion=c;CAREER.locked=true;CAREER.champ=null;UI.view='home';
+  delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.shop;
+  closeSheet();SFX.bell();Store.save();refresh();toast(c.name+' moves into the den');
 }
 /* ---------- the Lion Store ---------- */
 const SHOP={price:{shopCoat:20,shopPotion:30,shopWeapon:60},quip:'',
@@ -2440,6 +2555,7 @@ document.addEventListener('keydown',function(e){
   const t=e.target;
   if(t&&t.id==='codeIn'){e.preventDefault();loadPastedCode();return;}
   if(t&&t.id==='allyCode'){e.preventDefault();handleAct('allyPasteKey');return;}
+  if(t&&t.id==='careerCode'){e.preventDefault();careerLoadCode(t.value);return;}
   if(t&&t.classList&&t.classList.contains('nameField')){e.preventDefault();t.blur();refresh();}
 });
 document.addEventListener('input',function(e){
@@ -2585,6 +2701,10 @@ function handleAct(a,el){
       return;}
     UI.finishAt=0;finishCareerLion();return;}
   if(a==='startDuel'){SFX.unlock();startFight(MATCH.duo?'duo':'duel');return;}
+  if(a==='train'){applyTrain(el&&el.dataset.k);return;}
+  if(a==='careerLoad'){SFX.ui();openSheet('career','careerLoad');return;}
+  if(a==='careerLoadGo'){careerLoadCode(($('careerCode')||{value:''}).value);return;}
+  if(a==='careerLoadFile'){loadFile(function(txt){careerLoadCode(txt);});return;}
   if(a==='duoOff'||a==='duoOn'){SFX.ui();MATCH.duo=(a==='duoOn');refresh();return;}
   if(a==='openShop'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();UI.view='shop';shopSay(SHOP.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
@@ -4412,11 +4532,12 @@ function survivalOver(){
 function roundOver(){
   if(G.ctx==='career'){
     if(!CAREER.champ||!CAREER.lion){showHome();return;}
-    const you=G.lions[0],ch=CAREER.champ,L=CAREER.lion;
+    const you=G.lions[0],ch=CAREER.champ,L=CAREER.lion;CAREER.trainChance=false;
     L.record.fights++;
     if(G.winner===you){
       L.record.wins++;ch.i++;
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
+      CAREER.trainChance=Math.random()<.2;
       if(ch.i>=5){
         const perk=pickOne(PERKS.filter(p=>true)).k;
         L.perks.push(perk);L.record.champs++;
@@ -4504,7 +4625,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     const P2=PERKS.filter(p=>p.k===perk)[0];
     V.textContent='CHAMPION';V.className='verdict gold';
     M.textContent=CAREER.lion.name+' takes belt number '+CAREER.lion.record.champs+' \u00b7 +'+(CAREER.earned||0)+' gold';
-    P.innerHTML='<div class="perkCard"><h5>◆ '+P2.name+'</h5><p>The medallion settles in. '+P2.desc+
+    P.innerHTML='<div class="perkCard"><h5 style="display:flex;align-items:center;gap:12px">'+medalHTML(P2.k,true)+P2.name+'</h5><p>The medallion settles in. '+P2.desc+
       '. Small, but it stacks with every belt after this one.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
     SFX.champ();
@@ -4574,6 +4695,10 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     P.innerHTML='<div class="perkCard" style="border-color:var(--line)"><h5 style="color:var(--bone)">Into the hall</h5>'+
       '<p>That lion is gone for good. Its record stands on the home screen. Roll another when you are ready.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Enter the hall</button>';
+  }
+  if((kind==='bout'||kind==='champion')&&CAREER.trainChance&&CAREER.lion){
+    CAREER.trainBtns=B.innerHTML;B.innerHTML='';
+    P.innerHTML+=trainOfferHTML();
   }
   $('sheet').innerHTML=(kind==='death'||w)?statSheet(kind==='death'?G.winner:w,kind==='death'?G.winner.foe:l):'';
   $('result').classList.remove('hidden');
