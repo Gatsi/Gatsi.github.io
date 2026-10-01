@@ -63,6 +63,14 @@ button{cursor:pointer}
 @keyframes edSpin{to{transform:rotate(360deg)}}
 @keyframes edGlow{0%,100%{box-shadow:0 0 0 1px rgba(255,179,64,.30),0 0 0 rgba(255,179,64,0)}
   50%{box-shadow:0 0 0 1px rgba(255,179,64,.55),0 0 9px rgba(255,179,64,.22)}}
+.hdrBtns .glowBtn{position:relative;overflow:hidden;isolation:isolate;
+  box-shadow:0 0 0 1px rgba(255,179,64,.32);animation:edGlow 5.5s ease-in-out infinite;color:var(--amber)}
+.hdrBtns .glowBtn::before{content:"";position:absolute;inset:-75%;z-index:0;
+  background:conic-gradient(transparent 0 72%,rgba(255,179,64,.85) 84%,rgba(255,179,64,0) 96%);
+  animation:edSpin 6.5s linear infinite;animation-delay:-3.2s}
+.hdrBtns .glowBtn::after{content:"";position:absolute;inset:1px;z-index:1;border-radius:inherit;background:var(--s1)}
+.hdrBtns .glowBtn:hover::after{background:var(--s2)}
+.hdrBtns .glowBtn .ico{position:relative;z-index:2}
 .editorBtn[aria-pressed="true"]{color:var(--amber);background:var(--amber-g)}
 .editorBtn .eico{display:flex}
 .editorBtn .ico{width:17px;height:17px}
@@ -530,7 +538,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <h1 class="mark"><span class="logoIco"></span>LION<span>SIM</span></h1>
     <button class="editorBtn" id="editorBtn"><span class="eico"></span><span class="elabel">Editor</span></button>
     <div class="hdrBtns">
-      <button id="helpBtn" aria-label="Tutorial with Old Lion"></button>
+      <button id="helpBtn" class="glowBtn" aria-label="Tutorial with Old Lion"></button>
       <button id="infoBtn" aria-label="How it works"></button>
       <button id="soundBtn" aria-pressed="false" aria-label="Sound"></button>
     </div>
@@ -4742,13 +4750,23 @@ const TUT=[
    vis:()=>'<div class="tutChips">'+
      ['grudge','showman','lucky','bold'].filter(k=>TRAITS[k]).slice(0,4).map(k=>chip('',TRAITS[k].name,TRAITS[k].desc,'',traitIco(TRAITS[k]))).join('')+'</div>'},
   {t:'Duel',
-   say:"Two lions, best of three, full health every round. Tap Edit to change either one, or paste in a friend's lion and settle the argument properly.",
-   vis:()=>'<div class="tutChips">'+chip('duel','Best of three','first to two rounds wins')+chip('heart','Full health','every round starts fresh')+
-     chip('paste','Paste a code','fight anybody\'s lion')+chip('summary','Summary','read a lion at a glance')+'</div>'},
+   say:"Two lions, best of three, full health every round. Paste in a friend's lion and settle the argument properly. Feeling sociable? Flip to 2v2 and it's two on two. Teammates don't bite each other. Mostly.",
+   vis:()=>'<div class="tutChips">'+chip('duel','Best of three','first to two rounds wins')+chip('pack','2v2','two teams, last pair standing')+
+     chip('paste','Paste a code','fight anybody\'s lion')+chip('heart','Full health','every round starts fresh')+'</div>'},
   {t:'Championship',
    say:"Build your own lion, then lock it in for good. Win five fights in a row and it takes a belt. Lose and it gets a scar. Lose and get unlucky, one time in five, and it comes to live on the wall with me.",
    vis:()=>'<div class="tutChips">'+chip('belt','5 wins = belt','plus a medallion buff','gold')+chip('scar','Lose, get a scar','it\'s yours forever')+
      chip('retire','1 in 5 losses','your lion dies for good','red')+chip('lion','Then','build the next one')+'</div>'},
+  {t:'Getting stronger',
+   say:"Every win, there's a one-in-five chance you get a training session. You pick the stat. It's a small gain, but it sticks, and it shows as a green bit on the stat bars. Win a belt and you get a medallion. Those are the big ones. Each has its own emblem. I had seven. Now I have arthritis.",
+   vis:()=>'<div class="tutChips">'+chip('heart','Training','1 in 5 wins, +2-3% to one stat')+
+     chip('','Medallions','one per belt, much bigger','gold',medalHTML('hp'))+
+     chip('','Ironheart','+9% health','gold',medalHTML('hp'))+chip('','Keen Fang','+9% damage','gold',medalHTML('dmg'))+'</div>'+
+     '<div class="stat" style="margin-top:12px"><span>'+ico('heart')+'Health</span><div class="bar"><i style="width:48%"></i><i class="ext" style="width:12%"></i></div><b class="trained">132</b></div>'},
+  {t:'Gold and the store',
+   say:"Each win pays your lion 5 to 15 gold. The pack pays a little too. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
+   vis:()=>'<div class="tutChips">'+chip('coin','5-15 per win','plus 1-3 a pack wave','gold')+chip('drop','Colour Change','20 gold')+
+     chip('flask','Personality Potion','30 gold: reroll one trait')+chip('sword','New weapon','60 gold')+'</div>'},
   {t:'Challenges',
    say:"Nothing here touches your record, so go wild. Bring up to two friends. No shame in it. I had friends once.",
    vis:()=>'<div class="tutChips">'+chip('pack','The pack','waves of dogs and hyenas')+chip('crown','Lion King','big, dark and rude','red')+
@@ -4760,9 +4778,10 @@ const TUT=[
      '<span class="arrow">\u203a</span><div class="col"><i></i><i></i><small>2</small></div>'+
      '<span class="arrow">\u203a</span><div class="col w"><i></i><small>1</small></div><span class="cup">'+ico('trophy')+'</span></div>'},
   {t:'Lion codes',
-   say:"Every lion fits into one line of text. Copy it, send it, paste it anywhere. Career lions bring their belts and scars. Pasting belts into the Editor? Nice try. Belts are earned.",
+   say:"Every lion fits into one line of text: belts, scars, training, gold, the lot. Copy it, send it, load it straight back into the den any time. Pasting belts into the Editor? Nice try. Oh, and open a Summary for a lion card. A proper picture. Show off a bit.",
    vis:()=>'<div class="tutCode">LION1-R29sZG1hbmV8NHwyfDN8MTEuNXwzfDAuMnwy\u2026</div><div class="tutChips">'+
-     chip('copy','Copy','send it to a mate')+chip('save','Save','keep it as a .txt')+'</div>'},
+     chip('copy','Copy or save','send it to a mate')+chip('paste','Load into the den','any code becomes your lion')+
+     chip('summary','Lion card','a picture to copy or share')+chip('belt','Belts are earned','the Editor strips them')+'</div>'},
   {t:"Old Lion's tips",
    say:"Here's what four hundred years in the pit taught me. Write it down. Or don't, I'm not your dad.",
    vis:()=>'<ul class="tutTips">'+
