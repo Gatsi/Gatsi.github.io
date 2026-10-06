@@ -192,6 +192,8 @@ button{cursor:pointer}
 .tickIco{color:var(--amber)}
 .tickIco .tico{width:19px;height:19px}
 .opt .tick.tickIco{color:var(--amber);background:var(--amber-g)}
+.opt .tick.sym{color:#241701;background:var(--amber);font-size:20px;font-weight:700;line-height:1}
+.opt .tick.sym.dim{color:var(--t1);background:var(--s3)}
 .opt .tick.tickIco .ico{width:16px;height:16px}
 .opt[aria-pressed="true"] .tick.tickIco{color:#241701;background:var(--amber)}
 .traitTxt{font-size:14px;color:var(--t2)}
@@ -416,6 +418,34 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .banner b{font-family:var(--disp);font-size:clamp(28px,8vw,58px);letter-spacing:.04em;
   text-shadow:0 4px 44px rgba(0,0,0,.95);line-height:.95;text-align:center;padding:0 16px}
 .banner b.gold{color:var(--gold)}
+/* gate introductions: a lower-third caption in the lion's own colours */
+.intro{position:absolute;left:0;right:0;bottom:0;padding:44px 16px 18px;line-height:1.08;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:7px;pointer-events:none;
+  border-radius:0 0 var(--r) var(--r);background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.6) 62%,rgba(0,0,0,0))}
+.intro.top{bottom:auto;top:0;padding:18px 16px 46px;border-radius:var(--r) var(--r) 0 0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,.6) 62%,rgba(0,0,0,0))}
+.intro.top .skip{bottom:auto;top:8px}
+.intro.hidden{display:none}
+.intro.out{opacity:0;transition:opacity .25s}
+.intro .ik{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--t2);font-weight:600}
+.intro .inm{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7.6vw,52px);letter-spacing:.02em;white-space:nowrap;max-width:100%}
+.intro .inm span{background:linear-gradient(100deg,var(--c1) 20%,var(--c2) 95%);-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 16px var(--gl)) drop-shadow(0 2px 1px rgba(0,0,0,.9));padding:0 .04em}
+.intro .inm i{font-style:normal;color:var(--t2);font-size:.55em;margin:0 .35em;vertical-align:.18em}
+.intro .iline{height:2px;width:min(62%,340px);border-radius:2px}
+.intro .irec{font-size:14px;color:var(--t1);font-weight:600;font-variant-numeric:tabular-nums;display:flex;gap:6px 12px;
+  align-items:center;flex-wrap:wrap;justify-content:center}
+.intro .irec .mut{color:var(--t3);font-weight:500}
+.intro .irec .bl{color:var(--gold);display:inline-flex;align-items:center;gap:4px}
+.intro .irec .ico{width:16px;height:16px}
+.intro .skip{position:absolute;right:12px;bottom:8px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.32)}
+.intro.in .ik{animation:iUp .35s both}
+.intro.in .inm{animation:iName .55s .06s both}
+.intro.in .iline{animation:iLine .6s .16s both}
+.intro.in .irec{animation:iUp .4s .3s both}
+@keyframes iUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes iName{from{opacity:0;transform:scale(1.14);letter-spacing:.2em;filter:blur(6px)}to{opacity:1;transform:none;letter-spacing:.02em;filter:none}}
+@keyframes iLine{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
 .ticker{width:100%;max-width:720px;height:58px;overflow:hidden;display:flex;flex-direction:column;
   justify-content:flex-end;gap:4px}
 .ticker div{font-size:14px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -626,7 +656,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
         <div class="fmeta"></div><div class="pips"></div>
       </div>
     </div>
-    <div class="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div></div>
+    <div class="arenaBox" id="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div><div class="intro hidden" id="intro"></div></div>
     <div class="ticker" id="ticker"></div>
     <div class="controls">
       <button class="ctl" data-speed="0.5">0.5×</button>
@@ -848,6 +878,24 @@ const PERKS=[
   {k:'atk',name:'Loose Shoulder',desc:'\u22128% attack cooldown',mult:{atk:.92},
    ico:'<path d="M13.2 8a5.2 5.2 0 1 1-2.2-4.2"/><path d="M13.4 2.8v3.4H10"/>'},
 ];
+/* when a lion was born, and how old it is now */
+function bornText(c,short){
+  if(!c||!c.born)return short?'':'Born before records were kept';
+  const d=new Date(c.born);
+  const day=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+d.getDate()+' '+
+    ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getFullYear();
+  const tm=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  return (short?'':'Born ')+day+' at '+tm;
+}
+function ageText(c){
+  if(!c||!c.born)return '';
+  const ms=Math.max(0,Date.now()-c.born),h=Math.floor(ms/36e5),dd=Math.floor(ms/864e5);
+  if(h<1)return 'just born';
+  if(dd<1)return h+' hour'+(h>1?'s':'')+' old';
+  if(dd<60)return dd+' day'+(dd>1?'s':'')+' old';
+  const mo=Math.floor(dd/30.44);if(mo<24)return mo+' month'+(mo>1?'s':'')+' old';
+  return Math.floor(dd/365.25)+' years old';
+}
 function perkOf(k){return PERKS.filter(p=>p.k===k)[0]||null;}
 function medalSvg(P){return '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+P.ico+'</svg>';}
 function medalHTML(k,big){const P=perkOf(k);if(!P)return '';
@@ -968,6 +1016,11 @@ const SFX=(()=>{
     ui:()=>tone(520,520,.03,'square',.04),
     coin:()=>{tone(1320,1320,.08,'square',.07);tone(1760,1760,.22,'triangle',.08,.07);},
     warn:()=>{tone(150,150,.2,'square',.13);tone(150,150,.2,'square',.13,.26);},
+    /* heavy doors grinding open, chains rattling */
+    gate:()=>{tone(64,44,1.0,'sawtooth',.13);tone(96,70,.8,'triangle',.08,.08);noise(.9,.13,240);
+      [0,.12,.26,.38,.52].forEach((d,i)=>tone(1500+i*90,1350,.05,'square',.025,d));},
+    /* a herald's horn as the name is called */
+    herald:()=>{tone(392,392,.22,'sawtooth',.05);tone(523,523,.5,'sawtooth',.055,.2);tone(659,659,.5,'triangle',.04,.2);},
     unlock:()=>on(),
     audio:()=>(on()?{ac:ac,master:master}:null)
   };
@@ -1241,7 +1294,7 @@ function randomLion(side,name){
   while(ab.length<2){const k=pickOne(keys);if(ab.indexOf(k)<0)ab.push(k);}
   return{side:side,name:name||rollName(),build:pickKey(BUILDS),armor:pickKey(ARMORS),
     weapon:pickOne(Object.keys(WEAPONS).filter(k=>!WEAPONS[k].hidden)),abil:ab,brain:pickKey(BRAINS),perks:[],pelt:(Math.random()*PELTS.length)|0,
-    mane:(Math.random()*MANES.length)|0,tail:(Math.random()*TAILS.length)|0,iv:1+((Math.random()*10)|0),scars:[],traits:rollTraits()};
+    mane:(Math.random()*MANES.length)|0,tail:(Math.random()*TAILS.length)|0,iv:1+((Math.random()*10)|0),scars:[],traits:rollTraits(),born:Date.now()};
 }
 
 /* ========== 6. LION CODE ========== */
@@ -1256,7 +1309,8 @@ function encodeLion(c,rec){
     (c.traits||[]).map(x=>TK.indexOf(x)).filter(i=>i>=0).join('.'),
     c.tail||0,
     TRAIN_K.map(k=>trainOf(c)[k]).join('.'),
-    c.gold|0];
+    c.gold|0,
+    c.born?Math.floor(c.born/1000).toString(36):''];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
 }
 function decodeLion(str){
@@ -1276,6 +1330,7 @@ function decodeLion(str){
     c.record=a[7]?{champs:+r[0]||0,wins:+r[1]||0,fights:+r[2]||0}:null;
     if(a[14]){const tv=a[14].split('.');const t={};TRAIN_K.forEach((k,i)=>{const n=clamp(+tv[i]||0,0,99);if(n)t[k]=n;});if(Object.keys(t).length)c.train=t;}
     if(a[15])c.gold=clamp(+a[15]||0,0,999999);
+    if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     return c;
   }catch(e){return null;}
 }
@@ -1374,6 +1429,7 @@ function lionSummaryText(c){
   L.push(c.abil.map(k=>ABILITIES[k].name).join(' + ')+' \u00b7 '+BRAINS[c.brain].name+' mind');
   L.push(PELTS[c.pelt||0].name+' coat \u00b7 '+MANES[c.mane||0].name+' mane \u00b7 '+TAILS[c.tail||0].name+' tail \u00b7 IV '+(c.iv||5)+' of 10'+
     (sc?(' \u00b7 '+sc+' scar'+(sc>1?'s':'')):''));
+  L.push(bornText(c)+(c.born?' \u00b7 '+ageText(c):''));
   if(isHog(c)){L.push('');L.push('AWAKENED \u2014 this one answers to the wrong name');}
   if(isGab(c)){L.push('');L.push('ASCENDED \u2014 navy and gold, slow as a king, and it brings the stars down');}
   L.push('');
@@ -1559,10 +1615,12 @@ function drawLionCard(c){
   g.font='600 26px '+CARD_FONT;g.fillStyle='#d1d1d6';
   const recT=rec?(rec.champs+' belt'+(rec.champs===1?'':'s')+' · '+rec.wins+' win'+(rec.wins===1?'':'s')+' in '+rec.fights+' bout'+(rec.fights===1?'':'s'))
                 :'Exhibition lion · no record';
-  g.fillText(recT,76,fy);
+  g.fillText(recT,76,fy-10);
+  g.font='500 21px '+CARD_FONT;g.fillStyle='#8e8e93';
+  g.fillText(c.born?('Born '+bornText(c,true)+' \u00b7 '+ageText(c)):'Born before records were kept',76,fy+20);
   const code=encodeLion(c,rec);
   g.font='500 20px ui-monospace,Menlo,Consolas,monospace';g.fillStyle='#636366';g.textAlign='right';
-  g.fillText(code.length>30?code.slice(0,28)+'…':code,W-76,fy);g.textAlign='left';
+  g.fillText(code.length>30?code.slice(0,28)+'\u2026':code,W-76,fy-10);g.textAlign='left';
   return cv;
 }
 function hexA(hex,a){const h=hex.replace('#','');const n=parseInt(h.length===3?h.split('').map(x=>x+x).join(''):h,16);
@@ -1833,14 +1891,14 @@ function optionsFor(field,c){
   if(field==='tail')return TAILS.map((m,i)=>mk(i,m.name,m.note)).join('');
   if(field==='iv')return Array.from({length:10},(_,i)=>mk(i+1,String(i+1),
     i+1>=9?'Rare blood':(i+1<=2?'A runt':''))).join('');
-  if(field==='scars')return '<div class="grp">add a mark</div>'+
+  if(field==='scars')return '<div class="grp">'+((c.scars||[]).length?((c.scars.length)+' scar'+(c.scars.length>1?'s':'')+' so far \u00b7 tap to add another'):'no scars yet \u00b7 tap to add one')+'</div>'+
     '<button class="opt" data-val="face"><span class="txt"><b>Across the face</b>'+
-      '<small>Runs over the muzzle, sometimes through an eye</small></span><span class="tick">+</span></button>'+
+      '<small>Runs over the muzzle, sometimes through an eye</small></span><span class="tick sym">+</span></button>'+
     '<button class="opt" data-val="body"><span class="txt"><b>Down the body</b>'+
-      '<small>Lies across the flank at its own angle</small></span><span class="tick">+</span></button>'+
+      '<small>Lies across the flank at its own angle</small></span><span class="tick sym">+</span></button>'+
     '<div class="grp">tidy up</div>'+
-    '<button class="opt" data-val="undo"><span class="txt"><b>Remove the last one</b></span><span class="tick">\u2212</span></button>'+
-    '<button class="opt" data-val="clear"><span class="txt"><b>Clear them all</b></span><span class="tick">\u00d7</span></button>';
+    '<button class="opt" data-val="undo"><span class="txt"><b>Remove the last one</b></span><span class="tick sym dim">\u2212</span></button>'+
+    '<button class="opt" data-val="clear"><span class="txt"><b>Clear them all</b></span><span class="tick sym dim">\u00d7</span></button>';
   if(field==='ally')return '<div class="grp">bring another lion into your challenges</div>'+
     '<button class="opt" data-act="allyRoll"><span class="tick tickIco">'+ico('dice')+'</span>'+
     '<span class="txt"><b>Roll a stranger</b><small>A random lion turns up and fights beside you</small></span></button>'+
@@ -2624,7 +2682,7 @@ function rollCareerDraft(){
 function finishCareerLion(){
   const L=CAREER.lion;
   L.name=(L.name||'').trim()||rollName();delete L.named;
-  L.scars=[];L.perks=[];L.record={champs:0,wins:0,fights:0,losses:0};
+  L.scars=[];L.perks=[];L.record={champs:0,wins:0,fights:0,losses:0};L.born=Date.now();
   CAREER.locked=true;CAREER.champ=null;UI.view='home';
   SFX.bell();Store.save();refresh();toast(L.name+' is yours');
   if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
@@ -2796,13 +2854,257 @@ function showHome(){
   refresh();
   MUSIC.sad(false);
 }
+/* the arena and walls picked on the Duel screen belong to Duel; every other fight is in the Colonnade with the walls on */
+function duelLike(){return G&&(G.ctx==='duel'||G.ctx==='duo');}
+function fightArena(){return duelLike()?MATCH.arena:'colonnade';}
+function fightClosing(){return duelLike()?MATCH.closing:true;}
+/* ========== 11b. THE GATES ==========
+   Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
+   corners (south-west and north-east) and stop on their marks. The other two stay shut. */
+const GATE_DEF=[[0,ARENA,-Math.PI/4],[ARENA,0,3*Math.PI/4],[0,0,Math.PI/4],[ARENA,ARENA,-3*Math.PI/4]];
+const GATE_NUM=['I','II','III','IV'];
+function makeGates(prev){return GATE_DEF.map(function(d,i){return {x:d[0],y:d[1],ang:d[2],hw:prev?prev[i].hw:34,open:0,want:0,n:i};});}
+function clearGateCrowd(){
+  if(!G||!G.gates)return;
+  CROWD.list=CROWD.list.filter(function(c){
+    return !G.gates.some(function(q){const p=gateLocal(q,c.x,c.y);return p.x>-gateDims(q).H-40&&p.x<18&&Math.abs(p.y)<q.hw+30;});});
+}
+function gateAt(g,lx,ly){const c=Math.cos(g.ang),s=Math.sin(g.ang);return {x:g.x+lx*c-ly*s,y:g.y+lx*s+ly*c};}
+function gateLocal(g,x,y){const c=Math.cos(g.ang),s=Math.sin(g.ang),dx=x-g.x,dy=y-g.y;return {x:dx*c+dy*s,y:-dx*s+dy*c};}
+function clk(){return G?G.t+(G.ic||0):0;}
+function stepGates(dt){
+  if(!G||!G.gates)return;
+  G.gates.forEach(function(g){const v=dt/.55;g.open=g.want>g.open?Math.min(g.want,g.open+v):Math.max(g.want,g.open-v*.8);});
+}
+/* each gate is drawn as a stone archway facing into the arena, with an iron portcullis that lifts
+   up into the arch. Local frame: +x points into the arena, the arch rises towards -x. */
+function gateDims(q){const hw=q.hw,H=Math.min(hw*1.6,86),cr=Math.min(hw,H*.62);return {hw:hw,H:H,cr:cr};}
+function archPath(g,hw,H,cr,inset){
+  const w=hw-inset,h=H-inset,c=Math.max(4,cr-inset);
+  g.beginPath();g.moveTo(0,-w);g.lineTo(-(h-c),-w);
+  g.ellipse(-(h-c),0,c,w,0,Math.PI/2,-Math.PI/2,false);
+  g.lineTo(0,w);g.closePath();
+}
+function drawGates(g,T){
+  if(!G.gates)return;
+  G.gates.forEach(function(q){
+    const D=gateDims(q),hw=D.hw,H=D.H,cr=D.cr,op=q.open,eo=op*op*(3-2*op),F=12;
+    g.save();g.translate(q.x,q.y);g.rotate(q.ang);
+    /* the stone facade the arch is cut into */
+    g.fillStyle='rgba(0,0,0,.55)';g.fillRect(-H-F+3,-hw-F+3,H+F+2,hw*2+F*2);
+    g.fillStyle='#1f1f26';g.fillRect(-H-F,-hw-F,H+F+4,hw*2+F*2);
+    g.strokeStyle='#17171c';g.lineWidth=1;
+    for(let x=-H-F+10,r=0;x<4;x+=10,r++){
+      g.beginPath();g.moveTo(x,-hw-F);g.lineTo(x,hw+F);g.stroke();
+      for(let y=-hw-F+(r%2?7:0);y<hw+F;y+=14){g.beginPath();g.moveTo(x-10,y);g.lineTo(x,y);g.stroke();}
+    }
+    g.strokeStyle='#3b3b46';g.lineWidth=1.4;g.strokeRect(-H-F,-hw-F,H+F+4,hw*2+F*2);
+    /* voussoirs: the ring of stones around the opening */
+    archPath(g,hw+8,H+8,cr+8,0);g.fillStyle='#34343f';g.fill();
+    g.strokeStyle='#4f4f5c';g.lineWidth=1.2;g.stroke();
+    g.strokeStyle='#22222a';g.lineWidth=1.2;
+    for(let k=0;k<=8;k++){
+      const a=Math.PI/2+k/8*Math.PI,cx=-(H-cr),rx=cr,ry=hw;
+      g.beginPath();g.moveTo(cx+Math.cos(a)*rx*1.0,Math.sin(a)*ry);g.lineTo(cx+Math.cos(a)*(rx+8),Math.sin(a)*(ry+8));g.stroke();
+    }
+    /* keystone with the gate's number */
+    g.fillStyle='#4a4a56';g.fillRect(-H-9,-7,11,14);g.strokeStyle='#8a6a2a';g.lineWidth=1;g.strokeRect(-H-9,-7,11,14);
+    g.save();g.translate(-H-3.5,0);g.rotate(Math.PI/2);
+    g.fillStyle='#e0b45a';g.font="700 7px 'JetBrains Mono',monospace";g.textAlign='center';g.textBaseline='middle';
+    g.fillText(GATE_NUM[q.n],0,.5);g.restore();
+    /* the dark mouth, warming up when the gate opens */
+    archPath(g,hw,H,cr,0);
+    const ig=g.createLinearGradient(-H,0,0,0);
+    ig.addColorStop(0,'#000');ig.addColorStop(1,eo>.01?'rgba(70,40,14,'+(.4+eo*.6).toFixed(2)+')':'#08080a');
+    g.fillStyle='#020203';g.fill();g.fillStyle=ig;g.fill();
+    g.save();archPath(g,hw,H,cr,0);g.clip();
+    /* the portcullis: iron grid, spikes at the bottom, lifting up into the arch */
+    const lift=eo*(H+6);
+    g.translate(-lift,0);
+    g.strokeStyle='#5d5d68';g.lineWidth=2.4;
+    for(let y=-hw+6;y<hw;y+=9){g.beginPath();g.moveTo(-H-4,y);g.lineTo(-1,y);g.stroke();}
+    g.strokeStyle='#4a4a54';g.lineWidth=2;
+    for(let x=-9;x>-H-4;x-=11){g.beginPath();g.moveTo(x,-hw);g.lineTo(x,hw);g.stroke();}
+    g.fillStyle='#6c6c78';
+    for(let y=-hw+6;y<hw;y+=9){g.beginPath();g.moveTo(-1,y-1.8);g.lineTo(4,y);g.lineTo(-1,y+1.8);g.fill();}
+    g.restore();
+    /* torches either side */
+    [-1,1].forEach(function(sd){
+      const py=sd*(hw+12),px=-4;
+      g.fillStyle='#5a4a30';g.fillRect(px-5,py-2,7,4);
+      const fl=.82+.18*Math.sin(T*13+q.n*2+sd)+.08*Math.sin(T*31+sd*3),R=(12+eo*8)*fl;
+      const tgl=g.createRadialGradient(px+3,py,1,px+3,py,R*1.7);
+      tgl.addColorStop(0,'rgba(255,205,120,'+(.6+eo*.3).toFixed(2)+')');tgl.addColorStop(.4,'rgba(255,140,50,.24)');tgl.addColorStop(1,'rgba(255,120,40,0)');
+      g.fillStyle=tgl;g.beginPath();g.arc(px+3,py,R*1.7,0,7);g.fill();
+      g.fillStyle='#ffe09a';g.beginPath();g.arc(px+3,py,2.3*fl,0,7);g.fill();
+    });
+    /* light spilling out onto the sand */
+    if(eo>.01){
+      const sg=g.createRadialGradient(0,0,4,0,0,hw*2.6);
+      sg.addColorStop(0,'rgba(255,170,70,'+(.22*eo).toFixed(3)+')');sg.addColorStop(1,'rgba(255,170,70,0)');
+      g.fillStyle=sg;g.beginPath();g.arc(0,0,hw*2.6,-Math.PI/2,Math.PI/2);g.fill();
+    }
+    g.restore();
+  });
+  g.textAlign='left';g.textBaseline='alphabetic';
+}
+/* ---- the walk out ---- */
+function introOn(){return G.round===1&&!window.NO_INTRO;}
+function escT(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function liftCol(hex,minL){
+  const r=parseInt(hex.slice(1,3),16),gg=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  const L=(.2126*r+.7152*gg+.0722*b)/255;
+  return L>=minL?hex:mix(hex,'#ffffff',(minL-L)/(1-L));
+}
+function introCols(e){
+  if(e.boss){const c=BOSSES[BOSSKIND].col;return [c,liftCol(mix(c,'#ffffff',.35),.6),c];}
+  if(e.dark)return ['#ff5a4d','#b9b9c2','#e2382c'];
+  const C=colsOf(e.cfg);
+  return [liftCol(C.mane,.5),liftCol(C.body,.6),liftCol(C.mane,.42)];
+}
+function introRec(e){
+  const c=e.cfg;
+  if(e.boss)return BOSSKIND==='ancient'?'Older than the arena':(BOSSKIND==='old'?'Retired. Mostly.':'Undefeated');
+  if(e.gab)return 'Record: unknown';
+  const R=c.record,f=R?(R.fights|0):0,w=R?(R.wins|0):0;
+  let out=f?('<b>'+w+'–'+Math.max(0,f-w)+'</b>'):'<b>Debut</b>';
+  const bl=beltsOf(c);
+  if(bl)out+='<span class="bl">'+ico('belt')+(bl>1?bl+' belts':'1 belt')+'</span>';
+  out+='<span class="mut">'+escT(BUILDS[c.build].name)+' · '+escT(e.W.name)+'</span>';
+  return out;
+}
+function introKick(i,grp){
+  const c=G.ctx;
+  if(c==='king')return i===0?(grp.lions.length>1?'The challengers':'The challenger')
+    :(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark'));
+  if(c==='survival')return grp.lions.length>1?'Into the pit':'Alone in the pit';
+  let k=i===0?'In this corner':'And in this corner';
+  if(c==='tourn'&&TOURN.cur&&i===0)k=['Quarter-final','Semi-final','The final'][TOURN.cur.r]+' · '+k;
+  if(c==='career'&&CAREER.champ&&i===1){
+    const ch=CAREER.champ,b=grp.lions[0];
+    k=(beltsOf(b.cfg)?'The belt holder':k)+' · Bout '+(ch.i+1)+' of '+ch.foes.length;
+  }
+  return k;
+}
+function introCaption(i,grp){
+  const el=$('intro');if(!el)return;
+  const L=grp.lions;
+  const names=L.map(function(e){const k=introCols(e);
+    return '<span style="--c1:'+k[0]+';--c2:'+k[1]+';--gl:'+k[2]+'66">'+escT(e.name)+'</span>';}).join('<i>&amp;</i>');
+  const k0=introCols(L[0]);
+  const recs=L.length>1?L.map(function(e){return '<span>'+introRec(e).replace(/<span class="mut">.*<\/span>$/,'')+'</span>';}).join('<span class="mut">&amp;</span>')
+    :introRec(L[0]);
+  el.innerHTML='<div class="ik">'+escT(introKick(i,grp))+'</div><div class="inm">'+names+'</div>'+
+    '<div class="iline" style="background:linear-gradient(90deg,transparent,'+k0[0]+','+k0[1]+',transparent)"></div>'+
+    '<div class="irec">'+recs+'</div><div class="skip">Tap to skip</div>';
+  el.classList.remove('hidden','out','in','top');void el.offsetWidth;el.classList.add('in');
+  if(grp.gate===0)el.classList.add('top');
+}
+function introHide(){
+  const el=$('intro');if(!el)return;
+  el.classList.add('out');
+  setTimeout(function(){if(!G||!G.intro)el.classList.add('hidden');},260);
+}
+/* groups: [[lions out of gate I], [lions out of gate II]] */
+function startIntro(groups,onDone){
+  G.intro={groups:groups.map(function(L,i){return {lions:L,gate:i};}),gi:0,ph:'pre',t:0,onDone:onDone||null};
+  G.ic=0;
+  G.intro.groups.forEach(function(grp){
+    const q=G.gates[grp.gate];
+    let mr=0;grp.lions.forEach(function(e){mr=Math.max(mr,e.r);});
+    q.hw=clamp(mr*1.3+10,36,68);
+    grp.lions.forEach(function(e,j){
+      const off=grp.lions.length>1?((j/(grp.lions.length-1))-.5)*q.hw*.9:0;
+      const p=gateAt(q,-gateDims(q).H*.42,off);
+      e.tx=e.x;e.ty=e.y;e.ta=e.ang;e.sx=p.x;e.sy=p.y;
+      e.x=p.x;e.y=p.y;e.waiting=1;e.fade=0;
+      e.ang=e.aim=Math.atan2(e.ty-p.y,e.tx-p.x);
+    });
+    let far=0;grp.lions.forEach(function(e){far=Math.max(far,Math.hypot(e.tx-e.sx,e.ty-e.sy));});
+    grp.dur=clamp(far/(grp.lions.some(l=>l.boss)?105:140),1.4,2.6);
+  });
+  clearGateCrowd();
+  const g0=G.gates[0],f=gateAt(g0,70,0);
+  G.cam.x=ARENA/2+(f.x-ARENA/2)*.35;G.cam.y=ARENA/2+(f.y-ARENA/2)*.35;
+}
+function introFocus(){
+  const I=G.intro,grp=I.groups[Math.min(I.gi,I.groups.length-1)];
+  if(I.ph==='pre'||I.ph==='open'){const p=gateAt(G.gates[grp.gate],80,0);return p;}
+  let x=0,y=0;grp.lions.forEach(function(e){x+=e.x;y+=e.y;});
+  return {x:x/grp.lions.length,y:y/grp.lions.length};
+}
+function introStep(dt){
+  const I=G.intro;
+  G.ic=(G.ic||0)+dt;I.t+=dt;
+  const grp=I.groups[I.gi];
+  if(I.ph==='pre'){if(I.t>=.35){I.ph='open';I.t=0;}}
+  else if(I.ph==='open'){
+    const q=G.gates[grp.gate];
+    if(q.want<1){q.want=1;SFX.gate();crowdReact(.35);}
+    if(I.t>=.52){
+      I.ph='walk';I.t=0;
+      grp.lions.forEach(function(e){e.waiting=0;});
+      introCaption(I.gi,grp);SFX.herald();
+      const p=gateAt(q,30,0);crowdReact(1.05,p.x,p.y);
+      if(grp.lions.some(l=>l.boss)){SFX.roar();crowdReact(1.4);}
+    }
+  }
+  else if(I.ph==='walk'){
+    const k=Math.min(1,I.t/grp.dur),ek=k*k*(3-2*k);
+    grp.lions.forEach(function(e){
+      const px=e.x,py=e.y;
+      e.x=e.sx+(e.tx-e.sx)*ek;e.y=e.sy+(e.ty-e.sy)*ek;
+      const dir=Math.atan2(e.ty-e.sy,e.tx-e.sx);
+      const turn=clamp((k-.78)/.22,0,1);
+      e.ang=e.aim=dir+angDiff(dir,e.ta)*turn+Math.sin(G.ic*8.5+e.uid)*.06*(1-turn);
+      e.fade=clamp(.3+k*4,0,1);
+      e.dustT=(e.dustT||0)-dt;
+      if(e.dustT<=0&&Math.hypot(e.x-px,e.y-py)>dt*25&&!RM&&G.parts.length<200){
+        e.dustT=.14;
+        G.parts.push({x:e.x-Math.cos(e.ang)*e.r*.7,y:e.y-Math.sin(e.ang)*e.r*.7,
+          vx:rnd(-12,12),vy:rnd(-12,12),life:.42,max:.42,col:'#6a665e',r:rnd(1.6,3.6),dust:1});
+      }
+    });
+    if(k>=1){I.ph='hold';I.t=0;G.gates[grp.gate].want=0;}
+  }
+  else if(I.ph==='hold'){
+    grp.lions.forEach(function(e){e.ang=e.aim=e.ta;e.fade=1;});
+    if(I.t>=.55){
+      I.gi++;I.t=0;
+      if(I.gi<I.groups.length){introHide();I.ph='open';}
+      else I.ph='ready';
+    }
+  }
+  else if(I.ph==='ready'){if(I.t>=.3)finishIntro();}
+  stepGates(dt);
+  for(let i=G.parts.length-1;i>=0;i--){
+    const q=G.parts[i];q.life-=dt;
+    if(q.life<=0){G.parts.splice(i,1);continue;}
+    if(q.ring)q.rad+=(q.maxRad/q.max)*dt;
+    else if(!q.swipe){q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.06,dt);q.vy*=Math.pow(.06,dt);}
+  }
+}
+function finishIntro(skipped){
+  const I=G.intro;if(!I)return;
+  G.lions.forEach(function(e){
+    if(e.tx!==undefined){e.x=e.tx;e.y=e.ty;e.ang=e.aim=e.ta;}
+    e.vx=0;e.vy=0;e.waiting=0;e.fade=1;
+  });
+  G.gates.forEach(function(q){q.want=0;if(skipped)q.open=0;});
+  G.intro=null;G.starting=.45;
+  introHide();
+  if(I.onDone)I.onDone();
+  else{banner(G.rounds>1?'ROUND 1':'FIGHT',.85);SFX.bell();crowdReact(.8);}
+}
+function skipIntro(){if(G&&G.intro)finishIntro(true);}
 function newRound(){
-  const obs=ARENAS[MATCH.arena].make().map(a=>({x:a[0],y:a[1],r:a[2]}));
+  const obs=ARENAS[fightArena()].make().map(a=>({x:a[0],y:a[1],r:a[2]}));
   const keep={a2Cfg:G.a2Cfg,b2Cfg:G.b2Cfg,speed:G.speed,ctx:G.ctx,aCfg:G.aCfg,bCfg:G.bCfg,wins:G.wins,round:(G.round||0)+1,rounds:G.rounds};
   G=Object.assign({t:0,over:false,winner:null,slow:0,shake:0,paused:false,
     lions:[],projectiles:[],parts:[],beams:[],gfx:[],pets:[],nums:[],decals:[],obstacles:obs,
     log:[],wall:WALL0,warned:false,starting:1.2,method:'',
-    cam:{x:ARENA/2,y:ARENA/2,z:1},kill:null,freeze:0,flash:0},keep);
+    cam:{x:ARENA/2,y:ARENA/2,z:1},kill:null,freeze:0,flash:0,gates:makeGates(G.gates),intro:null,ic:0},keep);
+  $('intro').classList.add('hidden');
   if(G.ctx==='survival'||G.ctx==='king'){
     const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),ARENA/2,ARENA-170,-Math.PI/2,true);
     a.hp=a.maxHp;a.abil.forEach(k=>{a.cd[k]=1.2;});
@@ -2823,7 +3125,9 @@ function newRound(){
       if(anc){k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;}
       if(old){k.r*=OLD.size;k.mass*=1.4;}
       KING.maxHp=k.maxHp;
-      banner(old?'OLD LION':(anc?'THE ANCIENT LION':'THE LION KING'),1.7,true);SFX.roar();crowdReact(1.5);
+      if(introOn())startIntro([G.lions.filter(l=>l!==k),[k]],function(){
+        banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
+      else{banner(old?'OLD LION':(anc?'THE ANCIENT LION':'THE LION KING'),1.7,true);SFX.roar();crowdReact(1.5);}
       log(old?'<em class="gold">Old Lion</em> pushes his glasses up. \u201cLet\u2019s see if you were listening.\u201d'
         :(anc?'<em class="gold">The Ancient Lion</em> wakes. The sand goes still.'
              :'<em class="blood">The Lion King</em> comes out of the dark.'));
@@ -2831,8 +3135,8 @@ function newRound(){
       return;
     }
     SURV.wave=0;SURV.kills=0;SURV.spawned=1;SURV.gap=0;SURV.pending=false;SURV.t=0;SURV.gold=0;
-    spawnWave(1);
-    a.foe=nearestPrey(a);
+    const goPack=function(){spawnWave(1);a.foe=nearestPrey(a);};
+    if(introOn())startIntro([G.lions.slice()],goPack);else goPack();
     buildHud();
     log(a.name+' stands alone in the pit.');
     return;
@@ -2849,8 +3153,8 @@ function newRound(){
     makeCrowd();crowdReact(.5);
     buildHud();
     log(a.name+' & '+a2.name+' against '+b.name+' & '+b2.name+'.');
-    banner(G.rounds>1?('ROUND '+G.round):'',.9);
-    SFX.bell();
+    if(introOn())startIntro([[a,a2],[b,b2]]);
+    else{banner(G.rounds>1?('ROUND '+G.round):'',.9);SFX.bell();}
     return;
   }
   const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),150,ARENA-150,-Math.PI/4,true);
@@ -2863,13 +3167,13 @@ function newRound(){
   buildHud();
   log(G.ctx==='career'
     ? 'Bout '+(CAREER.champ.i+1)+' of championship '+CAREER.champ.n+' — <em class="gold">'+b.name+'</em> steps out.'
-    : a.name+' and '+b.name+' enter '+ARENAS[MATCH.arena].name+'.');
+    : a.name+' and '+b.name+' enter '+ARENAS[fightArena()].name+'.');
   G.lions.forEach(function(e){
     if(e.dark&&!e.boss)log('<em class="blood">'+e.name+'</em> should not be here.');
     if(e.gab&&!e.boss)log('<em class="gold">'+e.name+'</em> has arrived. The crowd goes quiet.');
   });
-  banner(G.rounds>1?('ROUND '+G.round):'',.9);
-  SFX.bell();
+  if(introOn())startIntro([[a],[b]]);
+  else{banner(G.rounds>1?('ROUND '+G.round):'',.9);SFX.bell();}
 }
 let bannerT=null,ROUND_TOKEN=0;
 function banner(txt,dur,gold){
@@ -3496,9 +3800,11 @@ function think(e,dt){
 
 /* ========== 12. STEP ========== */
 function step(dt){
+  if(G.intro){introStep(dt);camUpdate(dt);stepCrowd(dt);return;}
+  stepGates(dt);
   G.t+=dt;
   if(G.starting>0)G.starting-=dt;
-  if(MATCH.closing&&G.t>26){
+  if(fightClosing()&&G.t>26){
     if(!G.warned){G.warned=true;banner('THE WALLS CLOSE',1.3);SFX.warn();log('The square begins to close.');}
     G.wall=Math.min(WALL0+168,WALL0+(G.t-26)*7);
   }
@@ -3725,7 +4031,8 @@ function camUpdate(dt){
   const b=(G.ctx==='king')?(G.lions.filter(x=>x.boss)[0]||a)
     :(G.ctx==='survival')?(a.foe&&!a.foe.dead?a.foe:a):(G.lions[1]||a);
   let fx,fy,tz;
-  if(G.kill){fx=G.kill.x;fy=G.kill.y;tz=1.62;}
+  if(G.intro&&G.intro.ph!=='ready'){const f=introFocus();fx=f.x;fy=f.y;tz=1.28;}
+  else if(G.kill){fx=G.kill.x;fy=G.kill.y;tz=1.62;}
   else if(G.ctx==='duo'){
     const up=G.lions.filter(l=>!l.dead);const L=up.length?up:G.lions;
     let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;L.forEach(function(l){x0=Math.min(x0,l.x);x1=Math.max(x1,l.x);y0=Math.min(y0,l.y);y1=Math.max(y1,l.y);});
@@ -3738,7 +4045,8 @@ function camUpdate(dt){
   }
   C.z+=(tz-C.z)*Math.min(1,dt*(G.kill?3.4:2.0));
   const half=ARENA/(2*C.z);
-  const lo=Math.min(ARENA/2,half-STANDS), hi=Math.max(ARENA/2,ARENA-half+STANDS);
+  const ST=STANDS+(G.intro?40:0);
+  const lo=Math.min(ARENA/2,half-ST), hi=Math.max(ARENA/2,ARENA-half+ST);
   fx=clamp(fx,lo,hi);fy=clamp(fy,lo,hi);
   C.x+=(fx-C.x)*Math.min(1,dt*3.0);
   C.y+=(fy-C.y)*Math.min(1,dt*3.0);
@@ -3775,6 +4083,7 @@ function makeCrowd(){
       }
     }
   }
+  clearGateCrowd();
 }
 function crowdReact(power,x,y){
   if(!CROWD.list.length)return;
@@ -3850,14 +4159,14 @@ function draw(){
   if(!G.lions)return;
   const C=G.cam||{x:ARENA/2,y:ARENA/2,z:1};
   ctx.save();
-  ctx.clearRect(-STANDS-40,-STANDS-40,ARENA+STANDS*2+80,ARENA+STANDS*2+80);
+  ctx.clearRect(-STANDS-90,-STANDS-90,ARENA+STANDS*2+180,ARENA+STANDS*2+180);
   ctx.translate(ARENA/2,ARENA/2);
   ctx.scale(C.z,C.z);
   ctx.translate(-C.x,-C.y);
   if(G.shake>.3)ctx.translate(rnd(-1,1)*G.shake/C.z,rnd(-1,1)*G.shake/C.z);
   const W=G.wall,S=ARENA-W*2;
 
-  ctx.fillStyle='#070709';ctx.fillRect(-STANDS-40,-STANDS-40,ARENA+STANDS*2+80,ARENA+STANDS*2+80);
+  ctx.fillStyle='#070709';ctx.fillRect(-STANDS-90,-STANDS-90,ARENA+STANDS*2+180,ARENA+STANDS*2+180);
   ctx.fillStyle='#0d0d10';ctx.fillRect(-STANDS,-STANDS,ARENA+STANDS*2,ARENA+STANDS*2);
   ctx.strokeStyle='rgba(255,255,255,.045)';ctx.lineWidth=1;
   ctx.strokeRect(-30.5,-30.5,ARENA+61,ARENA+61);
@@ -3874,13 +4183,14 @@ function draw(){
   for(let i=0;i<G.decals.length;i++){const d=G.decals[i];
     ctx.beginPath();ctx.ellipse(d.x,d.y,d.r,d.r*.7,0,0,7);ctx.fill();}
 
-  const closing=MATCH.closing&&G.t>26;
+  const closing=fightClosing()&&G.t>26;
   ctx.strokeStyle=closing?FX.blood:'#3a3a44';ctx.lineWidth=closing?3:2;ctx.strokeRect(W,W,S,S);
   ctx.strokeStyle=BONE;ctx.lineWidth=2;
   [[W,W,1,1],[ARENA-W,W,-1,1],[W,ARENA-W,1,-1],[ARENA-W,ARENA-W,-1,-1]].forEach(function(c){
     ctx.beginPath();ctx.moveTo(c[0]+24*c[2],c[1]);ctx.lineTo(c[0],c[1]);ctx.lineTo(c[0],c[1]+24*c[3]);ctx.stroke();});
 
-  drawCrowd(ctx,G.t);
+  drawCrowd(ctx,clk());
+  drawGates(ctx,clk());
 
   for(let i=0;i<G.obstacles.length;i++){
     const o=G.obstacles[i];
@@ -4237,6 +4547,11 @@ function drawBelt(g,R,lunge,n){
 }
 const KINGCOLS={mane:'#141418',body:'#0b0b0e',edge:'#4a4a52',muz:'#3a3a42',plate:'#5c5c66'};
 function drawLion(e){
+  if(e.waiting)return;
+  if(e.fade!=null&&e.fade<1){ctx.save();ctx.globalAlpha=e.fade;drawLionBody(e);ctx.restore();}
+  else drawLionBody(e);
+}
+function drawLionBody(e){
   const R=e.r;
   if(e.dark){
     const t=G.t,pulse=.5+.5*Math.sin(t*2.2);
@@ -4271,12 +4586,12 @@ function drawLion(e){
     for(let q=0;q<e.ghosts.length;q++){
       const gh=e.ghosts[q];
       ctx.globalAlpha=(gh.life/.26)*.22;
-      paintLion(ctx,{x:gh.x,y:gh.y,R:R,ang:gh.ang,t:G.t,pelt:e.cfg.pelt||0,cols:e.gab?GABCOLS:null,
+      paintLion(ctx,{x:gh.x,y:gh.y,R:R,ang:gh.ang,t:clk(),pelt:e.cfg.pelt||0,cols:e.gab?GABCOLS:null,
         mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),armor:e.cfg.armor,scars:[]});
     }
     ctx.globalAlpha=1;
   }
-  paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:G.t,pelt:e.cfg.pelt||0,armor:e.cfg.armor,
+  paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
     cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':null),
     mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
@@ -4711,6 +5026,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   $('sheet').innerHTML=(kind==='death'||w)?statSheet(kind==='death'?G.winner:w,kind==='death'?G.winner.foe:l):'';
   $('result').classList.remove('hidden');
 }
+$('arenaBox').addEventListener('click',function(){skipIntro();});
 $('backBtn').onclick=function(){$('result').classList.add('hidden');showHome();};
 $('pauseBtn').onclick=function(){
   if(!G.lions)return;G.paused=!G.paused;$('pauseBtn').textContent=G.paused?'Resume':'Pause';
@@ -4945,6 +5261,7 @@ addEventListener('keydown',function(ev){
 
 /* ========== BOOT ========== */
 Store.load().then(function(){refresh();fitCanvas();},function(){refresh();fitCanvas();});
+['A','B','A2','B2'].forEach(function(k){if(cfg[k]&&!cfg[k].born)cfg[k].born=Date.now();});
 refresh();fitCanvas();
 </script>
 </body>
