@@ -356,12 +356,39 @@ button{cursor:pointer}
 .invHead b{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em}
 .invHead small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
 .invGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 20px}
-.invSlot{aspect-ratio:1;border-radius:14px;background:var(--s2);border:1.5px dashed rgba(255,255,255,.1);
+.invSlot{font:inherit;padding:0;cursor:default;aspect-ratio:1;border-radius:14px;background:var(--s2);border:1.5px dashed rgba(255,255,255,.1);
   display:grid;place-items:center;align-content:center;gap:4px;position:relative;color:var(--amber)}
-.invSlot.full{border-style:solid;border-color:rgba(255,179,64,.35)}
+.invSlot.full{border-style:solid;border-color:rgba(255,179,64,.35);cursor:pointer}
+.invSlot.full.on{border-color:var(--amber);background:var(--amber-g);box-shadow:0 0 0 1px var(--amber) inset}
+.invSlot.bone,.rico.bone{color:#e8dcc4}
+.invSlot.holy,.rico.holy{color:#fff1cc}
+.invSlot.holy .ico{filter:drop-shadow(0 0 5px rgba(255,236,170,.8))}
+.invSlot.hell,.rico.hell{color:#ff4a3a}
+.invSlot.hell .ico{filter:drop-shadow(0 0 5px rgba(255,60,30,.8))}
+.invSlot.holy.on{background:rgba(255,241,204,.1);border-color:#fff1cc;box-shadow:0 0 0 1px #fff1cc inset}
+.invSlot.hell.on{background:rgba(255,74,58,.12);border-color:#ff4a3a;box-shadow:0 0 0 1px #ff4a3a inset}
+.row .rico.holy{color:#fff1cc;filter:drop-shadow(0 0 5px rgba(255,236,170,.7))}
+.row .rico.hell{color:#ff4a3a;filter:drop-shadow(0 0 5px rgba(255,60,30,.7))}
+.goldPill.skullPill,.price.skullPrice{color:#e8dcc4;background:rgba(232,220,196,.12)}
+.price.skullPrice.poor{opacity:.5}
+.badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
+.badge.holy,.badge.blood{display:inline-flex;align-items:center;gap:5px}
+.badge.holy .ico,.badge.blood .ico{width:14px;height:14px}
+.invSlot.bone.on{background:rgba(232,220,196,.1);border-color:#e8dcc4;box-shadow:0 0 0 1px #e8dcc4 inset}
+.invDet{display:flex;gap:14px;align-items:flex-start;margin:16px 20px 12px;padding:14px;border-radius:var(--rs);background:var(--s2)}
+.invDet .rico{color:var(--amber);flex:none}
+.invDet .rico .ico,.lootCard .rico .ico{width:28px;height:28px}
+.lootCard .rico{flex:none}
+.invDet b{display:block;font-size:17px;font-weight:600}
+.invDet b em{font-style:normal;color:var(--t2);font-weight:500;font-size:15px;margin-left:4px}
+.invDet small{display:block;font-size:14px;color:var(--t2);line-height:1.45;margin-top:3px}
+.act button[disabled]{opacity:.55;cursor:default}
+.lootCard{display:flex;gap:14px;align-items:flex-start;border-radius:var(--rs);padding:16px 18px;margin-top:16px;background:rgba(232,220,196,.07);border:1px solid rgba(232,220,196,.22)}
+.lootCard h5{font-size:17px;font-weight:600;color:#e8dcc4}
+.lootCard p{color:var(--t2);font-size:14px;margin-top:4px;line-height:1.5}
 .invSlot .ico{width:26px;height:26px}
 .invSlot small{font-size:10px;color:var(--t2);text-align:center;padding:0 4px;line-height:1.15}
-.invSlot i{position:absolute;right:6px;bottom:4px;font-style:normal;font-size:11px;font-weight:600;color:var(--t1)}
+.invSlot i{position:absolute;right:7px;top:5px;font-style:normal;font-size:11px;font-weight:600;color:var(--t1)}
 .invNote{display:flex;gap:12px;align-items:flex-start;margin:18px 20px 6px;padding:14px;border-radius:var(--rs);background:rgba(255,179,64,.07);color:var(--amber)}
 .invNote .ico{width:22px;height:22px;flex:none;margin-top:1px}
 .invNote b{display:block;font-size:15px;color:var(--t1);font-weight:600}
@@ -653,7 +680,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them, so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion.</p>
       <h6>Gold and the Lion Store</h6>
-      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). When the lion dies, its gold goes with it.</p>
+      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and one time in five you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 20 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
       <h6>Losing a bout</h6>
@@ -1295,6 +1322,75 @@ function isGabName(c){
   return String((c&&c.name)||'').trim().toLowerCase()==='gabrielion';
 }
 function isGab(c){return !!(c&&(c.ancient||isGabName(c)));}
+/* ---------- souls, from the Mystic Lion ---------- */
+const SOULS={
+  divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
+  demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'}};
+function soulOf(c){return c&&SOULS[c.soul]?c.soul:null;}
+/* the eye colour any lion should be drawn with */
+function lionEyes(c){
+  if(!c)return null;
+  if(isHog(c))return FX.blood;
+  if(isGab(c))return '#ffe14d';
+  const so=soulOf(c);return so?SOULS[so].eyes:null;
+}
+/* under=true: the glow behind the lion. under=false: the halo / sparks on top of it */
+function soulAura(g,x,y,R,ang,t,soul,under){
+  if(!soul)return;
+  g.save();
+  if(soul==='divine'){
+    if(under){
+      const pu=.5+.5*Math.sin(t*2.1);
+      const gr=g.createRadialGradient(x,y,R*.5,x,y,R*(2.5+pu*.3));
+      gr.addColorStop(0,'rgba(255,246,220,.42)');gr.addColorStop(.45,'rgba(255,228,160,.16)');gr.addColorStop(1,'rgba(255,228,160,0)');
+      g.fillStyle=gr;g.beginPath();g.arc(x,y,R*(2.5+pu*.3),0,7);g.fill();
+      g.fillStyle='rgba(255,244,214,.09)';
+      for(let i=0;i<10;i++){
+        const a=t*.25+i*Math.PI/5,L=R*(2.1+.3*Math.sin(t*1.7+i*1.3)),w=.07;
+        g.beginPath();g.moveTo(x+Math.cos(a-w)*R*1.02,y+Math.sin(a-w)*R*1.02);
+        g.lineTo(x+Math.cos(a)*L,y+Math.sin(a)*L);g.lineTo(x+Math.cos(a+w)*R*1.02,y+Math.sin(a+w)*R*1.02);g.closePath();g.fill();
+      }
+    } else {
+      const hx=x+Math.cos(ang)*R*.4,hy=y+Math.sin(ang)*R*.4;
+      g.shadowColor='#ffe9a8';g.shadowBlur=Math.max(4,R*.5);
+      g.strokeStyle='rgba(255,236,170,.92)';g.lineWidth=Math.max(1.2,R*.08);
+      g.beginPath();g.arc(hx,hy,R*(.6+.03*Math.sin(t*3)),0,7);g.stroke();
+      g.shadowBlur=0;
+      for(let i=0;i<6;i++){
+        const a=t*.8+i*Math.PI/3,rr=R*(1.35+.12*Math.sin(t*2+i));
+        g.globalAlpha=.45+.45*Math.sin(t*3+i*2);g.fillStyle='#fff6dc';
+        g.beginPath();g.arc(x+Math.cos(a)*rr,y+Math.sin(a)*rr,Math.max(.9,R*.06),0,7);g.fill();
+      }
+    }
+  } else {
+    if(under){
+      const gr=g.createRadialGradient(x,y,R*.5,x,y,R*2.5);
+      gr.addColorStop(0,'rgba(255,40,20,.34)');gr.addColorStop(.5,'rgba(140,10,5,.22)');gr.addColorStop(1,'rgba(40,0,0,0)');
+      g.fillStyle=gr;g.beginPath();g.arc(x,y,R*2.5,0,7);g.fill();
+      g.strokeStyle='rgba(20,0,0,.4)';g.lineWidth=R*.32;g.beginPath();g.arc(x,y,R*1.28,0,7);g.stroke();
+      for(let k=0;k<2;k++){
+        const n=14;
+        for(let i=0;i<n;i++){
+          const a=i*Math.PI*2/n+t*.35+(k?.22:0),fl=.5+.5*Math.sin(t*9+i*1.7+k*2);
+          const h=R*(k?.32:.5)*(.6+fl*.7),b=R*(k?1.0:1.04),hw=k?.09:.13;
+          const bx=x+Math.cos(a)*b,by=y+Math.sin(a)*b,tx=x+Math.cos(a+Math.sin(t*5+i)*.06)*(b+h),ty=y+Math.sin(a+Math.sin(t*5+i)*.06)*(b+h);
+          g.fillStyle=k?'rgba(255,170,60,.62)':'rgba(230,40,20,.6)';
+          g.beginPath();g.moveTo(x+Math.cos(a-hw)*b,y+Math.sin(a-hw)*b);
+          g.quadraticCurveTo(bx+(tx-bx)*.5+Math.cos(a-1.57)*R*.06,by+(ty-by)*.5+Math.sin(a-1.57)*R*.06,tx,ty);
+          g.quadraticCurveTo(bx+(tx-bx)*.5+Math.cos(a+1.57)*R*.06,by+(ty-by)*.5+Math.sin(a+1.57)*R*.06,x+Math.cos(a+hw)*b,y+Math.sin(a+hw)*b);
+          g.closePath();g.fill();
+        }
+      }
+    } else {
+      for(let i=0;i<5;i++){
+        const ph=(t*.9+i*.37)%1,a=i*1.9+Math.floor(t*.9+i*.37)*2.3;
+        g.globalAlpha=(1-ph)*.85;g.fillStyle=i%2?'#ffb040':'#ff4a2a';
+        g.beginPath();g.arc(x+Math.cos(a)*R*(.9+ph*.9),y+Math.sin(a)*R*(.9+ph*.9)-ph*R*.5,Math.max(.8,R*.05),0,7);g.fill();
+      }
+    }
+  }
+  g.restore();
+}
 const GABCOLS={mane:'#ffc72c',body:'#14244f',edge:'#ffd95a',muz:'#ffe48a',plate:'#ffc72c'};
 const GAB={nova:{cd:5.2,reach:150,max:180,life:.55,dmg:30,stun:.65,kb:430},
            star:{cd:4.0,n:3,delay:.9,r:48,dmg:21}};
@@ -1323,6 +1419,12 @@ function derive(c,scale){
   const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg);
   const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
   const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk);
+  /* a bound soul, divine or demonic: +10% to everything */
+  const SB=soulOf(c)?1.1:1;
+  if(SB>1){return derive2(c,B,A,W,P,tm,maxHp*SB,speed*SB,dmgMult*SB,clamp(dr*SB,0,.62),atk/SB);}
+  return derive2(c,B,A,W,P,tm,maxHp,speed,dmgMult,dr,atk);
+}
+function derive2(c,B,A,W,P,tm,maxHp,speed,dmgMult,dr,atk){
   const wdps=(W.dmg*dmgMult)/(W.cd*atk)+(6*dmgMult)/(.95*atk);
   const ehp=maxHp/(1-dr);
   const T={mend:1.13,aegis:1.11,siphon:1.09,regrow:1.06,thorns:1.05,frenzy:1.10,cub:1.08,dash:1.05,blink:1.05,roar:1.06,vanish:1.09,fury:1.07};
@@ -1351,7 +1453,9 @@ function encodeLion(c,rec){
     c.tail||0,
     TRAIN_K.map(k=>trainOf(c)[k]).join('.'),
     c.gold|0,
-    c.born?Math.floor(c.born/1000).toString(36):''];
+    c.born?Math.floor(c.born/1000).toString(36):'',
+    (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
+    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':'')];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
 }
 function decodeLion(str){
@@ -1372,6 +1476,9 @@ function decodeLion(str){
     if(a[14]){const tv=a[14].split('.');const t={};TRAIN_K.forEach((k,i)=>{const n=clamp(+tv[i]||0,0,99);if(n)t[k]=n;});if(Object.keys(t).length)c.train=t;}
     if(a[15])c.gold=clamp(+a[15]||0,0,999999);
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
+    if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
+      .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
+    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';
     return c;
   }catch(e){return null;}
 }
@@ -1446,6 +1553,9 @@ const ICONS={
   plus:'<path d="M8 3.2v9.6M3.2 8h9.6"/>',
   send2:'<path d="M8 10.4V2.6M5.2 5.4 8 2.6l2.8 2.8"/><path d="M4 8.2H3.4v5.2h9.2V8.2H12"/>',
   coin:'<circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="3"/>',
+  skull:'<path d="M8 2.6c-3 0-5.1 2.1-5.1 4.8 0 1.6.8 2.9 2 3.7v1.9h6.2v-1.9c1.2-.8 2-2.1 2-3.7 0-2.7-2.1-4.8-5.1-4.8z"/><path d="M3.9 4.3 3.3 2.4l2 .9M12.1 4.3l.6-1.9-2 .9"/><circle cx="6.1" cy="7.6" r="1.15"/><circle cx="9.9" cy="7.6" r="1.15"/><path d="M7.4 10.4 8 9.5l.6.9M7 13v-1.3M9 13v-1.3"/>',
+  soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
+  soulX:'<path d="M4.6 2.2c-.7 1.8-.2 3.2 1.3 4.1M11.4 2.2c.7 1.8.2 3.2-1.3 4.1"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M6.6 10.4l1 .6M9.4 10.4l-1 .6"/>',
   bag:'<path d="M4.4 6.2h7.2a1.1 1.1 0 0 1 1.1 1.1v5.6a1.3 1.3 0 0 1-1.3 1.3H4.6a1.3 1.3 0 0 1-1.3-1.3V7.3a1.1 1.1 0 0 1 1.1-1.1z"/><path d="M5.9 6.2V4.8a2.1 2.1 0 0 1 4.2 0v1.4"/><path d="M3.3 9.4h9.4M7 9.4v1.4h2V9.4"/>',
   flask:'<path d="M6.4 2.6h3.2M7 2.6v3.6L3.6 12a1.2 1.2 0 0 0 1 1.8h6.8a1.2 1.2 0 0 0 1-1.8L9 6.2V2.6"/><path d="M5 10h6"/>',
   help:'<path d="M5.3 5.7a2.7 2.7 0 1 1 3.8 2.5c-.7.3-1.1.9-1.1 1.6v.7"/><circle cx="8" cy="13" r=".75" fill="currentColor" stroke="none"/>',
@@ -1502,6 +1612,10 @@ function lionSummaryText(c){
     ' in '+r.fights+' bout'+(r.fights===1?'':'s')+' \u00b7 '+(r.losses||0)+' loss'+((r.losses||0)===1?'':'es')+
     (r.bestWave?(' \u00b7 best pack wave '+r.bestWave):''));
   else L.push('  none \u2014 this one has never entered a championship');
+  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+SOULS[soulOf(c)].name+' \u2014 +10% to health, damage, speed, swing and armour');}
+  const bag=(Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0);
+  if(bag.length){L.push('');L.push('BAG');
+    L.push('  '+bag.map(it=>ITEMS[it.k].name+(it.n>1?' \u00d7'+it.n:'')).join(' \u00b7 '));}
   L.push('');
   L.push(encodeLion(c,r||null));
   return L.join('\n');
@@ -1587,11 +1701,14 @@ function drawLionCard(c){
   g.fillStyle='rgba(255,255,255,.05)';for(let x=ax+20;x<ax+aw;x+=34)for(let y=ay+20;y<ay+ah;y+=34)g.fillRect(x,y,2.5,2.5);
   const R=Math.min(112,BUILDS[c.build].r*3.7),lx=W/2+R*.5,ly=ay+ah/2+R*.25,ang=-.62;
   if(gab)gabAura(g,lx,ly,R,1.3);
+  const cso=(!gab&&!hog)?soulOf(c):null;
+  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,true);
   if(hog){const hg=g.createRadialGradient(lx,ly,R*.6,lx,ly,R*2.6);hg.addColorStop(0,'rgba(226,56,44,.35)');hg.addColorStop(1,'rgba(226,56,44,0)');
     g.fillStyle=hg;g.beginPath();g.arc(lx,ly,R*2.6,0,7);g.fill();}
   g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(lx+8,ly+R*.9,R*1.5,R*.32,0,0,7);g.fill();
   paintLion(g,{x:lx,y:ly,R:R,ang:ang,t:1.3,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),
-    scars:c.scars||[],belts:belts,armor:c.armor,cols:hog?KINGCOLS:(gab?GABCOLS:null),eyes:hog?FX.blood:(gab?'#ffe14d':null)});
+    scars:c.scars||[],belts:belts,armor:c.armor,cols:hog?KINGCOLS:(gab?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!cso});
+  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,false);
   if(c.old)drawOldBits(g,lx,ly,R,ang,1.3,false,0);
   g.restore();
   rr(g,ax,ay,aw,ah,36);g.lineWidth=1.5;g.strokeStyle='rgba(255,255,255,.08)';g.stroke();
@@ -1608,6 +1725,8 @@ function drawLionCard(c){
   if(belts)badge(belts>=3?'Legend ×'+belts:'Belt ×'+belts,'#ffd60a','rgba(255,214,10,.16)',ICONS.belt);
   if(gab)badge('Ascended','#ffc72c','rgba(255,199,44,.16)');
   if(hog)badge('Awakened','#ff5a4d','rgba(255,90,77,.16)');
+  if(soulOf(c)==='divine')badge('Divine soul','#fff1cc','rgba(255,241,204,.14)',ICONS.soulD);
+  if(soulOf(c)==='demon')badge('Demonic soul','#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
   if((c.iv||5)>=9)badge('Rare blood','#ffb340','rgba(255,179,64,.14)');
   if((c.iv||5)<=2)badge('Runt','#a1a1a6','rgba(255,255,255,.08)');
@@ -1950,10 +2069,10 @@ function optionsFor(field,c){
     '<div class="codeRow"><input id="allyCode" placeholder="LION1-..." spellcheck="false">'+
     '<button data-act="allyPaste">'+ico('paste')+'Load</button></div>'+
     '<div class="grp">They fight on your side and cost you nothing. Two at most.</div>';
-  if(field==='shopCoat')return '<div class="grp">pick a new coat \u00b7 20 gold</div><div class="swatchGrid">'+PELTS.map((p,i)=>
+  if(field==='shopCoat')return '<div class="grp">pick a new coat</div><div class="swatchGrid">'+PELTS.map((p,i)=>
     '<button data-val="'+i+'" aria-pressed="'+((c.pelt||0)===i)+'" title="'+p.name+'">'+
     '<i style="background:'+p.hex+'"></i></button>').join('')+'</div>';
-  if(field==='shopPotion')return '<div class="grp">which one goes in the pot? \u00b7 30 gold</div>'+
+  if(field==='shopPotion')return '<div class="grp">which one goes in the pot?</div>'+
     (c.traits||[]).map(function(id){const T=TRAITS[id];if(!T)return '';
       return '<button class="opt" data-val="'+id+'"><span class="tick tickIco">'+traitIco(T)+'</span>'+
         '<span class="txt"><b>Reroll '+T.name+'</b><small>'+T.desc+'</small></span></button>';}).join('')+
@@ -2039,7 +2158,7 @@ function loadPastedCode(){
 /* the Editor only ever takes a blank slate: belts and medallions are earned in championships */
 function loadCode(c){
   if(MATCH.mode==='editor'){
-    const had=hasCareer(c);c.perks=[];c.record=null;delete c.train;delete c.gold;placeLoaded(c);
+    const had=hasCareer(c);c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;placeLoaded(c);
     if(had)toast('Loaded blank \u2014 belts are earned, not pasted');
     return;}
   askCareer(c,placeLoaded);
@@ -2056,7 +2175,7 @@ function placeLoaded(c){
   SFX.bell();refresh();toast(c.name+' loaded');
 }
 /* a code from a career lion carries belts and medallions: ask before letting them in */
-function hasCareer(c){return !!((c.perks&&c.perks.length)||beltsOf(c)||trainCount(c));}
+function hasCareer(c){return !!((c.perks&&c.perks.length)||beltsOf(c)||trainCount(c)||soulOf(c));}
 function askCareer(c,apply){
   if(!hasCareer(c)){apply(c);return;}
   UI.ask={c:c,apply:apply};
@@ -2077,7 +2196,7 @@ function answerCareer(keep){
   const q=UI.ask;UI.ask=null;$('askWrap').classList.add('hidden');
   if(!q)return;
   const c=q.c;
-  if(!keep){c.perks=[];c.record=null;delete c.train;delete c.gold;}
+  if(!keep){c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;}
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
@@ -2091,7 +2210,7 @@ function lionSheetText(c){
     '\n'+encodeLion(c,c.record||null)+
     '\n\nPaste that code into a duel slot in Lion Simulator, or open this file in Lion Designer.\n';
 }
-const SHEET_TITLE={careerLoad:'Load a lion into the den',shopCoat:'Colour Change \u00b7 20 gold',shopPotion:'Personality Potion \u00b7 30 gold',shopWeapon:'New weapon \u00b7 60 gold',tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Personality',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
+const SHEET_TITLE={careerLoad:'Load a lion into the den',shopCoat:'Colour Change',shopPotion:'Personality Potion',shopWeapon:'New weapon \u00b7 60 gold',tail:'Tail',iv:'Individual value',scars:'Scars',ally:'Add a lion',summary:'The lion at a glance',traits:'Personality',build:'Frame',armor:'Armour',weapon:'Weapon',abil:'Abilities',brain:'Mind',
   pelt:'Coat',mane:'Mane',arena:'Arena',closing:'Closing walls'};
 function openSheet(kind,field){
   const career=(MATCH.mode==='career');
@@ -2112,7 +2231,7 @@ function closeSheet(){UI.sheet=null;UI.hallLion=null;$('sheetWrap').classList.ad
 function chooseOption(val){
   const sh=UI.sheet;if(!sh)return;
   const f=sh.field;
-  if(sh.kind==='shop'){shopBuy(f,val);return;}
+  if(sh.kind==='invUse'){invApply(f,val);return;}
   if(sh.field==='summary'||sh.field==='ally')return;
   if(sh.field==='traits'){
     if(!traitsEditable())return;
@@ -2161,6 +2280,8 @@ function badgesFor(L,rec){
   if(rec.fights===0)out.push('<span class="badge">Unproven</span>');
   else if(!(rec.losses||0)&&rec.fights>=3)out.push('<span class="badge">Unbeaten</span>');
   if(rec.losses)out.push('<span class="badge blood">'+rec.losses+' scar'+(rec.losses>1?'s':'')+'</span>');
+  if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul</span>');
+  if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
   if(CAREER.champ)out.push('<span class="badge amber">In a run</span>');
@@ -2179,6 +2300,7 @@ function renderCareer(){
   }
   if(!CAREER.locked){host.innerHTML=editorHTML('career',L,'Create your lion',true);return;}
   if(UI.view==='shop'){host.innerHTML=shopHTML(L);return;}
+  if(UI.view==='mystic'){host.innerHTML=mysticHTML(L);return;}
   if(UI.view==='edit'){host.innerHTML=editorHTML('career',L,L.name,true);return;}
   const rec=L.record,ch=CAREER.champ;
   host.innerHTML='<div class="hd"><h2>The den</h2><span>'+(ch?('In championship '+ch.n+'.'):'Resting between championships.')+'</span></div>'+
@@ -2197,6 +2319,9 @@ function renderCareer(){
     '<div class="card"><button class="row storeRow" data-act="openShop">'+shopIconHTML()+
       '<span class="v">Lion Store<small>The Red Lion is open for business. Bring gold.</small></span>'+
       '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span><span class="go">\u203a</span></button>'+
+      '<button class="row storeRow" data-act="openMystic">'+mysticIconHTML()+
+      '<span class="v">Mystic Lion<small>Sells souls. Takes payment in skulls, and nothing else.</small></span>'+
+      '<span class="goldPill skullPill">'+ico('skull')+invCount(L,'skull')+'</span><span class="go">\u203a</span></button>'+
       '<button class="row" data-act="careerLoad"><span class="rico">'+ico('paste')+'</span><span class="v">Load a lion from a code'+
       '<small>Bring in any saved lion. '+esc(L.name)+' would retire to the hall.</small></span><span class="go">\u203a</span></button></div>'+
     (ch?('<div class="hd"><h2>Championship '+ch.n+'</h2><span>Bout '+Math.min(ch.i+1,5)+' of five.</span></div>'+
@@ -2230,31 +2355,101 @@ function hallHTML(){
     }).join(''):'<p class="empty">Nothing on the wall yet.<br>It fills up faster than you would like.</p>')+'</div>';
 }
 function renderHall(){}
-/* ---------- inventory (placeholder) ----------
-   Every championship lion carries its own bag, saved on the lion itself (L.inv), not on the player.
-   Nothing fills it yet: items arrive in a later update. */
-const INV_SLOTS=16;
-function openInventory(){
+/* ---------- inventory ----------
+   Every championship lion carries its own bag, saved on the lion itself (L.inv = [{k,n}]), never on the player.
+   Store purchases land here and are used from here. Skulls are trophies: they stack and do nothing else (yet). */
+const INV_SLOTS=16,INV_STACK=99;
+const ITEMS={
+  coat:  {name:'Colour Change',     ico:'drop', use:'shopCoat',  desc:'A pot of dye. Use it to give your lion any coat you like.'},
+  potion:{name:'Personality Potion',ico:'flask',use:'shopPotion',desc:'Rerolls one of its two traits. You choose which one goes.'},
+  weapon:{name:'Weapon',            ico:'sword',use:'shopWeapon',desc:'A voucher for the rack. Use it to swap to any weapon.'},
+  skull: {name:'Lion Skull',        ico:'skull',use:null,        desc:'Taken from a lion it beat in a championship. The Mystic Lion takes them as payment.'},
+  divine:{name:'Divine Soul',       ico:'soulD',use:'soul',soul:'divine',desc:'Bind it and your lion\u2019s eyes glow white as an angel\u2019s, with a holy light around it. +10% to every stat.'},
+  demon: {name:'Demonic Soul',      ico:'soulX',use:'soul',soul:'demon', desc:'Bind it and your lion\u2019s eyes burn red, wreathed in hellfire. +10% to every stat.'}};
+const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon'};
+function invOf(L){
+  if(!Array.isArray(L.inv))L.inv=[];
+  L.inv=L.inv.filter(function(it){return it&&ITEMS[it.k]&&it.n>0;});
+  return L.inv;
+}
+function invCount(L,k){const it=invOf(L).filter(x=>x.k===k)[0];return it?it.n:0;}
+/* returns false when there is no room */
+function invAdd(L,k,n){
+  const inv=invOf(L);n=n||1;
+  const it=inv.filter(x=>x.k===k&&x.n<INV_STACK)[0];
+  if(it){it.n=Math.min(INV_STACK,it.n+n);return true;}
+  if(inv.length>=INV_SLOTS)return false;
+  inv.push({k:k,n:n});return true;
+}
+function invTake(L,k){
+  const inv=invOf(L),it=inv.filter(x=>x.k===k)[0];if(!it)return false;
+  it.n--;if(it.n<=0)inv.splice(inv.indexOf(it),1);return true;
+}
+function openInventory(sel){
   const L=CAREER.lion;if(!L)return;
-  L.inv=L.inv||[];
-  const items=L.inv;
+  const items=invOf(L);
+  if(sel===undefined||!items[sel])sel=items.length?0:-1;
+  UI.invSel=sel;
   let grid='';
   for(let i=0;i<INV_SLOTS;i++){
-    const it=items[i];
-    grid+=it?('<div class="invSlot full" title="'+esc(it.name||'')+'">'+ico(it.ico||'spark')+'<small>'+esc(it.name||'')+'</small>'+
-      (it.n>1?'<i>'+it.n+'</i>':'')+'</div>')
+    const it=items[i],I=it&&ITEMS[it.k];
+    grid+=it?('<button class="invSlot full'+(i===sel?' on':'')+(it.k==='skull'?' bone':'')+(it.k==='divine'?' holy':'')+(it.k==='demon'?' hell':'')+'" data-act="invPick" data-i="'+i+'" title="'+I.name+'">'+
+      ico(I.ico)+'<small>'+I.name+'</small>'+(it.n>1?'<i>×'+it.n+'</i>':'')+'</button>')
       :'<div class="invSlot"></div>';
   }
+  let det='';
+  if(sel>=0){
+    const it=items[sel],I=ITEMS[it.k];
+    det='<div class="invDet"><span class="rico'+(it.k==='skull'?' bone':'')+(it.k==='divine'?' holy':'')+(it.k==='demon'?' hell':'')+'">'+ico(I.ico)+'</span><div class="v"><b>'+I.name+
+      (it.n>1?' <em>×'+it.n+'</em>':'')+'</b><small>'+I.desc+'</small></div></div>'+
+      (I.soul&&soulOf(L)?'<div class="grp">'+esc(L.name)+' already carries a '+SOULS[soulOf(L)].name.toLowerCase()+'. '+(soulOf(L)===I.soul?'It cannot hold two of the same.':'This one would drive it out.')+'</div>':'')+
+      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':'Use')+'</button>'
+        :'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>')+'</div>';
+  } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
+      'Beat lions in a championship and now and then you take a skull home.</small></div></div>';
   UI.sheet={kind:'inv',field:'inv'};
   $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Inventory</h3>'+
     '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+
-    '<div class="invHead"><div><b>'+esc(L.name)+'\u2019s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
+    '<div class="invHead"><div><b>'+esc(L.name)+'’s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
     '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span></div>'+
-    '<div class="invGrid">'+grid+'</div>'+
-    '<div class="invNote">'+ico('bag')+'<div><b>Coming soon</b><small>Items will turn up along the way. Every lion carries its own bag: when it retires or dies, the bag goes with it.</small></div></div>'+
+    '<div class="invGrid">'+grid+'</div>'+det+
+    '<div class="grp">The bag belongs to '+esc(L.name)+'. When it retires or dies, the bag goes with it.</div>'+
     '</div>';
   $('sheetWrap').classList.remove('hidden');
 }
+/* using an item opens the same picker the store used to */
+function invUse(k){
+  const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!I.use||!invCount(L,k))return;
+  if(!CAREER.locked){toast('Finish the lion first');return;}
+  if(I.use==='soul'){bindSoul(I.soul);return;}
+  SFX.ui();openSheet('invUse',I.use);
+}
+function applyItem(field,val){
+  const L=CAREER.lion;if(!L)return false;
+  if(field==='shopCoat'){
+    const v=+val;if((L.pelt||0)===v){toast('It already wears that coat');return false;}
+    L.pelt=v;toast('New coat: '+PELTS[v].name);
+  } else if(field==='shopWeapon'){
+    if(L.weapon===val){toast('It already carries that');return false;}
+    L.weapon=val;toast(L.name+' takes up the '+WEAPONS[val].name);
+  } else if(field==='shopPotion'){
+    const i=L.traits.indexOf(val);if(i<0)return false;
+    const other=L.traits[1-i];
+    const pool=TK.filter(k=>k!==val&&k!==other&&TRAITS[k].opp!==other&&TRAITS[other]&&TRAITS[other].opp!==k);
+    const nk=pickOne(pool.length?pool:TK.filter(k=>k!==val&&k!==other));
+    L.traits[i]=nk;toast(TRAITS[val].name+' → '+TRAITS[nk].name);
+  } else return false;
+  return true;
+}
+function invApply(field,val){
+  const L=CAREER.lion,k=SHOP_ITEM[field];if(!L||!k)return;
+  if(!invCount(L,k)){closeSheet();return;}
+  if(!applyItem(field,val))return;
+  invTake(L,k);SFX.heal();
+  delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;
+  Store.save();refresh();openInventory();
+}
+
 /* the hall's crest: a fluted Ionic column with a grapevine trailing in towards the title.
    The right-hand side is the same drawing mirrored. */
 let HOF_SVG=null;
@@ -2558,6 +2753,7 @@ function shopHTML(L){
       '<span class="v">'+name+'<small>'+desc+'</small></span>'+
       '<span class="price'+(ok?'':' poor')+'">'+ico('coin')+cost+'</span></button>';
   };
+  const have=invOf(L).reduce((a,x)=>a+(x.k!=='skull'?x.n:0),0);
   return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
     '<div class="hd"><h2>Lion Store</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b>. It spends here and nowhere else.</span></div>'+
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="shop"></canvas></div>'+
@@ -2567,30 +2763,131 @@ function shopHTML(L){
       item('shopPotion','flask','Personality Potion','Rerolls one of its two traits. You choose which.')+
       item('shopWeapon','sword','Weapon','Swap to any weapon on the rack.')+
     '</div>'+
+    '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
+      '<span class="v">Open the bag<small>Bought items go in the bag. Use them from there whenever you like.</small></span>'+
+      (have?'<span class="goldPill">'+have+'</span>':'')+'<span class="go">\u203a</span></button></div>'+
     '<p class="muted" style="padding:0 2px 8px">Gold comes from winning championship bouts (5 to 15 a win) and clearing waves of the pack (1 to 3 a wave). '+
     'When this lion is gone, so is its gold.</p>';
 }
 function shopSay(list){SHOP.quip=pickOne(list);}
-function shopBuy(field,val){
-  const L=CAREER.lion;if(!L||!CAREER.locked){closeSheet();return;}
-  const cost=SHOP.price[field];L.gold=L.gold||0;
-  if(L.gold<cost){closeSheet();shopSay(SHOP.broke);toast('You need '+(cost-L.gold)+' more gold');return;}
-  if(field==='shopCoat'){
-    const v=+val;if((L.pelt||0)===v){toast('It already wears that coat');return;}
-    L.pelt=v;toast('New coat: '+PELTS[v].name);
-  } else if(field==='shopWeapon'){
-    if(L.weapon===val){toast('It already carries that');return;}
-    L.weapon=val;toast(L.name+' takes up the '+WEAPONS[val].name);
-  } else if(field==='shopPotion'){
-    const i=L.traits.indexOf(val);if(i<0)return;
-    const other=L.traits[1-i];
-    const pool=TK.filter(k=>k!==val&&k!==other&&TRAITS[k].opp!==other&&TRAITS[other]&&TRAITS[other].opp!==k);
-    const nk=pickOne(pool.length?pool:TK.filter(k=>k!==val&&k!==other));
-    L.traits[i]=nk;toast(TRAITS[val].name+' \u2192 '+TRAITS[nk].name);
-  } else return;
+/* ---------- the Mystic Lion: souls for skulls ---------- */
+const MYSTIC={price:20,quip:'',
+  hello:['Sit. The spirits were expecting you.','Twenty skulls a soul. The dead are not cheap.','Light or dark. Choose, and it chooses you back.',
+         'Every skull remembers. So do I.','I see a lion. I see skulls. Good.'],
+  thanks:['It is done. Do not look back.','The soul has found its keeper.','Wear it well. It is watching.'],
+  broke:['The spirits want twenty skulls. Not one fewer.','Win more fights. Bring me what is left of them.']};
+const MYSTCOLS={mane:'#5b2a9e',body:'#2a1a4a',edge:'#b48cff',muz:'#d9c7ff',plate:'#b48cff'};
+function mysticSay(list){MYSTIC.quip=pickOne(list);}
+let MYSTICON=null;
+function mysticIconHTML(){
+  if(MYSTICON===null){
+    try{
+      const c=document.createElement('canvas');c.width=88;c.height=88;const g=c.getContext('2d');
+      g.fillStyle='#120b1f';g.fillRect(0,0,88,88);g.scale(2,2);
+      const gr=g.createRadialGradient(22,25,4,22,25,22);gr.addColorStop(0,'rgba(180,140,255,.45)');gr.addColorStop(1,'rgba(180,140,255,0)');
+      g.fillStyle=gr;g.fillRect(0,0,44,44);
+      paintLion(g,{x:22,y:25,R:11,ang:Math.PI/2,t:0,pelt:0,cols:MYSTCOLS,mane:3,tail:0,seed:9,scars:[],armor:'none',eyes:'#e6d4ff',eyeGlow:true});
+      MYSTICON=c.toDataURL?c.toDataURL():'';
+    }catch(e){MYSTICON='';}
+  }
+  return MYSTICON?'<img class="shopIco" src="'+MYSTICON+'" alt="">':'<span class="rico">'+ico('soulD')+'</span>';
+}
+function mysticHTML(L){
+  const sk=invCount(L,'skull');
+  const item=function(k){
+    const I=ITEMS[k],ok=sk>=MYSTIC.price;
+    return '<button class="row" data-act="mysticBuy" data-k="'+k+'"><span class="rico '+(k==='divine'?'holy':'hell')+'">'+ico(I.ico)+'</span>'+
+      '<span class="v">'+I.name+'<small>'+(k==='divine'?'Eyes white as an angel’s and a holy light around it. +10% to every stat.'
+        :'Eyes red as coals, wreathed in hellfire. +10% to every stat.')+'</small></span>'+
+      '<span class="price skullPrice'+(ok?'':' poor')+'">'+ico('skull')+MYSTIC.price+'</span></button>';
+  };
+  return '<button class="back" data-act="back">‹ Back to the den</button>'+
+    '<div class="hd"><h2>The Mystic Lion</h2><span>'+esc(L.name)+' carries <b style="color:#e8dcc4">'+sk+' skull'+(sk===1?'':'s')+'</b>. The Mystic Lion trades in nothing else.</span></div>'+
+    '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="mystic"></canvas></div>'+
+    '<div class="hd sub2"><h2>On the altar</h2><span>Two souls. Twenty skulls each.</span></div>'+
+    '<div class="card">'+item('divine')+item('demon')+'</div>'+
+    '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
+      '<span class="v">Open the bag<small>Souls go in the bag. Bind one to your lion from there.</small></span><span class="go">›</span></button></div>'+
+    '<p class="muted" style="padding:0 2px 8px">A lion can carry one soul at a time. Binding a new one drives the old one out. '+
+    'Skulls come from championship wins: one time in five, your lion takes the loser’s skull.</p>';
+}
+function mysticBuy(k){
+  const L=CAREER.lion;if(!L||!CAREER.locked||!ITEMS[k]||!ITEMS[k].soul)return;
+  const have=invCount(L,'skull');
+  if(have<MYSTIC.price){mysticSay(MYSTIC.broke);toast('You need '+(MYSTIC.price-have)+' more skull'+(MYSTIC.price-have===1?'':'s'));refresh();return;}
+  for(let i=0;i<MYSTIC.price;i++)invTake(L,'skull');
+  if(!invAdd(L,k,1)){invAdd(L,'skull',MYSTIC.price);toast('The bag is full');mysticSay(['Your bag is full. Make room for a soul.']);refresh();return;}
+  SFX.cast();mysticSay(MYSTIC.thanks);toast(ITEMS[k].name+' is in the bag');
+  Store.save();refresh();
+}
+function bindSoul(kind){
+  const L=CAREER.lion,S=SOULS[kind];if(!L||!S||!invCount(L,S.item))return;
+  const prev=soulOf(L);
+  if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
+  invTake(L,S.item);L.soul=kind;
+  if(kind==='divine')SFX.heal();else SFX.roar();
+  toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
+  delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
+  Store.save();refresh();openInventory();
+}
+function drawMysticScene(g,p){
+  const w=p.w,h=p.h,t=p.t;
+  g.fillStyle='#120b1f';g.fillRect(0,0,w,h);
+  /* the rune circle on the floor */
+  const cx=w/2,cy=(96+h)/2,cr=Math.max(20,Math.min(w,h-96)*.42);
+  g.strokeStyle='rgba(180,140,255,.16)';g.lineWidth=1.2;
+  g.beginPath();g.arc(cx,cy,cr,0,7);g.stroke();g.beginPath();g.arc(cx,cy,cr*.82,0,7);g.stroke();
+  g.fillStyle='rgba(200,170,255,.28)';
+  for(let i=0;i<12;i++){const a=t*.12+i*Math.PI/6;g.beginPath();g.arc(cx+Math.cos(a)*cr*.91,cy+Math.sin(a)*cr*.91,1.6,0,7);g.fill();}
+  /* back wall: a sky full of stars */
+  g.fillStyle='#1b1030';g.fillRect(0,0,w,24);g.fillStyle='#2c1d4d';g.fillRect(0,20,w,4);
+  for(let i=0;i<Math.floor(w/9);i++){const sx=(i*53.7)%w,sy=3+((i*17.3)%15);
+    g.globalAlpha=.3+.6*(.5+.5*Math.sin(t*2+i));g.fillStyle=i%5?'#d9c7ff':'#fff1cc';g.fillRect(sx,sy,1.4,1.4);}
+  g.globalAlpha=1;
+  /* the Mystic Lion, sat behind the altar, with orbs going round it */
+  const kx=w/2,ky=46,kR=20,ka=Math.PI/2+Math.sin(t*.5)*.16;
+  const ag=g.createRadialGradient(kx,ky,kR*.5,kx,ky,kR*2.6);ag.addColorStop(0,'rgba(180,140,255,.38)');ag.addColorStop(1,'rgba(180,140,255,0)');
+  g.fillStyle=ag;g.beginPath();g.arc(kx,ky,kR*2.6,0,7);g.fill();
+  paintLion(g,{x:kx,y:ky,R:kR,ang:ka,t:t,pelt:0,cols:MYSTCOLS,mane:3,tail:0,seed:9,scars:[],armor:'none',eyes:'#e6d4ff',eyeGlow:true,anim:(t%6)<.18});
+  for(let i=0;i<3;i++){const a=t*1.1+i*2.094,ox=kx+Math.cos(a)*kR*1.6,oy=ky+Math.sin(a)*kR*.9;
+    g.shadowColor='#b48cff';g.shadowBlur=8;g.fillStyle=['#b48cff','#fff1cc','#ff5a3a'][i];
+    g.beginPath();g.arc(ox,oy,3,0,7);g.fill();g.shadowBlur=0;}
+  /* the altar: dark stone, candles, a crystal ball and two jars */
+  g.fillStyle='#2a2140';g.fillRect(8,70,w-16,20);g.fillStyle='#3b2f5c';g.fillRect(8,70,w-16,5);
+  g.fillStyle='rgba(0,0,0,.35)';g.fillRect(8,90,w-16,4);
+  [24,44,w-60,w-24].forEach(function(x,i){
+    g.fillStyle='#e8dcc4';g.fillRect(x-2.5,72,5,10);
+    const fl=1+.25*Math.sin(t*14+i*2);
+    g.shadowColor='#ffcf7a';g.shadowBlur=8;g.fillStyle='#ffcf7a';
+    g.beginPath();g.ellipse(x,69,2*fl,3.6*fl,0,0,7);g.fill();g.shadowBlur=0;});
+  const bg=g.createRadialGradient(68,76,1,68,79,9);bg.addColorStop(0,'#f2e8ff');bg.addColorStop(.5,'#9a6cff');bg.addColorStop(1,'#3a1f7a');
+  g.fillStyle=bg;g.beginPath();g.arc(68,79,8,0,7);g.fill();
+  [['#fff1cc',w-82],['#ff4a3a',w-104]].forEach(function(q,i){
+    g.shadowColor=q[0];g.shadowBlur=10+4*Math.sin(t*3+i);g.fillStyle=q[0];
+    g.beginPath();g.arc(q[1],80,5.5,0,7);g.fill();g.shadowBlur=0;
+    g.fillStyle='#3b2f5c';g.fillRect(q[1]-3,72,6,3);});
+  /* what it says */
+  const say=MYSTIC.quip||MYSTIC.hello[0];
+  g.font='italic 600 12px -apple-system,BlinkMacSystemFont,sans-serif';
+  const maxW=Math.max(90,Math.min(170,w/2-50)),words=say.split(' '),lines=[];let ln='';
+  words.forEach(function(wd){const tst=ln?ln+' '+wd:wd;if(g.measureText(tst).width>maxW&&ln){lines.push(ln);ln=wd;}else ln=tst;});
+  if(ln)lines.push(ln);
+  const bw=Math.min(maxW,Math.max.apply(null,lines.map(l=>g.measureText(l).width)))+18,bh=lines.length*15+12;
+  const bx=Math.max(kx+26,Math.min(kx+30,w-8-bw)),by=Math.max(4,30-bh/2);
+  g.fillStyle='rgba(44,26,78,.96)';g.strokeStyle='rgba(180,140,255,.6)';g.lineWidth=1;
+  g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,9);else g.rect(bx,by,bw,bh);g.fill();g.stroke();
+  g.beginPath();g.moveTo(bx,by+bh*.55);g.lineTo(bx-8,by+bh*.7);g.lineTo(bx+4,by+bh*.8);g.fill();
+  g.fillStyle='#eadcff';lines.forEach(function(l,i){g.fillText(l,bx+9,by+18+i*15);});
+}
+function shopBuy(field){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;
+  const cost=SHOP.price[field],k=SHOP_ITEM[field];L.gold=L.gold||0;
+  if(!k)return;
+  if(L.gold<cost){shopSay(SHOP.broke);toast('You need '+(cost-L.gold)+' more gold');return;}
+  if(!invAdd(L,k,1)){toast('The bag is full');shopSay(['No room in the bag, friend. Use something first.']);return;}
   L.gold-=cost;SFX.coin();shopSay(SHOP.thanks);
-  delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;
-  closeSheet();Store.save();refresh();
+  toast(ITEMS[k].name+' is in the bag');
+  Store.save();refresh();
 }
 function drawShopScene(g,p){
   const w=p.w,h=p.h,t=p.t;
@@ -2643,6 +2940,7 @@ function renderLaunch(){
   }
   if(UI.view==='edit'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Done</button>';return;}
   if(UI.view==='shop'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the store</button>';return;}
+  if(UI.view==='mystic'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the Mystic Lion</button>';return;}
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+(MATCH.duo?'Send in both teams':'Send them in')+'</button>';return;}
   if(MATCH.mode==='tourn'){
     if(!TOURN.br){bar.innerHTML='<button class="go1" data-act="tStart">'+ico('trophy')+'Start the tournament</button>';return;}
@@ -2925,9 +3223,12 @@ function handleAct(a,el){
   if(a==='duoOff'||a==='duoOn'){SFX.ui();MATCH.duo=(a==='duoOn');refresh();return;}
   if(a==='openShop'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();UI.view='shop';shopSay(SHOP.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
-  if(a==='shopItem'){const k=el&&el.dataset.item,L=CAREER.lion;if(!L||!SHOP.price[k])return;
-    if((L.gold||0)<SHOP.price[k]){shopSay(SHOP.broke);toast('You need '+(SHOP.price[k]-(L.gold||0))+' more gold');return;}
-    SFX.ui();openSheet('shop',k);return;}
+  if(a==='openMystic'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();UI.view='mystic';mysticSay(MYSTIC.hello);refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
+  if(a==='mysticBuy'){mysticBuy(el&&el.dataset.k);return;}
+  if(a==='shopItem'){const k=el&&el.dataset.item;if(!SHOP.price[k])return;shopBuy(k);return;}
+  if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
+  if(a==='invUse'){invUse(el.dataset.k);return;}
   if(a==='tEdit'){SFX.ui();UI.tslot=+el.dataset.i;UI.view='edit';refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='tRoll'){SFX.ui();const i=UI.tslot|0;tournLions()[i]=randomLion('A');delete PREVMEM['t'+i];refresh();return;}
@@ -4653,7 +4954,9 @@ function paintLion(g,o){
   g.fillStyle=C.mane;
   [-1,1].forEach(function(s){g.beginPath();g.arc(R*.3+lunge,s*R*.42,R*.14,0,7);g.fill();});
   g.fillStyle=o.eyes?o.eyes:(o.stunned?FX.gold:'#07070a');
-  [-1,1].forEach(function(s){g.beginPath();g.arc(R*.68+lunge,s*R*.17,R*.09,0,7);g.fill();});
+  if(o.eyeGlow&&o.eyes){g.save();g.shadowColor=o.eyes;g.shadowBlur=Math.max(5,R*.7);}
+  [-1,1].forEach(function(s){g.beginPath();g.arc(R*.68+lunge,s*R*.17,R*(o.eyeGlow?.105:.09),0,7);g.fill();});
+  if(o.eyeGlow&&o.eyes)g.restore();
   g.fillStyle=C.muz;
   g.beginPath();g.arc(R*.86+lunge,0,R*.13,0,7);g.fill();
   if(o.scars&&o.scars.length)drawScars(g,C,R,lunge,o.scars.filter(v=>v>=1000));
@@ -4726,10 +5029,18 @@ function drawLionBody(e){
     }
     ctx.globalAlpha=1;
   }
+  const so=!e.dead&&e.hidden<=0?soulOf(e.cfg):null;
+  if(so){soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,true);
+    if(!RM&&Math.random()<.3&&G.parts.length<240){
+      const a=Math.random()*7,rr=R*(1+Math.random()*.6);
+      G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,life:.6,max:.6,
+        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):(Math.random()<.6?'#ff5a2a':'#ffb040'),r:1+Math.random()*1.4});
+    }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
-    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':null),
+    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:null)),eyeGlow:!!soulOf(e.cfg),
     mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
+  if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false);
   if(e.cfg.old){ctx.save();if(e.hidden>0)ctx.globalAlpha=.16;if(e.dead)ctx.globalAlpha=.28;
     drawOldBits(ctx,e.x,e.y,R,e.ang,G.t,false,e.anim>0?R*.18:0);ctx.restore();}
   ctx.save();ctx.translate(e.x,e.y);
@@ -4899,7 +5210,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -4909,9 +5220,9 @@ function bindPreviews(){
     const g=el.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
     const R=BUILDS[conf.build].r*.78,m=R*2.5;
     const mem=PREVMEM[key]||{};
-    const my=key==='shop'?Math.min(h-m-1,96+m*.6):m;
+    const my=(key==='shop'||key==='mystic')?Math.min(h-m-1,96+m*.6):m;
     PREV.push({key:key,g:g,w:w,h:h,cfg:conf,R:R,m:m,my:my,
-      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||(key==='shop'?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
+      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
       tx:clamp(mem.tx||rnd(m,w-m),m,Math.max(m+1,w-m)),ty:clamp(mem.ty||rnd(my,h-m),my,Math.max(my+1,h-m)),
       ang:mem.ang||0,t:mem.t||Math.random()*9,wait:rnd(.2,1),anim:0,swipeT:rnd(2.5,6)});
   });
@@ -4934,15 +5245,19 @@ function stepPreviews(dt){
     const g=p.g;
     g.clearRect(0,0,p.w,p.h);
     if(p.key==='shop')drawShopScene(g,p);
+    else if(p.key==='mystic')drawMysticScene(g,p);
     else{
       g.fillStyle='#0a0a0c';g.fillRect(0,0,p.w,p.h);
       g.fillStyle='#17171c';
       for(let x=14;x<p.w;x+=26)for(let y=14;y<p.h;y+=26){g.fillRect(x,y,1.5,1.5);}
     }
     if(isGab(p.cfg))gabAura(g,p.x,p.y,p.R,p.t);
+    const pso=soulOf(p.cfg);
+    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,true);
     paintLion(g,{x:p.x,y:p.y,R:p.R,ang:p.ang,t:p.t,pelt:p.cfg.pelt||0,
       mane:lookOf(p.cfg,'mane'),tail:lookOf(p.cfg,'tail'),seed:hashStr(p.cfg.name),scars:p.cfg.scars||[],belts:beltsOf(p.cfg),armor:p.cfg.armor,
-      cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:isHog(p.cfg)?FX.blood:(isGab(p.cfg)?'#ffe14d':null),anim:p.anim>0});
+      cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:lionEyes(p.cfg),eyeGlow:!!pso&&!isHog(p.cfg)&&!isGab(p.cfg),anim:p.anim>0});
+    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,false);
   }
 }
 
@@ -4996,6 +5311,9 @@ function roundOver(){
       L.record.wins++;ch.i++;
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
       CAREER.trainChance=Math.random()<.35;
+      CAREER.loot=null;
+      if(Math.random()<.2){const foe=G.lions[1];CAREER.loot={k:'skull',from:foe?foe.name:'its rival',ok:invAdd(L,'skull',1),n:0};
+        CAREER.loot.n=invCount(L,'skull');}
       if(ch.i>=5){
         const perk=pickOne(PERKS.filter(p=>true)).k;
         L.perks.push(perk);L.record.champs++;
@@ -5153,6 +5471,12 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     P.innerHTML='<div class="perkCard" style="border-color:var(--line)"><h5 style="color:var(--bone)">Into the hall</h5>'+
       '<p>That lion is gone for good. Its record stands on the home screen. Roll another when you are ready.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Enter the hall</button>';
+  }
+  if((kind==='bout'||kind==='champion')&&CAREER.loot&&CAREER.lion){
+    const lt=CAREER.loot;CAREER.loot=null;
+    P.innerHTML+='<div class="lootCard"><span class="rico bone">'+ico('skull')+'</span><div><h5>'+(lt.ok?'Lion skull taken':'A skull left behind')+'</h5><p>'+
+      (lt.ok?(CAREER.lion.name+' takes '+esc(lt.from)+'\u2019s skull. It goes in the bag'+(lt.n>1?' \u00b7 '+lt.n+' now':'')+'.')
+            :'The bag is full, so '+esc(lt.from)+'\u2019s skull stays in the sand.')+'</p></div></div>';
   }
   if((kind==='bout'||kind==='champion')&&CAREER.trainChance&&CAREER.lion){
     CAREER.trainBtns=B.innerHTML;B.innerHTML='';
