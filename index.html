@@ -351,6 +351,38 @@ button{cursor:pointer}
 .listRow .rt b{font-size:22px;font-weight:600;color:var(--amber);display:block;line-height:1.1}
 .listRow .rt span{font-size:13px;color:var(--t2)}
 .hallRow{cursor:pointer}
+.act.act4 button{flex:1 1 calc(50% - 5px)}
+.invHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 20px 14px}
+.invHead b{display:block;font-size:19px;font-weight:600;letter-spacing:-.015em}
+.invHead small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
+.invGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 20px}
+.invSlot{aspect-ratio:1;border-radius:14px;background:var(--s2);border:1.5px dashed rgba(255,255,255,.1);
+  display:grid;place-items:center;align-content:center;gap:4px;position:relative;color:var(--amber)}
+.invSlot.full{border-style:solid;border-color:rgba(255,179,64,.35)}
+.invSlot .ico{width:26px;height:26px}
+.invSlot small{font-size:10px;color:var(--t2);text-align:center;padding:0 4px;line-height:1.15}
+.invSlot i{position:absolute;right:6px;bottom:4px;font-style:normal;font-size:11px;font-weight:600;color:var(--t1)}
+.invNote{display:flex;gap:12px;align-items:flex-start;margin:18px 20px 6px;padding:14px;border-radius:var(--rs);background:rgba(255,179,64,.07);color:var(--amber)}
+.invNote .ico{width:22px;height:22px;flex:none;margin-top:1px}
+.invNote b{display:block;font-size:15px;color:var(--t1);font-weight:600}
+.invNote small{display:block;font-size:13px;color:var(--t2);line-height:1.45;margin-top:3px}
+.hofHd{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;margin:26px auto 14px;max-width:540px}
+.hofSide svg{display:block;width:100%;height:auto;max-height:84px;overflow:visible}
+.hofSide.flip svg{transform:scaleX(-1)}
+.hofSide .col rect,.hofSide .col circle{fill:#2e2e36;stroke:#6a6a76;stroke-width:.8}
+.hofSide .col .fl{stroke:#1c1c22;stroke-width:1.1;fill:none}
+.hofSide .col .vo{stroke:#b08a3a;stroke-width:.9;fill:none}
+.hofSide .vn{fill:none;stroke:#8c6a26;stroke-width:1.6;stroke-linecap:round}
+.hofSide .td{fill:none;stroke:#6e5420;stroke-width:.8;stroke-linecap:round}
+.hofSide .lf{fill:#c9a24a;stroke:#7a5c1c;stroke-width:.5}
+.hofSide .lv{fill:none;stroke:#7a5c1c;stroke-width:.5}
+.hofSide .gp{fill:#7d3a5c;stroke:#3e1a2c;stroke-width:.5}
+.hofT{text-align:center;padding:0 2px}
+.hofT h2{font-family:var(--disp);font-weight:400;font-size:clamp(22px,6vw,34px);letter-spacing:.05em;text-transform:uppercase;
+  line-height:1;white-space:nowrap;background:linear-gradient(180deg,#ffe7a6,#d9a63c 60%,#a8781e);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(255,179,64,.18))}
+.hofT span{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-top:7px;white-space:nowrap}
 .hallRow .go{color:var(--t3);font-size:22px;width:14px;text-align:center}
 .hallRow:active{background:rgba(255,255,255,.04)}
 .hallHead{padding:4px 20px 10px}
@@ -1414,6 +1446,7 @@ const ICONS={
   plus:'<path d="M8 3.2v9.6M3.2 8h9.6"/>',
   send2:'<path d="M8 10.4V2.6M5.2 5.4 8 2.6l2.8 2.8"/><path d="M4 8.2H3.4v5.2h9.2V8.2H12"/>',
   coin:'<circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="3"/>',
+  bag:'<path d="M4.4 6.2h7.2a1.1 1.1 0 0 1 1.1 1.1v5.6a1.3 1.3 0 0 1-1.3 1.3H4.6a1.3 1.3 0 0 1-1.3-1.3V7.3a1.1 1.1 0 0 1 1.1-1.1z"/><path d="M5.9 6.2V4.8a2.1 2.1 0 0 1 4.2 0v1.4"/><path d="M3.3 9.4h9.4M7 9.4v1.4h2V9.4"/>',
   flask:'<path d="M6.4 2.6h3.2M7 2.6v3.6L3.6 12a1.2 1.2 0 0 0 1 1.8h6.8a1.2 1.2 0 0 0 1-1.8L9 6.2V2.6"/><path d="M5 10h6"/>',
   help:'<path d="M5.3 5.7a2.7 2.7 0 1 1 3.8 2.5c-.7.3-1.1.9-1.1 1.6v.7"/><circle cx="8" cy="13" r=".75" fill="currentColor" stroke="none"/>',
   trophy:'<path d="M5 2.6h6v3.4a3 3 0 0 1-6 0z"/><path d="M5 3.8H3.2a1.9 1.9 0 0 0 2 2.8M11 3.8h1.8a1.9 1.9 0 0 1-2 2.8M8 9v2.4M5.4 13.4h5.2M6.4 11.4h3.2v2H6.4z"/>',
@@ -2156,8 +2189,9 @@ function renderCareer(){
         '<div><b>'+rec.fights+'</b><span>Bouts</span></div>'+
         '<div><b>'+(rec.losses||0)+'</b><span>Scars</span></div>'+
         '<div class="coin"><b>'+(L.gold||0)+'</b><span>Gold</span></div></div>'+
-      '<div class="act"><button data-act="edit" class="key">'+ico('edit')+'Inspect</button>'+
+      '<div class="act act4"><button data-act="edit" class="key">'+ico('edit')+'Inspect</button>'+
       '<button data-act="summary">'+ico('summary')+'Summary</button>'+
+      '<button data-act="openInv">'+ico('bag')+'Inventory</button>'+
       '<button data-act="retire">'+ico('retire')+'Retire</button>'+
       '</div>'})+
     '<div class="card"><button class="row storeRow" data-act="openShop">'+shopIconHTML()+
@@ -2184,8 +2218,8 @@ function marks(n){
 }
 function hallHTML(){
   const rows=CAREER.hall.slice().sort((a,b)=>(b.champs-a.champs)||(b.wins-a.wins));
-  return '<div class="hd"><h2>Hall of fame</h2><span>'+
-    (rows.length?(rows.length+' lion'+(rows.length===1?'':'s')+' remembered.'):'Nobody on the wall yet.')+'</span></div>'+
+  return '<div class="hofHd">'+hofSide()+'<div class="hofT"><h2>Hall of Fame</h2><span>'+
+    (rows.length?(rows.length+' lion'+(rows.length===1?'':'s')+' remembered'):'Nobody on the wall yet')+'</span></div>'+hofSide(true)+'</div>'+
     '<div class="card">'+(rows.length?rows.map(function(h){
       const dead=/Killed by/.test(h.end);
       const b=h.champs>0?'<span class="badge gold">'+h.champs+'\u00d7</span>'
@@ -2196,6 +2230,69 @@ function hallHTML(){
     }).join(''):'<p class="empty">Nothing on the wall yet.<br>It fills up faster than you would like.</p>')+'</div>';
 }
 function renderHall(){}
+/* ---------- inventory (placeholder) ----------
+   Every championship lion carries its own bag, saved on the lion itself (L.inv), not on the player.
+   Nothing fills it yet: items arrive in a later update. */
+const INV_SLOTS=16;
+function openInventory(){
+  const L=CAREER.lion;if(!L)return;
+  L.inv=L.inv||[];
+  const items=L.inv;
+  let grid='';
+  for(let i=0;i<INV_SLOTS;i++){
+    const it=items[i];
+    grid+=it?('<div class="invSlot full" title="'+esc(it.name||'')+'">'+ico(it.ico||'spark')+'<small>'+esc(it.name||'')+'</small>'+
+      (it.n>1?'<i>'+it.n+'</i>':'')+'</div>')
+      :'<div class="invSlot"></div>';
+  }
+  UI.sheet={kind:'inv',field:'inv'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Inventory</h3>'+
+    '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+
+    '<div class="invHead"><div><b>'+esc(L.name)+'\u2019s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
+    '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span></div>'+
+    '<div class="invGrid">'+grid+'</div>'+
+    '<div class="invNote">'+ico('bag')+'<div><b>Coming soon</b><small>Items will turn up along the way. Every lion carries its own bag: when it retires or dies, the bag goes with it.</small></div></div>'+
+    '</div>';
+  $('sheetWrap').classList.remove('hidden');
+}
+/* the hall's crest: a fluted Ionic column with a grapevine trailing in towards the title.
+   The right-hand side is the same drawing mirrored. */
+let HOF_SVG=null;
+function hofSide(flip){
+  if(!HOF_SVG){
+    const W=112,H=72,f=n=>n.toFixed(1);
+    const vy=x=>30+Math.sin((x-34)/17)*6.5*(1-(x-34)/(W-30)*.35);
+    let stem='M34 '+f(vy(34));
+    for(let x=36;x<=W-4;x+=2)stem+=' L'+x+' '+f(vy(x));
+    /* a second, thinner tendril that curls round the main vine */
+    let tend='M40 '+f(vy(40)+3);
+    for(let x=42;x<=W-14;x+=2)tend+=' L'+x+' '+f(vy(x)+Math.sin((x-34)/6.5)*3.2);
+    let leaves='';
+    for(let i=0,x=44;x<W-6;i++,x+=11){
+      const y=vy(x),dy=(vy(x+1)-vy(x-1))/2,a=Math.atan2(dy,1)*180/Math.PI+(i%2?-58:58)+(i%2?0:180);
+      const s=1-(x-44)/(W)*.35;
+      leaves+='<g transform="translate('+x+' '+f(y)+') rotate('+f(a+180)+') scale('+f(s)+')">'+
+        '<path d="M0 0 Q4.5 -4.6 10 -1 Q8.6 0 10 1 Q4.5 4.6 0 0Z" class="lf"/><path d="M0.6 0 L8.4 0" class="lv"/></g>';
+    }
+    /* a bunch of grapes hanging off the vine */
+    let gr='';const gx=74,gy=vy(88)+3;
+    [[0,0],[-3.2,2.2],[3.2,2.2],[0,4.4],[-3.2,6.6],[3.2,6.6],[0,8.8],[-1.6,11],[1.6,11.2],[0,13.4]].forEach(function(p,i){
+      gr+='<circle cx="'+f(gx+p[0])+'" cy="'+f(gy+p[1]+1.6)+'" r="'+(i>6?1.55:1.9)+'" class="gp"/>';});
+    gr='<path d="M'+gx+' '+f(gy-2)+' q2 -3 5 -3" class="lv"/>'+gr;
+    /* the column: base, fluted shaft, Ionic capital with volutes */
+    const col='<g class="col">'+
+      '<rect x="5" y="62" width="30" height="5" rx="1"/><rect x="8" y="58.5" width="24" height="4" rx="1"/>'+
+      '<rect x="10" y="16" width="20" height="43"/>'+
+      '<path d="M13.5 18v39M17 18v39M20 18v39M23 18v39M26.5 18v39" class="fl"/>'+
+      '<rect x="7" y="12.5" width="26" height="4" rx="1"/>'+
+      '<circle cx="8.5" cy="11.5" r="4.2"/><circle cx="31.5" cy="11.5" r="4.2"/>'+
+      '<path d="M8.5 11.5 m-1.7 0 a1.7 1.7 0 1 0 1.7 -1.7" class="vo"/><path d="M31.5 11.5 m1.7 0 a1.7 1.7 0 1 1 -1.7 -1.7" class="vo"/>'+
+      '<rect x="4" y="4" width="32" height="4.5" rx="1"/></g>';
+    HOF_SVG='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMinYMid meet" aria-hidden="true">'+col+
+      '<path d="'+stem+'" class="vn"/><path d="'+tend+'" class="td"/>'+leaves+gr+'</svg>';
+  }
+  return '<div class="hofSide'+(flip?' flip':'')+'">'+HOF_SVG+'</div>';
+}
 /* open a lion from the hall of fame: its picture, card, summary and code live on after it is gone */
 function openHallLion(i){
   const h=CAREER.hall[i|0];if(!h)return;
@@ -2630,6 +2727,7 @@ document.addEventListener('click',function(ev){
     if(a==='cardShare'){cardShare();return;}
     if(a==='copySummary'){
       copyText(lionSummaryText(UI.hallLion||currentLion()));toast('Summary copied');return;}
+    if(a==='openInv'){SFX.ui();openInventory();return;}
     if(a==='hallView'){SFX.ui();openHallLion(+act.dataset.i);return;}
     if(a==='hallCopy'){const h=UI.hallLion;if(h){copyText(encodeLion(h,h.record||null));toast('Code copied');}return;}
     if(a==='hallSave'){const h=UI.hallLion;if(h){downloadTxt(h.name.replace(/\s+/g,'-')+'.txt',lionSheetText(h));toast('Saved');}return;}
