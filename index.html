@@ -350,6 +350,15 @@ button{cursor:pointer}
 .listRow .rt{text-align:right;white-space:nowrap}
 .listRow .rt b{font-size:22px;font-weight:600;color:var(--amber);display:block;line-height:1.1}
 .listRow .rt span{font-size:13px;color:var(--t2)}
+.hallRow{cursor:pointer}
+.hallRow .go{color:var(--t3);font-size:22px;width:14px;text-align:center}
+.hallRow:active{background:rgba(255,255,255,.04)}
+.hallHead{padding:4px 20px 10px}
+.hallHead h4{font-size:22px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hallHead small{display:block;font-size:14px;color:var(--t2);margin-top:4px;line-height:1.45}
+.hallHead small.blood{color:var(--blood)}
+.sheetBody .lionCv.prevCv{border-radius:var(--rs);margin:4px 20px 12px;width:calc(100% - 40px)}
+.lionCv.fallen{filter:grayscale(.85) brightness(.8)}
 .marks{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;margin-top:8px;max-width:112px}
 .marks i{width:2px;height:11px;background:var(--t3);border-radius:1px}
 .marks i.five{transform:rotate(24deg);margin-left:-9px;background:var(--amber)}
@@ -620,7 +629,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Medallions</h6>
       <p>Each belt grants one random medallion, each with its own emblem: Ironheart (+9% health), Swiftpaw (+7% speed), Keen Fang (+9% damage), Scarhide (+6 armour), Quickened (−9% ability cooldowns), Ember Blood (heals 1 a second) or Loose Shoulder (−8% attack cooldown). They stack across belts.</p>
       <h6>Training</h6>
-      <p>After every championship win there is a one-in-five chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
+      <p>After every championship win there is a 35% chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
       <h6>Loading a lion into the den</h6>
       <p>Any lion code can be loaded into Championship from the den, with its belts, medallions, scars, training and gold. If you already have a lion, it retires to the hall to make room.</p>
       <h6>Personality</h6>
@@ -900,7 +909,7 @@ function perkOf(k){return PERKS.filter(p=>p.k===k)[0]||null;}
 function medalSvg(P){return '<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'+P.ico+'</svg>';}
 function medalHTML(k,big){const P=perkOf(k);if(!P)return '';
   return '<span class="medal'+(big?' big':'')+'" title="'+P.name+' \u2014 '+P.desc+'">'+medalSvg(P)+'</span>';}
-/* training: after a championship win there is a one-in-five chance to work on one stat, a little */
+/* training: after a championship win there is a 35% chance to work on one stat, a little */
 const TRAIN={hp:{name:'Health',ico:'heart',desc:'+3% health'},dmg:{name:'Damage',ico:'sword',desc:'+3% damage'},
   spd:{name:'Speed',ico:'bolt',desc:'+2.5% speed'},atk:{name:'Swing',ico:'swing',desc:'3% faster attacks'},dr:{name:'Armour',ico:'shield',desc:'+2 points of damage reduction'}};
 const TRAIN_K=['hp','dmg','spd','atk','dr'];
@@ -2066,7 +2075,7 @@ function openSheet(kind,field){
     setTimeout(function(){try{const cv=drawLionCard(c);CARD.canvas=cv;CARD.url=cv.toDataURL('image/png');
       const im=$('cardPrev');if(im)im.src=CARD.url;}catch(e){}},30);}
 }
-function closeSheet(){UI.sheet=null;$('sheetWrap').classList.add('hidden');}
+function closeSheet(){UI.sheet=null;UI.hallLion=null;$('sheetWrap').classList.add('hidden');}
 function chooseOption(val){
   const sh=UI.sheet;if(!sh)return;
   const f=sh.field;
@@ -2160,7 +2169,7 @@ function renderCareer(){
       '<div class="card">'+ch.foes.map(function(f,i){
         const st=i<ch.i?'done':(i===ch.i?'now':'');
         return '<div class="listRow '+st+'"><span class="num">'+(i+1)+'</span><div>'+
-          (i<=ch.i?('<h4>'+esc(f.name)+' '+beltBadge(f)+'</h4><small>'+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
+          (i<=ch.i?('<h4>'+esc(f.name)+' '+beltBadge(f)+'</h4><small><b style="color:var(--t1)">'+recWL(f)+'</b> \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
             ' \u00b7 '+BRAINS[f.brain].name+' mind</small>')
            :(beltsOf(f)?'<h4 style="color:var(--dim)">Unannounced '+beltBadge(f)+'</h4><small>a belt holder waits at the end</small>'
              :'<h4 style="color:var(--dim)">Unannounced</h4><small>steps out when it is time</small>'))+
@@ -2181,12 +2190,37 @@ function hallHTML(){
       const dead=/Killed by/.test(h.end);
       const b=h.champs>0?'<span class="badge gold">'+h.champs+'\u00d7</span>'
              :(dead?'<span class="badge blood">Died</span>':'<span class="badge">Retired</span>');
-      return '<div class="listRow"><span></span><div><h4>'+esc(h.name)+' '+b+'</h4>'+
+      return '<div class="listRow hallRow" data-act="hallView" data-i="'+CAREER.hall.indexOf(h)+'"><span class="go">\u203a</span><div><h4>'+esc(h.name)+' '+b+'</h4>'+
         '<small>'+h.line+'</small><small>'+h.end+'</small></div>'+
         '<div class="rt"><b>'+h.wins+'</b><span>wins in '+h.fights+'</span>'+marks(h.wins)+'</div></div>';
     }).join(''):'<p class="empty">Nothing on the wall yet.<br>It fills up faster than you would like.</p>')+'</div>';
 }
 function renderHall(){}
+/* open a lion from the hall of fame: its picture, card, summary and code live on after it is gone */
+function openHallLion(i){
+  const h=CAREER.hall[i|0];if(!h)return;
+  const c=h.code?decodeLion(h.code):null;
+  const dead=/Killed by/.test(h.end);
+  const b=h.champs>0?'<span class="badge gold">'+h.champs+'\u00d7</span>'
+         :(dead?'<span class="badge blood">Died</span>':'<span class="badge">Retired</span>');
+  UI.sheet={kind:'hall',field:'hall'};UI.hallLion=c?Object.assign(c,{side:'A'}):null;
+  let body='<div class="hallHead"><h4>'+esc(h.name)+' '+b+'</h4><small class="'+(dead?'blood':'')+'">'+h.end+'</small>'+
+    '<small>'+h.wins+' wins in '+h.fights+' bouts'+(h.champs?' \u00b7 '+h.champs+' belt'+(h.champs>1?'s':''):'')+'</small></div>';
+  if(c){
+    body='<canvas class="lionCv prevCv'+(dead?' fallen':'')+'" data-prev="hall"></canvas>'+body+
+      '<div class="act"><button data-act="hallCopy" class="key">'+ico('copy')+'Copy code</button>'+
+      '<button data-act="hallSave">'+ico('save')+'Save .txt</button></div>'+
+      '<div class="grp">Paste the code into any duel slot, the Editor or the championship to bring '+esc(h.name)+' back.</div>'+
+      cardBlockHTML()+lionSummaryHTML(c);
+  } else body+='<p class="empty">This lion went on the wall before codes were kept.</p>';
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Hall of fame</h3>'+
+    '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+body+'</div>';
+  $('sheetWrap').classList.remove('hidden');
+  if(c){CARD.lion=c;CARD.url=null;
+    setTimeout(function(){try{const cv=drawLionCard(c);CARD.canvas=cv;CARD.url=cv.toDataURL('image/png');
+      const im=$('cardPrev');if(im)im.src=CARD.url;}catch(e){}},30);
+    if(typeof requestAnimationFrame!=='undefined')requestAnimationFrame(bindPreviews);}
+}
 /* ---------- sanctuary shell ---------- */
 function renderEditorMode(){
   const c=scratchLion();
@@ -2595,7 +2629,10 @@ document.addEventListener('click',function(ev){
     if(a==='cardSave'){cardSave();return;}
     if(a==='cardShare'){cardShare();return;}
     if(a==='copySummary'){
-      copyText(lionSummaryText(currentLion()));toast('Summary copied');return;}
+      copyText(lionSummaryText(UI.hallLion||currentLion()));toast('Summary copied');return;}
+    if(a==='hallView'){SFX.ui();openHallLion(+act.dataset.i);return;}
+    if(a==='hallCopy'){const h=UI.hallLion;if(h){copyText(encodeLion(h,h.record||null));toast('Code copied');}return;}
+    if(a==='hallSave'){const h=UI.hallLion;if(h){downloadTxt(h.name.replace(/\s+/g,'-')+'.txt',lionSheetText(h));toast('Saved');}return;}
     if(a==='edit'){SFX.ui();UI.side=act.dataset.side||UI.side;UI.view='edit';refresh();window.scrollTo(0,0);return;}
     if(a==='back'){SFX.ui();UI.view='home';refresh();window.scrollTo(0,0);return;}
     if(a==='rollside'){SFX.ui();randomize(act.dataset.side);refresh();return;}
@@ -2687,6 +2724,20 @@ function finishCareerLion(){
   SFX.bell();Store.save();refresh();toast(L.name+' is yours');
   if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
 }
+/* opponents come with a past: early on they are as green as you (1-0, 2-3),
+   deeper into a run and later championships they have more fights and win more of them */
+function foeRecord(L,n,i){
+  const mine=(L.record&&L.record.fights)|0;
+  const fights=Math.max(0,Math.round(mine*rnd(.45,1.1)+i*rnd(1,2.2)+(n-1)*rnd(.5,1.5)+rnd(-.5,2.5)));
+  const rate=clamp(.38+i*.09+(n-1)*.03+rnd(-.12,.12),.2,.92);
+  let wins=Math.round(fights*rate);
+  if(i===4&&fights)wins=Math.max(wins,Math.ceil(fights*.55));
+  return {champs:0,wins:Math.min(wins,fights),fights:fights};
+}
+function recWL(c){
+  const R=c&&c.record,f=R?(R.fights|0):0,w=R?(R.wins|0):0;
+  return f?(w+'\u2013'+Math.max(0,f-w)):'Debut';
+}
 function startChampionship(){
   const L=CAREER.lion,n=L.record.champs+1;
   const foes=[];
@@ -2696,12 +2747,14 @@ function startChampionship(){
     f.scars=[];
     const marks=(Math.random()*(i+2))|0;
     for(let q=0;q<marks;q++)f.scars.push((Math.random()<.5?1000:0)+((Math.random()*1000)|0));
+    f.record=foeRecord(L,n,i);
     foes.push(f);
   }
   /* once you own a belt, the last lion in the run is a belt holder too */
   if(L.record.champs>0){
     const last=foes[4],belts=1+Math.floor((L.record.champs-1)/2);
-    last.record={champs:belts,wins:belts*5,fights:belts*5+((Math.random()*4)|0)};
+    const xw=belts*5+((Math.random()*(3+belts*2))|0),xl=1+((Math.random()*(2+belts))|0);
+    last.record={champs:belts,wins:xw,fights:xw+xl};
     last.perks=[];
     for(let q=0;q<belts;q++)last.perks.push(pickOne(PERKS).k);
     last.epithet='the belt holder';
@@ -2882,7 +2935,7 @@ function gateDims(q){const hw=q.hw,H=Math.min(hw*1.6,86),cr=Math.min(hw,H*.62);r
 function archPath(g,hw,H,cr,inset){
   const w=hw-inset,h=H-inset,c=Math.max(4,cr-inset);
   g.beginPath();g.moveTo(0,-w);g.lineTo(-(h-c),-w);
-  g.ellipse(-(h-c),0,c,w,0,Math.PI/2,-Math.PI/2,false);
+  g.ellipse(-(h-c),0,c,w,0,-Math.PI/2,Math.PI/2,true);
   g.lineTo(0,w);g.closePath();
 }
 function drawGates(g,T){
@@ -2928,22 +2981,6 @@ function drawGates(g,T){
     g.fillStyle='#6c6c78';
     for(let y=-hw+6;y<hw;y+=9){g.beginPath();g.moveTo(-1,y-1.8);g.lineTo(4,y);g.lineTo(-1,y+1.8);g.fill();}
     g.restore();
-    /* torches either side */
-    [-1,1].forEach(function(sd){
-      const py=sd*(hw+12),px=-4;
-      g.fillStyle='#5a4a30';g.fillRect(px-5,py-2,7,4);
-      const fl=.82+.18*Math.sin(T*13+q.n*2+sd)+.08*Math.sin(T*31+sd*3),R=(12+eo*8)*fl;
-      const tgl=g.createRadialGradient(px+3,py,1,px+3,py,R*1.7);
-      tgl.addColorStop(0,'rgba(255,205,120,'+(.6+eo*.3).toFixed(2)+')');tgl.addColorStop(.4,'rgba(255,140,50,.24)');tgl.addColorStop(1,'rgba(255,120,40,0)');
-      g.fillStyle=tgl;g.beginPath();g.arc(px+3,py,R*1.7,0,7);g.fill();
-      g.fillStyle='#ffe09a';g.beginPath();g.arc(px+3,py,2.3*fl,0,7);g.fill();
-    });
-    /* light spilling out onto the sand */
-    if(eo>.01){
-      const sg=g.createRadialGradient(0,0,4,0,0,hw*2.6);
-      sg.addColorStop(0,'rgba(255,170,70,'+(.22*eo).toFixed(3)+')');sg.addColorStop(1,'rgba(255,170,70,0)');
-      g.fillStyle=sg;g.beginPath();g.arc(0,0,hw*2.6,-Math.PI/2,Math.PI/2);g.fill();
-    }
     g.restore();
   });
   g.textAlign='left';g.textBaseline='alphabetic';
@@ -4764,7 +4801,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -4860,7 +4897,7 @@ function roundOver(){
     if(G.winner===you){
       L.record.wins++;ch.i++;
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
-      CAREER.trainChance=Math.random()<.2;
+      CAREER.trainChance=Math.random()<.35;
       if(ch.i>=5){
         const perk=pickOne(PERKS.filter(p=>true)).k;
         L.perks.push(perk);L.record.champs++;
@@ -5074,8 +5111,8 @@ const TUT=[
    vis:()=>'<div class="tutChips">'+chip('belt','5 wins = belt','plus a medallion buff','gold')+chip('scar','Lose, get a scar','it\'s yours forever')+
      chip('retire','1 in 5 losses','your lion dies for good','red')+chip('lion','Then','build the next one')+'</div>'},
   {t:'Getting stronger',
-   say:"Every win, there's a one-in-five chance you get a training session. You pick the stat. It's a small gain, but it sticks, and it shows as a green bit on the stat bars. Win a belt and you get a medallion. Those are the big ones. Each has its own emblem. I had seven. Now I have arthritis.",
-   vis:()=>'<div class="tutChips">'+chip('heart','Training','1 in 5 wins, +2-3% to one stat')+
+   say:"Every win, there's about a one-in-three chance you get a training session. You pick the stat. It's a small gain, but it sticks, and it shows as a green bit on the stat bars. Win a belt and you get a medallion. Those are the big ones. Each has its own emblem. I had seven. Now I have arthritis.",
+   vis:()=>'<div class="tutChips">'+chip('heart','Training','35% of wins, +2-3% to one stat')+
      chip('','Medallions','one per belt, much bigger','gold',medalHTML('hp'))+
      chip('','Ironheart','+9% health','gold',medalHTML('hp'))+chip('','Keen Fang','+9% damage','gold',medalHTML('dmg'))+'</div>'+
      '<div class="stat" style="margin-top:12px"><span>'+ico('heart')+'Health</span><div class="bar"><i style="width:48%"></i><i class="ext" style="width:12%"></i></div><b class="trained">132</b></div>'},
