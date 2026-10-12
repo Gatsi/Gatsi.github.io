@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:15px
   letter-spacing:-.01em}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse 90% 44% at 50% -12%,rgba(255,179,64,.07),transparent 70%)}
-#app{width:100%;max-width:720px;padding:0 20px calc(176px + var(--sb));position:relative;z-index:1}
+#app{width:100%;max-width:720px;padding:0 20px calc(198px + var(--sb));position:relative;z-index:1}
 button,input{font-family:inherit;color:inherit;background:none;border:none;letter-spacing:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
@@ -122,6 +122,20 @@ button{cursor:pointer}
 .tabbar button[aria-pressed="true"]{color:var(--amber)}
 .tabbar button[aria-pressed="true"] .ti{background:var(--amber-g)}
 .tabbar button:active .ti{transform:scale(.94)}
+/* Championship is the heart of the game: a raised amber button in the middle of the bar */
+.tabbar .tabMain{position:relative}
+.tabbar .tabMain .ti{width:62px;height:62px;border-radius:50%;margin-top:-26px;margin-bottom:1px;
+  background:radial-gradient(circle at 35% 30%,#ffd27a,#ffb340 55%,#d98a1a);color:#241701;
+  box-shadow:0 0 0 5px #0a0a0c,0 8px 22px rgba(0,0,0,.6),0 0 0 6px rgba(255,179,64,.25);transition:transform .2s,box-shadow .3s}
+.tabbar .tabMain .ti .ico{width:30px;height:30px}
+.tabbar .tabMain .tl{color:var(--t2);font-weight:700}
+.tabbar .tabMain[aria-pressed="true"] .ti{background:radial-gradient(circle at 35% 30%,#ffe2a0,#ffb340 55%,#e0901a);
+  box-shadow:0 0 0 5px #0a0a0c,0 8px 22px rgba(0,0,0,.6),0 0 0 6px rgba(255,179,64,.55),0 0 26px rgba(255,179,64,.45);animation:mainGlow 3.2s ease-in-out infinite}
+.tabbar .tabMain[aria-pressed="true"] .tl{color:var(--amber)}
+.tabbar .tabMain:active .ti{transform:scale(.94)}
+@keyframes mainGlow{0%,100%{box-shadow:0 0 0 5px #0a0a0c,0 8px 22px rgba(0,0,0,.6),0 0 0 6px rgba(255,179,64,.5),0 0 18px rgba(255,179,64,.3)}
+  50%{box-shadow:0 0 0 5px #0a0a0c,0 8px 22px rgba(0,0,0,.6),0 0 0 6px rgba(255,179,64,.7),0 0 32px rgba(255,179,64,.55)}}
+@media (max-width:430px){.tabbar .tabMain .ti{width:58px;height:58px}}
 /* the Editor keeps its glowing ring, just smaller */
 .tabEd .ti{position:relative;overflow:hidden;isolation:isolate;color:var(--amber);box-shadow:0 0 0 1px rgba(255,179,64,.3);animation:edGlow 5.5s ease-in-out infinite}
 .tabEd .ti::before{content:"";position:absolute;inset:-60%;z-index:0;
@@ -405,7 +419,7 @@ button{cursor:pointer}
   font-family:var(--mono);font-size:11px;color:var(--t2);word-break:break-all;line-height:1.5}
 
 /* ---------- dock ---------- */
-.dock{position:fixed;left:0;right:0;bottom:calc(62px + var(--sb));z-index:15;display:flex;justify-content:center;gap:10px;
+.dock{position:fixed;left:0;right:0;bottom:calc(84px + var(--sb));z-index:15;display:flex;justify-content:center;gap:10px;
   padding:16px 20px 10px;background:linear-gradient(to top,rgba(0,0,0,.92) 50%,rgba(0,0,0,.6) 80%,transparent)}
 .go1{width:100%;max-width:480px;height:54px;border-radius:var(--rs);font-size:17px;font-weight:600;
   letter-spacing:-.01em;background:var(--amber);color:#241701;transition:.18s;
@@ -427,6 +441,85 @@ button{cursor:pointer}
 .listRow .rt span{font-size:13px;color:var(--t2)}
 .hallRow{cursor:pointer}
 .warnTxt{color:#ffb340}
+.tutTip{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin:-8px 0 28px;padding:14px 16px;border-radius:var(--r);
+  background:linear-gradient(135deg,rgba(255,179,64,.12),rgba(255,179,64,.04));box-shadow:0 0 0 1px rgba(255,179,64,.3) inset;transition:.2s}
+.tutTip:hover{background:linear-gradient(135deg,rgba(255,179,64,.18),rgba(255,179,64,.06))}
+.tutTip .q{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--amber);
+  background:var(--s1);box-shadow:0 0 0 1.5px rgba(255,179,64,.6);animation:edGlow 5.5s ease-in-out infinite}
+.tutTip .v{flex:1}
+.tutTip .v b{display:block;font-size:16px;font-weight:600;color:var(--t1)}
+.tutTip small{display:block;font-size:14px;color:var(--t2);margin-top:2px;line-height:1.4}
+.tutTip .v small b{display:inline;color:var(--amber);font-size:inherit;font-weight:700}
+.tutTip .go{color:var(--amber);font-size:22px}
+/* ---------- challenges ---------- */
+.teamRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:26px}
+.teamSlot{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:8px 6px 10px;border-radius:18px;background:var(--s1);min-width:0}
+.teamSlot.you{box-shadow:0 0 0 1.5px rgba(255,179,64,.5) inset;cursor:pointer}
+.teamSlot canvas{width:100%;height:74px;border-radius:12px;display:block;margin-bottom:6px}
+.teamSlot b{font-size:14px;font-weight:600;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.teamSlot small{font-size:11px;color:var(--t2);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.teamSlot .tTag{margin-top:4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
+.teamSlot.you .tTag{color:var(--amber)}
+.teamSlot.empty{justify-content:center;border:1.5px dashed rgba(255,255,255,.14);background:transparent;color:var(--t3);min-height:150px;gap:4px}
+.teamSlot.empty .ico{width:22px;height:22px;color:var(--amber)}
+.teamSlot.empty b{color:var(--t1);font-size:13px;white-space:normal}
+.teamSlot.empty small{white-space:normal;line-height:1.3;padding:0 4px}
+.teamSlot .tTag .ico{width:11px;height:11px;vertical-align:-1px;margin-right:2px}
+.teamSlot.empty:hover{border-color:rgba(255,179,64,.5)}
+.tX{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);color:var(--t1);font-size:16px;line-height:24px}
+.lockedNote{display:flex;gap:14px;align-items:flex-start;margin-bottom:24px;color:var(--amber)}
+.lockedNote .ico{width:24px;height:24px;flex:none}
+.lockedNote b{display:block;color:var(--t1);font-size:16px}.lockedNote small{display:block;color:var(--t2);font-size:14px;margin-top:3px}
+.chalGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chalCard{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--s1);text-align:left;transition:transform .15s,box-shadow .2s}
+.chalCard canvas{width:100%;height:108px;display:block}
+.chalCard:active{transform:scale(.98)}
+.chalCard.on{box-shadow:0 0 0 2px var(--cc),0 10px 30px rgba(0,0,0,.4)}
+.chalCard.locked{opacity:.55}
+.chalOn{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:var(--cc);color:#141416;display:grid;place-items:center}
+.chalOn .ico{width:16px;height:16px}
+.chalTxt{display:flex;flex-direction:column;gap:5px;padding:10px 12px 12px}
+.chalTxt b{font-size:15px;font-weight:600;color:var(--t1)}
+.chalTxt small{font-size:12px;color:var(--t2);line-height:1.3}
+.chalCard.on .chalTxt b{color:var(--cc)}
+.dpips{display:inline-flex;gap:3px;align-items:center}
+.dpips i{width:14px;height:5px;border-radius:3px;background:rgba(255,255,255,.12)}
+.dpips.endless{gap:5px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#d9a25a}
+.dpips.endless .ico{width:14px;height:14px}
+.chalInfo{margin-top:14px;border-radius:20px;background:var(--s1);padding:16px 18px;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset;border-top:3px solid var(--cc)}
+.ciHd{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ciHd b{font-size:19px;font-weight:600;color:var(--cc)}
+.ciDiff{display:flex;align-items:center;gap:8px}
+.ciDiff em{font-style:normal;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)}
+.chalInfo p{font-size:15px;color:var(--t2);line-height:1.5;margin:8px 0 12px}
+.ciRows{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--sep);padding-top:12px}
+.ciRows div{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.4}
+.ciRows .ico{width:18px;height:18px;color:var(--cc);flex:none;margin-top:2px}
+.ciRows small{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:1px}
+.badge.rival{display:inline-flex;align-items:center;gap:5px;color:#ffb340;background:rgba(255,179,64,.12)}
+.badge.nem{display:inline-flex;align-items:center;gap:5px;color:#ff5a4d;background:rgba(255,90,77,.16);box-shadow:0 0 0 1px rgba(255,90,77,.35) inset}
+.badge.rival .ico,.badge.nem .ico{width:13px;height:13px}
+.rivalRow{grid-template-columns:auto 1fr auto}
+.rivCv{width:40px;height:40px;border-radius:10px;display:block}
+.rivalRow.done{opacity:.55}
+.storyCard.rival{background:rgba(255,179,64,.08);border-color:rgba(255,179,64,.3)}
+.storyCard.rival h5{color:var(--amber)}.storyCard.rival .rico{color:var(--amber)}
+.storyCard.nem{background:rgba(226,56,44,.1);border-color:rgba(226,56,44,.4)}
+.storyCard.nem h5{color:#ff5a4d}.storyCard.nem .rico{color:#ff5a4d}
+.storyCard.avenge{background:rgba(94,230,168,.08);border-color:rgba(94,230,168,.35)}
+.storyCard.avenge h5{color:#5ee6a8}.storyCard.avenge .rico{color:#5ee6a8}
+.storyCard .rico .ico{width:24px;height:24px}
+.row.sold{opacity:.45;cursor:default}
+.offTxt{color:#5ee6a8;font-weight:600}
+.dealTag{flex:none;font-size:12px;font-weight:700;color:#5ee6a8;background:rgba(94,230,168,.12);border-radius:10px;padding:3px 7px;margin-right:6px}
+.price s{color:var(--t3);font-weight:500;margin-right:5px;text-decoration-thickness:1.5px}
+.crateOut{display:flex;align-items:center;gap:14px;margin:4px 20px 14px;padding:14px 16px;border-radius:var(--rs);
+  background:rgba(217,178,106,.1);border:1px solid rgba(217,178,106,.35);color:#d9b26a;animation:crateIn .4s ease-out}
+.crateOut .ico{width:30px;height:30px;flex:none}
+.crateOut small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
+.crateOut b{display:block;font-size:18px;color:var(--t1);font-weight:700}
+.crateOut.rare{background:rgba(255,214,10,.12);border-color:rgba(255,214,10,.6);color:var(--gold);box-shadow:0 0 30px rgba(255,214,10,.15)}
+@keyframes crateIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 .warnBox{display:flex;gap:12px;align-items:flex-start;margin:10px 20px 6px;padding:12px 14px;border-radius:var(--rs);background:rgba(255,179,64,.1);border:1px solid rgba(255,179,64,.35);color:var(--amber)}
 .warnBox .ico{width:20px;height:20px;flex:none;margin-top:2px}
 .warnBox b{display:block;font-size:15px;color:var(--t1);font-weight:600}
@@ -461,6 +554,7 @@ button{cursor:pointer}
 .invSlot.holy,.rico.holy{color:#fff1cc}
 .invSlot.holy .ico{filter:drop-shadow(0 0 5px rgba(255,236,170,.8))}
 .invSlot.hell,.rico.hell{color:#ff4a3a}
+.invSlot.fence,.rico.fence{color:#d9b26a}
 .invSlot.hell .ico{filter:drop-shadow(0 0 5px rgba(255,60,30,.8))}
 .invSlot.holy.on{background:rgba(255,241,204,.1);border-color:#fff1cc;box-shadow:0 0 0 1px #fff1cc inset}
 .invSlot.hell.on{background:rgba(255,74,58,.12);border-color:#ff4a3a;box-shadow:0 0 0 1px #ff4a3a inset}
@@ -718,7 +812,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .infoBody h6:first-child{margin-top:0}
 .infoBody p{font-size:15px;line-height:1.6;color:var(--t2);margin-bottom:12px}
 .infoBody b{color:var(--t1);font-weight:500}
-.toast{position:fixed;left:50%;bottom:calc(150px + var(--sb));transform:translateX(-50%) translateY(10px);
+.toast{position:fixed;left:50%;bottom:calc(172px + var(--sb));transform:translateX(-50%) translateY(10px);
   background:var(--s3);border-radius:22px;padding:13px 22px;font-size:15px;font-weight:500;
   z-index:50;opacity:0;transition:.25s;pointer-events:none;box-shadow:var(--shadow);white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%)}
@@ -749,9 +843,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   </header>
 
   <nav class="tabbar" id="modeSeg" aria-label="Modes">
-    <button data-mode="duel" aria-pressed="true"><span class="ti navico" data-i="duel"></span><span class="tl">Duel</span></button>
-    <button data-mode="career" aria-pressed="false"><span class="ti navico" data-i="lion"></span><span class="tl">Championship</span></button>
+    <button data-mode="duel" aria-pressed="false"><span class="ti navico" data-i="duel"></span><span class="tl">Duel</span></button>
     <button data-mode="pack" aria-pressed="false"><span class="ti navico" data-i="pack"></span><span class="tl">Challenges</span></button>
+    <button data-mode="career" aria-pressed="true" class="tabMain"><span class="ti navico" data-i="lion"></span><span class="tl">Championship</span></button>
     <button data-mode="tourn" aria-pressed="false"><span class="ti navico" data-i="trophy"></span><span class="tl">Tournament</span></button>
     <button id="editorBtn" class="tabEd" aria-pressed="false"><span class="ti eico"></span><span class="tl elabel">Editor</span></button>
   </nav>
@@ -787,7 +881,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them, so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion.</p>
       <h6>Gold and the Lion Store</h6>
-      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). When the lion dies, its gold goes with it.</p>
+      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
       <h6>Losing a bout</h6>
@@ -1108,7 +1202,7 @@ let SCRATCH=null;
 const TOURN={lions:[],br:null};
 function tournLions(){while(TOURN.lions.length<8)TOURN.lions.push(randomLion('A'));return TOURN.lions;}
 function scratchLion(){if(!SCRATCH)SCRATCH=randomLion('A');return SCRATCH;}
-const MATCH={duo:false,mode:'duel',arena:'colonnade',rounds:3,closing:true,sound:false,music:true,tab:'A'};
+const MATCH={duo:false,mode:'career',arena:'colonnade',rounds:3,closing:true,sound:false,music:true,tab:'A'};
 const CAREER={lion:null,locked:false,champ:null,hall:[]};
 let G={speed:1};
 
@@ -1126,10 +1220,12 @@ const Store={
     try{const raw=await Store.get();if(raw){const d=JSON.parse(raw);
       CAREER.hall=d.hall||[];if(d.tourn&&d.tourn.lions&&d.tourn.lions.length===8){TOURN.lions=d.tourn.lions;TOURN.br=d.tourn.br||null;}
       if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}
+      if(d.fence&&d.fence.deals)CAREER.fence=d.fence;
+      if(Array.isArray(d.rivals))CAREER.rivals=d.rivals;
       }}catch(e){}
   },
   async save(){
-    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,
+    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],
       tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null}));}catch(e){}
   }
 };
@@ -1464,6 +1560,37 @@ function soulAura(g,x,y,R,ang,t,soul,under){
         g.beginPath();g.moveTo(x+Math.cos(a-w)*R*1.02,y+Math.sin(a-w)*R*1.02);
         g.lineTo(x+Math.cos(a)*L,y+Math.sin(a)*L);g.lineTo(x+Math.cos(a+w)*R*1.02,y+Math.sin(a+w)*R*1.02);g.closePath();g.fill();
       }
+      /* the holy sigil: a gold ring of stars and a dotted ring inside it, turning the other way */
+      g.save();g.translate(x,y);g.rotate(-t*.3);
+      g.strokeStyle='rgba(255,226,150,'+(.5+pu*.25).toFixed(2)+')';g.lineWidth=Math.max(.8,R*.045);
+      g.beginPath();g.arc(0,0,R*1.62,0,7);g.stroke();
+      g.fillStyle='rgba(255,240,200,'+(.55+pu*.3).toFixed(2)+')';
+      for(let i=0;i<24;i++){const a=i*Math.PI/12;g.beginPath();g.arc(Math.cos(a)*R*1.42,Math.sin(a)*R*1.42,Math.max(.6,R*.028),0,7);g.fill();}
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3+Math.PI/6,rx=Math.cos(a)*R*1.52,ry=Math.sin(a)*R*1.52,s2=R*.12;
+        g.save();g.translate(rx,ry);g.rotate(a);
+        g.fillStyle='rgba(255,246,220,'+(.75+pu*.25).toFixed(2)+')';
+        g.beginPath();g.moveTo(0,-s2);g.lineTo(s2*.22,-s2*.22);g.lineTo(s2,0);g.lineTo(s2*.22,s2*.22);g.lineTo(0,s2);g.lineTo(-s2*.22,s2*.22);g.lineTo(-s2,0);g.lineTo(-s2*.22,-s2*.22);g.closePath();g.fill();
+        g.restore();
+      }
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3,rx=Math.cos(a)*R*1.62,ry=Math.sin(a)*R*1.62,s2=R*.07;
+        g.save();g.translate(rx,ry);g.rotate(a+Math.PI/4);
+        g.fillStyle='#14100a';g.fillRect(-s2,-s2,s2*2,s2*2);
+        g.strokeStyle='rgba(255,226,150,.9)';g.lineWidth=Math.max(.6,R*.03);g.strokeRect(-s2,-s2,s2*2,s2*2);
+        g.restore();
+      }
+      g.restore();
+      /* soft wings of light either side */
+      g.save();g.translate(x,y);g.rotate(ang);
+      [-1,1].forEach(function(sd){
+        for(let f=0;f<3;f++){
+          const wl=R*(1.05+f*.22),sp=(.75-f*.12)+Math.sin(t*1.8)*.05;
+          g.strokeStyle='rgba(255,244,214,'+(.28-f*.06).toFixed(2)+')';g.lineWidth=Math.max(1,R*(.09-f*.02));g.lineCap='round';
+          g.beginPath();g.arc(-R*.15,0,wl,sd*(Math.PI/2-sp),sd*(Math.PI/2+.15),sd<0);g.stroke();
+        }
+      });
+      g.restore();
     } else {
       const hx=x+Math.cos(ang)*R*.4,hy=y+Math.sin(ang)*R*.4;
       g.shadowColor='#ffe9a8';g.shadowBlur=Math.max(4,R*.5);
@@ -1477,29 +1604,54 @@ function soulAura(g,x,y,R,ang,t,soul,under){
       }
     }
   } else {
+    /* the demonic soul: a pool of shadow, a turning blood sigil, dark hellfire, smoke, and horns */
     if(under){
-      const gr=g.createRadialGradient(x,y,R*.5,x,y,R*2.5);
-      gr.addColorStop(0,'rgba(255,40,20,.34)');gr.addColorStop(.5,'rgba(140,10,5,.22)');gr.addColorStop(1,'rgba(40,0,0,0)');
-      g.fillStyle=gr;g.beginPath();g.arc(x,y,R*2.5,0,7);g.fill();
-      g.strokeStyle='rgba(20,0,0,.4)';g.lineWidth=R*.32;g.beginPath();g.arc(x,y,R*1.28,0,7);g.stroke();
+      const pu=.5+.5*Math.sin(t*2.6);
+      const sh=g.createRadialGradient(x,y,R*.7,x,y,R*2.4);
+      sh.addColorStop(0,'rgba(0,0,0,.55)');sh.addColorStop(1,'rgba(0,0,0,0)');
+      g.fillStyle=sh;g.beginPath();g.arc(x,y,R*2.4,0,7);g.fill();
+      const gr=g.createRadialGradient(x,y,R*.6,x,y,R*(2.1+pu*.25));
+      gr.addColorStop(0,'rgba(170,8,20,.42)');gr.addColorStop(.55,'rgba(90,0,10,.22)');gr.addColorStop(1,'rgba(40,0,4,0)');
+      g.fillStyle=gr;g.beginPath();g.arc(x,y,R*(2.1+pu*.25),0,7);g.fill();
+      /* the sigil: two rings and runes, turning slowly */
+      g.save();g.translate(x,y);g.rotate(t*.35);
+      g.strokeStyle='rgba(210,20,34,'+(.45+pu*.25).toFixed(2)+')';g.lineWidth=Math.max(.8,R*.045);
+      g.beginPath();g.arc(0,0,R*1.62,0,7);g.stroke();
+      g.setLineDash([R*.18,R*.12]);g.beginPath();g.arc(0,0,R*1.42,0,7);g.stroke();g.setLineDash([]);
+      g.fillStyle='rgba(230,30,44,'+(.55+pu*.3).toFixed(2)+')';
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3,rx=Math.cos(a)*R*1.52,ry=Math.sin(a)*R*1.52,s2=R*.09;
+        g.save();g.translate(rx,ry);g.rotate(a+Math.PI/2);
+        g.beginPath();g.moveTo(0,-s2*1.4);g.lineTo(s2,s2);g.lineTo(-s2,s2);g.closePath();g.fill();
+        g.fillRect(-s2*.25,s2*1.3,s2*.5,s2*.9);
+        g.restore();
+      }
+      g.restore();
+      /* hellfire: dark crimson tongues with brighter red hearts */
       for(let k=0;k<2;k++){
-        const n=14;
+        const n=13;
         for(let i=0;i<n;i++){
-          const a=i*Math.PI*2/n+t*.35+(k?.22:0),fl=.5+.5*Math.sin(t*9+i*1.7+k*2);
-          const h=R*(k?.32:.5)*(.6+fl*.7),b=R*(k?1.0:1.04),hw=k?.09:.13;
-          const bx=x+Math.cos(a)*b,by=y+Math.sin(a)*b,tx=x+Math.cos(a+Math.sin(t*5+i)*.06)*(b+h),ty=y+Math.sin(a+Math.sin(t*5+i)*.06)*(b+h);
-          g.fillStyle=k?'rgba(255,170,60,.62)':'rgba(230,40,20,.6)';
+          const a=i*Math.PI*2/n+t*.4*(k?-1:1)+(k?.24:0),fl=.5+.5*Math.sin(t*8+i*1.9+k*2.3);
+          const h=R*(k?.34:.55)*(.55+fl*.75),b=R*(k?.98:1.02),hw=k?.08:.12,bend=Math.sin(t*4+i)*.08;
+          const tx=x+Math.cos(a+bend)*(b+h),ty=y+Math.sin(a+bend)*(b+h),mx=x+Math.cos(a)*(b+h*.5),my=y+Math.sin(a)*(b+h*.5);
+          g.fillStyle=k?'rgba(235,36,46,.62)':'rgba(110,4,14,.82)';
           g.beginPath();g.moveTo(x+Math.cos(a-hw)*b,y+Math.sin(a-hw)*b);
-          g.quadraticCurveTo(bx+(tx-bx)*.5+Math.cos(a-1.57)*R*.06,by+(ty-by)*.5+Math.sin(a-1.57)*R*.06,tx,ty);
-          g.quadraticCurveTo(bx+(tx-bx)*.5+Math.cos(a+1.57)*R*.06,by+(ty-by)*.5+Math.sin(a+1.57)*R*.06,x+Math.cos(a+hw)*b,y+Math.sin(a+hw)*b);
+          g.quadraticCurveTo(mx+Math.cos(a-1.57)*R*.07,my+Math.sin(a-1.57)*R*.07,tx,ty);
+          g.quadraticCurveTo(mx+Math.cos(a+1.57)*R*.07,my+Math.sin(a+1.57)*R*.07,x+Math.cos(a+hw)*b,y+Math.sin(a+hw)*b);
           g.closePath();g.fill();
         }
       }
+      /* smoke curling round the edge */
+      for(let i=0;i<7;i++){
+        const a=t*.5+i*.9,d=R*(1.25+.18*Math.sin(t*1.3+i)),rr=R*(.16+.06*Math.sin(t*2+i*1.7));
+        g.fillStyle='rgba(8,2,2,.5)';g.beginPath();g.arc(x+Math.cos(a)*d,y+Math.sin(a)*d,rr,0,7);g.fill();
+      }
     } else {
-      for(let i=0;i<5;i++){
-        const ph=(t*.9+i*.37)%1,a=i*1.9+Math.floor(t*.9+i*.37)*2.3;
-        g.globalAlpha=(1-ph)*.85;g.fillStyle=i%2?'#ffb040':'#ff4a2a';
-        g.beginPath();g.arc(x+Math.cos(a)*R*(.9+ph*.9),y+Math.sin(a)*R*(.9+ph*.9)-ph*R*.5,Math.max(.8,R*.05),0,7);g.fill();
+      /* embers and ash drifting off */
+      for(let i=0;i<6;i++){
+        const ph=(t*.8+i*.31)%1,a=i*1.7+Math.floor(t*.8+i*.31)*2.1;
+        g.globalAlpha=(1-ph)*.9;g.fillStyle=i%3===0?'#2a0606':(i%2?'#ff2a2a':'#b3121c');
+        g.beginPath();g.arc(x+Math.cos(a)*R*(.95+ph*.95),y+Math.sin(a)*R*(.95+ph*.95)-ph*R*.4,Math.max(.8,R*(i%3===0?.07:.05)),0,7);g.fill();
       }
     }
   }
@@ -1679,6 +1831,7 @@ const ICONS={
   plaque:'<rect x="2" y="4.5" width="12" height="7" rx="1.5"/><path d="M4.6 8h6.8M8 2.5v2"/>',
   pact:'<path d="M8 2.2c2 2.6 3.6 4.5 3.6 6.6a3.6 3.6 0 0 1-7.2 0C4.4 6.7 6 4.8 8 2.2z"/><path d="M6.6 9.4 9.4 9.4"/>',
   cleanse:'<path d="M8 2.4c2.3 1.4 3.6 3 3.6 4.6A3.6 3.6 0 0 1 8 10.6 3.6 3.6 0 0 1 4.4 7c0-1.6 1.3-3.2 3.6-4.6z"/><path d="M3 13.6h10M5 11.8h6"/>',
+  crate:'<path d="M2.5 5.2 8 2.6l5.5 2.6v6.2L8 14l-5.5-2.6z"/><path d="M2.5 5.2 8 7.8l5.5-2.6M8 7.8V14"/><path d="M6.6 9.6c0-.9.6-1.4 1.4-1.4s1.4.5 1.4 1.2c0 .9-1.4 1-1.4 1.8"/>',
   bag:'<path d="M4.4 6.2h7.2a1.1 1.1 0 0 1 1.1 1.1v5.6a1.3 1.3 0 0 1-1.3 1.3H4.6a1.3 1.3 0 0 1-1.3-1.3V7.3a1.1 1.1 0 0 1 1.1-1.1z"/><path d="M5.9 6.2V4.8a2.1 2.1 0 0 1 4.2 0v1.4"/><path d="M3.3 9.4h9.4M7 9.4v1.4h2V9.4"/>',
   flask:'<path d="M6.4 2.6h3.2M7 2.6v3.6L3.6 12a1.2 1.2 0 0 0 1 1.8h6.8a1.2 1.2 0 0 0 1-1.8L9 6.2V2.6"/><path d="M5 10h6"/>',
   help:'<path d="M5.3 5.7a2.7 2.7 0 1 1 3.8 2.5c-.7.3-1.1.9-1.1 1.6v.7"/><circle cx="8" cy="13" r=".75" fill="currentColor" stroke="none"/>',
@@ -2335,7 +2488,7 @@ function answerCareer(keep){
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
-function currentLion(){return MATCH.mode==='editor'?scratchLion():(MATCH.mode==='career'?CAREER.lion:(MATCH.mode==='tourn'?tournLions()[UI.tslot|0]:cfg[UI.side]));}
+function currentLion(){return MATCH.mode==='editor'?scratchLion():((MATCH.mode==='career'||(MATCH.mode==='pack'&&CAREER.lion))?CAREER.lion:(MATCH.mode==='tourn'?tournLions()[UI.tslot|0]:cfg[UI.side]));}
 function lionSheetText(c){
   return c.name+'\n'+BUILDS[c.build].name+' \u00b7 '+ARMORS[c.armor].name+' \u00b7 '+wName(c)+'\n'+
     c.abil.map(k=>ABILITIES[k].name).join(' + ')+' \u00b7 '+BRAINS[c.brain].name+' mind\n'+
@@ -2431,13 +2584,16 @@ function renderCareer(){
       'Its IV is drawn when you start and is not yours to touch. Once you finish it, it is <b>locked</b> '+
       'until it dies or you retire it. Then you make the next one.</p>'+
       '<div class="act" style="padding:12px 0 0"><button data-act="create" class="key">'+ico('plus')+'Create a lion</button>'+
-      '<button data-act="careerLoad">'+ico('paste')+'Load a code</button></div></div>'+hallHTML();
+      '<button data-act="careerLoad">'+ico('paste')+'Load a code</button></div></div>'+
+      '<button class="tutTip" data-act="openTut"><span class="q">?</span><span class="v"><b>New here? Want a tutorial?</b>'+
+      '<small>Tap <b>?</b> and Old Lion will walk you through everything. He has been around a while.</small></span><span class="go">\u203a</span></button>'+rivalsHTML()+hallHTML();
     return;
   }
   if(!CAREER.locked){host.innerHTML=editorHTML('career',L,'Create your lion',true);return;}
   if(UI.view==='shop'){host.innerHTML=shopHTML(L);return;}
   if(UI.view==='mystic'){host.innerHTML=mysticHTML(L);return;}
   if(UI.view==='smith'){host.innerHTML=smithHTML(L);return;}
+  if(UI.view==='fence'){host.innerHTML=fenceHTML(L);return;}
   if(UI.view==='edit'){host.innerHTML=editorHTML('career',L,L.name,true);return;}
   const rec=L.record,ch=CAREER.champ;
   host.innerHTML='<div class="hd"><h2>The den</h2><span>'+(ch?('In championship '+ch.n+'.'):'Resting between championships.')+'</span></div>'+
@@ -2458,20 +2614,25 @@ function renderCareer(){
       '<button class="door" data-act="openShop">'+shopIconHTML()+'<span><b>Lion Store</b><small class="g">'+ico('coin')+(L.gold||0)+' gold</small></span></button>'+
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s')+'</small></span></button>'+
       '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel')+'</small></span></button>'+
+      '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
       '<button class="door" data-act="openInv"><span class="dic">'+ico('bag')+'</span><span><b>Bag</b><small>'+bagLine(L)+'</small></span></button>'+
       '<button class="door" data-act="hallJump"><span class="dic gold">'+ico('trophy')+'</span><span><b>Hall of Fame</b><small>'+CAREER.hall.length+' lion'+(CAREER.hall.length===1?'':'s')+'</small></span></button>'+
-      '<button class="door" data-act="careerLoad"><span class="dic">'+ico('paste')+'</span><span><b>Load a code</b><small>Swap in a lion</small></span></button>'+
     '</div>'+
+    '<div class="card loadRow"><button class="row" data-act="careerLoad"><span class="rico">'+ico('paste')+'</span><span class="v">Load a lion from a code'+
+      '<small>Bring in any saved lion. '+esc(L.name)+' would retire to the hall.</small></span><span class="go">\u203a</span></button></div>'+
     (ch?('<div class="hd"><h2>Championship '+ch.n+'</h2><span>Bout '+Math.min(ch.i+1,5)+' of five.</span></div>'+
       '<div class="card">'+ch.foes.map(function(f,i){
         const st=i<ch.i?'done':(i===ch.i?'now':'');
         return '<div class="listRow '+st+'"><span class="num">'+(i+1)+'</span><div>'+
-          (i<=ch.i?('<h4>'+esc(f.name)+' '+beltBadge(f)+'</h4><small><b style="color:var(--t1)">'+recWL(f)+'</b> \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
+          (i<=ch.i?('<h4>'+esc(f.name)+' '+beltBadge(f)+rivalBadge(f)+'</h4><small><b style="color:var(--t1)">'+recWL(f)+'</b> \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
             ' \u00b7 '+BRAINS[f.brain].name+' mind</small>')
-           :(beltsOf(f)?'<h4 style="color:var(--dim)">Unannounced '+beltBadge(f)+'</h4><small>a belt holder waits at the end</small>'
+           :(rivalOf(f)&&rivalOf(f).nem?'<h4 style="color:#ff5a4d">Unannounced</h4><small>something is waiting for you at the end</small>'
+           :rivalOf(f)?'<h4 style="color:var(--dim)">Unannounced</h4><small>a familiar face, maybe</small>'
+           :beltsOf(f)?'<h4 style="color:var(--dim)">Unannounced '+beltBadge(f)+'</h4><small>a belt holder waits at the end</small>'
              :'<h4 style="color:var(--dim)">Unannounced</h4><small>steps out when it is time</small>'))+
           '</div><span></span></div>';
       }).join('')+'</div>'):'')+
+    rivalsHTML()+
     hallHTML();
 }
 /* where the run stands, and who is next */
@@ -2481,7 +2642,7 @@ function runStripHTML(L,ch){
   const f=ch.foes[Math.min(ch.i,ch.foes.length-1)];
   let dots='';for(let i=0;i<ch.foes.length;i++)dots+='<i class="'+(i<ch.i?'on':(i===ch.i?'now':''))+'"></i>';
   return '<div class="runStrip"><div class="k">Championship '+ch.n+' \u00b7 bout '+Math.min(ch.i+1,5)+' of '+ch.foes.length+'</div>'+
-    '<div class="nx">Next: <span style="color:'+liftCol(colsOf(f).mane,.45)+'">'+esc(f.name)+'</span> '+beltBadge(f)+
+    '<div class="nx">Next: <span style="color:'+liftCol(colsOf(f).mane,.45)+'">'+esc(f.name)+'</span> '+beltBadge(f)+rivalBadge(f)+
     ' <small>'+recWL(f)+' \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+'</small></div>'+
     '<div class="dots">'+dots+ico('belt')+'</div></div>';
 }
@@ -2524,7 +2685,8 @@ const ITEMS={
   plaque:{name:'Name Plaque',       ico:'plaque',use:'shopRename',desc:'A brass plaque and an engraver. Use it to give your lion a new name.'},
   cleanse:{name:'Soul Cleanse',     ico:'cleanse',use:'cleanse',desc:'Washes a bound soul away, Divine or Demonic. The look and the +10% go with it.'},
   pact:  {name:'Blood Pact',        ico:'pact',use:'pact',desc:'Rerolls your lion\u2019s IV, anywhere from 1 to 10. It could be better. It could be much worse.'},
-  reforge:{name:'Reforge Armour',   ico:'shield',use:'shopArmor',desc:'The Blacksmith\u2019s ticket. Use it to swap to any armour: Bare, Hide, Scale or Plate.'}};
+  reforge:{name:'Reforge Armour',   ico:'shield',use:'shopArmor',desc:'The Blacksmith\u2019s ticket. Use it to swap to any armour: Bare, Hide, Scale or Plate.'},
+  crate: {name:'Mystery Crate',     ico:'crate',use:'crate',desc:'Nailed shut, smells of hyena. Could be gold, skulls, anything from any shop. Could even be a soul.'}};
 const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge'};
 function invOf(L){
   if(!Array.isArray(L.inv))L.inv=[];
@@ -2552,7 +2714,7 @@ function openInventory(sel){
   let grid='';
   for(let i=0;i<INV_SLOTS;i++){
     const it=items[i],I=it&&ITEMS[it.k];
-    grid+=it?('<button class="invSlot full'+(i===sel?' on':'')+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+'" data-act="invPick" data-i="'+i+'" title="'+I.name+'">'+
+    grid+=it?('<button class="invSlot full'+(i===sel?' on':'')+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='crate'?' fence':'')+'" data-act="invPick" data-i="'+i+'" title="'+I.name+'">'+
       ico(I.ico)+'<small>'+I.name+'</small>'+(it.n>1?'<i>×'+it.n+'</i>':'')+'</button>')
       :'<div class="invSlot"></div>';
   }
@@ -2564,16 +2726,19 @@ function openInventory(sel){
       (I.use==='pact'?'<div class="grp">a gamble: the new IV is rolled fresh, from 1 to 10. '+esc(L.name)+' is IV '+(L.iv||5)+' now</div>':'')+
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
       (I.soul&&soulOf(L)?'<div class="grp">'+esc(L.name)+' already carries a '+SOULS[soulOf(L)].name.toLowerCase()+'. '+(soulOf(L)===I.soul?'It cannot hold two of the same.':'This one would drive it out.')+'</div>':'')+
-      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':'Use')))+'</button>'
+      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':'Use'))))+'</button>'
         :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+'</div>';
   } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
       'Beat lions in a championship and now and then you take a skull home.</small></div></div>';
+  let crateMsg='';
+  if(UI.crateMsg){const m=UI.crateMsg;UI.crateMsg=null;
+    crateMsg='<div class="crateOut'+(m.rare?' rare':'')+'">'+ico(m.ico)+'<div><small>Out of the crate</small><b>'+esc(m.txt)+'</b></div></div>';}
   UI.sheet={kind:'inv',field:'inv'};
   $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Inventory</h3>'+
     '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+
     '<div class="invHead"><div><b>'+esc(L.name)+'’s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
     '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span></div>'+
-    '<div class="invGrid">'+grid+'</div>'+det+
+    crateMsg+'<div class="invGrid">'+grid+'</div>'+det+
     '<div class="grp">The bag belongs to '+esc(L.name)+'. When it retires or dies, the bag goes with it.</div>'+
     '</div>';
   $('sheetWrap').classList.remove('hidden');
@@ -2583,6 +2748,7 @@ function invUse(k){
   const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!I.use||!invCount(L,k))return;
   if(!CAREER.locked){toast('Finish the lion first');return;}
   if(I.use==='soul'){bindSoul(I.soul);return;}
+  if(I.use==='crate'){openCrate();return;}
   if(I.use==='cleanse'){
     if(!soulOf(L)){toast(L.name+' has no soul to cleanse');return;}
     const was=SOULS[soulOf(L)].name;invTake(L,'cleanse');delete L.soul;SFX.heal();
@@ -2747,62 +2913,113 @@ function renderEditorMode(){
         '<button data-act="file">'+ico('file')+'Open file</button></div>'+
     '</div>';
 }
+/* ---------- challenges: your team, four fights, one clear choice ---------- */
+const CHAL={
+  pack:{name:'The Pack',act:'startPack',go:'Face the pack',diff:0,diffName:'Endless',col:'#d9a25a',
+    blurb:'Wave after wave of dogs and hyenas.',
+    desc:'Every wave is bigger than the last: dogs first, hyenas once it gets serious. Clear a wave and your lion gets a breather and a little health back. Last as long as you can.',
+    reward:'1 to 3 gold for every wave cleared',tip:'Wide swings, Quake Slam and Roar thin a crowd fast.'},
+  king:{name:'The Lion King',act:'startKing',go:'Challenge the Lion King',diff:3,diffName:'Hard',col:'#ff5a4d',
+    blurb:'One fight. A giant in black plate.',
+    desc:'Three times the size of your lion, in plate armour, with a maul that stuns and a roar that throws you across the sand.',
+    reward:'Crowns taken stay on your lion’s record',tip:'Keep moving. Ranged lions can kite him, and allies split his attention.'},
+  old:{name:'Old Lion',act:'startOld',go:'Challenge Old Lion',diff:4,diffName:'Very hard',col:'#d2cbbd',
+    blurb:'Your tutor, out of retirement.',
+    desc:'Patient, clever and much harder than he looks. He taught you everything, and he kept a few things back.',
+    reward:'Every win over him is remembered',tip:'Do not trade blows early. He waits for you to make a mistake.'},
+  ancient:{name:'The Ancient Lion',act:'startAncient',go:'Wake the Ancient Lion',diff:5,diffName:'Brutal',col:'#ffc72c',
+    blurb:'Older than the arena.',
+    desc:'A navy and gold colossus, slow and enormous. Get close and it blasts you with a gold nova. Stay back and it brings the stars down on you.',
+    reward:'Felling it is the rarest mark a lion can carry',tip:'Bring two allies. Alone, it wins most fights.'}};
+const CHAL_K=['pack','king','old','ancient'];
+function chalRecord(k,rec){
+  if(k==='pack')return rec.bestWave?('Best wave '+rec.bestWave+' · '+(rec.packKills||0)+' killed'):'Never faced';
+  const kk={king:'kingKills',old:'oldKills',ancient:'ancientKills'}[k],kt={king:'kingTries',old:'oldTries',ancient:'ancientTries'}[k];
+  const w=rec[kk]|0,l=rec[kt]|0;
+  if(!w&&!l)return 'Never faced';
+  return (w?(w+' win'+(w>1?'s':'')):'No wins yet')+(l?' · '+l+' loss'+(l>1?'es':''):'');
+}
+function diffPips(d,col){
+  if(!d)return '<span class="dpips endless">'+ico('pack')+'Endless</span>';
+  let o='';for(let i=1;i<=5;i++)o+='<i class="'+(i<=d?'on':'')+'"'+(i<=d?' style="background:'+col+'"':'')+'></i>';
+  return '<span class="dpips">'+o+'</span>';
+}
 function renderPack(){
   const host=$('pack'),L=CAREER.locked?CAREER.lion:null;
-  if(!L){
-    host.innerHTML='<div class="hd"><h2>Challenges</h2><span>You need a lion of your own first.</span></div>'+
-      '<div class="card pad"><p class="muted">Challenges are for a lion you already own. '+
-      'Create one under <b>Championship</b> and they open up.</p></div>';
-    return;
+  if(!UI.chal||!CHAL[UI.chal])UI.chal='pack';
+  const rec=(L&&L.record)||{},sel=UI.chal,C=CHAL[sel];
+  const slot=function(c,i,you){
+    if(!c)return '<button class="teamSlot empty" data-act="addAlly">'+ico('plus')+'<b>Add an ally</b><small>roll one or paste a code</small></button>';
+    const d=derive(c);
+    return '<div class="teamSlot'+(you?' you':'')+'"'+(you?' data-act="summary"':'')+'><canvas class="teamCv" data-team="'+(you?'you':i)+'"></canvas>'+
+      '<b style="color:'+liftCol(colsOf(c).mane,.5)+'">'+esc(c.name)+'</b><small>'+BUILDS[c.build].name+' · '+wName(c)+'</small>'+
+      '<span class="tTag">'+ico('bolt')+'threat '+d.threat+'</span>'+
+      (you?'':'<button class="tX" data-act="dropAlly" data-i="'+i+'" aria-label="Send '+esc(c.name)+' home">×</button>')+'</div>';
+  };
+  let team='';
+  if(L){
+    team='<div class="hd sub2"><h2>Your team</h2><span>'+(ALLIES.length?ALLIES.length+' all'+(ALLIES.length>1?'ies':'y')+' fighting beside '+esc(L.name)+'.':'Up to two allies can fight beside you. Every challenge gets easier with help.')+'</span></div>'+
+      '<div class="teamRow">'+slot(L,0,true)+slot(ALLIES[0],0)+slot(ALLIES[1],1)+'</div>';
+  } else {
+    team='<div class="card pad lockedNote">'+ico('lion')+'<div><b>You need a lion of your own first</b><small>Challenges are fought by your championship lion. Create one and they open up.</small></div></div>';
   }
-  const rec=L.record||{};
-  const allyCards=ALLIES.map(function(a,i){
-    return '<div class="row"><span class="rico">'+ico('lion')+'</span>'+
-      '<span class="v">'+esc(a.name)+'<small>'+BUILDS[a.build].name+' \u00b7 '+WEAPONS[a.weapon].name+
-      ' \u00b7 '+BRAINS[a.brain].name+' mind</small></span>'+
-      '<button class="badge" data-act="dropAlly" data-i="'+i+'">Remove</button></div>';
-  }).join('');
-  host.innerHTML='<div class="hd"><h2>Challenges</h2><span>Nothing here touches your record. Fight as often as you like.</span></div>'+
-    lionCard(L,{prev:'pack',actions:'<div class="stats4 five">'+
-      '<div><b>'+(rec.bestWave||0)+'</b><span>Best wave</span></div>'+
-      '<div><b>'+(rec.packKills||0)+'</b><span>Most killed</span></div>'+
-      '<div><b>'+(rec.champs||0)+'</b><span>Belts</span></div>'+
-      '<div><b>'+(L.iv||5)+'</b><span>IV</span></div>'+
-      '<div class="coin"><b>'+(L.gold||0)+'</b><span>Gold</span></div></div>'+
-      '<div class="act"><button data-act="summary" class="key">'+ico('summary')+'Summary</button></div>'})+
-    '<div class="hd sect2"><h2>Your side</h2><span>Bring another lion along if you want the help.</span></div>'+
-    '<div class="card">'+allyCards+
-      (ALLIES.length<2?('<button class="row" data-act="addAlly"><span class="rico">'+ico('plus')+'</span>'+
-        '<span class="v">Add a lion<small>Roll one, or paste a lion code</small></span>'+
-        '<span class="go">\u203a</span></button>'):'')+
-      (ALLIES.length?'':'')+
-    '</div>'+
-    '<div class="rule"></div>'+
-    '<div class="hd sect2"><h2>Pick a challenge</h2><span>None of these touch your championship record.</span></div>'+
-    '<div class="hd sub2"><h2>The pack</h2><span>Waves of dogs and hyenas. Last as long as you can.</span></div>'+
-    '<div class="card"><button class="row" data-act="startPack">'+
-      '<span class="rico">'+ico('pack')+'</span><span class="v">Face the pack'+
-      '<small>Best wave '+(rec.bestWave||0)+' \u00b7 most killed '+(rec.packKills||0)+'</small></span>'+
-      '<span class="go">\u203a</span></button></div>'+
-    '<div class="hd sub2"><h2>Lion King</h2><span>One fight. He is bigger than anything you own.</span></div>'+
-    '<div class="card"><button class="row" data-act="startKing">'+
-      '<span class="rico">'+ico('crown')+'</span><span class="v">Challenge the Lion King'+
-      '<small>'+((rec.kingKills||0)?((rec.kingKills)+' crown'+(rec.kingKills>1?'s':'')+' taken'):
-        ((rec.kingTries||0)?('Beaten '+rec.kingTries+' time'+(rec.kingTries>1?'s':'')):'Never faced'))+
-      '</small></span><span class="go">\u203a</span></button></div>'+
-    '<div class="hd sub2"><h2>Ancient Lion</h2><span>Older than the arena. Slow, enormous, and it brings the stars down.</span></div>'+
-    '<div class="card"><button class="row" data-act="startAncient">'+
-      '<span class="rico" style="color:#ffc72c">'+ico('spark')+'</span><span class="v">Wake the Ancient Lion'+
-      '<small>'+((rec.ancientKills||0)?('Felled '+rec.ancientKills+' time'+(rec.ancientKills>1?'s':'')):
-        ((rec.ancientTries||0)?('Beaten '+rec.ancientTries+' time'+(rec.ancientTries>1?'s':'')):'Never faced'))+
-      '</small></span><span class="go">\u203a</span></button></div>'+
-    '<div class="hd sub2"><h2>Old Lion</h2><span>He taught you everything. Now he wants to see if you were listening.</span></div>'+
-    '<div class="card"><button class="row" data-act="startOld">'+
-      '<span class="rico" style="color:#d2cbbd">'+ico('lion')+'</span><span class="v">Challenge Old Lion'+
-      '<small>'+((rec.oldKills||0)?('Beaten him '+rec.oldKills+' time'+(rec.oldKills>1?'s':'')+'. He\u2019s fine. Probably.'):
-        ((rec.oldTries||0)?('He\u2019s won '+rec.oldTries+' time'+(rec.oldTries>1?'s':'')):'Never faced'))+
-      '</small></span><span class="go">\u203a</span></button></div>'+
-    '';
+  const card=function(k){
+    const X=CHAL[k],on=k===sel;
+    return '<button class="chalCard'+(on?' on':'')+(L?'':' locked')+'" data-act="pickChal" data-k="'+k+'" style="--cc:'+X.col+'">'+
+      '<canvas class="chalCv" data-chal="'+k+'"></canvas>'+
+      (on?'<span class="chalOn">'+ico('check')+'</span>':'')+
+      '<span class="chalTxt"><b>'+X.name+'</b>'+diffPips(X.diff,X.col)+'<small>'+(L?chalRecord(k,rec):X.blurb)+'</small></span></button>';
+  };
+  host.innerHTML='<div class="hd"><h2>Challenges</h2><span>Fight as often as you like. Nothing here touches your championship record.</span></div>'+
+    team+
+    '<div class="hd sub2"><h2>Pick a challenge</h2><span>Tap one to see what you are walking into.</span></div>'+
+    '<div class="chalGrid">'+CHAL_K.map(card).join('')+'</div>'+
+    '<div class="chalInfo" style="--cc:'+C.col+'"><div class="ciHd"><b>'+C.name+'</b><span class="ciDiff">'+diffPips(C.diff,C.col)+(C.diff?'<em>'+C.diffName+'</em>':'')+'</span></div>'+
+      '<p>'+C.desc+'</p>'+
+      '<div class="ciRows">'+
+        '<div>'+ico('trophy')+'<span><small>Reward</small>'+C.reward+'</span></div>'+
+        (L?'<div>'+ico('summary')+'<span><small>Your record</small>'+chalRecord(sel,rec)+'</span></div>':'')+
+        '<div>'+ico('spark')+'<span><small>Tip</small>'+C.tip+'</span></div>'+
+      '</div></div>';
+}
+function paintChalCanvases(){
+  if(typeof document==='undefined'||!document.querySelectorAll)return;
+  const sz=function(cv){const w=cv.clientWidth||160,h=cv.clientHeight||110,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.scale(d,d);return [g,w,h];};
+  document.querySelectorAll('canvas.chalCv').forEach(function(cv){
+    const k=cv.dataset.chal,q=sz(cv),g=q[0],w=q[1],h=q[2];
+    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16']}[k];
+    const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,bg[0]);gr.addColorStop(1,bg[1]);g.fillStyle=gr;g.fillRect(0,0,w,h);
+    g.fillStyle='rgba(255,255,255,.035)';for(let x=8;x<w;x+=16)for(let y=8;y<h;y+=16)g.fillRect(x,y,1.2,1.2);
+    const cx=w/2,cy=h/2+6;
+    if(k==='pack'){
+      [[.22,.62,.9,'dog'],[.38,.32,.5,'dog'],[.78,.4,2.4,'dog'],[.6,.72,-1.8,'hyena'],[.84,.75,3.6,'dog'],[.16,.28,.2,'hyena']].forEach(function(p){
+        const B=BEASTS[p[3]],R=p[3]==='hyena'?11:8;
+        paintLion(g,{x:w*p[0],y:h*p[1],R:R,ang:p[2],t:p[0]*9,pelt:B.pelt,mane:4,tail:0,seed:(p[0]*99)|0,scars:[],armor:'none',eyes:'#ffd24a'});});
+    } else if(k==='king'){
+      const rg=g.createRadialGradient(cx,cy,6,cx,cy,h*.7);rg.addColorStop(0,'rgba(226,56,44,.45)');rg.addColorStop(1,'rgba(226,56,44,0)');g.fillStyle=rg;g.fillRect(0,0,w,h);
+      const c=kingCfg();paintLion(g,{x:cx,y:cy,R:h*.26,ang:Math.PI/2+.4,t:1,pelt:c.pelt,mane:c.mane,tail:0,seed:7,scars:c.scars,armor:'plate',cols:KINGCOLS,eyes:FX.blood,eyeGlow:true});
+    } else if(k==='ancient'){
+      gabAura(g,cx,cy,h*.27,1.2);
+      const c=ancientCfg();paintLion(g,{x:cx,y:cy,R:h*.27,ang:Math.PI/2+.4,t:1,pelt:0,mane:c.mane,tail:c.tail,seed:3,scars:[],armor:'scale',cols:GABCOLS,eyes:'#ffe14d',eyeGlow:true});
+      g.fillStyle='#ffe48a';for(let i=0;i<9;i++){const a=i*.7,d=h*(.36+.08*(i%3));g.globalAlpha=.5+.5*((i*37)%10)/10;g.beginPath();g.arc(cx+Math.cos(a)*d*1.4,cy+Math.sin(a)*d,1.4,0,7);g.fill();}
+      g.globalAlpha=1;
+    } else {
+      const R=h*.25;paintLion(g,{x:cx,y:cy,R:R,ang:Math.PI/2+.4,t:1,pelt:0,mane:0,tail:0,seed:7,scars:[1284,617],armor:'hide',cols:OLDCOLS});
+      drawOldBits(g,cx,cy,R,Math.PI/2+.4,1,false,0);
+    }
+    const sh=g.createLinearGradient(0,h*.55,0,h);sh.addColorStop(0,'rgba(0,0,0,0)');sh.addColorStop(1,'rgba(0,0,0,.55)');g.fillStyle=sh;g.fillRect(0,h*.55,w,h*.45);
+  });
+  document.querySelectorAll('canvas.teamCv').forEach(function(cv){
+    const c=cv.dataset.team==='you'?CAREER.lion:ALLIES[+cv.dataset.team];if(!c)return;
+    const q=sz(cv),g=q[0],w=q[1],h=q[2];
+    g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
+    const R=Math.min(h*.3,BUILDS[c.build].r*.9),so=soulOf(c);
+    if(isGab(c))gabAura(g,w/2,h/2,R,1);
+    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,true);
+    paintLion(g,{x:w/2,y:h/2+2,R:R,ang:-Math.PI/2,t:1,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],belts:beltsOf(c),armor:c.armor,
+      cols:isHog(c)?KINGCOLS:(isGab(c)?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!so});
+    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,false);
+  });
 }
 /* ---------- tournament ---------- */
 const TROUND=[{name:'Quarter-finals',one:'Quarter-final'},{name:'Semi-finals',one:'Semi-final'},{name:'Final',one:'Final'}];
@@ -2959,6 +3176,150 @@ function shopHTML(L){
     'When this lion is gone, so is its gold.</p>';
 }
 function shopSay(list){SHOP.quip=pickOne(list);}
+/* ---------- the Hyena Fence: under the stands, no questions, no receipts ---------- */
+const FENCE={skull:25,crate:45,quip:'',
+  hello:['Psst. Over here.','No questions. No receipts.','Fell off a cart. Honest.','Skulls? I take skulls. Do not ask why.','Prices change after every fight. Blink and you miss it.'],
+  thanks:['Pleasure. We never met.','Hehehe. Good choice.','Nice doing business, big cat.'],
+  broke:['Come back richer. I will be here. Probably.','No gold, no goods. That is the rule.'],
+  noskull:['No skulls? Go and win something.']};
+const FENCE_POOL=[['coat','shopCoat'],['potion','shopPotion'],['weapon','shopWeapon'],['train','shopTrain'],['plaque','shopRename'],['reforge','reforge']];
+const HYENACOLS={mane:'#4a3a2a',body:'#a08a64',edge:'#5c4a34',muz:'#3a2e22',plate:'#5c4a34'};
+function fenceSay(list){FENCE.quip=pickOne(list);}
+function fenceBase(k){return k==='reforge'?SMITH.reforge:SHOP.price[FENCE_POOL.filter(p=>p[0]===k)[0][1]];}
+/* three deals, each 5 to 10 gold under the usual price; they turn over after every championship bout */
+function fenceRotate(){
+  const pool=FENCE_POOL.slice(),deals=[];
+  while(deals.length<3&&pool.length){
+    const p=pool.splice((Math.random()*pool.length)|0,1)[0],base=fenceBase(p[0]),off=5+((Math.random()*6)|0);
+    deals.push({k:p[0],base:base,price:base-off,sold:false});
+  }
+  CAREER.fence={deals:deals};
+}
+function fenceDeals(){if(!CAREER.fence||!CAREER.fence.deals)fenceRotate();return CAREER.fence.deals;}
+let FENCEICON=null;
+function paintHyena(g,x,y,R,ang,t,anim){
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:0,cols:HYENACOLS,mane:4,tail:0,seed:11,scars:[],armor:'none',anim:anim,eyes:'#ffd24a',eyeGlow:true});
+  g.save();g.translate(x,y);g.rotate(ang);g.fillStyle='rgba(50,36,22,.75)';
+  [[-.35,-.3],[-.1,.35],[-.5,.2],[.05,-.42],[-.6,-.1]].forEach(function(q){g.beginPath();g.arc(q[0]*R,q[1]*R,R*.09,0,7);g.fill();});
+  g.strokeStyle='#e0b45a';g.lineWidth=Math.max(.8,R*.05);g.beginPath();g.arc(R*.3,R*.5,R*.09,0,7);g.stroke();
+  g.restore();
+}
+function fenceIconHTML(){
+  if(FENCEICON===null){
+    try{
+      const c=document.createElement('canvas');c.width=88;c.height=88;const g=c.getContext('2d');
+      g.fillStyle='#14100c';g.fillRect(0,0,88,88);g.scale(2,2);
+      const gr=g.createRadialGradient(10,8,1,10,8,30);gr.addColorStop(0,'rgba(255,200,110,.35)');gr.addColorStop(1,'rgba(255,200,110,0)');
+      g.fillStyle=gr;g.fillRect(0,0,44,44);
+      paintHyena(g,22,24,11,Math.PI/2+.35,0,false);
+      FENCEICON=c.toDataURL?c.toDataURL():'';
+    }catch(e){FENCEICON='';}
+  }
+  return FENCEICON?'<img class="shopIco" src="'+FENCEICON+'" alt="">':'<span class="rico fence">'+ico('crate')+'</span>';
+}
+function fenceHTML(L){
+  const gold=L.gold||0,sk=invCount(L,'skull'),deals=fenceDeals();
+  const deal=function(d,i){
+    const I=ITEMS[d.k],ok=gold>=d.price&&!d.sold;
+    return '<button class="row'+(d.sold?' sold':'')+'" data-act="fenceDeal" data-i="'+i+'"'+(d.sold?' disabled':'')+'><span class="rico">'+ico(I.ico)+'</span>'+
+      '<span class="v">'+I.name+'<small>'+(d.sold?'Sold. Gone. Never here.':'<b class="offTxt">'+(d.base-d.price)+' gold off</b> today')+'</small></span>'+
+      (d.sold?'<span class="price poor">Sold</span>':'<span class="price'+(ok?'':' poor')+'"><s>'+d.base+'</s>'+ico('coin')+d.price+'</span>')+'</button>';
+  };
+  return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
+    '<div class="hd"><h2>The Hyena Fence</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b> and <b style="color:#e8dcc4">'+sk+' skull'+(sk===1?'':'s')+'</b>. Keep your voice down.</span></div>'+
+    '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="fence"></canvas></div>'+
+    '<div class="hd sub2"><h2>Under the counter</h2><span>New stock after every bout. One of each.</span></div>'+
+    '<div class="card">'+deals.map(deal).join('')+'</div>'+
+    '<div class="hd sub2"><h2>The usual</h2><span>Always here, always the same price.</span></div>'+
+    '<div class="card">'+
+      '<button class="row" data-act="fenceSkull"><span class="rico bone">'+ico('skull')+'</span><span class="v">Sell a skull'+
+        '<small>He gives 25 gold a skull and does not say what for.</small></span><span class="price'+(sk?'':' poor')+'">'+ico('skull')+'1 \u2192 '+ico('coin')+FENCE.skull+'</span></button>'+
+      '<button class="row" data-act="fenceCrate"><span class="rico fence">'+ico('crate')+'</span><span class="v">Mystery Crate'+
+        '<small>Goes in the bag. Gold, skulls, anything from any shop, and once in a while a soul.</small></span><span class="price'+(gold>=FENCE.crate?'':' poor')+'">'+ico('coin')+FENCE.crate+'</span></button>'+
+    '</div>'+
+    '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
+      '<span class="v">Open the bag<small>Crates and bargains go in the bag.</small></span><span class="go">\u203a</span></button></div>';
+}
+function fenceDeal(i){
+  const L=CAREER.lion,d=fenceDeals()[i|0];if(!L||!CAREER.locked||!d||d.sold)return;
+  L.gold=L.gold||0;
+  if(L.gold<d.price){fenceSay(FENCE.broke);toast('You need '+(d.price-L.gold)+' more gold');refresh();return;}
+  if(!invAdd(L,d.k,1)){toast('The bag is full');return;}
+  L.gold-=d.price;d.sold=true;SFX.coin();fenceSay(FENCE.thanks);toast(ITEMS[d.k].name+' for '+d.price+' gold \u00b7 in the bag');
+  Store.save();refresh();
+}
+function fenceSkull(){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;
+  if(!invCount(L,'skull')){fenceSay(FENCE.noskull);toast('No skulls to sell');refresh();return;}
+  invTake(L,'skull');L.gold=(L.gold||0)+FENCE.skull;SFX.coin();fenceSay(FENCE.thanks);toast('One skull \u2192 '+FENCE.skull+' gold');
+  Store.save();refresh();
+}
+function fenceCrate(){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;L.gold=L.gold||0;
+  if(L.gold<FENCE.crate){fenceSay(FENCE.broke);toast('You need '+(FENCE.crate-L.gold)+' more gold');refresh();return;}
+  if(!invAdd(L,'crate',1)){toast('The bag is full');return;}
+  L.gold-=FENCE.crate;SFX.coin();fenceSay(FENCE.thanks);toast('Mystery Crate is in the bag');
+  Store.save();refresh();
+}
+/* what is in the crate: weights add up to 100 */
+const CRATE=[[22,'gold'],[18,'skull'],[9,'coat'],[9,'potion'],[6,'weapon'],[6,'reforge'],[6,'train'],[5,'plaque'],[5,'halo'],[4,'cleanse'],[4,'pact'],[3,'divine'],[3,'demon']];
+function openCrate(){
+  const L=CAREER.lion;if(!L||!invCount(L,'crate'))return;
+  let roll=Math.random()*100,pick='gold';
+  for(let i=0;i<CRATE.length;i++){roll-=CRATE[i][0];if(roll<0){pick=CRATE[i][1];break;}}
+  invTake(L,'crate');
+  let msg,rare=false;
+  if(pick==='gold'){const n=20+((Math.random()*61)|0);L.gold=(L.gold||0)+n;msg=n+' gold';}
+  else if(pick==='skull'){const n=1+((Math.random()*3)|0);invAdd(L,'skull',n);msg=n+' Lion Skull'+(n>1?'s':'');}
+  else{
+    if(!invAdd(L,pick,1)){L.gold=(L.gold||0)+30;msg='30 gold (the bag was full)';}
+    else{msg=ITEMS[pick].name;rare=pick==='divine'||pick==='demon'||pick==='halo';}
+  }
+  if(rare)SFX.champ();else SFX.coin();
+  UI.crateMsg={txt:msg,rare:rare,ico:pick==='gold'?'coin':(ITEMS[pick]?ITEMS[pick].ico:'crate')};
+  toast((rare?'Jackpot! ':'')+'The crate held '+msg);
+  Store.save();refresh();openInventory();
+}
+function drawFenceScene(g,p){
+  const w=p.w,h=p.h,t=p.t;
+  g.fillStyle='#14100c';g.fillRect(0,0,w,h);
+  /* the underside of the stands: beams overhead, dust in the lamp light */
+  g.fillStyle='#1d1712';g.fillRect(0,0,w,26);
+  g.fillStyle='#2b2118';for(let x=-20;x<w;x+=70){g.save();g.translate(x,0);g.transform(1,0,.35,1,0,0);g.fillRect(0,0,14,26);g.restore();}
+  g.fillStyle='#3a2c1e';g.fillRect(0,22,w,4);
+  const lx=26,lf=.85+.15*Math.sin(t*5)+.05*Math.sin(t*13);
+  const lg=g.createRadialGradient(lx,16,2,lx,16,120*lf);lg.addColorStop(0,'rgba(255,200,110,.35)');lg.addColorStop(1,'rgba(255,200,110,0)');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  g.fillStyle='#ffcf7a';g.beginPath();g.arc(lx,16,3.2*lf,0,7);g.fill();g.strokeStyle='#5a4630';g.lineWidth=1.2;g.strokeRect(lx-5,10,10,12);
+  for(let i=0;i<8;i++){const ph=(t*.08+i*.13)%1;g.globalAlpha=.35*(1-Math.abs(ph-.5)*2);g.fillStyle='#e8d2a8';
+    g.beginPath();g.arc(lx+20+((i*37)%(w-60)),30+ph*(h-40),1,0,7);g.fill();}
+  g.globalAlpha=1;
+  /* crates stacked about */
+  const crate=function(x,y,s,c){g.fillStyle=c;g.fillRect(x,y,s,s);g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=1.2;g.strokeRect(x,y,s,s);
+    g.beginPath();g.moveTo(x,y);g.lineTo(x+s,y+s);g.moveTo(x+s,y);g.lineTo(x,y+s);g.stroke();};
+  crate(w-70,34,26,'#5a4128');crate(w-44,40,20,'#4a3520');crate(w-62,60,18,'#634a2e');crate(12,44,22,'#4a3520');
+  /* the fence, grinning over a rickety table */
+  const kx=w/2,ky=46,kR=19,ka=Math.PI/2+.25+Math.sin(t*1.4)*.18;
+  paintHyena(g,kx,ky,kR,ka,t,(t%4)<.15);
+  g.fillStyle='#4a3420';g.fillRect(8,70,w-16,18);g.fillStyle='#5e4430';g.fillRect(8,70,w-16,4);
+  g.fillStyle='rgba(0,0,0,.35)';g.fillRect(8,88,w-16,4);
+  /* goods on the table: a skull, a coin pile, a sack */
+  g.fillStyle='#e8dcc4';g.beginPath();g.arc(kx-40,79,5,0,7);g.fill();g.fillStyle='#2a2420';g.fillRect(kx-43,78,2,2);g.fillRect(kx-39,78,2,2);
+  for(let i=0;i<4;i++){g.fillStyle=i%2?'#e0a820':'#ffd24a';g.beginPath();g.ellipse(kx+34+i*3,80-i*2,6,3.5,0,0,7);g.fill();}
+  g.fillStyle='#8a6a44';g.beginPath();g.ellipse(kx-70,80,9,7,0,0,7);g.fill();
+  /* what he says */
+  const say=FENCE.quip||FENCE.hello[0];
+  g.font='italic 600 12px -apple-system,BlinkMacSystemFont,sans-serif';
+  const maxW=Math.max(90,Math.min(170,w/2-50)),words=say.split(' '),lines=[];let ln='';
+  words.forEach(function(wd){const tst=ln?ln+' '+wd:wd;if(g.measureText(tst).width>maxW&&ln){lines.push(ln);ln=wd;}else ln=tst;});
+  if(ln)lines.push(ln);
+  const bw=Math.min(maxW,Math.max.apply(null,lines.map(l=>g.measureText(l).width)))+18,bh=lines.length*15+12;
+  const bx=Math.max(kx+26,Math.min(kx+30,w-8-bw)),by=Math.max(4,30-bh/2);
+  g.fillStyle='rgba(232,214,176,.96)';
+  g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,9);else g.rect(bx,by,bw,bh);g.fill();
+  g.beginPath();g.moveTo(bx,by+bh*.55);g.lineTo(bx-8,by+bh*.7);g.lineTo(bx+4,by+bh*.8);g.fill();
+  g.fillStyle='#2a2016';lines.forEach(function(l,i){g.fillText(l,bx+9,by+18+i*15);});
+}
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
 const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
@@ -3248,6 +3609,7 @@ function renderLaunch(){
   if(UI.view==='shop'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the store</button>';return;}
   if(UI.view==='mystic'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the Mystic Lion</button>';return;}
   if(UI.view==='smith'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the forge</button>';return;}
+  if(UI.view==='fence'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Slip back out</button>';return;}
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+(MATCH.duo?'Send in both teams':'Send them in')+'</button>';return;}
   if(MATCH.mode==='tourn'){
     if(!TOURN.br){bar.innerHTML='<button class="go1" data-act="tStart">'+ico('trophy')+'Start the tournament</button>';return;}
@@ -3258,7 +3620,8 @@ function renderLaunch(){
     return;
   }
   if(MATCH.mode==='pack'){
-    if(L&&CAREER.locked){bar.style.display='none';bar.innerHTML='';}
+    if(L&&CAREER.locked){const C=CHAL[UI.chal]||CHAL.pack;
+      bar.innerHTML='<button class="go1" data-act="'+C.act+'">'+ico('play')+C.go+'</button>';}
     else bar.innerHTML='<button class="go1" data-act="create">'+ico('plus')+(L?'Finish your lion':'Create a lion')+'</button>';
     return;
   }
@@ -3291,6 +3654,7 @@ function refresh(){
   else renderPack();
   renderLaunch();
   renderHdrRes();
+  if(typeof document!=='undefined'&&document.querySelectorAll)try{paintRivalIcons();if(MATCH.mode==='pack')paintChalCanvases();}catch(e){}
   bindPreviews();
   requestAnimationFrame(bindPreviews);
 }
@@ -3452,6 +3816,111 @@ function finishCareerLion(){
   SFX.bell();Store.save();refresh();toast(L.name+' is yours');
   if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
 }
+/* ---------- rivals and nemeses ----------
+   Lions you fought remember. A lion that beats you and lets you live becomes a RIVAL; a lion that wins a
+   close one off you might too. A lion that KILLS yours becomes a NEMESIS and comes back for the next one.
+   The roster lives with the player (CAREER.rivals), not with any one lion, so a nemesis outlives its victim. */
+const RIVAL_MAX=6;
+function isNemesis(c){const R=c&&c.rivalId&&Array.isArray(CAREER.rivals)?rivalById(c.rivalId):null;return !!(R&&R.nem);}
+function rivalsAll(){if(!Array.isArray(CAREER.rivals))CAREER.rivals=[];return CAREER.rivals;}
+function rivalsActive(){return rivalsAll().filter(x=>!x.avenged);}
+function rivalById(id){return id?rivalsAll().filter(x=>x.id===id)[0]:null;}
+function rivalOf(f){return f&&f.rivalId?rivalById(f.rivalId):null;}
+function rivalSnap(f){const c=JSON.parse(JSON.stringify(f));delete c.rivalId;delete c.side;delete c.epithet;return c;}
+function rivalAdd(f,nem){
+  let R=rivalOf(f);
+  if(!R){
+    R={id:'r'+Date.now().toString(36)+((Math.random()*1e4)|0).toString(36),cfg:rivalSnap(f),h2h:{w:0,l:0},nem:false,kills:[],avenged:false,seen:1};
+    rivalsAll().push(R);f.rivalId=R.id;
+    const act=rivalsActive();
+    if(act.length>RIVAL_MAX){const drop=act.filter(x=>!x.nem)[0];if(drop)rivalsAll().splice(rivalsAll().indexOf(drop),1);}
+  }
+  if(nem)R.nem=true;
+  return R;
+}
+/* how the rivalry stands, from your side */
+function h2hText(R){const w=R.h2h.w,l=R.h2h.l;
+  return w>l?('you lead '+w+'\u2013'+l):(l>w?('they lead '+l+'\u2013'+w):('level '+w+'\u2013'+l));}
+function rivalBadge(f){
+  const R=rivalOf(f);if(!R)return '';
+  return R.nem?'<span class="badge nem">'+ico('skull')+'Nemesis</span>':'<span class="badge rival">'+ico('duel')+'Rival \u00b7 '+h2hText(R)+'</span>';
+}
+/* a rival or nemesis steps back into a championship, a little harder than last time */
+function rivalFoe(R,slotScale){
+  const c=JSON.parse(JSON.stringify(R.cfg));c.side='B';c.rivalId=R.id;
+  c.scale=Math.max(c.scale||1,slotScale)+.03*Math.min(R.seen,5)+(R.nem?.05+.04*R.kills.length:0);
+  const rec=c.record||{champs:0,wins:0,fights:0};const extra=1+((Math.random()*3)|0);
+  rec.fights=(rec.fights|0)+extra;rec.wins=(rec.wins|0)+Math.round(extra*.65);c.record=rec;
+  R.cfg.record=JSON.parse(JSON.stringify(rec));R.seen++;
+  if(R.nem){c.epithet='your nemesis';c.perks=(c.perks||[]).slice();while(c.perks.length<R.kills.length)c.perks.push(pickOne(PERKS).k);}
+  return c;
+}
+function rivalsInto(foes,n,L){
+  const act=rivalsActive();if(!act.length)return;
+  const used={};
+  const nems=act.filter(x=>x.nem);
+  if(nems.length&&(L.record.fights>0||Math.random()<.5)&&Math.random()<.5){
+    const N=pickOne(nems);foes[4]=rivalFoe(N,foes[4].scale||1);used[N.id]=1;
+  }
+  const rv=act.filter(x=>!x.nem&&!used[x.id]);
+  if(rv.length&&Math.random()<.55){
+    const R=pickOne(rv),slot=1+((Math.random()*3)|0);foes[slot]=rivalFoe(R,foes[slot].scale||1);
+  }
+}
+/* after a bout: settle the score, and maybe start something */
+function rivalAfterBout(f,won,died,you,Lname){
+  if(!f)return;
+  CAREER.story=CAREER.story||[];
+  /* the foe's own record moves too, and a rival carries it forward */
+  f.record=f.record||{champs:0,wins:0,fights:0};f.record.fights=(f.record.fights|0)+1;if(!won)f.record.wins=(f.record.wins|0)+1;
+  let R=rivalOf(f);
+  if(R)R.cfg.record=JSON.parse(JSON.stringify(f.record));
+  if(died){
+    const fresh=!R||!R.nem;R=rivalAdd(f,true);R.h2h.l++;R.kills.push(Lname);
+    R.cfg=Object.assign(rivalSnap(f),{scale:(f.scale||1)});
+    CAREER.story.push({k:'nem',html:'<b>'+esc(f.name)+'</b> '+(fresh?'is your nemesis now. It will come back for your next lion.':'has killed again. '+R.kills.length+' of your lions now.')});
+    return;
+  }
+  if(won){
+    if(R){R.h2h.w++;R.cfg.scars=(R.cfg.scars||[]).concat([(Math.random()<.5?1000:0)+((Math.random()*1000)|0)]).slice(-8);
+      if(R.nem){R.avenged=true;R.nem=false;
+        const L=CAREER.lion,gold=40;L.gold=(L.gold||0)+gold;const sk=invAdd(L,'skull',3);
+        CAREER.story.push({k:'avenge',html:'<b>Avenged.</b> '+esc(f.name)+' killed '+R.kills.join(', ')+'. Not any more. +'+gold+' gold'+(sk?' and 3 skulls':'')+'.'});}
+      else CAREER.story.push({k:'rival',html:'Beat your rival <b>'+esc(f.name)+'</b>. '+h2hText(R).replace(/^./,c=>c.toUpperCase())+'.'});
+    } else if(you&&you.hp<you.maxHp*.3&&Math.random()<.5){
+      R=rivalAdd(f,false);R.h2h.w++;
+      CAREER.story.push({k:'rival',html:'That was close. <b>'+esc(f.name)+'</b> will not forget it. A rivalry begins.'});
+    }
+    return;
+  }
+  /* lost, and lived */
+  const fresh=!R;R=rivalAdd(f,false);R.h2h.l++;
+  CAREER.story.push({k:'rival',html:fresh?('<b>'+esc(f.name)+'</b> beat you and let you live. It is your rival now.'):('<b>'+esc(f.name)+'</b> wins again. '+h2hText(R).replace(/^./,c=>c.toUpperCase())+'.')});
+}
+function rivalsHTML(){
+  const all=rivalsAll();if(!all.length)return '';
+  const rows=all.slice().sort((a,b)=>(b.nem-a.nem)||(a.avenged-b.avenged)||((b.h2h.w+b.h2h.l)-(a.h2h.w+a.h2h.l)));
+  return '<div class="hd"><h2>Rivals</h2><span>Lions that remember you. They come back.</span></div>'+
+    '<div class="card">'+rows.map(function(R){
+      const c=R.cfg,col=R.nem&&!R.avenged?'#ff5a4d':liftCol(colsOf(c).mane,.45);
+      const st=R.avenged?'<span class="badge">Avenged</span>':(R.nem?'<span class="badge nem">'+ico('skull')+'Nemesis</span>':'<span class="badge rival">'+ico('duel')+'Rival</span>');
+      return '<div class="listRow rivalRow'+(R.avenged?' done':'')+'"><canvas class="rivCv" data-riv="'+R.id+'"></canvas><div><h4><span style="color:'+col+'">'+esc(c.name)+'</span> '+st+'</h4>'+
+        '<small>'+(R.nem&&R.kills.length?'<b style="color:#ff5a4d">Killed '+esc(R.kills.join(', '))+'</b> \u00b7 ':(R.avenged&&R.kills.length?'Killed '+esc(R.kills.join(', '))+' \u00b7 ':''))+
+        BUILDS[c.build].name+' \u00b7 '+WEAPONS[c.weapon].name+'</small></div>'+
+        '<div class="rt"><b'+(R.h2h.l>R.h2h.w?' style="color:#ff5a4d"':(R.h2h.w>R.h2h.l?' style="color:#5ee6a8"':''))+'>'+R.h2h.w+'\u2013'+R.h2h.l+'</b><span>you vs them</span></div></div>';
+    }).join('')+'</div>';
+}
+function paintRivalIcons(){
+  document.querySelectorAll('canvas.rivCv').forEach(function(cv){
+    const R=rivalById(cv.dataset.riv);if(!R)return;
+    const w=cv.clientWidth||40,h=cv.clientHeight||40,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
+    const g=cv.getContext('2d');g.scale(d,d);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
+    if(R.nem&&!R.avenged){const gr=g.createRadialGradient(w/2,h/2,2,w/2,h/2,w*.6);gr.addColorStop(0,'rgba(226,56,44,.45)');gr.addColorStop(1,'rgba(226,56,44,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);}
+    const c=R.cfg;
+    paintLion(g,{x:w/2,y:h/2+1,R:w*.27,ang:-Math.PI/2,t:0,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor,
+      eyes:R.nem&&!R.avenged?'#ff3a2a':null,eyeGlow:R.nem&&!R.avenged,dead:false});
+  });
+}
 /* opponents come with a past: early on they are as green as you (1-0, 2-3),
    deeper into a run and later championships they have more fights and win more of them */
 function foeRecord(L,n,i){
@@ -3487,6 +3956,7 @@ function startChampionship(){
     for(let q=0;q<belts;q++)last.perks.push(pickOne(PERKS).k);
     last.epithet='the belt holder';
   }
+  rivalsInto(foes,n,L);
   CAREER.champ={n:n,i:0,foes:foes};
   refresh();
 }
@@ -3561,6 +4031,11 @@ function handleAct(a,el){
   if(a==='openSmith'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='smith';smithSay(SMITH.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='smithFinish'){smithFinish();return;}
+  if(a==='openFence'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='fence';fenceSay(FENCE.hello);refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
+  if(a==='fenceDeal'){fenceDeal(+el.dataset.i);return;}
+  if(a==='fenceSkull'){fenceSkull();return;}
+  if(a==='fenceCrate'){fenceCrate();return;}
   if(a==='smithBuy'){smithBuy(el&&el.dataset.k);return;}
   if(a==='shopItem'){const k=el&&el.dataset.item;if(!SHOP.price[k])return;shopBuy(k);return;}
   if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
@@ -3577,6 +4052,8 @@ function handleAct(a,el){
   if(a==='tFight'){SFX.unlock();startFight('tourn');return;}
   if(a==='tNew'||a==='tAbandon'){SFX.ui();TOURN.br=null;TOURN.cur=null;UI.view='home';Store.save();refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
+  if(a==='openTut'){SFX.ui();openTut();return;}
+  if(a==='pickChal'){if(!CAREER.lion||!CAREER.locked){toast('Create a lion under Championship first');return;}SFX.ui();UI.chal=el.dataset.k;refresh();return;}
   if(a==='startPack'){SFX.unlock();startFight('survival');return;}
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
   if(a==='startAncient'){SFX.unlock();startFight('ancient');return;}
@@ -3754,8 +4231,8 @@ function introKick(i,grp){
   let k=i===0?'In this corner':'And in this corner';
   if(c==='tourn'&&TOURN.cur&&i===0)k=['Quarter-final','Semi-final','The final'][TOURN.cur.r]+' · '+k;
   if(c==='career'&&CAREER.champ&&i===1){
-    const ch=CAREER.champ,b=grp.lions[0];
-    k=(beltsOf(b.cfg)?'The belt holder':k)+' · Bout '+(ch.i+1)+' of '+ch.foes.length;
+    const ch=CAREER.champ,b=grp.lions[0],R=rivalOf(b.cfg);
+    k=R&&R.nem?'Your nemesis \u00b7 killed '+R.kills.join(', '):(R?'Your rival \u00b7 '+h2hText(R):(beltsOf(b.cfg)?'The belt holder':k)+' \u00b7 Bout '+(ch.i+1)+' of '+ch.foes.length);
   }
   return k;
 }
@@ -5746,14 +6223,17 @@ function drawLionBody(e){
     ctx.globalAlpha=1;
   }
   const so=!e.dead&&e.hidden<=0?soulOf(e.cfg):null;
+  if(!e.dead&&e.hidden<=0&&isNemesis(e.cfg)){const pu=.5+.5*Math.sin(clk()*3);
+    ctx.save();ctx.strokeStyle='rgba(226,56,44,'+(.35+pu*.3).toFixed(2)+')';ctx.lineWidth=2;ctx.setLineDash([6,6]);ctx.lineDashOffset=-clk()*20;
+    ctx.beginPath();ctx.arc(e.x,e.y,R*1.55,0,7);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
   if(so){soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,true);
     if(!RM&&Math.random()<.3&&G.parts.length<240){
       const a=Math.random()*7,rr=R*(1+Math.random()*.6);
       G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,life:.6,max:.6,
-        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):(Math.random()<.6?'#ff5a2a':'#ffb040'),r:1+Math.random()*1.4});
+        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
     }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
-    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:null)),eyeGlow:!!soulOf(e.cfg),
+    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
     mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
   if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false);
@@ -5926,7 +6406,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -5936,9 +6416,9 @@ function bindPreviews(){
     const g=el.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
     const R=BUILDS[conf.build].r*.78,m=R*2.5;
     const mem=PREVMEM[key]||{};
-    const my=(key==='shop'||key==='mystic'||key==='smith')?Math.min(h-m-1,96+m*.6):m;
+    const my=(key==='shop'||key==='mystic'||key==='smith'||key==='fence')?Math.min(h-m-1,96+m*.6):m;
     PREV.push({key:key,g:g,w:w,h:h,cfg:conf,R:R,m:m,my:my,
-      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
+      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith'||key==='fence')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
       tx:clamp(mem.tx||rnd(m,w-m),m,Math.max(m+1,w-m)),ty:clamp(mem.ty||rnd(my,h-m),my,Math.max(my+1,h-m)),
       ang:mem.ang||0,t:mem.t||Math.random()*9,wait:rnd(.2,1),anim:0,swipeT:rnd(2.5,6)});
   });
@@ -5963,6 +6443,7 @@ function stepPreviews(dt){
     if(p.key==='shop')drawShopScene(g,p);
     else if(p.key==='mystic')drawMysticScene(g,p);
     else if(p.key==='smith')drawSmithScene(g,p);
+    else if(p.key==='fence')drawFenceScene(g,p);
     else{
       g.fillStyle='#0a0a0c';g.fillRect(0,0,p.w,p.h);
       g.fillStyle='#17171c';
@@ -6023,8 +6504,11 @@ function roundOver(){
   if(G.ctx==='career'){
     if(!CAREER.champ||!CAREER.lion){showHome();return;}
     const you=G.lions[0],ch=CAREER.champ,L=CAREER.lion;CAREER.trainChance=false;
+    fenceRotate();
     L.record.fights++;
+    const foeCfg=ch.foes[ch.i];CAREER.story=[];
     if(G.winner===you){
+      rivalAfterBout(foeCfg,true,false,you,L.name);
       L.record.wins++;ch.i++;
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
       CAREER.trainChance=Math.random()<.35;
@@ -6043,6 +6527,7 @@ function roundOver(){
       let fate=Math.random()<deathChanceFor(L);
       CAREER.saved=false;
       if(fate&&invCount(L,'halo')){invTake(L,'halo');fate=false;CAREER.saved=true;}
+      rivalAfterBout(foeCfg,false,fate,you,L.name);
       if(fate){
         const dead=JSON.parse(JSON.stringify(L));
         buryLion(killer,boutN,champN);
@@ -6201,6 +6686,13 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     P.innerHTML='<div class="perkCard" style="border-color:var(--line)"><h5 style="color:var(--bone)">Into the hall</h5>'+
       '<p>That lion is gone for good. Its record stands on the home screen. Roll another when you are ready.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Enter the hall</button>';
+  }
+  if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death')){
+    CAREER.story.forEach(function(st){
+      P.innerHTML+='<div class="lootCard storyCard '+st.k+'"><span class="rico">'+ico(st.k==='rival'?'duel':(st.k==='avenge'?'check':'skull'))+'</span><div><h5>'+
+        (st.k==='nem'?'A nemesis is born':(st.k==='avenge'?'Nemesis avenged':'Rivalry'))+'</h5><p>'+st.html+'</p></div></div>';
+    });
+    CAREER.story=[];
   }
   if((kind==='bout'||kind==='champion')&&CAREER.loot&&CAREER.lion){
     const lt=CAREER.loot;CAREER.loot=null;
