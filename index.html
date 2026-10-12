@@ -747,6 +747,59 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .resBtns button:hover{background:var(--s3)}
 .resBtns button.primary{background:var(--amber);color:#241701;font-weight:600}
 .infoSheet{max-width:600px}
+/* ---------- events ---------- */
+.evWrap{z-index:36;background:rgba(0,0,0,.74)}
+.evCard{width:100%;max-width:540px;background:var(--s1);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);animation:evIn .5s ease}
+@keyframes evIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.evHead{display:flex;align-items:center;gap:12px;padding:14px 16px 12px}
+.evHead b{display:block;font-size:18px;font-weight:600;letter-spacing:-.02em}
+.evHead small{display:block;color:var(--t3);font-size:13px;margin-top:1px}
+.evTag{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 9px;border-radius:9px;background:var(--evb);color:var(--evc);flex:none}
+.evTag .ico{width:13px;height:13px}
+#evCv{display:block;width:100%;height:min(230px,32vh);background:#0c0c0e}
+.evBody{padding:14px 16px 16px}
+.evSay{position:relative;background:var(--s2);border-radius:16px;padding:12px 14px 22px;min-height:104px;cursor:pointer}
+.evSay b{display:block;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--evc);font-weight:700;min-height:15px}
+.evSay p{margin:4px 0 0;font-size:16px;line-height:1.5;color:var(--t1)}
+.evSay p.nar{font-style:italic;color:var(--t2)}
+.evSay .caret{display:inline-block;width:2px;height:1em;background:var(--evc);vertical-align:-2px;margin-left:2px;animation:tutBlink .8s steps(1) infinite}
+.evHint{position:absolute;right:12px;bottom:6px;color:var(--t3);font-size:12px}
+.evStake{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;transition:opacity .3s}
+.evStake.none{display:none}
+.evStake span{display:flex;align-items:center;gap:5px;font-size:12.5px;padding:5px 9px;border-radius:10px;background:var(--bg);border:1px solid var(--sep);color:var(--t2)}
+.evStake .ico{width:15px;height:15px;flex:none}
+.evStake .up{color:#5ee6a8;border-color:rgba(94,230,168,.3)} .evStake .dn{color:#ff6b5e;border-color:rgba(255,90,77,.32)}
+.evBtns{display:flex;gap:10px;margin-top:12px;transition:opacity .3s}
+.evBtns button{flex:1;height:50px;border-radius:var(--rs);font-size:16px;font-weight:600;background:var(--s3);color:var(--t1)}
+.evBtns button.yes{background:var(--evc);color:#140c02}
+.evStake.wait,.evBtns.wait{opacity:0;pointer-events:none}
+.evDoor{display:flex;align-items:center;gap:14px;width:100%;text-align:left;margin:0 0 12px;padding:15px 16px;border-radius:var(--r);
+  background:linear-gradient(120deg,rgba(255,194,51,.16),rgba(180,140,255,.12) 60%,rgba(155,212,106,.1));border:1px solid rgba(255,194,51,.42);
+  animation:evPulse 2.6s ease-in-out infinite}
+.evDoor .q{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,194,51,.18);color:var(--gold);flex:none}
+.evDoor .q .ico{width:24px;height:24px}
+.evDoor b{display:block;font-size:17px;font-weight:600;color:var(--t1)}
+.evDoor small{display:block;color:var(--t2);font-size:13.5px;margin-top:2px;line-height:1.4}
+.evDoor .go{margin-left:auto;color:var(--gold);font-size:24px}
+@keyframes evPulse{50%{box-shadow:0 0 30px rgba(255,194,51,.22)}}
+.go1.evGo{background:linear-gradient(90deg,#ffc233,#ff9f0a);color:#241701;animation:evPulse 2.6s ease-in-out infinite}
+.resBtns button.evBtn{white-space:nowrap;font-size:15px;background:linear-gradient(90deg,#ffc233,#ff9f0a);color:#241701;font-weight:600}
+.fxPills{display:flex;gap:8px;flex-wrap:wrap;margin:-2px 0 12px}
+.fxPill{display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 11px;border-radius:12px;line-height:1.3}
+.fxPill .ico{width:15px;height:15px;flex:none}
+.fxPill.royal{background:rgba(255,194,51,.1);color:var(--gold);border:1px solid rgba(255,194,51,.3)}
+.fxPill.mystic{background:rgba(180,140,255,.1);color:#c9adff;border:1px solid rgba(180,140,255,.32)}
+.storyCard.royal{background:rgba(255,194,51,.09);border-color:rgba(255,194,51,.35)}
+.storyCard.royal h5,.storyCard.royal .rico{color:var(--gold)}
+.storyCard.royalL{background:rgba(226,56,44,.1);border-color:rgba(226,56,44,.4)}
+.storyCard.royalL h5,.storyCard.royalL .rico{color:#ff5a4d}
+.storyCard.weak{background:rgba(180,140,255,.09);border-color:rgba(180,140,255,.35)}
+.storyCard.weak h5,.storyCard.weak .rico{color:#c9adff}
+.lootCard.evTease{background:rgba(255,194,51,.08);border-color:rgba(255,194,51,.35)}
+.lootCard.evTease h5,.lootCard.evTease .rico{color:var(--gold)}
+.lootCard.forestCard{background:rgba(155,212,106,.08);border-color:rgba(155,212,106,.35)}
+.lootCard.forestCard h5,.lootCard.forestCard .rico{color:#9bd46a}
 /* ---------- tutorial ---------- */
 .cutWrap{position:fixed;inset:0;z-index:35;display:flex;align-items:flex-end;justify-content:center;
   padding:20px 16px 34px;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));animation:cutIn 1.2s ease}
@@ -866,6 +919,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <div class="cutTxt"><b>Old Lion</b><p id="cutSay"></p><span class="cutNext" id="cutNext">…</span></div>
   </div></div>
   <div id="tut" class="overlay hidden"><div class="tutCard" id="tutCard"></div></div>
+  <div id="ev" class="overlay evWrap hidden"><div class="evCard" id="evCard"></div></div>
   <div id="info" class="overlay hidden"><div class="result infoSheet">
     <div class="verdict" style="font-size:clamp(24px,6vw,36px)">HOW IT WORKS</div>
     <div class="infoBody">
@@ -879,7 +933,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Eight lions of your choosing in a knockout bracket. Every match is best of three, winners go through, and three rounds later there is one champion. Edit, roll or paste a code into any slot before it starts. Nothing in a tournament touches your championship lion.</p>
       <h6>Career</h6>
       <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
-      <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them, so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion.</p>
+      <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them (unless you have made a deal with the Mystic Lion), so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion.</p>
       <h6>Gold and the Lion Store</h6>
       <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
@@ -890,6 +944,8 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Each belt grants one random medallion, each with its own emblem: Ironheart (+9% health), Swiftpaw (+7% speed), Keen Fang (+9% damage), Scarhide (+6 armour), Quickened (−9% ability cooldowns), Ember Blood (heals 1 a second) or Loose Shoulder (−8% attack cooldown). They stack across belts.</p>
       <h6>Training</h6>
       <p>After every championship win there is a 35% chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
+      <h6>Events</h6>
+      <p>After a championship win, with another bout still to come, there is a 40% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are three. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). Say no to any of them and nothing happens.</p>
       <h6>Loading a lion into the den</h6>
       <p>Any lion code can be loaded into Championship from the den, with its belts, medallions, scars, training and gold. If you already have a lion, it retires to the hall to make room.</p>
       <h6>Personality</h6>
@@ -1222,10 +1278,11 @@ const Store={
       if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}
       if(d.fence&&d.fence.deals)CAREER.fence=d.fence;
       if(Array.isArray(d.rivals))CAREER.rivals=d.rivals;
+      CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;
       }}catch(e){}
   },
   async save(){
-    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],
+    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,
       tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null}));}catch(e){}
   }
 };
@@ -2609,7 +2666,7 @@ function renderCareer(){
       '<button data-act="openInv">'+ico('bag')+'Inventory</button>'+
       '<button data-act="retire">'+ico('retire')+'Retire</button>'+
       '</div>'})+
-    runStripHTML(L,ch)+
+    runStripHTML(L,ch)+(ch&&CAREER.event?evDoorHTML():'')+evPillsHTML()+
     '<div class="doors">'+
       '<button class="door" data-act="openShop">'+shopIconHTML()+'<span><b>Lion Store</b><small class="g">'+ico('coin')+(L.gold||0)+' gold</small></span></button>'+
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s')+'</small></span></button>'+
@@ -3115,7 +3172,7 @@ function careerLoadCode(txt){
   c.side='A';c.epithet=c.epithet||pickOne(EPITHET);
   const r=c.record||{};c.record={champs:r.champs|0,wins:r.wins|0,fights:r.fights|0,losses:(c.scars||[]).length};
   c.gold=c.gold|0;c.perks=c.perks||[];c.scars=c.scars||[];
-  CAREER.lion=c;CAREER.locked=true;CAREER.champ=null;UI.view='home';
+  CAREER.lion=c;CAREER.locked=true;CAREER.champ=null;evClear();UI.view='home';
   delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.shop;
   closeSheet();SFX.bell();Store.save();refresh();toast(c.name+' moves into the den');
 }
@@ -3263,21 +3320,35 @@ function fenceCrate(){
 }
 /* what is in the crate: weights add up to 100 */
 const CRATE=[[22,'gold'],[18,'skull'],[9,'coat'],[9,'potion'],[6,'weapon'],[6,'reforge'],[6,'train'],[5,'plaque'],[5,'halo'],[4,'cleanse'],[4,'pact'],[3,'divine'],[3,'demon']];
-function openCrate(){
-  const L=CAREER.lion;if(!L||!invCount(L,'crate'))return;
+/* roll what is in a crate and put it on the lion; returns what it got, so it can be taken back */
+function crateRoll(L){
   let roll=Math.random()*100,pick='gold';
   for(let i=0;i<CRATE.length;i++){roll-=CRATE[i][0];if(roll<0){pick=CRATE[i][1];break;}}
-  invTake(L,'crate');
-  let msg,rare=false;
-  if(pick==='gold'){const n=20+((Math.random()*61)|0);L.gold=(L.gold||0)+n;msg=n+' gold';}
-  else if(pick==='skull'){const n=1+((Math.random()*3)|0);invAdd(L,'skull',n);msg=n+' Lion Skull'+(n>1?'s':'');}
+  let k=pick,n=1,msg,rare=false;
+  if(pick==='gold'){n=20+((Math.random()*61)|0);L.gold=(L.gold||0)+n;msg=n+' gold';}
+  else if(pick==='skull'){n=1+((Math.random()*3)|0);invAdd(L,'skull',n);msg=n+' Lion Skull'+(n>1?'s':'');}
   else{
-    if(!invAdd(L,pick,1)){L.gold=(L.gold||0)+30;msg='30 gold (the bag was full)';}
+    if(!invAdd(L,pick,1)){k='gold';n=30;L.gold=(L.gold||0)+30;msg='30 gold (the bag was full)';}
     else{msg=ITEMS[pick].name;rare=pick==='divine'||pick==='demon'||pick==='halo';}
   }
-  if(rare)SFX.champ();else SFX.coin();
-  UI.crateMsg={txt:msg,rare:rare,ico:pick==='gold'?'coin':(ITEMS[pick]?ITEMS[pick].ico:'crate')};
-  toast((rare?'Jackpot! ':'')+'The crate held '+msg);
+  return {k:k,n:n,msg:msg,rare:rare,ico:k==='gold'?'coin':(ITEMS[k]?ITEMS[k].ico:'crate')};
+}
+/* take a crate roll back off the lion; if it has already been used, they take gold instead */
+function crateUndo(L,r){
+  if(!L||!r)return '';
+  if(r.k==='gold'){const t=Math.min(L.gold||0,r.n);L.gold=(L.gold||0)-t;return t+' gold';}
+  let took=0;for(let i=0;i<r.n;i++)if(invTake(L,r.k))took++;
+  if(took===r.n)return r.msg;
+  const t=Math.min(L.gold||0,30*(r.n-took));L.gold=(L.gold||0)-t;
+  return (took?(took+' of the '+r.msg+' and '):'')+t+' gold instead';
+}
+function openCrate(){
+  const L=CAREER.lion;if(!L||!invCount(L,'crate'))return;
+  invTake(L,'crate');
+  const c=crateRoll(L);
+  if(c.rare)SFX.champ();else SFX.coin();
+  UI.crateMsg={txt:c.msg,rare:c.rare,ico:c.ico};
+  toast((c.rare?'Jackpot! ':'')+'The crate held '+c.msg);
   Store.save();refresh();openInventory();
 }
 function drawFenceScene(g,p){
@@ -3633,6 +3704,7 @@ function renderLaunch(){
     return;
   }
   if(!CAREER.champ){bar.innerHTML='<button class="go1" data-act="startChamp">'+ico('play')+'Enter a championship</button>';return;}
+  if(CAREER.event){bar.innerHTML='<button class="go1 evGo" data-act="enterEvent">'+ico('spark')+'An event awaits</button>';return;}
   bar.innerHTML='<button class="go1" data-act="nextBout">'+ico('play')+'Fight bout '+(CAREER.champ.i+1)+'</button>';
 }
 const MODE_NOTES={duel:'',career:''};
@@ -3788,6 +3860,11 @@ document.addEventListener('visibilitychange',function(){
 });
 addEventListener('resize',function(){
   if($('fight').classList.contains('hidden'))bindPreviews();else fitCanvas();
+  if(EV.on)evSize();
+});
+addEventListener('keydown',function(ev){
+  if(!EV.on)return;
+  if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();if(EV.ready&&EV.node&&EV.node.choices.length===1)evPick(0);else evTap();}
 });
 
 /* ========== 9. CAREER LOGIC ========== */
@@ -3796,7 +3873,7 @@ function newCareerLion(){
   L.epithet=pickOne(EPITHET);
   L.record={champs:0,wins:0,fights:0,losses:0};
   L.perks=[];L.scars=[];
-  CAREER.lion=L;CAREER.locked=false;CAREER.champ=null;UI.view='home';UI.finishAt=0;
+  CAREER.lion=L;CAREER.locked=false;CAREER.champ=null;evClear();UI.view='home';UI.finishAt=0;
   delete PREVMEM.career;
   SFX.bell();Store.save();refresh();
 }
@@ -3966,7 +4043,7 @@ function retireLion(){
     line:BUILDS[L.build].name+' · '+wName(L)+' · '+BRAINS[L.brain].name+' mind · '+traitNames(L)+' · IV '+(L.iv||5),
     end:'Retired standing, '+(L.record.champs?L.record.champs+' belt'+(L.record.champs>1?'s':'')+' in the case.':'no belts.'),
     code:encodeLion(L,L.record)});
-  CAREER.lion=null;CAREER.champ=null;CAREER.locked=false;
+  CAREER.lion=null;CAREER.champ=null;CAREER.locked=false;evClear();
   Store.save();refresh();
 }
 function buryLion(killer,boutN,champN){
@@ -3975,7 +4052,7 @@ function buryLion(killer,boutN,champN){
     line:BUILDS[L.build].name+' · '+wName(L)+' · '+BRAINS[L.brain].name+' mind · '+traitNames(L)+' · IV '+(L.iv||5),
     end:'Killed by '+killer+' in bout '+boutN+' of championship '+champN+'.',
     code:encodeLion(L,L.record)});
-  CAREER.lion=null;CAREER.champ=null;CAREER.locked=false;
+  CAREER.lion=null;CAREER.champ=null;CAREER.locked=false;evClear();
   Store.save();
 }
 function addAlly(c){c.side='A';if(ALLIES.length<2)ALLIES.push(c);refresh();toast(c.name+' joins you');}
@@ -4060,9 +4137,14 @@ function handleAct(a,el){
   if(a==='startOld'){SFX.unlock();startFight('old');return;}
   if(a==='cutNext'){cutAdvance();return;}
   if(a==='startChamp'){if(!CAREER.locked)return;SFX.unlock();startChampionship();Store.save();return;}
-  if(a==='nextBout'){SFX.unlock();startFight('career');return;}
+  if(a==='nextBout'){if(CAREER.event){SFX.ui();enterEvent();return;}SFX.unlock();startFight('career');return;}
+  if(a==='enterEvent'){SFX.unlock();$('result').classList.add('hidden');if(!$('fight').classList.contains('hidden'))showHome();enterEvent();return;}
+  if(a==='evTap'){evTap();return;}
+  if(a==='evPick'){evPick(+el.dataset.i);return;}
   if(a==='home'){$('result').classList.add('hidden');showHome();return;}
-  if(a==='again'){$('result').classList.add('hidden');startFight(G.ctx==='king'?BOSSKIND:G.ctx);return;}
+  if(a==='again'){$('result').classList.add('hidden');
+    if(G.ctx==='career'&&CAREER.event){showHome();enterEvent();return;}
+    startFight(G.ctx==='king'?BOSSKIND:G.ctx);return;}
   if(a==='continue'){$('result').classList.add('hidden');showHome();return;}
 }
 
@@ -4093,6 +4175,8 @@ function makeLion(c,x,y,ang,light){
     stats:{dealt:0,taken:0,hits:0,shots:0,big:0,healed:0,abil:0,dist:0}};
 }
 function startFight(ctxName){
+  if(ctxName==='ambush'){SURV.ambush=true;ctxName='survival';}
+  else if(ctxName==='survival')SURV.ambush=false;
   if(ctxName==='ancient'||ctxName==='old'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
@@ -4122,7 +4206,7 @@ function showHome(){
 }
 /* the arena and walls picked on the Duel screen belong to Duel; every other fight is in the Colonnade with the walls on */
 function duelLike(){return G&&(G.ctx==='duel'||G.ctx==='duo');}
-function fightArena(){return duelLike()?MATCH.arena:'colonnade';}
+function fightArena(){return duelLike()?MATCH.arena:(G.ctx==='survival'&&SURV.ambush?'thicket':'colonnade');}
 function fightClosing(){return duelLike()?MATCH.closing:true;}
 /* ========== 11b. THE GATES ==========
    Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
@@ -4227,7 +4311,7 @@ function introKick(i,grp){
   const c=G.ctx;
   if(c==='king')return i===0?(grp.lions.length>1?'The challengers':'The challenger')
     :(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark'));
-  if(c==='survival')return grp.lions.length>1?'Into the pit':'Alone in the pit';
+  if(c==='survival')return SURV.ambush?'Ambushed in the trees':(grp.lions.length>1?'Into the pit':'Alone in the pit');
   let k=i===0?'In this corner':'And in this corner';
   if(c==='tourn'&&TOURN.cur&&i===0)k=['Quarter-final','Semi-final','The final'][TOURN.cur.r]+' · '+k;
   if(c==='career'&&CAREER.champ&&i===1){
@@ -4359,7 +4443,7 @@ function newRound(){
     const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),ARENA/2,ARENA-170,-Math.PI/2,true);
     a.hp=a.maxHp;a.abil.forEach(k=>{a.cd[k]=1.2;});
     G.lions=[a];
-    ALLIES.forEach(function(cfgA,i){
+    if(!(G.ctx==='survival'&&SURV.ambush))ALLIES.forEach(function(cfgA,i){
       const off=(i%2?1:-1)*(110+i*30);
       const al=makeLion(Object.assign({},cfgA,{side:'A'}),
         clamp(ARENA/2+off,70,ARENA-70),ARENA-150,-Math.PI/2);
@@ -4374,6 +4458,8 @@ function newRound(){
       k.boss=1;k.dark=(anc||old)?0:1;k.foe=G.lions[0];G.lions.push(k);
       if(anc){k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;}
       if(old){k.r*=OLD.size;k.mass*=1.4;}
+      const T=BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king;
+      k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;
       KING.maxHp=k.maxHp;
       if(introOn())startIntro([G.lions.filter(l=>l!==k),[k]],function(){
         banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
@@ -4384,11 +4470,11 @@ function newRound(){
       buildHud();
       return;
     }
-    SURV.wave=0;SURV.kills=0;SURV.spawned=1;SURV.gap=0;SURV.pending=false;SURV.t=0;SURV.gold=0;
-    const goPack=function(){spawnWave(1);a.foe=nearestPrey(a);};
+    SURV.wave=0;SURV.kills=0;SURV.spawned=1;SURV.gap=0;SURV.pending=false;SURV.t=0;SURV.gold=0;SURV.live=false;
+    const goPack=function(){if(SURV.ambush)spawnAmbush();else spawnWave(1);a.foe=nearestPrey(a);};
     if(introOn())startIntro([G.lions.slice()],goPack);else goPack();
     buildHud();
-    log(a.name+' stands alone in the pit.');
+    log(SURV.ambush?(a.name+' stands in the clearing with the crate. The bushes move.'):(a.name+' stands alone in the pit.'));
     return;
   }
   if(G.ctx==='duo'){
@@ -4412,9 +4498,12 @@ function newRound(){
   a.foe=b;b.foe=a;G.lions=[a,b];
   a.abil.forEach(k=>{a.cd[k]=1.2;});b.abil.forEach(k=>{b.cd[k]=1.2;});
   a.hp=a.maxHp;b.hp=b.maxHp;
+  if(G.ctx==='career'&&CAREER.weak){a.hp=Math.round(a.maxHp*.75);G.weak=1;}
   G.token=++ROUND_TOKEN;
   makeCrowd();crowdReact(.42);
   buildHud();
+  if(G.ctx==='career'&&CAREER.wager)log('<em class="gold">The Royal Lion</em> watches from the royal box. Every coin rides on this.');
+  if(G.weak)log('<em style="color:#c9adff">The Mystic\u2019s price:</em> '+a.name+' starts on three quarters of its health.');
   log(G.ctx==='career'
     ? 'Bout '+(CAREER.champ.i+1)+' of championship '+CAREER.champ.n+' — <em class="gold">'+b.name+'</em> steps out.'
     : a.name+' and '+b.name+' enter '+ARENAS[fightArena()].name+'.');
@@ -4813,6 +4902,21 @@ function kingCfg(){
     traits:['bold','thicknecked'],scale:KING_SCALE,dmgScale:KING_DMG,boss:1};
 }
 const KING_SCALE=3.2, KING_DMG=.75;
+/* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
+const BOSS_TUNE={king:{hp:6,dmg:.32,clock:240},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150}};
+function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
+const BOSS_PHASE={
+  king:   ['THE KING IS BLEEDING','THE KING WILL NOT KNEEL'],
+  ancient:['THE STARS STIR','THE ANCIENT ONE ROARS'],
+  old:    ['\u201cNOT BAD, KID.\u201d','\u201cNOW I\u2019M AWAKE.\u201d']};
+function bossPhase(b,n){
+  const lines=BOSS_PHASE[BOSSKIND]||BOSS_PHASE.king;
+  banner(lines[n-1],1.6,BOSSKIND!=='king');SFX.roar();crowdReact(1.7,b.x,b.y);
+  if(!RM){G.shake=Math.max(G.shake,8);G.slow=Math.max(G.slow||0,.5);}
+  G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*4.5,life:.6,max:.6,col:BOSSES[BOSSKIND].col});
+  G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*3,life:.45,max:.45,col:'#ffffff'});
+  log((BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.')));
+}
 /* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
 const ANC={scale:1.8,dmg:.36,spd:.80,size:1.5,nova:.5,star:.4};
 let BOSSKIND='king';
@@ -4908,6 +5012,7 @@ function stepSurvival(dt){
       if(e.deadT>1.6)G.lions.splice(i,1);
     }
   }
+  if(SURV.ambush){if(SURV.live&&packAlive()===0)ambushWon();return;}
   if(packAlive()===0){
     if(!SURV.pending){
       SURV.pending=true;SURV.gap=2.4;
@@ -5062,8 +5167,14 @@ function step(dt){
     if(!G.warned){G.warned=true;banner('THE WALLS CLOSE',1.3);SFX.warn();log('The square begins to close.');}
     G.wall=Math.min(WALL0+168,WALL0+(G.t-26)*7);
   }
-  if(G.t>75){
-    const bite=(G.t-75)*.014*dt;
+  if(G.ctx==='king'&&!G.over){
+    const b=G.bossE||(G.bossE=G.lions.filter(l=>l.boss)[0]);
+    if(b&&!b.dead){const f=b.hp/b.maxHp;
+      if(!G.ph1&&f<.66){G.ph1=1;bossPhase(b,1);}
+      if(!G.ph2&&f<.33){G.ph2=1;bossPhase(b,2);}}
+  }
+  if(G.t>fightClock()){
+    const bite=(G.t-fightClock())*.014*dt;
     for(let i=0;i<G.lions.length;i++){const e=G.lions[i];
       if(!e.dead){e.hp-=e.maxHp*bite;if(Math.random()<dt*3)spark(e.x,e.y,FX.blood,1);
         if(e.hp<=0&&!e.dead)kill(e,'the long fight');}}
@@ -6291,7 +6402,7 @@ function buildHud(){
       ' \u00b7 '+me.W.name+(wlvOf(me.cfg)?' Lv'+wlvOf(me.cfg):'')+' \u00b7 IV '+(me.cfg.iv||5)+(beltsOf(me.cfg)?' \u00b7 '+beltsOf(me.cfg)+' belt'+(beltsOf(me.cfg)>1?'s':''):'');
     hudPips(h,me);
     const BH=BOSSES[BOSSKIND],bc=G.ctx==='king'?BH.col:'#ff5a4d';
-    hb.querySelector('.fname').textContent=(G.ctx==='king')?BH.hud:'THE PACK';
+    hb.querySelector('.fname').textContent=(G.ctx==='king')?BH.hud:(SURV.ambush?'HYENAS':'THE PACK');
     hb.querySelector('.fname').style.color=bc;
     hb.querySelector('.hpFill').style.background=bc;
     hb.querySelector('.pips').innerHTML='';
@@ -6364,7 +6475,7 @@ function updateHud(){
       hb.querySelector('.hpGhost').style.transform='scaleX(0)';
       hb.querySelector('.shieldFill').style.transform='scaleX(0)';
       hb.querySelector('.fmeta').textContent=alive+' still up \u00b7 '+SURV.kills+' put down';
-      $('roundLbl').textContent='WAVE '+SURV.wave;
+      $('roundLbl').textContent=SURV.ambush?'AMBUSH':'WAVE '+SURV.wave;
     }
     const ss=Math.floor(G.t);
     $('clock').textContent=Math.floor(ss/60)+':'+String(ss%60).padStart(2,'0');
@@ -6481,6 +6592,19 @@ function loop(ts){
 }
 requestAnimationFrame(loop);
 
+/* a championship bout is over: pay out (or collect) the Royal Lion's wager, and the Mystic's price is spent */
+function evSettle(L,won){
+  if(CAREER.wager){
+    const g=L.gold||0;
+    if(won){L.gold=g*2;CAREER.story.push({k:'royal',html:'The Royal Lion keeps his word. A guard drops a heavy purse at your feet: '+g+' gold becomes <b>'+L.gold+'</b>.'});}
+    else{L.gold=0;CAREER.story.push({k:'royalL',html:'The Royal Lion\u2019s guards are waiting at the gate. They take every coin: <b>'+g+' gold</b>, gone. He does not look surprised.'});}
+    CAREER.wager=null;
+  }
+  if(CAREER.weak){
+    CAREER.story.push({k:'weak',html:won?'It walked in at three quarters of its health, and won anyway.':'It walked in at three quarters of its health. Maybe that was the difference.'});
+    CAREER.weak=null;
+  }
+}
 function kingOver(won){
   const L=CAREER.lion;
   if(L&&L.record){
@@ -6492,6 +6616,7 @@ function kingOver(won){
   showResult(won?'kingWin':'kingLoss');
 }
 function survivalOver(){
+  if(SURV.ambush){ambushOver(false);return;}
   const L=CAREER.lion;
   if(L&&L.record){
     L.record.bestWave=Math.max(L.record.bestWave||0,SURV.wave);
@@ -6511,10 +6636,12 @@ function roundOver(){
       rivalAfterBout(foeCfg,true,false,you,L.name);
       L.record.wins++;ch.i++;
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
+      evSettle(L,true);
       CAREER.trainChance=Math.random()<.35;
       CAREER.loot=null;
       if(Math.random()<.3){const foe=G.lions[1];CAREER.loot={k:'skull',from:foe?foe.name:'its rival',ok:invAdd(L,'skull',1),n:0};
         CAREER.loot.n=invCount(L,'skull');}
+      if(ch.i<5)evRollAfterWin();else CAREER.event=null;
       if(ch.i>=5){
         const perk=pickOne(PERKS.filter(p=>true)).k;
         L.perks.push(perk);L.record.champs++;
@@ -6524,6 +6651,7 @@ function roundOver(){
     } else {
       const killer=G.winner.name,boutN=ch.i+1,champN=ch.n;
       L.record.losses=(L.record.losses||0)+1;
+      evSettle(L,false);
       let fate=Math.random()<deathChanceFor(L);
       CAREER.saved=false;
       if(fate&&invCount(L,'halo')){invTake(L,'halo');fate=false;CAREER.saved=true;}
@@ -6599,8 +6727,23 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     const ch=CAREER.champ;
     V.textContent='BOUT '+ch.i+' WON';
     M.textContent=(G.method||'attrition')+' · '+Math.round(w.hp)+' health left · '+(5-ch.i)+' to go for the belt · +'+(CAREER.earned||0)+' gold';
-    B.innerHTML='<button class="primary" data-act="again">Next bout</button><button data-act="home">Back to the den</button>';
+    B.innerHTML=CAREER.event?'<button class="primary evBtn" data-act="enterEvent">An event awaits</button><button data-act="home">Back to the den</button>'
+      :'<button class="primary" data-act="again">Next bout</button><button data-act="home">Back to the den</button>';
+    if(CAREER.event)P.innerHTML+='<div class="lootCard evTease"><span class="rico">'+ico('spark')+'</span><div><h5>Something stirs</h5><p>'+
+      'Word of the win gets around fast. Someone, or something, is waiting for '+esc(CAREER.lion.name)+' outside the den.</p></div></div>';
     SFX.win();
+  }
+  else if(kind==='ambushWin'||kind==='ambushLoss'){
+    const A=CAREER.ambush||{},lt=A.loot,won=kind==='ambushWin',me=G.lions[0];
+    V.textContent=won?'THE PACK SCATTERS':'THE HYENAS WIN';V.className='verdict'+(won?' gold':' blood');
+    M.textContent=SURV.kills+' of '+AMBUSH.n+' hyenas put down \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
+      (won&&me?' \u00b7 '+Math.round(me.hp)+' health left':'');
+    P.innerHTML=won?('<div class="lootCard forestCard"><span class="rico">'+ico(lt?lt.ico:'crate')+'</span><div><h5>Yours to keep</h5><p>'+
+        'The last hyena bolts into the trees. '+(lt?('The '+esc(lt.msg)+' from the crate is '+esc(CAREER.lion?CAREER.lion.name:'yours')+'\u2019s, fair and square.'):'The crate is yours.')+'</p></div></div>')
+      :('<div class="perkCard neutral"><h5>They took it back</h5><p>'+(A.took?('The hyenas drag off '+esc(A.took)+'. '):'')+
+        'Your lion limps home, bitten but breathing. This was no championship bout: nothing goes on its record.</p></div>');
+    B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
+    if(won)SFX.champ();
   }
   else if(kind==='champion'){
     const P2=PERKS.filter(p=>p.k===perk)[0];
@@ -6688,9 +6831,10 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="home">Enter the hall</button>';
   }
   if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death')){
-    CAREER.story.forEach(function(st){
-      P.innerHTML+='<div class="lootCard storyCard '+st.k+'"><span class="rico">'+ico(st.k==='rival'?'duel':(st.k==='avenge'?'check':'skull'))+'</span><div><h5>'+
-        (st.k==='nem'?'A nemesis is born':(st.k==='avenge'?'Nemesis avenged':'Rivalry'))+'</h5><p>'+st.html+'</p></div></div>';
+    const STK={rival:['Rivalry','duel'],nem:['A nemesis is born','skull'],avenge:['Nemesis avenged','check'],
+      royal:['The wager pays','crown'],royalL:['The wager is lost','crown'],weak:['The Mystic\u2019s price','flame']};
+    CAREER.story.forEach(function(st){const K=STK[st.k]||STK.rival;
+      P.innerHTML+='<div class="lootCard storyCard '+st.k+'"><span class="rico">'+ico(K[1])+'</span><div><h5>'+K[0]+'</h5><p>'+st.html+'</p></div></div>';
     });
     CAREER.story=[];
   }
@@ -6704,7 +6848,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     CAREER.trainBtns=B.innerHTML;B.innerHTML='';
     P.innerHTML+=trainOfferHTML();
   }
-  $('sheet').innerHTML=(kind==='death'||w)?statSheet(kind==='death'?G.winner:w,kind==='death'?G.winner.foe:l):'';
+  $('sheet').innerHTML=(kind==='ambushWin'||kind==='ambushLoss')?'':((kind==='death'||w)?statSheet(kind==='death'?G.winner:w,kind==='death'?G.winner.foe:l):'');
   $('result').classList.remove('hidden');
 }
 $('arenaBox').addEventListener('click',function(){skipIntro();});
@@ -6939,6 +7083,495 @@ addEventListener('keydown',function(ev){
   else if(ev.key==='ArrowLeft')tutAct('tutBack');
   else if(ev.key==='Escape')closeTut();
 });
+
+/* ========== 17. EVENTS ==========
+   After a championship win with another bout still to come, 40% of the time something happens outside the den.
+   The next bout is held back until you have gone out and seen it. Three of them:
+   royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
+   mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
+   forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
+const EVENT_RATE=.4,EVENT_K=['royal','mystic','forest'],AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
+const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
+const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
+function evRollAfterWin(){
+  CAREER.event=null;
+  if(Math.random()>=EVENT_RATE)return false;
+  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv);
+  CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
+  return true;
+}
+function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;}
+function evChip(cls,icon,txt){return '<span class="'+cls+'">'+ico(icon)+txt+'</span>';}
+const EVENTS={
+  royal:{title:'The Royal Lion',sub:'A visitor from the palace',col:'#ffc233',bg:'rgba(255,194,51,.16)',draw:drawRoyalScene,
+    nodes:{
+      start:function(L){const g=L.gold||0;
+        return {scene:'arrive',lines:[
+          ['n','Horns, outside the den. Two guards in full plate march in and plant their spears either side of the door.'],
+          ['n','Then he walks in. A big grey lion, his mane in tight curls, a red sash across his chest and a crown that catches every light in the room.'],
+          ['Royal Lion','I watched your last fight from the royal box. I am… impressed. That does not happen often.'],
+          g?['Royal Lion','So. A wager. Win your next bout and I will double every coin you own. Lose it, and every coin is mine. Well?']
+           :['Royal Lion','A wager, then. Win your next bout and I double your gold. Lose and I take it all. You have none? Ha! Then you have nothing to lose.']],
+          stake:evChip('','coin',g+' gold')+evChip('up','crown','Win: ×2')+evChip('dn','skull','Lose: all of it'),
+          choices:[{t:'Accept',go:'accept',yes:1},{t:'Decline',go:'decline'}]};},
+      accept:function(L){CAREER.wager={g:L.gold||0};CAREER.event=null;Store.save();SFX.coin();
+        return {scene:'accept',lines:[
+          ['Royal Lion','Splendid! Do not disappoint me, '+L.name+'. The crown does not like to be disappointed.'],
+          ['n','He sweeps out. One of the guards looks back at you on the way. He does not look hopeful.']],
+          choices:[{t:'Back to the den',go:'done',yes:1}]};},
+      decline:function(L){CAREER.event=null;Store.save();
+        return {scene:'decline',lines:[
+          ['Royal Lion','Hm. Cautious. How very… common.'],
+          ['n','He turns and leaves, sash trailing, guards in step behind him. The den feels bigger without them.']],
+          choices:[{t:'Back to the den',go:'done',yes:1}]};}
+    }},
+  mystic:{title:'The Mystic Lion',sub:'A fire in the dark',col:'#b48cff',bg:'rgba(180,140,255,.16)',draw:drawCampScene,
+    nodes:{
+      start:function(L){
+        return {scene:'arrive',lines:[
+          ['n','Night. Out past the den, where the sand gives way to trees, someone has lit a fire.'],
+          ['n','The Mystic Lion sits beside it, eyes glowing in the dark. Two lion skulls rest on the ground next to him.'],
+          ['Mystic Lion','Sit, champion. The fire is warm, and I have something you want.'],
+          ['Mystic Lion','Two skulls. Yours, tonight. The price is a little of your strength: you walk into your next bout at three quarters of your health.']],
+          stake:evChip('up','skull','+2 skulls')+evChip('dn','heart','Next bout at 75% health'),
+          choices:[{t:'Take the skulls',go:'accept',yes:1},{t:'Walk away',go:'decline'}]};},
+      accept:function(L){const ok=invAdd(L,'skull',2);CAREER.weak=1;CAREER.event=null;Store.save();SFX.cast();
+        if(!ok)toast('The bag is full, so the skulls stay by the fire');
+        return {scene:'accept',lines:[
+          ['n','He passes the skulls across the fire. The flames turn violet for a breath, and you feel something leave you.'],
+          ['Mystic Lion','A fair trade. You will feel it when the gate opens.']],
+          choices:[{t:'Back to the den',go:'done',yes:1}]};},
+      decline:function(L){CAREER.event=null;Store.save();
+        return {scene:'decline',lines:[
+          ['Mystic Lion','Wise, perhaps. The fire will still be here. It always is.'],
+          ['n','You walk back to the den. Behind you, the fire crackles on.']],
+          choices:[{t:'Back to the den',go:'done',yes:1}]};}
+    }},
+  forest:{title:'The Crate in the Trees',sub:'A trail you have never seen',col:'#9bd46a',bg:'rgba(155,212,106,.15)',draw:drawForestScene,
+    nodes:{
+      start:function(L){
+        return {scene:'arrive',lines:[
+          ['n','A narrow trail you have never noticed leads out past the den and into thick forest.'],
+          ['n','In a clearing in the middle sits a crate. Nobody around. No tracks. Very quiet.'],
+          ['n','Too quiet, maybe.']],
+          stake:evChip('up','crate','A free item')+evChip('','help','No one around'),
+          choices:[{t:'Open the crate',go:'open',yes:1},{t:'Leave it',go:'leave'}]};},
+      open:function(L){const r=crateRoll(L);CAREER.event={k:'forest',loot:r};Store.save();
+        if(r.rare)SFX.champ();else SFX.coin();
+        return {scene:'open',lines:[
+          ['n','The lid comes off. Inside: '+r.msg+'. Yours.'],
+          ['n','A twig snaps. Then another. Yellow eyes in the bushes. One pair… then five.'],
+          ['n','Hyenas. The crate was bait, and you took it. They want it back.']],
+          stake:evChip('up',r.ico,'Win: keep it')+evChip('dn','skull','Lose: they take it back'),
+          choices:[{t:'Fight them off',go:'fight',yes:1}]};},
+      ambush:function(L){const r=CAREER.event.loot;
+        return {scene:'ambush',lines:[
+          ['n','The hyenas are still out there. Five of them, circling the clearing, waiting for you to come back with what you took.']],
+          stake:evChip('up',r.ico,'Win: keep it')+evChip('dn','skull','Lose: they take it back'),
+          choices:[{t:'Fight them off',go:'fight',yes:1}]};},
+      leave:function(L){CAREER.event=null;Store.save();
+        return {scene:'leave',lines:[
+          ['n','You leave the crate where it is and walk back out the way you came. Nothing follows you. Probably.']],
+          choices:[{t:'Back to the den',go:'done',yes:1}]};}
+    }}
+};
+function evDoorHTML(){
+  return '<button class="evDoor" data-act="enterEvent"><span class="q">'+ico('spark')+'</span><span><b>An event awaits</b>'+
+    '<small>Something is waiting outside the den. The next bout waits until you have seen it.</small></span><span class="go">›</span></button>';
+}
+function evPillsHTML(){
+  let out='';
+  if(CAREER.wager)out+='<span class="fxPill royal">'+ico('crown')+'Royal wager: win ×2 gold, lose it all</span>';
+  if(CAREER.weak)out+='<span class="fxPill mystic">'+ico('flame')+'Mystic’s price: next bout at 75% health</span>';
+  return out?'<div class="fxPills">'+out+'</div>':'';
+}
+function enterEvent(){
+  const E=CAREER.event,L=CAREER.lion;if(!E||!EVENTS[E.k]||!L)return false;
+  const D=EVENTS[E.k];
+  EV.k=E.k;EV.on=true;EV.t=0;EV.last=0;EV.ready=null;
+  const card=$('evCard');
+  if(card.style)card.style.cssText='--evc:'+D.col+';--evb:'+D.bg;
+  card.innerHTML='<div class="evHead"><span class="evTag">'+ico('spark')+'Event</span><div><b>'+D.title+'</b><small>'+D.sub+'</small></div></div>'+
+    '<canvas id="evCv"></canvas>'+
+    '<div class="evBody"><div class="evSay" data-act="evTap"><b id="evWho"></b><p id="evTxt"></p><span class="evHint" id="evHint"></span></div>'+
+    '<div class="evStake" id="evStake"></div><div class="evBtns" id="evBtns"></div></div>';
+  $('ev').classList.remove('hidden');
+  evSize();
+  evNode(E.k==='forest'&&E.loot?'ambush':'start');
+  if(E.k==='royal')SFX.herald();else if(E.k==='mystic')SFX.cast();else SFX.ui();
+  if(!EV.raf&&typeof requestAnimationFrame!=='undefined')EV.raf=requestAnimationFrame(evTick)||0;
+  return true;
+}
+function evSize(){
+  const cv=$('evCv');if(!cv||!cv.getContext)return;
+  const r=cv.getBoundingClientRect?cv.getBoundingClientRect():{width:340,height:220};
+  const w=Math.max(200,r.width||340),h=Math.max(150,r.height||220),dpr=Math.min((typeof devicePixelRatio!=='undefined'&&devicePixelRatio)||1,2);
+  cv.width=w*dpr;cv.height=h*dpr;EV.g=cv.getContext('2d');if(EV.g.setTransform)EV.g.setTransform(dpr,0,0,dpr,0,0);EV.w=w;EV.h=h;
+}
+function evNode(name){
+  const D=EVENTS[EV.k];
+  EV.node=D.nodes[name](CAREER.lion);EV.name=name;EV.scene=EV.node.scene;EV.i=0;EV.shown=0;EV.st=EV.t;EV.lst=EV.t;EV.ready=null;
+  evPaint();
+}
+function evPaint(){
+  const N=EV.node;if(!N)return;
+  const ln=N.lines[EV.i],txt=ln[1],nar=ln[0]==='n',done=EV.shown>=txt.length,last=EV.i===N.lines.length-1;
+  const who=$('evWho'),tx=$('evTxt');
+  who.textContent=nar?'':ln[0];who.className=nar?'nar':'';
+  tx.className=nar?'nar':'';
+  tx.innerHTML=esc(txt.slice(0,Math.floor(EV.shown)))+(done?'':'<span class="caret"></span>');
+  $('evHint').textContent=done&&!last?'Tap to continue ›':'';
+  const ready=done&&last;
+  if(EV.ready!==ready){
+    EV.ready=ready;
+    const st=$('evStake'),bt=$('evBtns');
+    st.innerHTML=N.stake||'';st.className='evStake'+(ready?'':' wait')+(N.stake?'':' none');
+    bt.innerHTML=N.choices.map(function(c,i){return '<button class="'+(c.yes?'yes':'')+'" data-act="evPick" data-i="'+i+'"'+(ready?'':' tabindex="-1"')+'>'+c.t+'</button>';}).join('');
+    bt.className='evBtns'+(ready?'':' wait');
+  }
+}
+function evTap(){
+  if(!EV.on||!EV.node)return;
+  const N=EV.node,txt=N.lines[EV.i][1];
+  if(EV.shown<txt.length){EV.shown=txt.length;evPaint();return;}
+  if(EV.i<N.lines.length-1){EV.i++;EV.shown=0;EV.lst=EV.t;SFX.ui();evPaint();}
+}
+function evPick(i){
+  if(!EV.on||!EV.ready||!EV.node)return;
+  const c=EV.node.choices[i|0];if(!c)return;
+  SFX.ui();
+  if(c.go==='done'){evClose();refresh();return;}
+  if(c.go==='fight'){evClose();SFX.unlock();startFight('ambush');return;}
+  evNode(c.go);
+}
+function evClose(){EV.on=false;EV.node=null;$('ev').classList.add('hidden');Store.save();}
+function evTick(ts){
+  if(!EV.on){EV.raf=0;return;}
+  const dt=Math.min(.05,(ts-(EV.last||ts))/1000);EV.last=ts;EV.t+=dt;
+  const N=EV.node;
+  if(N){const txt=N.lines[EV.i][1];if(EV.shown<txt.length){EV.shown=Math.min(txt.length,EV.shown+dt*44);evPaint();}}
+  if(EV.g&&EV.w){
+    const g=EV.g;g.save();
+    try{EVENTS[EV.k].draw(g,EV.w,EV.h,EV.t,EV.scene,EV.t-EV.st);}catch(e){}
+    g.restore();
+  }
+  EV.raf=requestAnimationFrame(evTick);
+}
+/* ---- the ambush: five hyenas, no waves, out of the trees ---- */
+function spawnAmbush(){
+  SURV.wave=1;SURV.live=true;
+  for(let i=0;i<AMBUSH.n;i++){const e=makeBeast('hyena',AMBUSH.scale);if(i<AMBUSH.wild){e.brain=BRAINS.berserk;e.cfg.brain='berserk';}e.maxHp*=AMBUSH.hp;e.hp=e.maxHp;e.dmgMult*=AMBUSH.dmg;G.lions.push(e);}
+  SURV.spawned=AMBUSH.n;
+  banner('AMBUSH',1.3,true);SFX.roar();crowdReact(1.1);
+  log('Five hyenas come out of the trees.');
+}
+function ambushWon(){
+  if(G.over)return;
+  const me=G.lions[0];
+  G.over=true;G.winner=me;G.method='the pack breaks';
+  G.slow=RM?0:1.2;G.flash=.4;
+  banner('THE PACK BREAKS',1.5,true);SFX.win();crowdReact(1.6);
+  const tk=G.token;
+  setTimeout(function(){if(G.token===tk)ambushOver(true);},RM?400:1600);
+}
+function ambushOver(won){
+  const L=CAREER.lion,E=CAREER.event,loot=E&&E.loot;
+  CAREER.ambush={won:won,loot:loot||null,took:null};
+  if(!won&&loot&&L)CAREER.ambush.took=crateUndo(L,loot);
+  if(E&&E.k==='forest')CAREER.event=null;
+  SURV.ambush=false;SURV.live=false;
+  Store.save();
+  showResult(won?'ambushWin':'ambushLoss');
+}
+/* ---- drawing the three scenes ---- */
+function evYou(g,x,y,R,ang,t,anim){
+  const L=CAREER.lion;if(!L)return;const so=soulOf(L);
+  if(so)soulAura(g,x,y,R,ang,t,so,true);
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:L.pelt,cols:colsOf(L),mane:L.mane,tail:L.tail,seed:3,scars:L.scars||[],armor:L.armor||'none',
+    eyes:lionEyes(L),eyeGlow:!!so,belts:beltsOf(L),anim:anim});
+  if(so)soulAura(g,x,y,R,ang,t,so,false);
+}
+function evVignette(g,w,h){
+  const v=g.createRadialGradient(w/2,h/2,Math.min(w,h)*.35,w/2,h/2,Math.max(w,h)*.75);
+  v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.6)');g.fillStyle=v;g.fillRect(0,0,w,h);
+}
+const ease=p=>{p=clamp(p,0,1);return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;};
+function evIcon(g,k,x,y,s,col){
+  const src=ICONS[k]||'';
+  g.save();g.translate(x-s/2,y-s/2);g.scale(s/16,s/16);g.strokeStyle=col;g.lineWidth=1.6;g.lineCap='round';g.lineJoin='round';
+  if(typeof Path2D!=='undefined'){
+    src.replace(/ d="([^"]+)"/g,function(m,d){try{g.stroke(new Path2D(d));}catch(e){}return m;});
+    src.replace(/<circle cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g,function(m,cx,cy,r){g.beginPath();g.arc(+cx,+cy,+r,0,7);g.stroke();return m;});
+  }
+  g.restore();
+}
+function drawCrown(g,x,y,R,ang,t){
+  g.save();g.translate(x,y);g.rotate(ang);g.translate(R*.26,0);
+  const rr=R*.28,lw=Math.max(1,R*.05);
+  g.lineWidth=lw;g.strokeStyle='#7a5a08';
+  for(let i=0;i<8;i++){const a=i/8*6.283;
+    g.fillStyle='#f2c230';g.beginPath();g.moveTo(Math.cos(a-.24)*rr,Math.sin(a-.24)*rr);g.lineTo(Math.cos(a)*(rr+R*.22),Math.sin(a)*(rr+R*.22));
+    g.lineTo(Math.cos(a+.24)*rr,Math.sin(a+.24)*rr);g.closePath();g.fill();g.stroke();
+    g.fillStyle='#fff6dc';g.beginPath();g.arc(Math.cos(a)*(rr+R*.22),Math.sin(a)*(rr+R*.22),R*.045,0,7);g.fill();}
+  g.fillStyle='#8f1418';g.beginPath();g.arc(0,0,rr,0,7);g.fill();
+  const cg=g.createRadialGradient(-rr*.3,-rr*.3,1,0,0,rr);cg.addColorStop(0,'rgba(255,120,120,.35)');cg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=cg;g.fill();
+  g.strokeStyle='#7a5a08';g.lineWidth=R*.15;g.beginPath();g.arc(0,0,rr,0,7);g.stroke();
+  g.strokeStyle='#f2c230';g.lineWidth=R*.1;g.beginPath();g.arc(0,0,rr,0,7);g.stroke();
+  for(let i=0;i<4;i++){const a=i/4*6.283+.39;g.fillStyle=i%2?'#4fd0ff':'#e2382c';g.beginPath();g.arc(Math.cos(a)*rr,Math.sin(a)*rr,R*.055,0,7);g.fill();}
+  g.fillStyle='#f2c230';g.strokeStyle='#7a5a08';g.lineWidth=lw;g.beginPath();g.arc(0,0,R*.09,0,7);g.fill();g.stroke();
+  g.globalAlpha=.4+.6*Math.max(0,Math.sin(t*2.2));g.fillStyle='#fff';g.beginPath();g.arc(-rr*.6,-rr*.55,R*.035,0,7);g.fill();
+  g.restore();
+}
+function drawSash(g,x,y,R,ang){
+  g.save();g.translate(x,y);g.rotate(ang);
+  g.beginPath();g.ellipse(0,0,R*.92,R*.68,0,0,7);g.clip();
+  const ax=-R*.02,ay=-R*.75,bx=-R*.62,by=R*.75,dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy),nx=-dy/L*R*.13,ny=dx/L*R*.13;
+  g.lineCap='butt';g.strokeStyle='#b3121a';g.lineWidth=R*.26;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx,by);g.stroke();
+  g.strokeStyle='#f2c230';g.lineWidth=Math.max(.8,R*.045);
+  [1,-1].forEach(function(s){g.beginPath();g.moveTo(ax+nx*s,ay+ny*s);g.lineTo(bx+nx*s,by+ny*s);g.stroke();});
+  g.restore();
+}
+function drawGuard(g,x,y,R,ang,t,flip){
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:0,cols:GUARDCOLS,mane:4,tail:0,seed:5,scars:[],armor:'plate'});
+  g.save();g.translate(x,y);g.rotate(ang);
+  /* helmet with a red plume */
+  g.fillStyle='#7d838c';g.strokeStyle='#dde1e7';g.lineWidth=Math.max(1,R*.07);
+  g.beginPath();g.arc(R*.42,0,R*.44,0,7);g.fill();g.stroke();
+  g.strokeStyle='#c4161c';g.lineWidth=R*.16;g.lineCap='round';g.beginPath();g.moveTo(R*.05,0);g.lineTo(R*.72,0);g.stroke();
+  /* a spear, held upright; a round shield on the other side */
+  const s=flip?-1:1;
+  g.strokeStyle='#6b4a2a';g.lineWidth=Math.max(1.4,R*.11);g.beginPath();g.moveTo(-R*1.1,s*R*.78);g.lineTo(R*1.75,s*R*.78);g.stroke();
+  g.fillStyle='#dde1e7';g.beginPath();g.moveTo(R*2.15,s*R*.78);g.lineTo(R*1.7,s*R*.62);g.lineTo(R*1.7,s*R*.94);g.closePath();g.fill();
+  g.fillStyle='#8f1418';g.strokeStyle='#f2c230';g.lineWidth=Math.max(1,R*.08);
+  g.beginPath();g.ellipse(R*.15,-s*R*.82,R*.24,R*.46,0,0,7);g.fill();g.stroke();
+  g.restore();
+}
+function drawBanner(g,x,y,w,h,t,i){
+  const sw=Math.sin(t*1.3+i*1.7)*1.6;
+  g.save();g.translate(x,y);
+  g.fillStyle='#4a3a20';g.fillRect(-w/2-3,-2,w+6,3);
+  g.beginPath();g.moveTo(-w/2,0);g.lineTo(w/2,0);g.lineTo(w/2+sw,h);g.lineTo(sw,h-7);g.lineTo(-w/2+sw,h);g.closePath();
+  g.fillStyle='#8f1418';g.fill();g.strokeStyle='#c9971a';g.lineWidth=1.2;g.stroke();
+  g.fillStyle='#f2c230';g.beginPath();
+  const cy=h*.42,cx=sw*.5;g.moveTo(cx-6,cy+4);g.lineTo(cx-7,cy-3);g.lineTo(cx-3,cy);g.lineTo(cx,cy-5);g.lineTo(cx+3,cy);g.lineTo(cx+7,cy-3);g.lineTo(cx+6,cy+4);g.closePath();g.fill();
+  g.restore();
+}
+function drawRoyalScene(g,w,h,t,ph,tt){
+  g.fillStyle='#141016';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(255,255,255,.035)';g.lineWidth=1;
+  for(let x=(w/2)%34;x<w;x+=34){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}
+  for(let y=30;y<h;y+=34){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
+  const cx=w/2,cw=64;
+  g.fillStyle='#4e0c10';g.fillRect(cx-cw/2,0,cw,h);g.fillStyle='#7a1418';g.fillRect(cx-cw/2+5,0,cw-10,h);
+  g.strokeStyle='#c9971a';g.lineWidth=1.4;[-1,1].forEach(function(s){g.beginPath();g.moveTo(cx+s*(cw/2-8),0);g.lineTo(cx+s*(cw/2-8),h);g.stroke();});
+  g.fillStyle='rgba(242,194,48,.28)';
+  for(let y=44;y<h;y+=30){g.beginPath();g.moveTo(cx,y-6);g.lineTo(cx+6,y);g.lineTo(cx,y+6);g.lineTo(cx-6,y);g.closePath();g.fill();}
+  /* the back wall, the banners and the light under them */
+  const lg=g.createRadialGradient(cx,30,10,cx,30,w*.5);lg.addColorStop(0,'rgba(255,200,110,.18)');lg.addColorStop(1,'rgba(255,200,110,0)');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  g.fillStyle='#221a26';g.fillRect(0,0,w,26);g.fillStyle='#3d2f44';g.fillRect(0,24,w,3);
+  [w*.1,w*.27,w*.73,w*.9].forEach(function(x,i){drawBanner(g,x,26,20,46,t,i);});
+  /* where the Royal Lion is, and where he is going */
+  let ry=78,ra=Math.PI/2,walk=false,nod=false;
+  if(ph==='arrive'){const p=ease(tt/2.4);ry=-40+p*118;walk=p<1;}
+  if(ph==='accept'){nod=(tt>.25&&tt<.5);if(tt>2.6){const q=tt-2.6;ra=Math.PI/2+Math.min(1,q/.7)*Math.PI;if(q>.7){ry=78-(q-.7)*80;walk=true;}}}
+  if(ph==='decline'){ra=Math.PI/2+Math.min(1,tt/.7)*Math.PI;if(tt>.7){ry=78-(tt-.7)*80;walk=true;}}
+  const bob=walk?Math.sin(t*10)*1.2:0;
+  [-1,1].forEach(function(s){drawGuard(g,cx+s*70,ry-8+bob,15,ra,t,s<0);});
+  const kR=25;
+  const gl=g.createRadialGradient(cx,ry,kR*.4,cx,ry,kR*2.4);gl.addColorStop(0,'rgba(255,214,120,.22)');gl.addColorStop(1,'rgba(255,214,120,0)');
+  g.fillStyle=gl;g.beginPath();g.arc(cx,ry,kR*2.4,0,7);g.fill();
+  paintLion(g,{x:cx,y:ry+bob,R:kR,ang:ra,t:t,pelt:0,cols:ROYALCOLS,mane:1,tail:0,seed:7,scars:[],armor:'none',anim:nod,eyes:'#ffd24a'});
+  drawSash(g,cx,ry+bob,kR,ra);
+  drawCrown(g,cx,ry+bob,kR,ra,t);
+  /* you, standing on the carpet */
+  const yy=h-46;
+  if(ph==='accept'){
+    for(let k=0;k<2;k++){const p=((tt-.3)*.7+k*.5)%1;if(tt<.3)break;
+      g.strokeStyle='rgba(255,214,90,'+(.55*(1-p))+')';g.lineWidth=2;g.beginPath();g.arc(cx,yy,18+p*40,0,7);g.stroke();}
+    for(let i=0;i<10;i++){const p=((tt*.5+i*.1)%1),a=i*2.4;
+      g.globalAlpha=.8*(1-p);g.fillStyle='#ffd24a';g.beginPath();g.arc(cx+Math.cos(a)*(16+p*24),yy+Math.sin(a)*(10+p*14)-p*16,1.6,0,7);g.fill();}
+    g.globalAlpha=1;
+  }
+  evYou(g,cx,yy,17,-Math.PI/2,t,false);
+  evVignette(g,w,h);
+}
+function drawSkull(g,x,y,s){
+  g.save();g.translate(x,y);
+  g.fillStyle='#e8dcc4';g.strokeStyle='#8a7c62';g.lineWidth=1;
+  g.beginPath();g.arc(0,-s*.12,s*.5,0,7);g.fill();g.stroke();
+  g.fillRect(-s*.28,s*.18,s*.56,s*.3);g.strokeRect(-s*.28,s*.18,s*.56,s*.3);
+  g.fillStyle='#2a2218';[-1,1].forEach(function(q){g.beginPath();g.arc(q*s*.2,-s*.1,s*.13,0,7);g.fill();});
+  g.beginPath();g.moveTo(0,s*.04);g.lineTo(-s*.06,s*.16);g.lineTo(s*.06,s*.16);g.closePath();g.fill();
+  g.restore();
+}
+function evTrees(w,h,key,n,keep){
+  /* ring of trees outside an ellipse, same every frame for the same size */
+  const out=[];let sd=key;
+  const r=()=>{sd=(sd*9301+49297)%233280;return sd/233280;};
+  for(let i=0;i<n;i++){
+    const a=r()*6.283,d=1+r()*.6;
+    const x=w/2+Math.cos(a)*keep.rx*d+(r()-.5)*30,y=h*keep.cy+Math.sin(a)*keep.ry*d+(r()-.5)*20;
+    out.push({x:x,y:y,r:16+r()*20,s:r()*6.283,c:r()});
+  }
+  for(let x=-10;x<w+20;x+=26){out.push({x:x+r()*10,y:-6+r()*10,r:18+r()*10,s:r()*6.283,c:r()});out.push({x:x+r()*10,y:h+6-r()*10,r:18+r()*10,s:r()*6.283,c:r()});}
+  return out;
+}
+function drawTrees(g,T,t,lx,ly,lit){
+  T.forEach(function(tr){
+    const sw=Math.sin(t*.8+tr.s)*1.2;
+    g.fillStyle='rgba(0,0,0,.45)';g.beginPath();g.arc(tr.x+4,tr.y+5,tr.r,0,7);g.fill();
+    g.fillStyle=tr.c<.5?'#0f1d12':'#132416';g.beginPath();g.arc(tr.x+sw,tr.y,tr.r,0,7);g.fill();
+    g.fillStyle=tr.c<.5?'#16291a':'#1a321d';
+    for(let k=0;k<3;k++){const a=tr.s+k*2.1;g.beginPath();g.arc(tr.x+sw+Math.cos(a)*tr.r*.4,tr.y+Math.sin(a)*tr.r*.4,tr.r*.5,0,7);g.fill();}
+    if(lit){const d=Math.hypot(tr.x-lx,tr.y-ly),a=Math.atan2(ly-tr.y,lx-tr.x),k=clamp(1-d/260,0,1)*lit;
+      if(k>0){g.fillStyle='rgba(255,150,60,'+(.22*k)+')';g.beginPath();g.arc(tr.x+sw+Math.cos(a)*tr.r*.45,tr.y+Math.sin(a)*tr.r*.45,tr.r*.55,0,7);g.fill();}}
+  });
+}
+let EVTREES={};
+function drawCampScene(g,w,h,t,ph,tt){
+  g.fillStyle='#06080a';g.fillRect(0,0,w,h);
+  const cx=w/2,cy=h*.52;
+  let v=0;if(ph==='accept')v=clamp(tt<.25?tt/.25:1-(tt-1.8)/1.4,0,1);
+  const fl=.86+.1*Math.sin(t*9)+.05*Math.sin(t*23);
+  const gr=g.createRadialGradient(cx,cy,10,cx,cy,Math.max(w,h)*.55);gr.addColorStop(0,'#2a2016');gr.addColorStop(.5,'#141410');gr.addColorStop(1,'#07090a');
+  g.fillStyle=gr;g.fillRect(0,0,w,h);
+  const fc=mix('#ff8a2a','#a36bff',v);
+  const lg=g.createRadialGradient(cx,cy,4,cx,cy,170*fl);lg.addColorStop(0,fc+'66');lg.addColorStop(1,fc+'00');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  const key='c'+Math.round(w)+'x'+Math.round(h);
+  if(!EVTREES[key])EVTREES[key]=evTrees(w,h,17,26,{rx:Math.min(w*.42,190),ry:h*.5,cy:.52});
+  drawTrees(g,EVTREES[key],t,cx,cy,fl);
+  /* stars through the canopy gap */
+  for(let i=0;i<12;i++){const sx=(i*67.3+w*.2)%w,sy=4+((i*13.7)%14);g.globalAlpha=.2+.4*(.5+.5*Math.sin(t*2+i));g.fillStyle='#d9e4ff';g.fillRect(sx,sy,1.2,1.2);}
+  g.globalAlpha=1;
+  /* stones and logs */
+  for(let i=0;i<11;i++){const a=i/11*6.283;g.fillStyle=i%2?'#4a4640':'#3a3631';g.beginPath();g.arc(cx+Math.cos(a)*25,cy+Math.sin(a)*18,5,0,7);g.fill();}
+  g.save();g.translate(cx,cy);g.scale(1.3,1.3);
+  [.5,-.5].forEach(function(r){g.save();g.rotate(r);g.fillStyle='#3b2616';g.fillRect(-15,-3,30,6);g.fillStyle='#ff6a1f';g.globalAlpha=.6;g.fillRect(-4,-1,8,2);g.restore();});
+  g.globalCompositeOperation='lighter';
+  for(let k=0;k<7;k++){
+    const a=k*.9+t*2.2,fx=Math.cos(a)*3.5,fy=Math.sin(a*1.3)*2.5-2,s=(9-k)*fl*(1+.12*Math.sin(t*11+k));
+    const fg=g.createRadialGradient(fx,fy,0,fx,fy,s);
+    fg.addColorStop(0,v>.5?'rgba(240,220,255,.9)':'rgba(255,240,170,.9)');fg.addColorStop(.45,fc+'aa');fg.addColorStop(1,fc+'00');
+    g.fillStyle=fg;g.beginPath();g.arc(fx,fy,s,0,7);g.fill();
+  }
+  for(let i=0;i<16;i++){const p=(t*.4+i*.0625)%1,ex=Math.sin(i*12.9+t*1.3)*(4+p*14),ey=-p*80;
+    g.globalAlpha=(1-p)*.9;g.fillStyle=v>.5?'#d8b8ff':'#ffb35a';g.fillRect(ex,ey,1.6,1.6);}
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  g.restore();
+  /* the Mystic Lion across the fire */
+  const mx=cx,my=cy-60;
+  const ag=g.createRadialGradient(mx,my,8,mx,my,52);ag.addColorStop(0,'rgba(180,140,255,.3)');ag.addColorStop(1,'rgba(180,140,255,0)');
+  g.fillStyle=ag;g.beginPath();g.arc(mx,my,52,0,7);g.fill();
+  paintLion(g,{x:mx,y:my,R:19,ang:Math.PI/2+Math.sin(t*.6)*.1,t:t,pelt:0,cols:MYSTCOLS,mane:3,tail:0,seed:9,scars:[],armor:'none',eyes:'#e6d4ff',eyeGlow:true,anim:ph==='accept'&&tt<.3});
+  for(let i=0;i<3;i++){const a=t*1.1+i*2.094,ox=mx+Math.cos(a)*30,oy=my+Math.sin(a)*14;
+    g.shadowColor='#b48cff';g.shadowBlur=8;g.fillStyle=['#b48cff','#fff1cc','#ff5a3a'][i];g.beginPath();g.arc(ox,oy,2.6,0,7);g.fill();g.shadowBlur=0;}
+  /* you, on this side of it */
+  let yx=cx,yy=cy+58,ya=-Math.PI/2,walk=false;
+  if(ph==='arrive'){const p=ease(tt/2);yy=h+30-p*(h+30-(cy+58));walk=p<1;}
+  if(ph==='decline'&&tt>.4){const q=tt-.4;ya=-Math.PI/2+Math.min(1,q/.6)*Math.PI;if(q>.6){yy=cy+58+(q-.6)*60;walk=true;}}
+  /* the two skulls: by the Mystic Lion, then across the fire to you */
+  [-1,1].forEach(function(s,i){
+    let sx=mx+s*36,sy=my+18;
+    if(ph==='accept'){const p=ease((tt-.35-i*.18)/1.2);sx=sx+(yx+s*26-sx)*p;sy=sy+(yy+4-sy)*p-Math.sin(p*Math.PI)*34;
+      if(p>0&&p<1){g.fillStyle='rgba(200,170,255,.35)';g.beginPath();g.arc(sx,sy,9,0,7);g.fill();}}
+    drawSkull(g,sx,sy,10);
+  });
+  g.globalAlpha=1;
+  if(ph==='accept'&&tt>.2&&tt<2){
+    for(let i=0;i<10;i++){const p=((tt-.2)*.9+i*.1)%1;
+      g.globalAlpha=.7*Math.sin(p*Math.PI);g.fillStyle='#b48cff';
+      g.beginPath();g.arc(yx+(cx-yx)*p+Math.sin(i*3+p*6)*6,yy+(cy-yy)*p,2,0,7);g.fill();}
+    g.globalAlpha=1;
+  }
+  evYou(g,yx,yy+(walk?Math.sin(t*10)*1:0),17,ya,t,false);
+  evVignette(g,w,h);
+}
+function drawCrate(g,x,y,s,lid,glow,t){
+  if(glow>0){
+    const gg=g.createRadialGradient(x,y,2,x,y,s*2.4*glow);gg.addColorStop(0,'rgba(255,236,170,'+(.55*glow)+')');gg.addColorStop(1,'rgba(255,236,170,0)');
+    g.fillStyle=gg;g.beginPath();g.arc(x,y,s*2.4*glow,0,7);g.fill();
+  }
+  g.fillStyle='rgba(0,0,0,.45)';g.fillRect(x-s/2+4,y-s/2+5,s,s);
+  g.fillStyle='#5a4128';g.fillRect(x-s/2,y-s/2,s,s);
+  g.strokeStyle='#2e2114';g.lineWidth=1.4;g.strokeRect(x-s/2,y-s/2,s,s);
+  if(lid<=0){
+    g.strokeStyle='#3c2b19';g.lineWidth=1;for(let i=1;i<4;i++){g.beginPath();g.moveTo(x-s/2,y-s/2+i*s/4);g.lineTo(x+s/2,y-s/2+i*s/4);g.stroke();}
+    g.strokeStyle='#7a5a36';g.lineWidth=2.4;g.beginPath();g.moveTo(x-s/2+2,y-s/2+2);g.lineTo(x+s/2-2,y+s/2-2);g.moveTo(x+s/2-2,y-s/2+2);g.lineTo(x-s/2+2,y+s/2-2);g.stroke();
+    return;
+  }
+  g.fillStyle='#1b130b';g.fillRect(x-s/2+3,y-s/2+3,s-6,s-6);
+  g.fillStyle='rgba(255,236,170,'+(.35+.15*Math.sin(t*4))+')';g.fillRect(x-s/2+3,y-s/2+3,s-6,s-6);
+  /* the lid, pushed off to one side */
+  g.save();g.translate(x+s*.5*lid+s*.35,y-s*.15*lid);g.rotate(.5*lid);
+  g.fillStyle='#634a2e';g.fillRect(-s/2,-s/2,s,s);g.strokeStyle='#2e2114';g.lineWidth=1.4;g.strokeRect(-s/2,-s/2,s,s);
+  g.strokeStyle='#7a5a36';g.lineWidth=2.4;g.beginPath();g.moveTo(-s/2+2,-s/2+2);g.lineTo(s/2-2,s/2-2);g.moveTo(s/2-2,-s/2+2);g.lineTo(-s/2+2,s/2-2);g.stroke();
+  g.restore();
+}
+function drawForestScene(g,w,h,t,ph,tt){
+  const cx=w/2,cy=h*.46;
+  g.fillStyle='#08100a';g.fillRect(0,0,w,h);
+  const rx=Math.min(w*.36,160),ry=h*.36;
+  const cg=g.createRadialGradient(cx,cy,10,cx,cy,Math.max(rx,ry)*1.2);cg.addColorStop(0,'#2b2617');cg.addColorStop(.75,'#18190f');cg.addColorStop(1,'#0b120b');
+  g.fillStyle=cg;g.beginPath();g.ellipse(cx,cy,rx*1.25,ry*1.25,0,0,7);g.fill();
+  g.fillStyle='rgba(120,100,60,.25)';
+  for(let i=0;i<40;i++){const a=i*2.39,d=((i*37)%100)/100;g.fillRect(cx+Math.cos(a)*rx*d,cy+Math.sin(a)*ry*d,2,1.2);}
+  /* light coming down through the canopy */
+  g.save();g.globalCompositeOperation='lighter';
+  for(let i=0;i<3;i++){const x0=cx-rx*.6+i*rx*.6+Math.sin(t*.3+i)*6;
+    g.fillStyle='rgba(255,243,196,'+(.045+.015*Math.sin(t*.7+i*2))+')';
+    g.beginPath();g.moveTo(x0-14,0);g.lineTo(x0+10,0);g.lineTo(x0+46,h);g.lineTo(x0+12,h);g.closePath();g.fill();}
+  g.restore();
+  const key='f'+Math.round(w)+'x'+Math.round(h);
+  if(!EVTREES[key])EVTREES[key]=evTrees(w,h,41,34,{rx:rx*1.15,ry:ry*1.2,cy:.46});
+  /* bushes on the edge of the clearing; the hyenas wait in five of them */
+  const B=[];for(let i=0;i<7;i++){const a=-Math.PI/2+(i-3)*.62+(i>3?.3:0);B.push({x:cx+Math.cos(a)*rx*1.05,y:cy+Math.sin(a)*ry*1.0});}
+  const B5=[B[0],B[1],B[2],B[4],B[5]],ln=EV.i|0,lt=EV.t-(EV.lst||0);
+  const lid=ph==='arrive'||ph==='leave'?0:(ph==='open'?ease(tt/.5):1);
+  const glow=ph==='open'?Math.min(1,tt/.4)*(1-.3*Math.min(1,tt/2)):(ph==='ambush'?.5:0);
+  drawCrate(g,cx,cy,30,lid,glow,t);
+  /* what came out of the crate, held up for a second */
+  const loot=CAREER.event&&CAREER.event.loot;
+  if((ph==='open'||ph==='ambush')&&loot){
+    const p=ph==='open'?ease(tt/.7):1,iy=cy-8-p*26;
+    g.globalAlpha=Math.min(1,p*1.5);
+    g.fillStyle='rgba(20,16,10,.8)';g.beginPath();g.arc(cx,iy,14,0,7);g.fill();
+    g.strokeStyle=loot.rare?'#fff1cc':'#ffc233';g.lineWidth=1.4;g.beginPath();g.arc(cx,iy,14,0,7);g.stroke();
+    evIcon(g,loot.ico,cx,iy,17,loot.rare?'#fff1cc':'#ffd24a');
+    g.globalAlpha=1;
+  }
+  /* you walk in, or back out */
+  let yx=cx,yy=cy+56,ya=-Math.PI/2,walk=false;
+  if(ph==='arrive'){const p=ease(tt/2.2);yy=h+28-p*(h+28-(cy+56));walk=p<1;}
+  if(ph==='leave'&&tt>.4){const q=tt-.4;ya=-Math.PI/2+Math.min(1,q/.6)*Math.PI;if(q>.6){yy=cy+56+(q-.6)*60;walk=true;}}
+  evYou(g,yx,yy+(walk?Math.sin(t*10):0),16,ya,t,false);
+  drawTrees(g,EVTREES[key],t,0,0,0);
+  /* bushes in front of the hiding spots, so the eyes peer out of them */
+  B.forEach(function(b,i){
+    const sw=Math.sin(t*1.1+i)*1+(ph==='open'&&ln===1&&B5.indexOf(b)>=0?Math.sin(t*20+i)*1.4:0);
+    g.fillStyle='#14281a';
+    [[-8,4,9],[7,5,8],[0,-2,10]].forEach(function(c){g.beginPath();g.arc(b.x+c[0]+sw,b.y+c[1]+(b.y<cy?-12:12),c[2],0,7);g.fill();});
+  });
+  /* the hyenas */
+  const hy=ph==='ambush'?1:(ph==='open'?(ln>=2?ease((lt-.2)/1.3):0):0);
+  B5.forEach(function(b,i){
+    const eyes=ph==='ambush'||(ph==='open'&&(ln>=2||(ln===1&&lt>.3+i*.35)));
+    if(hy>0){
+      const a0=Math.atan2(b.y-yy,b.x-yx),ring=ph==='ambush'?a0+Math.sin(t*.4+i)*.12:a0;
+      const tx=yx+Math.cos(ring)*58,ty=yy+Math.sin(ring)*44;
+      const hx=b.x+(tx-b.x)*hy*.85,hyy=b.y+(ty-b.y)*hy*.85;
+      paintHyena(g,hx,hyy,11,Math.atan2(yy-hyy,yx-hx),t+i,(t*1.7+i)%2.4<.2);
+    } else if(eyes){
+      const bl=(t*1.3+i*.7)%3.2<.12;
+      if(!bl){g.shadowColor='#ffd24a';g.shadowBlur=8;g.fillStyle='#ffd24a';
+        const a=Math.atan2(yy-b.y,yx-b.x),px=-Math.sin(a)*3.2,py=Math.cos(a)*3.2;
+        g.beginPath();g.arc(b.x+px,b.y+py,1.7,0,7);g.arc(b.x-px,b.y-py,1.7,0,7);g.fill();g.shadowBlur=0;}
+    }
+  });
+  evVignette(g,w,h);
+}
 
 /* ========== BOOT ========== */
 Store.load().then(function(){refresh();fitCanvas();},function(){refresh();fitCanvas();});
