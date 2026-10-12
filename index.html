@@ -789,6 +789,17 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .fxPill{display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 11px;border-radius:12px;line-height:1.3}
 .fxPill .ico{width:15px;height:15px;flex:none}
 .fxPill.royal{background:rgba(255,194,51,.1);color:var(--gold);border:1px solid rgba(255,194,51,.3)}
+.fxPill.shop{background:rgba(255,138,92,.1);color:#ff9d78;border:1px solid rgba(255,138,92,.32)}
+.storyCard.mascot{background:rgba(255,138,92,.09);border-color:rgba(255,138,92,.35)}
+.storyCard.mascot h5,.storyCard.mascot .rico{color:#ff9d78}
+.mascotBar{display:flex;align-items:center;gap:12px;border-radius:var(--r);padding:13px 16px;margin-bottom:12px;
+  background:linear-gradient(110deg,rgba(255,138,92,.16),rgba(255,194,51,.1));border:1px solid rgba(255,138,92,.4);color:#ff9d78}
+.mascotBar .ico{width:22px;height:22px;flex:none}
+.mascotBar b{display:block;font-size:15px;font-weight:600;color:var(--t1)}
+.mascotBar small{display:block;font-size:13px;color:var(--t2);margin-top:1px}
+.mascotBar em{margin-left:auto;font-style:normal;font-weight:700;font-size:17px;color:#ff9d78}
+.price.off{color:#ff9d78}
+.price s{color:var(--t3);font-size:.85em;margin-right:5px;text-decoration-thickness:1.5px}
 .fxPill.mystic{background:rgba(180,140,255,.1);color:#c9adff;border:1px solid rgba(180,140,255,.32)}
 .storyCard.royal{background:rgba(255,194,51,.09);border-color:rgba(255,194,51,.35)}
 .storyCard.royal h5,.storyCard.royal .rico{color:var(--gold)}
@@ -800,6 +811,36 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .lootCard.evTease h5,.lootCard.evTease .rico{color:var(--gold)}
 .lootCard.forestCard{background:rgba(155,212,106,.08);border-color:rgba(155,212,106,.35)}
 .lootCard.forestCard h5,.lootCard.forestCard .rico{color:#9bd46a}
+/* ---------- the bookie ---------- */
+.door.wide{grid-column:1/-1;background:linear-gradient(110deg,rgba(111,194,164,.12),var(--s1) 60%)}
+.door.wide .go{margin-left:auto;color:var(--t3);font-size:20px}
+.door small.bk{color:#7fd3b4}
+.bkCard{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;margin-bottom:12px}
+.bkSide{position:relative;display:flex;flex-direction:column;text-align:left;background:var(--s1);border-radius:18px;padding:0 0 12px;overflow:hidden;
+  border:2px solid transparent;transition:.18s;min-width:0}
+.bkSide.on{border-color:#6fc2a4;background:rgba(111,194,164,.1)}
+.bkSide:disabled{opacity:1}
+.bkSide:not(.on):disabled{opacity:.55}
+.bkSide .bkCv{height:104px;background:#0a0a0c}
+.bkSide>b{font-size:15.5px;font-weight:700;padding:10px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bkSide small{display:block;font-size:12px;color:var(--t2);padding:3px 12px 0;line-height:1.35}
+.bkSide small b{color:var(--t1)}
+.bkSide .odds{position:absolute;top:8px;right:8px;font-weight:800;font-size:15px;padding:4px 9px;border-radius:10px;background:rgba(0,0,0,.6);color:#7fd3b4}
+.bkSide.on .odds{background:#6fc2a4;color:#08140f}
+.bkVs{align-self:center;font-family:var(--disp);font-size:20px;color:var(--t3)}
+.bkStake{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.bkStake>span{font-size:13px;color:var(--t3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+.bkStake button{height:38px;min-width:54px;padding:0 14px;border-radius:12px;background:var(--s2);font-weight:600;font-size:15px;color:var(--t1)}
+.bkStake button.on{background:#6fc2a4;color:#08140f}
+.bkStake button.poor{color:var(--t3)}
+.bkPay{font-size:14px;color:var(--t2);margin:0 2px 12px;line-height:1.45}
+.bkPay b{color:var(--t1)} .bkPay b.g{color:var(--amber)}
+.bkSlip{display:flex;gap:12px;align-items:center;border-radius:var(--r);padding:13px 16px;margin-bottom:12px;background:rgba(111,194,164,.1);border:1px dashed rgba(111,194,164,.5);color:#7fd3b4}
+.bkSlip .ico{width:22px;height:22px;flex:none}
+.bkSlip b{display:block;font-size:15px;color:var(--t1)} .bkSlip small{display:block;font-size:13px;color:var(--t2);margin-top:1px}
+.go1.dim{opacity:.55}
+.lootCard.bkWin{background:rgba(111,194,164,.1);border-color:rgba(111,194,164,.4)}
+.lootCard.bkWin h5,.lootCard.bkWin .rico{color:#7fd3b4}
 /* ---------- tutorial ---------- */
 .cutWrap{position:fixed;inset:0;z-index:35;display:flex;align-items:flex-end;justify-content:center;
   padding:20px 16px 34px;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));animation:cutIn 1.2s ease}
@@ -945,7 +986,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Training</h6>
       <p>After every championship win there is a 35% chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
       <h6>Events</h6>
-      <p>After a championship win, with another bout still to come, there is a 40% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are three. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). Say no to any of them and nothing happens.</p>
+      <p>After a championship win, with another bout still to come, there is a 20% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are four. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. The <b>Lion Store</b> owner wants your lion as his mascot: sign and everything in his store is 30% off for your next five bouts. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). Say no to any of them and nothing happens.</p>
+      <h6>The Bookie</h6>
+      <p>A green lion in a flat cap runs fights between two other lions, and takes bets. You see both lions (record, frame, weapon, mind and size) and his odds, back one, and watch the fight. Win and you get your stake times the odds. The odds come mostly from size, and bigger usually wins. They lean very slightly your way, so over time it pays, but slowly: he runs <b>three fights between each of your championship bouts</b>, and the most you can stake is 25 gold, plus 15 for each belt your lion holds (up to 100). You can also just watch for free. Your lion keeps a running tally of its bets.</p>
       <h6>Loading a lion into the den</h6>
       <p>Any lion code can be loaded into Championship from the den, with its belts, medallions, scars, training and gold. If you already have a lion, it retires to the hall to make room.</p>
       <h6>Personality</h6>
@@ -1278,11 +1321,11 @@ const Store={
       if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}
       if(d.fence&&d.fence.deals)CAREER.fence=d.fence;
       if(Array.isArray(d.rivals))CAREER.rivals=d.rivals;
-      CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;
+      CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;CAREER.mascot=d.mascot|0;if(d.bookie&&d.bookie.a)CAREER.bookie=d.bookie;
       }}catch(e){}
   },
   async save(){
-    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,
+    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,bookie:CAREER.bookie||null,
       tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null}));}catch(e){}
   }
 };
@@ -2651,6 +2694,7 @@ function renderCareer(){
   if(UI.view==='mystic'){host.innerHTML=mysticHTML(L);return;}
   if(UI.view==='smith'){host.innerHTML=smithHTML(L);return;}
   if(UI.view==='fence'){host.innerHTML=fenceHTML(L);return;}
+  if(UI.view==='bookie'){host.innerHTML=bookieHTML(L);return;}
   if(UI.view==='edit'){host.innerHTML=editorHTML('career',L,L.name,true);return;}
   const rec=L.record,ch=CAREER.champ;
   host.innerHTML='<div class="hd"><h2>The den</h2><span>'+(ch?('In championship '+ch.n+'.'):'Resting between championships.')+'</span></div>'+
@@ -2672,6 +2716,7 @@ function renderCareer(){
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s')+'</small></span></button>'+
       '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel')+'</small></span></button>'+
       '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
+      '<button class="door wide" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span><span class="go">\u203a</span></button>'+
       '<button class="door" data-act="openInv"><span class="dic">'+ico('bag')+'</span><span><b>Bag</b><small>'+bagLine(L)+'</small></span></button>'+
       '<button class="door" data-act="hallJump"><span class="dic gold">'+ico('trophy')+'</span><span><b>Hall of Fame</b><small>'+CAREER.hall.length+' lion'+(CAREER.hall.length===1?'':'s')+'</small></span></button>'+
     '</div>'+
@@ -2702,6 +2747,12 @@ function runStripHTML(L,ch){
     '<div class="nx">Next: <span style="color:'+liftCol(colsOf(f).mane,.45)+'">'+esc(f.name)+'</span> '+beltBadge(f)+rivalBadge(f)+
     ' <small>'+recWL(f)+' \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+'</small></div>'+
     '<div class="dots">'+dots+ico('belt')+'</div></div>';
+}
+function bookieDoorLine(){
+  const c=bookieCard();
+  if(c.bet)return 'Your bet is down. Go and watch';
+  if(!c.left)return 'Closed till your next bout';
+  return esc(c.a.name)+' vs '+esc(c.b.name)+' \u00b7 '+c.left+' fight'+(c.left>1?'s':'')+' left';
 }
 function bagLine(L){
   const inv=invOf(L);if(!inv.length)return 'Empty';
@@ -3206,18 +3257,22 @@ function drawMonocle(g,x,y,R,ang,t){
   g.fillStyle='#ffffff';g.globalAlpha=.7+.3*Math.sin(t*3);g.beginPath();g.arc(ex+R*.06,ey-R*.06,R*.04,0,7);g.fill();
   g.restore();
 }
+/* what the Lion Store charges this lion: 30% off while it is the store's mascot */
+function shopCost(k){const b=SHOP.price[k];return CAREER.mascot>0?Math.round(b*(1-MASCOT.off)):b;}
 function shopHTML(L){
   const gold=L.gold||0;
   const item=function(k,icon,name,desc){
-    const cost=SHOP.price[k],ok=gold>=cost;
+    const cost=shopCost(k),ok=gold>=cost,off=cost<SHOP.price[k];
     return '<button class="row" data-act="shopItem" data-item="'+k+'"><span class="rico">'+ico(icon)+'</span>'+
       '<span class="v">'+name+'<small>'+desc+'</small></span>'+
-      '<span class="price'+(ok?'':' poor')+'">'+ico('coin')+cost+'</span></button>';
+      '<span class="price'+(ok?'':' poor')+(off?' off':'')+'">'+(off?'<s>'+SHOP.price[k]+'</s>':'')+ico('coin')+cost+'</span></button>';
   };
   const have=invOf(L).reduce((a,x)=>a+(x.k!=='skull'?x.n:0),0);
   return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
     '<div class="hd"><h2>Lion Store</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b>. It spends here and nowhere else.</span></div>'+
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="shop"></canvas></div>'+
+    (CAREER.mascot>0?'<div class="mascotBar">'+ico('coin')+'<span><b>'+esc(L.name)+' is the store\u2019s mascot</b><small>30% off everything on the counter for '+
+      CAREER.mascot+' more bout'+(CAREER.mascot>1?'s':'')+'.</small></span><em>\u221230%</em></div>':'')+
     '<div class="hd sub2"><h2>On the counter</h2><span>Paid for with this lion\u2019s own gold.</span></div>'+
     '<div class="card">'+
       item('shopCoat','drop','Colour Change','A new coat, any colour you like.')+
@@ -3619,7 +3674,7 @@ function drawMysticScene(g,p){
 }
 function shopBuy(field){
   const L=CAREER.lion;if(!L||!CAREER.locked)return;
-  const cost=SHOP.price[field],k=SHOP_ITEM[field];L.gold=L.gold||0;
+  const cost=shopCost(field),k=SHOP_ITEM[field];L.gold=L.gold||0;
   if(!k)return;
   if(L.gold<cost){shopSay(SHOP.broke);toast('You need '+(cost-L.gold)+' more gold');return;}
   if(!invAdd(L,k,1)){toast('The bag is full');shopSay(['No room in the bag, friend. Use something first.']);return;}
@@ -3654,7 +3709,7 @@ function drawShopScene(g,p){
   [['#8cf24a',w-44],['#b98cff',w-30]].forEach(function(q){g.fillStyle=q[0];g.beginPath();g.arc(q[1],80,6,0,7);g.fill();
     g.fillStyle='rgba(255,255,255,.55)';g.beginPath();g.arc(q[1]-2,78,1.7,0,7);g.fill();});
   /* what he's saying */
-  const say=SHOP.quip||SHOP.hello[0];
+  const say=SHOP.quip||(CAREER.mascot>0?'For my favourite mascot? Thirty percent off!':SHOP.hello[0]);
   g.font='600 12px -apple-system,BlinkMacSystemFont,sans-serif';
   const maxW=Math.max(90,Math.min(170,w/2-50)),words=say.split(' '),lines=[];let ln='';
   words.forEach(function(wd){const tst=ln?ln+' '+wd:wd;if(g.measureText(tst).width>maxW&&ln){lines.push(ln);ln=wd;}else ln=tst;});
@@ -3680,6 +3735,13 @@ function renderLaunch(){
   if(UI.view==='shop'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the store</button>';return;}
   if(UI.view==='mystic'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the Mystic Lion</button>';return;}
   if(UI.view==='smith'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the forge</button>';return;}
+  if(UI.view==='bookie'&&MATCH.mode==='career'){const c=bookieCard();
+    const leave='<button class="go1" data-act="back" style="max-width:104px;background:var(--s2);color:var(--t1);box-shadow:none">Leave</button>';
+    if(c.bet)bar.innerHTML=leave+'<button class="go1" data-act="bookieGo">'+ico('play')+'Watch the fight</button>';
+    else if(!c.left)bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the Bookie</button>';
+    else if(UI.bkSide)bar.innerHTML=leave+'<button class="go1" data-act="bookieGo">'+ico('coin')+'Bet '+(UI.bkStake||10)+' & watch</button>';
+    else bar.innerHTML=leave+'<button class="go1 dim" data-act="bookieGo">'+ico('coin')+'Pick a lion to back</button>';
+    return;}
   if(UI.view==='fence'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Slip back out</button>';return;}
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+(MATCH.duo?'Send in both teams':'Send them in')+'</button>';return;}
   if(MATCH.mode==='tourn'){
@@ -4111,6 +4173,13 @@ function handleAct(a,el){
   if(a==='openFence'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='fence';fenceSay(FENCE.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='fenceDeal'){fenceDeal(+el.dataset.i);return;}
+  if(a==='openBookie'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='bookie';UI.bkSide=null;bookieSay(BOOKIE.hello);refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
+  if(a==='bkPick'){const c=bookieCard();if(c.bet||!c.left)return;SFX.ui();UI.bkSide=el.dataset.s;refresh();return;}
+  if(a==='bkStake'){SFX.ui();UI.bkStake=+el.dataset.v;refresh();return;}
+  if(a==='bookieGo'){bookieGo(false);return;}
+  if(a==='bookieWatch'){bookieGo(true);return;}
+  if(a==='bookieDen'){$('result').classList.add('hidden');UI.view='home';showHome();return;}
   if(a==='fenceSkull'){fenceSkull();return;}
   if(a==='fenceCrate'){fenceCrate();return;}
   if(a==='smithBuy'){smithBuy(el&&el.dataset.k);return;}
@@ -4193,6 +4262,7 @@ function startFight(ctxName){
     const nx=tournNext();if(!nx){showHome();return;}
     TOURN.cur=nx;G.aCfg=tCopy(nx.match.a,'A');G.bCfg=tCopy(nx.match.b,'B');G.rounds=3;
   }
+  else if(ctxName==='bookie'){const c=bookieCard();G.aCfg=Object.assign(JSON.parse(JSON.stringify(c.a)),{side:'A'});G.bCfg=Object.assign(JSON.parse(JSON.stringify(c.b)),{side:'B'});G.rounds=1;}
   else if(ctxName==='duo'){G.aCfg=cfg.A;G.bCfg=cfg.B;G.a2Cfg=cfg.A2;G.b2Cfg=cfg.B2;G.rounds=3;}
   else {G.aCfg=cfg.A;G.bCfg=cfg.B;G.rounds=3;}
   newRound();
@@ -4206,7 +4276,7 @@ function showHome(){
 }
 /* the arena and walls picked on the Duel screen belong to Duel; every other fight is in the Colonnade with the walls on */
 function duelLike(){return G&&(G.ctx==='duel'||G.ctx==='duo');}
-function fightArena(){return duelLike()?MATCH.arena:(G.ctx==='survival'&&SURV.ambush?'thicket':'colonnade');}
+function fightArena(){return duelLike()?MATCH.arena:(G.ctx==='bookie'&&CAREER.bookie&&ARENAS[CAREER.bookie.arena])?CAREER.bookie.arena:(G.ctx==='survival'&&SURV.ambush?'thicket':'colonnade');}
 function fightClosing(){return duelLike()?MATCH.closing:true;}
 /* ========== 11b. THE GATES ==========
    Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
@@ -4309,6 +4379,8 @@ function introRec(e){
 }
 function introKick(i,grp){
   const c=G.ctx;
+  if(c==='bookie'){const bt=CAREER.bookie&&CAREER.bookie.bet;
+    return (bt&&bt.side&&((bt.side==='a')===(i===0)))?'Your money is on':(i===0?'In this corner':'And in this corner');}
   if(c==='king')return i===0?(grp.lions.length>1?'The challengers':'The challenger')
     :(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark'));
   if(c==='survival')return SURV.ambush?'Ambushed in the trees':(grp.lions.length>1?'Into the pit':'Alone in the pit');
@@ -6445,7 +6517,7 @@ function buildHud(){
       html+='<div class="rp '+(G.wins[side]>idx?'on':'')+'"></div>';
     }
     $('roundPips').innerHTML=html;
-    $('roundLbl').textContent=G.rounds>1?('ROUND '+G.round):'';
+    $('roundLbl').textContent=G.ctx==='bookie'?'THE BOOKIE':(G.rounds>1?('ROUND '+G.round):'');
   }
 }
 function updateHud(){
@@ -6517,7 +6589,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence')?CAREER.lion:(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -6527,9 +6599,9 @@ function bindPreviews(){
     const g=el.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
     const R=BUILDS[conf.build].r*.78,m=R*2.5;
     const mem=PREVMEM[key]||{};
-    const my=(key==='shop'||key==='mystic'||key==='smith'||key==='fence')?Math.min(h-m-1,96+m*.6):m;
+    const my=(key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?Math.min(h-m-1,96+m*.6):m;
     PREV.push({key:key,g:g,w:w,h:h,cfg:conf,R:R,m:m,my:my,
-      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith'||key==='fence')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
+      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
       tx:clamp(mem.tx||rnd(m,w-m),m,Math.max(m+1,w-m)),ty:clamp(mem.ty||rnd(my,h-m),my,Math.max(my+1,h-m)),
       ang:mem.ang||0,t:mem.t||Math.random()*9,wait:rnd(.2,1),anim:0,swipeT:rnd(2.5,6)});
   });
@@ -6555,6 +6627,7 @@ function stepPreviews(dt){
     else if(p.key==='mystic')drawMysticScene(g,p);
     else if(p.key==='smith')drawSmithScene(g,p);
     else if(p.key==='fence')drawFenceScene(g,p);
+    else if(p.key==='bookie')drawBookieScene(g,p);
     else{
       g.fillStyle='#0a0a0c';g.fillRect(0,0,p.w,p.h);
       g.fillStyle='#17171c';
@@ -6604,6 +6677,10 @@ function evSettle(L,won){
     CAREER.story.push({k:'weak',html:won?'It walked in at three quarters of its health, and won anyway.':'It walked in at three quarters of its health. Maybe that was the difference.'});
     CAREER.weak=null;
   }
+  if(CAREER.mascot>0){
+    CAREER.mascot--;
+    if(!CAREER.mascot)CAREER.story.push({k:'mascot',html:'That was the last of the five bouts. The mascot deal is over and the Lion Store is back to full price. The sign stays up, though.'});
+  }
 }
 function kingOver(won){
   const L=CAREER.lion;
@@ -6626,10 +6703,11 @@ function survivalOver(){
   showResult('survival');
 }
 function roundOver(){
+  if(G.ctx==='bookie'){bookieOver();return;}
   if(G.ctx==='career'){
     if(!CAREER.champ||!CAREER.lion){showHome();return;}
     const you=G.lions[0],ch=CAREER.champ,L=CAREER.lion;CAREER.trainChance=false;
-    fenceRotate();
+    fenceRotate();bookieRefill();
     L.record.fights++;
     const foeCfg=ch.foes[ch.i];CAREER.story=[];
     if(G.winner===you){
@@ -6745,6 +6823,18 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
     if(won)SFX.champ();
   }
+  else if(kind==='bookie'){
+    const R=CAREER.bkLast||{},b=R.bet,backed=b&&b.side,won=backed&&b.side===R.win;
+    V.textContent=w.name.toUpperCase()+' WINS';V.className='verdict'+(backed?(won?' gold':' blood'):'');
+    M.textContent=(G.method||'attrition')+' \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' \u00b7 '+Math.round(w.hp)+' health left \u00b7 a Bookie fight';
+    P.innerHTML=backed?(won?('<div class="lootCard bkWin"><span class="rico">'+ico('coin')+'</span><div><h5>Your bet came in</h5><p>'+b.stake+' gold on '+esc(R.backed)+
+        ' at \u00d7'+b.odds.toFixed(1)+'. The Bookie counts out <b>'+R.paid+' gold</b>, very slowly. '+esc(CAREER.lion?CAREER.lion.name:'Your lion')+' has '+((CAREER.lion&&CAREER.lion.gold)|0)+' now.</p></div></div>')
+       :('<div class="perkCard neutral"><h5>Your bet is gone</h5><p>'+b.stake+' gold on '+esc(R.backed)+'. The Bookie pockets it with a smile and asks if you fancy another.</p></div>'))
+      :'<div class="perkCard neutral"><h5>Just watching</h5><p>No money down on that one.</p></div>';
+    const more=CAREER.bookie&&CAREER.bookie.left>0;
+    B.innerHTML='<button class="primary" data-act="home" style="white-space:nowrap">'+(more?'Another fight':'The Bookie')+'</button><button data-act="bookieDen" style="white-space:nowrap">Back to the den</button>';
+    if(won)SFX.coin();else SFX.win();
+  }
   else if(kind==='champion'){
     const P2=PERKS.filter(p=>p.k===perk)[0];
     V.textContent='CHAMPION';V.className='verdict gold';
@@ -6832,7 +6922,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   }
   if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death')){
     const STK={rival:['Rivalry','duel'],nem:['A nemesis is born','skull'],avenge:['Nemesis avenged','check'],
-      royal:['The wager pays','crown'],royalL:['The wager is lost','crown'],weak:['The Mystic\u2019s price','flame']};
+      royal:['The wager pays','crown'],royalL:['The wager is lost','crown'],weak:['The Mystic\u2019s price','flame'],mascot:['The mascot deal ends','coin']};
     CAREER.story.forEach(function(st){const K=STK[st.k]||STK.rival;
       P.innerHTML+='<div class="lootCard storyCard '+st.k+'"><span class="rico">'+ico(K[1])+'</span><div><h5>'+K[0]+'</h5><p>'+st.html+'</p></div></div>';
     });
@@ -7090,18 +7180,18 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.4,EVENT_K=['royal','mystic','forest'],AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
 function evRollAfterWin(){
   CAREER.event=null;
   if(Math.random()>=EVENT_RATE)return false;
-  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv);
+  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0));
   CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
   return true;
 }
-function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;}
+function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;CAREER.mascot=0;}
 function evChip(cls,icon,txt){return '<span class="'+cls+'">'+ico(icon)+txt+'</span>';}
 const EVENTS={
   royal:{title:'The Royal Lion',sub:'A visitor from the palace',col:'#ffc233',bg:'rgba(255,194,51,.16)',draw:drawRoyalScene,
@@ -7183,6 +7273,7 @@ function evDoorHTML(){
 function evPillsHTML(){
   let out='';
   if(CAREER.wager)out+='<span class="fxPill royal">'+ico('crown')+'Royal wager: win ×2 gold, lose it all</span>';
+  if(CAREER.mascot>0)out+='<span class="fxPill shop">'+ico('coin')+'Store mascot: 30% off · '+CAREER.mascot+' bout'+(CAREER.mascot>1?'s':'')+' left</span>';
   if(CAREER.weak)out+='<span class="fxPill mystic">'+ico('flame')+'Mystic’s price: next bout at 75% health</span>';
   return out?'<div class="fxPills">'+out+'</div>':'';
 }
@@ -7571,6 +7662,256 @@ function drawForestScene(g,w,h,t,ph,tt){
     }
   });
   evVignette(g,w,h);
+}
+
+/* ---- the fourth event: the Lion Store owner wants your lion as his mascot ---- */
+EVENTS.shop={title:'The Lion Store',sub:'A business proposal',col:'#ff8a5c',bg:'rgba(255,138,92,.16)',draw:drawStoreEvScene,
+  nodes:{
+    start:function(L){
+      return {scene:'arrive',lines:[
+        ['n','The bell over the Lion Store door rings. The red lion in the gold monocle comes round the counter himself, which he never does.'],
+        ['Shopkeeper','There they are! The talk of the pit! I watched that last bout through a crack in the wall. Magnificent.'],
+        ['Shopkeeper','So here is my offer. Be the face of my store: your picture on the sign, your name on every bottle. In return, thirty percent off everything on my counter for your next five bouts. Deal?']],
+        stake:evChip('up','coin','30% off in the Lion Store')+evChip('','belt','Next '+MASCOT.bouts+' bouts'),
+        choices:[{t:'Sign it',go:'accept',yes:1},{t:'No thanks',go:'decline'}]};},
+    accept:function(L){CAREER.mascot=MASCOT.bouts;CAREER.event=null;SHOP.quip='';Store.save();SFX.coin();
+      return {scene:'accept',lines:[
+        ['Shopkeeper','Wonderful! Sign here, and here, and… there. Perfect.'],
+        ['n','Your lion presses a paw to the contract. Somewhere a painter is already mixing its colours for the new sign.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    decline:function(L){CAREER.event=null;Store.save();
+      return {scene:'decline',lines:[
+        ['Shopkeeper','No? Pity. My last mascot was a parrot. It did not end well.'],
+        ['n','He goes back behind the counter and polishes his monocle, a little sadly.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+function drawStoreEvScene(g,w,h,t,ph,tt){
+  g.fillStyle='#1c130d';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=1;
+  for(let y=30;y<h;y+=22){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();
+    for(let x=((y/22|0)%2)*40;x<w;x+=80){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+22);g.stroke();}}
+  const lg=g.createRadialGradient(w/2,40,10,w/2,40,w*.6);lg.addColorStop(0,'rgba(255,200,120,.16)');lg.addColorStop(1,'rgba(255,200,120,0)');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  /* the shelf of bottles */
+  g.fillStyle='#2a1c14';g.fillRect(0,0,w,24);g.fillStyle='#4a3020';g.fillRect(0,20,w,4);
+  const bottles=['#e0584a','#4fd0ff','#8cf24a','#ffc233','#b98cff','#ff8fb3'];
+  for(let i=0;i<Math.floor(w/26);i++){const bx=14+i*26;
+    g.fillStyle=bottles[i%bottles.length];g.globalAlpha=.85;g.beginPath();g.arc(bx,13,5,0,7);g.fill();
+    g.globalAlpha=1;g.fillStyle='rgba(255,255,255,.5)';g.beginPath();g.arc(bx-1.5,11.5,1.4,0,7);g.fill();}
+  /* the counter, pushed to one side; he has come out from behind it */
+  const cx=w/2;
+  g.fillStyle='#6b4428';g.fillRect(cx-150,40,92,20);g.fillStyle='#8a5a36';g.fillRect(cx-150,40,92,5);
+  g.fillStyle='rgba(0,0,0,.35)';g.fillRect(cx-150,60,92,4);
+  for(let i=0;i<4;i++){g.fillStyle=i%2?'#e0a820':'#ffd24a';g.beginPath();g.ellipse(cx-128+i*4,50-i*2.4,7,4,0,0,7);g.fill();}
+  /* the shopkeeper */
+  let kx=cx,ky=86,ka=Math.PI/2,walk=false,anim=false;
+  if(ph==='arrive'){const p=ease(tt/1.6);kx=cx-104+p*104;ky=50+p*36;ka=Math.atan2(36,104)*(1-p)+Math.PI/2*p;walk=p<1;}
+  if(ph==='accept')anim=(tt%1.4)<.15&&tt<3;
+  if(ph==='decline'){const q=Math.min(1,tt/.6);ka=Math.PI/2+q*Math.PI*.75;if(tt>.6){const p=ease((tt-.6)/1.4);kx=cx-p*104;ky=86-p*36;walk=p<1;}}
+  if(ph!=='decline'&&ph!=='arrive')ka=Math.PI/2+Math.sin(t*.9)*.12;
+  const bob=walk?Math.sin(t*10)*1.2:0;
+  paintLion(g,{x:kx,y:ky+bob,R:20,ang:ka,t:t,pelt:0,cols:REDCOLS,mane:0,tail:0,seed:3,scars:[],armor:'none',anim:anim});
+  drawMonocle(g,kx,ky+bob,20,ka,t);
+  /* the contract between them, then signed */
+  const yy=h-44,signed=ph==='accept';
+  const px=cx+(signed?Math.min(1,tt/.8)*0:0),py=(ky+yy)/2+4;
+  if(ph!=='decline'){
+    g.save();g.translate(px,py);g.rotate(-.12);
+    g.fillStyle='#efe3c4';g.fillRect(-15,-11,30,22);g.fillStyle='#d8c9a2';g.fillRect(-15,-11,30,3);g.fillRect(-15,8,30,3);
+    g.strokeStyle='rgba(60,40,20,.5)';g.lineWidth=1;for(let i=0;i<3;i++){g.beginPath();g.moveTo(-10,-4+i*4);g.lineTo(10,-4+i*4);g.stroke();}
+    if(signed){const p=Math.min(1,tt/.9);g.strokeStyle='#b3261e';g.lineWidth=1.4;g.beginPath();
+      for(let i=0;i<=20*p;i++){const x=-9+i*.9,y=7+Math.sin(i*1.3)*1.6;if(i)g.lineTo(x,y);else g.moveTo(x,y);}g.stroke();
+      if(tt>1){g.globalAlpha=Math.min(1,(tt-1)*3);g.fillStyle='#b3261e';g.beginPath();g.arc(9,5,3.4,0,7);g.fill();g.globalAlpha=1;}}
+    g.restore();
+  }
+  /* confetti and coins when it is signed */
+  if(signed&&tt>.9){
+    for(let i=0;i<26;i++){const p=((tt-.9)*.45+i*.038)%1,a=i*2.4;
+      const x=cx+Math.cos(a)*(30+p*120)*.9,y=yy-20+Math.sin(a)*20+p*p*60-60*Math.sin(p*Math.PI);
+      g.globalAlpha=1-p;g.fillStyle=['#ffd24a','#ff8a5c','#4fd0ff','#8cf24a','#fff1cc'][i%5];
+      g.save();g.translate(x,y);g.rotate(t*3+i);g.fillRect(-2.2,-1.2,4.4,2.4);g.restore();}
+    g.globalAlpha=1;
+    const p=Math.min(1,(tt-.9)/.5),s=.6+.4*ease(p)+Math.sin(t*4)*.03;
+    g.save();g.translate(cx+64,yy-30);g.scale(s,s);g.rotate(-.18);
+    g.fillStyle='#ff8a5c';g.beginPath();if(g.roundRect)g.roundRect(-26,-13,52,26,7);else g.rect(-26,-13,52,26);g.fill();
+    g.fillStyle='#241008';g.font='800 15px -apple-system,BlinkMacSystemFont,sans-serif';g.textAlign='center';g.textBaseline='middle';
+    g.fillText('−30%',0,1);g.restore();g.textAlign='start';g.textBaseline='alphabetic';
+  }
+  evYou(g,cx,yy,17,-Math.PI/2,t,false);
+  evVignette(g,w,h);
+}
+
+/* ========== 18. THE BOOKIE ==========
+   A green lion in a flat cap runs fights between two other lions. You see both, back one, and watch.
+   Odds come from how big each lion is (the sims say size is what tells), with a thin edge in your favour,
+   so it pays, but slowly: three fights between each of your championship bouts, and a capped stake. */
+const BOOKIE={fights:3,stakes:[5,10,25],quip:'',
+  hello:['Step up, step up. Pick your lion.','Two lions, one winner, your gold.','Odds are on the board. No refunds.','I never lose. Well. Hardly ever.','Fresh meat tonight. Literally.'],
+  thanks:['Bet’s on. Enjoy the show.','Lovely. Take a seat up front.','Ooh, brave. I like brave.'],
+  won:['Ah. Well. Here’s your gold. Don’t spend it all at once.','Lucky. Very lucky. Come back soon, eh?'],
+  lost:['Better luck next time, friend.','The house thanks you.','Ooh. Unlucky. Another go?'],
+  broke:['No gold, no bet, friend.'],
+  closed:['That’s all the fights till your next bout. Off you go.']};
+const BOOKCOLS={mane:'#2f6b57',body:'#163128',edge:'#6fc2a4',muz:'#c5eadb',plate:'#6fc2a4'};
+function bookieMax(L){return Math.min(100,25+15*(((L&&L.record&&L.record.champs)|0)));}
+function bookieRotate(){
+  const L=CAREER.lion,mk=function(side){
+    const c=randomLion(side);c.scale=1+Math.random()*.4;c.scars=[];
+    const n=(Math.random()*(2+(c.scale-1)*8))|0;for(let q=0;q<n;q++)c.scars.push((Math.random()<.5?1000:0)+((Math.random()*1000)|0));
+    const f=2+((Math.random()*10+(c.scale-1)*25)|0),rate=clamp(.32+(c.scale-1)*1.1+rnd(-.12,.12),.12,.92);
+    c.record={champs:0,wins:Math.round(f*rate),fights:f};
+    return c;};
+  const a=mk('A'),b=mk('B');
+  const pa=1/(1+Math.exp(-3*Math.log(a.scale/b.scale)));
+  const odd=p=>clamp(Math.floor(1.1/p*10)/10,1.2,4.5);
+  CAREER.bookie={a:a,b:b,oa:odd(pa),ob:odd(1-pa),pa:pa,arena:pickOne(['pit','colonnade','monolith','thicket','gates']),
+    left:(CAREER.bookie&&CAREER.bookie.left!=null)?CAREER.bookie.left:BOOKIE.fights,bet:null,n:((CAREER.bookie&&CAREER.bookie.n)|0)+1};
+  delete PREVMEM.bkA;delete PREVMEM.bkB;
+  return CAREER.bookie;
+}
+function bookieCard(){if(!CAREER.bookie||!CAREER.bookie.a)bookieRotate();return CAREER.bookie;}
+/* after each championship bout he has three more fights on */
+function bookieRefill(){const c=bookieCard();c.left=BOOKIE.fights;}
+function bookieLion(key){const c=CAREER.bookie;return c?(key==='bkA'?c.a:c.b):null;}
+function bookieSay(list){BOOKIE.quip=pickOne(list);}
+let BOOKICON=null;
+function bookieIconHTML(){
+  if(BOOKICON===null){
+    try{
+      const c=document.createElement('canvas');c.width=88;c.height=88;const g=c.getContext('2d');
+      g.fillStyle='#0d1714';g.fillRect(0,0,88,88);g.scale(2,2);
+      paintLion(g,{x:22,y:25,R:11,ang:Math.PI/2,t:0,pelt:0,cols:BOOKCOLS,mane:2,tail:0,seed:12,scars:[],armor:'none'});
+      drawFlatCap(g,22,25,11,Math.PI/2,0);
+      BOOKICON=c.toDataURL?c.toDataURL():'';
+    }catch(e){BOOKICON='';}
+  }
+  return BOOKICON?'<img class="shopIco" src="'+BOOKICON+'" alt="">':'<span class="dic">'+ico('coin')+'</span>';
+}
+function drawFlatCap(g,x,y,R,ang,t){
+  g.save();g.translate(x,y);g.rotate(ang);
+  const hx=R*.36;
+  /* the brim, out over the eyes */
+  g.fillStyle='#4a3a28';g.beginPath();g.ellipse(hx+R*.3,0,R*.24,R*.34,0,-Math.PI/2,Math.PI/2);g.fill();
+  /* the crown of the cap, tweed */
+  g.fillStyle='#7a6448';g.strokeStyle='#3a2c1e';g.lineWidth=Math.max(.8,R*.05);
+  g.beginPath();g.ellipse(hx,0,R*.4,R*.37,0,0,7);g.fill();g.stroke();
+  g.strokeStyle='rgba(40,28,16,.45)';g.lineWidth=Math.max(.5,R*.03);
+  for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(hx-R*.3,i*R*.12);g.lineTo(hx+R*.3,i*R*.12);g.stroke();}
+  g.fillStyle='#3a2c1e';g.beginPath();g.arc(hx,0,R*.06,0,7);g.fill();
+  /* a pencil behind one ear */
+  g.strokeStyle='#ffc233';g.lineWidth=Math.max(1,R*.08);g.lineCap='round';
+  g.beginPath();g.moveTo(hx-R*.15,-R*.5);g.lineTo(hx+R*.25,-R*.62);g.stroke();
+  g.fillStyle='#2a2a2a';g.beginPath();g.arc(hx+R*.27,-R*.62,R*.04,0,7);g.fill();
+  g.restore();
+}
+function drawBookieScene(g,p){
+  const w=p.w,h=p.h,t=p.t,c=bookieCard();
+  g.fillStyle='#0f1613';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(255,255,255,.03)';g.lineWidth=1;
+  for(let y=96;y<h;y+=24){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
+  /* a lamp over the desk */
+  const lg=g.createRadialGradient(w/2,40,6,w/2,40,w*.55);lg.addColorStop(0,'rgba(255,214,140,.2)');lg.addColorStop(1,'rgba(255,214,140,0)');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  /* the chalkboard with tonight's odds */
+  const bw=Math.min(150,w*.36),bx=10,by=6,bh=58;
+  g.fillStyle='#5a4128';g.fillRect(bx-3,by-3,bw+6,bh+6);g.fillStyle='#1f2a24';g.fillRect(bx,by,bw,bh);
+  g.fillStyle='rgba(255,255,255,.06)';g.fillRect(bx+6,by+bh-14,bw*.5,3);
+  g.font='600 10px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(235,240,235,.55)';g.fillText('TONIGHT',bx+8,by+14);
+  g.font='600 11px -apple-system,BlinkMacSystemFont,sans-serif';
+  const nm=s=>s.length>11?s.slice(0,10)+'…':s;
+  [[c.a,c.oa],[c.b,c.ob]].forEach(function(q,i){
+    g.fillStyle=liftCol(colsOf(q[0]).mane,.6);g.fillText(nm(q[0].name),bx+8,by+30+i*16);
+    g.fillStyle='#f2efe6';g.textAlign='right';g.fillText('×'+q[1].toFixed(1),bx+bw-8,by+30+i*16);g.textAlign='start';
+  });
+  /* the bookie himself, behind his desk */
+  const kx=w/2+(w>360?20:30),ky=46,kR=20,ka=Math.PI/2+Math.sin(t*.8)*.2;
+  paintLion(g,{x:kx,y:ky,R:kR,ang:ka,t:t,pelt:0,cols:BOOKCOLS,mane:2,tail:0,seed:12,scars:[],armor:'none',anim:(t%4.5)<.18});
+  drawFlatCap(g,kx,ky,kR,ka,t);
+  /* the desk: coins, slips, a ledger */
+  g.fillStyle='#3d2c1c';g.fillRect(8,70,w-16,20);g.fillStyle='#5a4128';g.fillRect(8,70,w-16,5);
+  g.fillStyle='rgba(0,0,0,.35)';g.fillRect(8,90,w-16,4);
+  for(let s=0;s<3;s++)for(let i=0;i<3+s;i++){g.fillStyle=i%2?'#e0a820':'#ffd24a';g.beginPath();g.ellipse(w-60+s*14,82-i*2.4,6,3.4,0,0,7);g.fill();}
+  for(let i=0;i<3;i++){g.save();g.translate(kx-50+i*9,80);g.rotate(-.3+i*.25);g.fillStyle='#efe3c4';g.fillRect(-5,-4,10,8);
+    g.fillStyle='#b3261e';g.fillRect(-3,-1,6,1.2);g.restore();}
+  g.fillStyle='#6b1e1e';g.fillRect(kx+22,74,20,13);g.fillStyle='#efe3c4';g.fillRect(kx+24,75,16,10);
+  /* what he's saying */
+  const say=BOOKIE.quip||BOOKIE.hello[0];
+  g.font='600 12px -apple-system,BlinkMacSystemFont,sans-serif';
+  const maxW=Math.max(80,Math.min(150,w-kx-48)),words=say.split(' '),lines=[];let ln='';
+  words.forEach(function(wd){const tst=ln?ln+' '+wd:wd;if(g.measureText(tst).width>maxW&&ln){lines.push(ln);ln=wd;}else ln=tst;});
+  if(ln)lines.push(ln);
+  const bw2=Math.min(maxW,Math.max.apply(null,lines.map(l=>g.measureText(l).width)))+18,bh2=lines.length*15+12;
+  const bx2=Math.min(kx+26,w-8-bw2),by2=Math.max(4,30-bh2/2);
+  g.fillStyle='rgba(225,245,236,.96)';
+  g.beginPath();if(g.roundRect)g.roundRect(bx2,by2,bw2,bh2,9);else g.rect(bx2,by2,bw2,bh2);g.fill();
+  g.beginPath();g.moveTo(bx2,by2+bh2*.55);g.lineTo(bx2-8,by2+bh2*.7);g.lineTo(bx2+4,by2+bh2*.8);g.fill();
+  g.fillStyle='#10241c';lines.forEach(function(l,i){g.fillText(l,bx2+9,by2+18+i*15);});
+}
+function bookieHTML(L){
+  const c=bookieCard(),gold=L.gold||0,mx=bookieMax(L),bet=c.bet;
+  const stakes=BOOKIE.stakes.filter(s=>s<=mx).concat(mx>25?[mx]:[]);
+  if(stakes.indexOf(UI.bkStake)<0)UI.bkStake=stakes[1]||stakes[0];
+  const side=function(k){
+    const f=c[k],o=c['o'+k],sel=bet?bet.side===k:UI.bkSide===k,C=colsOf(f);
+    return '<button class="bkSide'+(sel?' on':'')+'" data-act="bkPick" data-s="'+k+'"'+((bet||!c.left)?' disabled':'')+'>'+
+      '<canvas class="prevCv bkCv" data-prev="bk'+k.toUpperCase()+'"></canvas>'+
+      '<b style="color:'+liftCol(C.mane,.55)+'">'+esc(f.name)+'</b>'+
+      '<small><b>'+recWL(f)+'</b> · '+BUILDS[f.build].name+' · '+WEAPONS[f.weapon].name+'</small>'+
+      '<small>'+BRAINS[f.brain].name+' mind · '+(f.scale>1.27?'big for its age':(f.scale<1.13?'on the small side':'average size'))+'</small>'+
+      '<span class="odds">×'+o.toFixed(1)+'</span></button>';
+  };
+  const pick=bet?bet.side:UI.bkSide,odds=pick?c['o'+pick]:0,st=bet?bet.stake:UI.bkStake;
+  let body;
+  if(!c.left&&!bet){
+    body='<div class="card pad"><p class="muted" style="margin:0">That’s all the fights he’s running for now. '+
+      'He puts three more on after your next championship bout.</p></div>';
+  } else {
+    body='<div class="hd sub2"><h2>Tonight’s fight</h2><span>'+(bet?'Your money is down.':c.left+' of '+BOOKIE.fights+' fights left before your next bout')+
+      ' · '+ARENAS[c.arena].name+'</span></div>'+
+      '<div class="bkCard">'+side('a')+'<div class="bkVs">VS</div>'+side('b')+'</div>'+
+      (bet?'<div class="bkSlip">'+ico('coin')+'<span><b>'+bet.stake+' gold on '+esc(c[bet.side].name)+' at ×'+bet.odds.toFixed(1)+'</b>'+
+        '<small>Pays '+Math.round(bet.stake*bet.odds)+' gold if it wins. Go and watch.</small></span></div>'
+      :'<div class="bkStake"><span>Stake</span>'+stakes.map(function(s){return '<button class="'+(s===st?'on':'')+(s>gold?' poor':'')+'" data-act="bkStake" data-v="'+s+'">'+
+          (s===mx&&mx>25?'Max '+s:s)+'</button>';}).join('')+'</div>'+
+        '<div class="bkPay">'+(pick?('Back <b>'+esc(c[pick].name)+'</b> with '+st+' gold: it pays <b class="g">'+Math.round(st*odds)+' gold</b> back if it wins.')
+          :'Tap a lion to back it.')+'</div>'+
+        '<div class="card"><button class="row" data-act="bookieWatch"><span class="rico">'+ico('play')+'</span><span class="v">Just watch'+
+        '<small>No bet. Still uses up one of the fights.</small></span><span class="go">›</span></button></div>');
+  }
+  return '<button class="back" data-act="back">‹ Back to the den</button>'+
+    '<div class="hd"><h2>The Bookie</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b>. Stakes up to '+mx+' a fight.</span></div>'+
+    '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="bookie"></canvas></div>'+body+
+    '<p class="muted" style="padding:0 2px 8px">The odds are his best guess, mostly from how big each lion is. Bigger usually wins. Usually. '+
+    (L.record&&L.record.bets?('Your book: '+(L.record.betW|0)+' won, '+((L.record.bets|0)-(L.record.betW|0))+' lost, '+((L.record.betNet|0)>=0?'+':'')+(L.record.betNet|0)+' gold overall.'):'')+'</p>';
+}
+function bookieGo(watchOnly){
+  const L=CAREER.lion,c=bookieCard();if(!L||!CAREER.locked)return;
+  if(!c.bet){
+    if(!c.left){bookieSay(BOOKIE.closed);refresh();return;}
+    if(!watchOnly){
+      const k=UI.bkSide,st=UI.bkStake|0;
+      if(k!=='a'&&k!=='b'){toast('Pick a lion to back first');return;}
+      if((L.gold||0)<st){bookieSay(BOOKIE.broke);toast('You need '+(st-(L.gold||0))+' more gold');refresh();return;}
+      L.gold-=st;c.bet={side:k,stake:st,odds:c['o'+k]};SFX.coin();bookieSay(BOOKIE.thanks);
+    } else c.bet={side:null,stake:0,odds:0};
+    c.left--;
+  }
+  Store.save();SFX.unlock();startFight('bookie');
+}
+function bookieOver(){
+  const L=CAREER.lion,c=CAREER.bookie,bet=c&&c.bet,ws=G.winner&&G.winner.side==='A'?'a':'b';
+  const res={win:ws,bet:bet,paid:0,name:G.winner?G.winner.name:'',backed:bet&&bet.side&&c?c[bet.side].name:''};
+  if(L&&bet&&bet.side){
+    const rec=L.record||(L.record={champs:0,wins:0,fights:0});
+    rec.bets=(rec.bets|0)+1;
+    if(bet.side===ws){res.paid=Math.round(bet.stake*bet.odds);L.gold=(L.gold||0)+res.paid;rec.betW=(rec.betW|0)+1;rec.betNet=(rec.betNet|0)+res.paid-bet.stake;bookieSay(BOOKIE.won);}
+    else{rec.betNet=(rec.betNet|0)-bet.stake;bookieSay(BOOKIE.lost);}
+  }
+  CAREER.bkLast=res;
+  if(c){const left=c.left;bookieRotate();CAREER.bookie.left=left;}
+  UI.bkSide=null;
+  Store.save();
+  showResult('bookie');
 }
 
 /* ========== BOOT ========== */
