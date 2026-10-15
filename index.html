@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -30,7 +30,7 @@
   --shadow:0 4px 24px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{height:100%;overscroll-behavior:none}
+html{height:100%;overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{min-height:100%;overscroll-behavior:none;align-items:flex-start}
 body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.5;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;justify-content:center;
@@ -897,8 +897,8 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .bSec h4{font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);font-weight:700;margin:0 2px 8px}
 .bSec h4 small{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px;font-size:12.5px}
 .bNote{display:block;color:var(--t2);font-size:13px;margin:8px 2px 0;line-height:1.4}
-.bSw{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-.bSw button{aspect-ratio:1;border-radius:50%;padding:4px;box-shadow:inset 0 0 0 2px var(--s3);transition:transform .12s}
+.bSw{display:flex;flex-wrap:wrap;gap:8px 9px}
+.bSw button{width:42px;height:42px;flex:none;border-radius:50%;padding:4px;box-shadow:inset 0 0 0 2px var(--s3);transition:transform .12s;touch-action:manipulation}
 .bSw button:active{transform:scale(.9)}
 .bSw button i{display:block;width:100%;height:100%;border-radius:50%}
 .bSw button.on{box-shadow:inset 0 0 0 3px var(--amber)}
@@ -919,8 +919,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .bTile.wide{flex-direction:row;align-items:flex-start;gap:9px;padding:10px 9px;text-align:left}
 .bTx{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
 .bTx b{font-size:13.5px;white-space:normal;line-height:1.15}
-.bIco{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--s3);color:var(--amber);flex:none}
-.bIco .ico{width:20px;height:20px}
+.bIco{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--amber);flex:none;margin:0 auto}
+.bIco .ico{width:20px;height:20px;display:block;margin:0;flex:none;vertical-align:0}
+.bTile.wide .bIco,.bTile.row .bIco{margin:0}
 .bIco.ranged{color:#7cc2ff}.bIco.pas{color:#5ee6a8}
 .bTile.on .bIco{background:rgba(0,0,0,.35)}
 .bTile.row{flex-direction:row;gap:12px;padding:10px 12px;text-align:left;align-items:center}
@@ -8518,6 +8519,11 @@ function drawRobScene(g,w,h,t,ph,tt){
   evVignette(g,w,h);
 }
 
+/* ---- no pinch-zoom or double-tap zoom: this is a game, not a web page ---- */
+if(typeof document!=='undefined'&&document.addEventListener){
+  ['gesturestart','gesturechange','gestureend'].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault();},{passive:false});});
+  document.addEventListener('touchmove',function(e){if(e.touches&&e.touches.length>1)e.preventDefault();},{passive:false});
+}
 /* ========== BOOT ========== */
 Store.load().then(function(){refresh();fitCanvas();},function(){refresh();fitCanvas();});
 ['A','B','A2','B2'].forEach(function(k){if(cfg[k]&&!cfg[k].born)cfg[k].born=Date.now();});
