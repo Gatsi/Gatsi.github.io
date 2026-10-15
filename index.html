@@ -828,6 +828,10 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .storyCard.weak h5,.storyCard.weak .rico{color:#c9adff}
 .lootCard.evTease{background:rgba(255,194,51,.08);border-color:rgba(255,194,51,.35)}
 .lootCard.evTease h5,.lootCard.evTease .rico{color:var(--gold)}
+.lootCard.rookieCard{background:rgba(232,194,122,.08);border-color:rgba(232,194,122,.35)}
+.lootCard.rookieCard h5,.lootCard.rookieCard .rico{color:#e8c27a}
+.rkLine{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;color:#e8c27a}
+.rkLine .ico{width:14px;height:14px;flex:none}
 .lootCard.forestCard{background:rgba(155,212,106,.08);border-color:rgba(155,212,106,.35)}
 .lootCard.forestCard h5,.lootCard.forestCard .rico{color:#9bd46a}
 /* ---------- the bookie ---------- */
@@ -1001,13 +1005,14 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
       <h6>Losing a bout</h6>
+      <p><b>Rookie championships.</b> Your first two championships are kinder: the opponents start out smaller than your lion and build up over the five bouts, and each run comes with <b>one second chance</b> (lose a bout and Old Lion patches your lion up for a rematch instead of the run ending). Before its first belt, a lion <b>can’t die</b>; before its second, the chance is halved. After that the climb is gradual rather than a cliff: opponents in championships 3 to 6 are still a little short of full strength, a bit less each time, and from the seventh on they are at full strength and slowly getting bigger.</p>
       <p>When your lion loses, it has a <b>20% chance of dying there and then</b>. Four times in five it gets dragged out alive, carrying the loss, and the championship run is over. The fifth time it does not get up, and it is gone permanently — its record goes to the hall of fame and you build a new lion.</p>
       <h6>Medallions</h6>
       <p>Each belt grants one random medallion, each with its own emblem: Ironheart (+9% health), Swiftpaw (+7% speed), Keen Fang (+9% damage), Scarhide (+6 armour), Quickened (−9% ability cooldowns), Ember Blood (heals 1 a second) or Loose Shoulder (−8% attack cooldown). They stack across belts.</p>
       <h6>Training</h6>
       <p>After every championship win there is a 35% chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
       <h6>Events</h6>
-      <p>After a championship win, with another bout still to come, there is a 20% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are five. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. The <b>Lion Store</b> owner wants your lion as his mascot: sign and everything in his store is 30% off for your next five bouts. <b>Old Lion</b> invites you into his hut: 50 gold for a lesson, and you pick the stat to train, for good. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). Say no to any of them and nothing happens.</p>
+      <p>After a championship win, with another bout still to come, there is a 20% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are six. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. The <b>Lion Store</b> owner wants your lion as his mascot: sign and everything in his store is 30% off for your next five bouts. Sometimes you get <b>robbed</b>: four hyenas under the stands want 10% of your gold. Pay up, or fight them off and keep it, with a 40% chance your lion comes away with a <b>cut eye</b>, a scar straight through one eye that it wears for good. <b>Old Lion</b> invites you into his hut: 50 gold for a lesson, and you pick the stat to train, for good. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). Say no to any of them and nothing happens.</p>
       <h6>The Bookie</h6>
       <p>A green lion in a flat cap runs fights between two other lions, and takes bets. You see both lions (record, frame, weapon, mind and size) and his odds, back one, and watch the fight. Win and you get your stake times the odds. The odds come mostly from size, and bigger usually wins. They lean very slightly your way, so over time it pays, but slowly: he runs <b>three fights between each of your championship bouts</b>, and the most you can stake is 25 gold, plus 15 for each belt your lion holds (up to 100). You can also just watch for free. Your lion keeps a running tally of its bets.</p>
       <h6>Loading a lion into the den</h6>
@@ -1798,8 +1803,8 @@ function derive(c,scale){
   const B=BUILDS[c.build],A=ARMORS[c.armor],W=WEAPONS[c.weapon],P=perkTotals(c);
   const v=ivFactor(c.iv),tm=traitMods(c);
   const hog=isHog(c),gab=isGabName(c);
-  const hpS=scale*(hog?2.4:1)*(gab?2.6:1);
-  const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1)*(gab?1.55:1);
+  const hpS=scale*(hog?2.4:1)*(gab?2.6:1)*(c.weak||1);
+  const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1)*(gab?1.55:1)*(c.weak||1);
   const TRn=trainOf(c);
   const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp);
   const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
@@ -1855,7 +1860,7 @@ function decodeLion(str){
       abil:(a[4]||'').split('.').filter(x=>x!=='').map(i=>ABK[+i]).filter(Boolean).slice(0,2),
       brain:BRK[+a[5]],perks:(a[6]||'').split('.').filter(x=>x!=='').map(i=>PK[+i]).filter(Boolean),
       pelt:clamp(+a[8]||0,0,PELTS.length-1),iv:clamp(+a[9]||5,1,10),mane:clamp(+a[10]||0,0,MANES.length-1),
-      scars:(a[11]||'').split('.').filter(x=>x!=='').map(Number).filter(v=>v>=0&&v<2000).slice(0,8),
+      scars:(a[11]||'').split('.').filter(x=>x!=='').map(Number).filter(v=>(v>=0&&v<2000)||v===2000||v===2001).slice(0,8),
       traits:(a[12]||'').split('.').filter(x=>x!=='').map(i=>TK[+i]).filter(Boolean).slice(0,2),
       tail:clamp(+a[13]||0,0,TAILS.length-1)};
     if(!c.build||!c.armor||!c.weapon||!c.brain||!c.abil.length)return null;
@@ -2692,6 +2697,7 @@ function badgesFor(L,rec){
   if(wlvOf(L))out.push('<span class="badge fin" style="color:'+finCol(L)+'">'+ico('hammer')+FINISH[wlvOf(L)].name+' Lv'+wlvOf(L)+'</span>');
   if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul</span>');
   if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul</span>');
+  if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
   if(CAREER.champ)out.push('<span class="badge amber">In a run</span>');
@@ -2767,7 +2773,9 @@ function runStripHTML(L,ch){
   return '<div class="runStrip"><div class="k">Championship '+ch.n+' \u00b7 bout '+Math.min(ch.i+1,5)+' of '+ch.foes.length+'</div>'+
     '<div class="nx">Next: <span style="color:'+liftCol(colsOf(f).mane,.45)+'">'+esc(f.name)+'</span> '+beltBadge(f)+rivalBadge(f)+
     ' <small>'+recWL(f)+' \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+'</small></div>'+
-    '<div class="dots">'+dots+ico('belt')+'</div></div>';
+    '<div class="dots">'+dots+ico('belt')+'</div>'+
+    (ch.rk?'<div class="rkLine">'+ico('help')+'Rookie championship \u00b7 '+(ch.retry?'1 second chance left':'second chance used')+' \u00b7 '+
+      (ROOKIE[ch.rk-1].death?'half the risk of dying':'can\u2019t die')+'</div>':'')+'</div>';
 }
 function bookieDoorLine(){
   const c=bookieCard();
@@ -3955,7 +3963,7 @@ function openDev(){
     '<div class="grp">Start an event now</div><div class="devGrid">'+
       btn('ev_royal','crown','Royal Lion','The wager')+btn('ev_mystic','flame','Mystic Lion','Skulls for health')+
       btn('ev_forest','crate','Crate in the trees','Item, then hyenas')+btn('ev_shop','coin','Lion Store','Mascot deal')+
-      btn('ev_hut','help','Old Lion’s Hut','A lesson')+btn('ev_rand','dice','Random event','Any of the five')+'</div>';
+      btn('ev_hut','help','Old Lion’s Hut','A lesson')+btn('ev_rob','scar','Robbed!','Pay or fight')+btn('ev_rand','dice','Random event','Any of the six')+'</div>';
   body+='<div class="grp">Developer tools</div><div class="devGrid">'+btn('hide','check','Hide these tools','Tap Lion Sim 5× to bring them back')+'</div>';
   $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Developer tools</h3><button data-act="closeSheet">'+ico('check')+'Done</button></div>'+
     '<div class="sheetBody devBody">'+body+'</div>';
@@ -3983,6 +3991,7 @@ function devDo(k){
   else if(k.indexOf('ev_')===0){
     let e=k.slice(3);if(e==='rand')e=pickOne(EVENT_K);
     if(e==='hut'&&(L.gold||0)<HUT.price)L.gold=HUT.price;
+    if(e==='rob'&&(L.gold||0)<10)L.gold=50;
     if(!CAREER.champ)startChampionship();
     CAREER.event={k:e};closeSheet();MATCH.mode='career';UI.view='home';
     Store.save();refresh();enterEvent();return;
@@ -4059,7 +4068,7 @@ function rivalsAll(){if(!Array.isArray(CAREER.rivals))CAREER.rivals=[];return CA
 function rivalsActive(){return rivalsAll().filter(x=>!x.avenged);}
 function rivalById(id){return id?rivalsAll().filter(x=>x.id===id)[0]:null;}
 function rivalOf(f){return f&&f.rivalId?rivalById(f.rivalId):null;}
-function rivalSnap(f){const c=JSON.parse(JSON.stringify(f));delete c.rivalId;delete c.side;delete c.epithet;return c;}
+function rivalSnap(f){const c=JSON.parse(JSON.stringify(f));delete c.rivalId;delete c.side;delete c.epithet;delete c.weak;return c;}
 function rivalAdd(f,nem){
   let R=rivalOf(f);
   if(!R){
@@ -4168,12 +4177,24 @@ function recWL(c){
   const R=c&&c.record,f=R?(R.fights|0):0,w=R?(R.wins|0):0;
   return f?(w+'\u2013'+Math.max(0,f-w)):'Debut';
 }
+/* the rookie curve: the first two championships are kinder.
+   Smaller opponents that build up over the five bouts, one second chance per run (a loss doesn't end it),
+   and a lion can't die before its first belt (half the usual chance before its second). */
+const ROOKIE=[{base:.5,step:.04,retry:1,death:0},{base:.6,step:.04,retry:1,death:.5}];
+/* after the rookies: a gentle climb instead of a cliff. Championship 3 uses weak[0], 4 uses weak[1] and so on;
+   past the end of the list opponents are full strength and then start growing. */
+const VETERAN={weak:[.62,.72,.78,.88],step:.04};
+function rookieTier(L){return ROOKIE[(L&&L.record&&L.record.champs)|0]||null;}
 function startChampionship(){
   const L=CAREER.lion,n=L.record.champs+1;
   const foes=[];
   for(let i=0;i<5;i++){
     const f=randomLion('B');
-    f.scale=1+i*.045+(n-1)*.075;
+    const RK=ROOKIE[n-1];
+    const VW=RK?null:VETERAN.weak[n-3];
+    f.scale=RK?.92+i*.02:1+i*.03+Math.max(0,n-2-VETERAN.weak.length)*.05;
+    if(RK)f.weak=+(RK.base+i*RK.step).toFixed(3);
+    else if(VW!=null)f.weak=+(VW+i*VETERAN.step).toFixed(3);
     f.scars=[];
     const marks=(Math.random()*(i+2))|0;
     for(let q=0;q<marks;q++)f.scars.push((Math.random()<.5?1000:0)+((Math.random()*1000)|0));
@@ -4190,7 +4211,8 @@ function startChampionship(){
     last.epithet='the belt holder';
   }
   rivalsInto(foes,n,L);
-  CAREER.champ={n:n,i:0,foes:foes};
+  const RK0=ROOKIE[n-1];
+  CAREER.champ={n:n,i:0,foes:foes,rk:RK0?n:0,retry:RK0?RK0.retry:0};
   refresh();
 }
 function retireLion(){
@@ -6201,7 +6223,15 @@ function drawScars(g,C,R,lunge,list){
     const v=list[i]|0, face=v>=1000, sd=v%1000;
     const r1=maneRand(1,sd),r2=maneRand(2,sd),r3=maneRand(3,sd),r4=maneRand(4,sd);
     g.save();
-    if(face){
+    if(v===2000||v===2001){
+      const s=v===2000?-1:1,ex=R*.68+lunge,ey=s*R*.17;
+      g.fillStyle='rgba(214,220,224,.92)';g.beginPath();g.arc(ex,ey,R*.1,0,7);g.fill();
+      g.lineCap='round';
+      g.strokeStyle=dark;g.lineWidth=Math.max(1.7,R*.1);
+      g.beginPath();g.moveTo(ex-R*.13,ey-s*R*.24);g.lineTo(ex+R*.1,ey+s*R*.22);g.stroke();
+      g.strokeStyle=col;g.lineWidth=Math.max(1,R*.055);
+      g.beginPath();g.moveTo(ex-R*.13,ey-s*R*.24);g.lineTo(ex+R*.1,ey+s*R*.22);g.stroke();
+    } else if(face){
       g.translate(R*.42+lunge,0);
       g.rotate(-1.0+r1*2.0);
       const off=(r2-.5)*R*.38, len=R*(.30+r3*.18);
@@ -6826,7 +6856,16 @@ function roundOver(){
       const killer=G.winner.name,boutN=ch.i+1,champN=ch.n;
       L.record.losses=(L.record.losses||0)+1;
       evSettle(L,false);
-      let fate=Math.random()<deathChanceFor(L)&&!DEV.immortal;
+      if(ch.retry>0){
+        ch.retry--;
+        rivalAfterBout(foeCfg,false,false,you,L.name);
+        const face=Math.random()<.5;L.scars=L.scars||[];L.scars.push((face?1000:0)+((Math.random()*1000)|0));
+        Store.save();
+        showResult('retry',null,null,killer,boutN,champN,face?'face':'body');
+        return;
+      }
+      const RKd=ch.rk?ROOKIE[ch.rk-1]:null;
+      let fate=Math.random()<deathChanceFor(L)*(RKd?RKd.death:1)&&!DEV.immortal;
       CAREER.saved=false;
       if(fate&&invCount(L,'halo')){invTake(L,'halo');fate=false;CAREER.saved=true;}
       rivalAfterBout(foeCfg,false,fate,you,L.name);
@@ -6940,6 +6979,15 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
     SFX.champ();
   }
+  else if(kind==='retry'){
+    V.textContent='KNOCKED DOWN';V.className='verdict';
+    M.textContent='beaten by '+killer+' \u00b7 bout '+boutN+' of championship '+champN+' \u00b7 the run goes on';
+    P.innerHTML='<div class="lootCard rookieCard"><span class="rico">'+ico('help')+'</span><div><h5>Old Lion\u2019s second chance</h5><p>'+
+      'Old Lion drags '+esc(CAREER.lion.name)+' out of the sand, slaps a poultice on it and shoves it back towards the gate. '+
+      '\u201cAgain. And keep your guard up this time.\u201d The run is still alive: bout '+boutN+', against '+esc(killer)+' again. '+
+      'It keeps '+(where==='face'?'a new scar across its face':'a new scar down its side')+'. Rookie championships give you one of these each.</p></div></div>';
+    B.innerHTML='<button class="primary" data-act="again">Rematch</button><button data-act="home">Back to the den</button>';
+  }
   else if(kind==='survived'){
     V.textContent=CAREER.lion.name.toUpperCase()+' IS DRAGGED OUT';V.className='verdict';
     M.textContent='beaten by '+killer+' · bout '+boutN+' of championship '+champN+' · it lived';
@@ -7016,7 +7064,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       '<p>That lion is gone for good. Its record stands on the home screen. Roll another when you are ready.</p></div>';
     B.innerHTML='<button class="primary" data-act="home">Enter the hall</button>';
   }
-  if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death')){
+  if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death'||kind==='retry')){
     const STK={rival:['Rivalry','duel'],nem:['A nemesis is born','skull'],avenge:['Nemesis avenged','check'],
       royal:['The wager pays','crown'],royalL:['The wager is lost','crown'],weak:['The Mystic\u2019s price','flame'],mascot:['The mascot deal ends','coin']};
     CAREER.story.forEach(function(st){const K=STK[st.k]||STK.rival;
@@ -7276,14 +7324,14 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
 function evRollAfterWin(){
   CAREER.event=null;
   if(Math.random()>=EVENT_RATE)return false;
-  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price));
+  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price)&&!(k==='rob'&&((CAREER.lion&&CAREER.lion.gold)|0)<10));
   CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
   return true;
 }
@@ -8133,6 +8181,85 @@ function drawHutScene(g,w,h,t,ph,tt){
     if(tt<.6){g.strokeStyle='rgba(94,230,168,'+(.6*(1-tt/.6))+')';g.lineWidth=2.5;g.beginPath();g.arc(cx,py,18+tt*60,0,7);g.stroke();}
   }
   evYou(g,cx,py+(walk?Math.sin(t*10):0),17,ya,t,yanim);
+  evVignette(g,w,h);
+}
+
+/* ---- the sixth event: robbed. Hyenas want 10% of your gold. Pay, or fight: 40% chance of a cut eye ---- */
+const ROB={cut:.1,scar:.4};
+function cutEyes(c){return (c&&c.scars||[]).filter(v=>v===2000||v===2001).length;}
+function robTake(L){const g=L.gold||0;return g?Math.max(1,Math.ceil(g*ROB.cut)):0;}
+EVENTS.rob={title:'Robbed!',sub:'A shortcut under the stands',col:'#ffb340',bg:'rgba(255,179,64,.16)',draw:drawRobScene,
+  nodes:{
+    start:function(L){const x=robTake(L);
+      return {scene:'arrive',lines:[
+        ['n','After the fight, '+L.name+' cuts back to the den through the dark under the stands. Something giggles.'],
+        ['n','Hyenas. Four of them, out of the shadows, all teeth, and they have your lion boxed in.'],
+        ['Hyena','Nice win tonight, big cat. Nice purse, too. We’ll take a cut. Ten percent. Call it a fee.']],
+        stake:evChip('dn','coin','Pay: −'+x+' gold (10%)')+evChip('dn','scar','Fight: 40% chance of a cut eye'),
+        choices:[{t:'Pay '+x+' gold',go:'pay'},{t:'Fight them',go:'brawl',yes:1}]};},
+    pay:function(L){const x=Math.min(L.gold||0,robTake(L));L.gold=(L.gold||0)-x;CAREER.event=null;Store.save();SFX.coin();
+      return {scene:'pay',lines:[
+        ['Hyena','Pleasure doing business. Hehehe.'],
+        ['n','They melt back into the dark with '+x+' gold. '+L.name+' walks home lighter, but without a mark on it.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    brawl:function(L){
+      const hurt=Math.random()<ROB.scar;EV.robHurt=hurt;CAREER.event=null;
+      if(hurt){
+        L.scars=L.scars||[];
+        const have=L.scars.filter(v=>v===2000||v===2001);
+        const code=have.indexOf(2000)<0?2000:(have.indexOf(2001)<0?2001:-1);
+        if(code>=0)L.scars.unshift(code);else L.scars.push(1000+((Math.random()*1000)|0));
+        delete PREVMEM.career;
+      }
+      Store.save();SFX.roar();
+      return {scene:'fight',lines:[
+        ['n',L.name+' goes straight for the biggest one. Claws, teeth, dust everywhere.'],
+        hurt?['n','They scatter, yelping, and the gold stays put. But one of them rakes a claw across '+L.name+'’s face on the way out. It will wear a cut eye from now on: a scar straight through one eye, for good.']
+            :['n','They scatter into the dark, yelping. Not a scratch on it, and the gold stays where it is.'],
+        ['Hyena',hurt?'Worth it? Hehehe. Every time you look in a puddle, big cat.':'Okay, okay! We were only joking! Hehe… heh.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+function drawRobScene(g,w,h,t,ph,tt){
+  const cx=w/2,cy=h*.56;
+  g.fillStyle='#110d0a';g.fillRect(0,0,w,h);
+  /* beams of the stands overhead, and the dust in the lamp light */
+  const lx=w*.2,fl=.8+.2*Math.sin(t*5)+.08*Math.sin(t*17);
+  const lg=g.createRadialGradient(lx,10,2,lx,10,w*.7*fl);lg.addColorStop(0,'rgba(255,190,100,.28)');lg.addColorStop(1,'rgba(255,190,100,0)');
+  g.fillStyle=lg;g.fillRect(0,0,w,h);
+  g.fillStyle='rgba(0,0,0,.35)';for(let x=-40;x<w;x+=64){g.save();g.translate(x,0);g.transform(1,0,.55,1,0,0);g.fillRect(0,0,16,h);g.restore();}
+  g.fillStyle='#2b2118';for(let x=-30;x<w;x+=64){g.save();g.translate(x,0);g.transform(1,0,.35,1,0,0);g.fillRect(0,0,12,22);g.restore();}
+  g.fillStyle='#3a2c1e';g.fillRect(0,18,w,5);
+  g.fillStyle='#ffcf7a';g.beginPath();g.arc(lx,10,3*fl,0,7);g.fill();
+  for(let i=0;i<10;i++){const p=(t*.07+i*.1)%1;g.globalAlpha=.3*(1-Math.abs(p-.5)*2);g.fillStyle='#e8d2a8';g.beginPath();g.arc(lx+10+((i*41)%(w-40)),26+p*(h-30),1,0,7);g.fill();}
+  g.globalAlpha=1;
+  /* litter */
+  g.fillStyle='rgba(120,100,70,.35)';for(let i=0;i<24;i++){g.fillRect((i*97.3)%w,40+((i*53.1)%(h-50)),3,1.5);}
+  /* your lion, in the middle of it */
+  let ya=-Math.PI/2+Math.sin(t*1.3)*.25,yanim=false,jx=0,jy=0;
+  if(ph==='fight'){const s=tt<2.4?1:0;ya=-Math.PI/2+tt*5.5*s+Math.sin(t*2)*.2;yanim=s&&(t*4%1)<.25;jx=s?Math.sin(t*37)*2:0;jy=s?Math.cos(t*29)*2:0;}
+  /* the hyenas: out of the dark, round your lion, then off again */
+  const A=[-2.4,-.75,.75,2.4];
+  A.forEach(function(a0,i){
+    let r=1,alpha=1,ang;
+    if(ph==='arrive')r=1.9-ease((tt-.3-i*.25)/1.2)*.9;
+    if(ph==='pay'){const p=ease((tt-.8)/1.6);r=1+p*1.4;alpha=1-p;}
+    if(ph==='fight'){if(tt<2.4)r=.8+.2*Math.sin(t*9+i*1.7);else{const p=ease((tt-2.4)/1.2);r=1+p*1.6;alpha=1-p;}}
+    const a=a0+Math.sin(t*.7+i)*.12,hx=cx+jx+Math.cos(a)*78*r,hy=cy+jy+Math.sin(a)*56*r;
+    ang=Math.atan2(cy-hy,cx-hx);if((ph==='pay'&&tt>.8)||(ph==='fight'&&tt>2.4))ang+=Math.PI;
+    if(alpha<=0)return;
+    g.globalAlpha=Math.max(0,Math.min(1,alpha));
+    paintHyena(g,hx,hy,12,ang,t+i,(ph==='fight'&&tt<2.4&&((t*3+i*.3)%1)<.3)||((t*1.3+i)%3)<.15);
+    g.globalAlpha=1;
+  });
+  /* dust, and the claw that caught it */
+  if(ph==='fight'&&tt<2.6){
+    for(let i=0;i<16;i++){const p=(t*.9+i/16)%1,a=i*2.4+t;g.globalAlpha=.4*(1-p);g.fillStyle='#a08a66';
+      g.beginPath();g.arc(cx+Math.cos(a)*(18+p*40),cy+Math.sin(a)*(14+p*28),3+p*6,0,7);g.fill();}
+    g.globalAlpha=1;
+    if(EV.robHurt&&tt>1.3&&tt<1.9){const p=(tt-1.3)/.6;g.strokeStyle='rgba(255,90,77,'+(1-p)+')';g.lineWidth=3;g.lineCap='round';
+      for(let k=0;k<3;k++){g.beginPath();g.moveTo(cx-14+k*6,cy-22-k*2);g.lineTo(cx+6+k*6,cy-4-k*2);g.stroke();}}
+  }
+  evYou(g,cx+jx,cy+jy,17,ya,t,yanim);
   evVignette(g,w,h);
 }
 
