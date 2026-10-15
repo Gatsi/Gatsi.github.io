@@ -821,6 +821,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .mascotBar em{margin-left:auto;font-style:normal;font-weight:700;font-size:17px;color:#ff9d78}
 .price.off{color:#ff9d78}
 .price s{color:var(--t3);font-size:.85em;margin-right:5px;text-decoration-thickness:1.5px}
+.fxPill.tonic{background:rgba(255,60,60,.1);color:#ff7a6e;border:1px solid rgba(255,60,60,.34)}
+.storyCard.tonic{background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.35)}
+.storyCard.tonic h5,.storyCard.tonic .rico{color:#ff7a6e}
 .fxPill.cub{background:rgba(255,179,138,.1);color:#ffc4a3;border:1px solid rgba(255,179,138,.32)}
 .storyCard.salts{background:rgba(159,232,255,.08);border-color:rgba(159,232,255,.35)}
 .storyCard.salts h5,.storyCard.salts .rico{color:#9fe8ff}
@@ -1112,7 +1115,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Career</h6>
       <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them (unless you have made a deal with the Mystic Lion), so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion. Very rarely (about one opponent in fifty) a lion you face carries a <b>bound soul</b>, divine or demonic, with the glowing eyes, the aura and +10% to everything; the den and the gate intro tell you when one is next.</p>
-      <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
+      <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. a <b>Bloodlust Tonic</b> (30 gold, drink it from the bag) makes the next championship bout +20% damage but −15% health; <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
       <h6>Gold and the Lion Store</h6>
       <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
@@ -1484,11 +1487,11 @@ const Store={
       if(d.lion){CAREER.lion=d.lion;CAREER.locked=(d.locked!==false);CAREER.champ=d.champ||null;}
       if(d.fence&&d.fence.deals)CAREER.fence=d.fence;
       if(Array.isArray(d.rivals))CAREER.rivals=d.rivals;
-      CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;CAREER.mascot=d.mascot|0;CAREER.cub=d.cub||null;if(d.bookie&&d.bookie.a)CAREER.bookie=d.bookie;
+      CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;CAREER.mascot=d.mascot|0;CAREER.cub=d.cub||null;CAREER.tonic=d.tonic|0;if(d.bookie&&d.bookie.a)CAREER.bookie=d.bookie;
       }}catch(e){}
   },
   async save(){
-    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,bookie:CAREER.bookie||null,
+    try{await Store.put(JSON.stringify({hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,tonic:CAREER.tonic|0,bookie:CAREER.bookie||null,
       tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null}));}catch(e){}
   }
 };
@@ -2086,6 +2089,7 @@ const ICONS={
   coin:'<circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="3"/>',
   scout:'<path d="M2.4 4.2 6 2.8l4 1.4 3.6-1.4v9l-3.6 1.4-4-1.4-3.6 1.4z"/><path d="M4.2 10.2c1.2-.4 1.8-1.4 2.4-2.4s1.4-1.6 2.8-1.6" stroke-dasharray="1.1 1.3"/><path d="M10.5 4.9l1.7 1.7M12.2 4.9l-1.7 1.7"/>',
   salts:'<rect x="5.8" y="2.2" width="4.4" height="1.9" rx=".5"/><path d="M6.4 4.1v1.6L4.7 8v4.6c0 .6.4 1 1 1h4.6c.6 0 1-.4 1-1V8L9.6 5.7V4.1"/><path d="M4.8 10.2h6.4"/><path d="M12.6 3.2c.7.6.7 1.4 0 2M13.9 2.2c1.2 1.1 1.2 2.9 0 4"/>',
+  tonic:'<path d="M6.4 2.2h3.2M6.9 2.2v3L3.8 11.4a1.6 1.6 0 0 0 1.4 2.4h5.6a1.6 1.6 0 0 0 1.4-2.4L9.1 5.2v-3"/><path d="M5 9.6h6"/><path d="M8 10.4c-.7.9-.9 1.4-.9 1.8a.9.9 0 0 0 1.8 0c0-.4-.2-.9-.9-1.8z"/>',
   paw:'<circle cx="8" cy="10.3" r="2.6"/><circle cx="4.2" cy="6.7" r="1.25"/><circle cx="6.6" cy="4.3" r="1.25"/><circle cx="9.4" cy="4.3" r="1.25"/><circle cx="11.8" cy="6.7" r="1.25"/>',
   lantern:'<path d="M8 1.6v1.8"/><path d="M5.6 3.4h4.8l-.6 1.4H6.2z"/><path d="M6.2 4.8h3.6l.9 6.4H5.3z"/><path d="M4.8 11.2h6.4v1.7H4.8z"/><path d="M8 7.2v2"/>',
   moon:'<path d="M12.8 10.1A5.4 5.4 0 0 1 5.9 3.2a5.5 5.5 0 1 0 6.9 6.9z"/>',
@@ -3143,8 +3147,9 @@ const ITEMS={
   reforge:{name:'Reforge Armour',   ico:'shield',use:'shopArmor',desc:'The Blacksmith\u2019s ticket. Use it to swap to any armour: Bare, Hide, Scale or Plate.'},
   crate: {name:'Mystery Crate',     ico:'crate',use:'crate',desc:'Nailed shut, smells of hyena. Could be gold, skulls, or anything from any shop.'},
   scout: {name:'Scout\u2019s Map',   ico:'scout',use:'scout',desc:'Drawn by a hyena who has seen the card. Use it during a championship and every lion left in the run is revealed, with the arena each bout is fought in.'},
+  tonic: {name:'Bloodlust Tonic',   ico:'tonic',use:'tonic',desc:'A red brew that smells of iron. Drink it and your lion\u2019s next championship bout is fought in a rage: +20% damage, but \u221215% health.'},
   salts: {name:'Smelling Salts',    ico:'salts',use:null,passive:1,desc:'If your lion goes down in a championship bout, one sniff and it is back on its feet with a quarter of its health. Once a bout, one bottle each time. Works from the bag on its own.'}};
-const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts'};
+const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic'};
 function invOf(L){
   if(!Array.isArray(L.inv))L.inv=[];
   L.inv=L.inv.filter(function(it){return it&&ITEMS[it.k]&&it.n>0;});
@@ -3183,7 +3188,7 @@ function openInventory(sel){
       (I.use==='pact'?'<div class="grp">a gamble: the new IV is rolled fresh, from 1 to 10. '+esc(L.name)+' is IV '+(L.iv||5)+' now</div>':'')+
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
       (I.soul&&soulOf(L)?'<div class="grp">'+esc(L.name)+' already carries a '+SOULS[soulOf(L)].name.toLowerCase()+'. '+(soulOf(L)===I.soul?'It cannot hold two of the same.':'This one would drive it out.')+'</div>':'')+
-      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':'Use')))))+'</button>'
+      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':'Use'))))))+'</button>'
         :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+'</div>';
   } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
       'Beat lions in a championship and now and then you take a skull home.</small></div></div>';
@@ -3207,6 +3212,7 @@ function invUse(k){
   if(I.use==='soul'){bindSoul(I.soul);return;}
   if(I.use==='crate'){openCrate();return;}
   if(I.use==='scout'){useScout();return;}
+  if(I.use==='tonic'){drinkTonic();return;}
   if(I.use==='cleanse'){
     if(!soulOf(L)){toast(L.name+' has no soul to cleanse');return;}
     const was=SOULS[soulOf(L)].name;invTake(L,'cleanse');delete L.soul;SFX.heal();
@@ -3218,6 +3224,16 @@ function invUse(k){
     toast(nv>was?('The pact is sealed. IV '+was+' \u2192 '+nv+'. It worked.'):(nv<was?('The pact is sealed. IV '+was+' \u2192 '+nv+'. It took more than it gave.'):('The pact is sealed. IV stays at '+nv+'.')));
     Store.save();refresh();openInventory();return;}
   SFX.ui();openSheet('invUse',I.use);
+}
+/* the Bloodlust Tonic: the next championship bout is fought hot. +20% damage, -15% health, then it wears off */
+const TONIC={dmg:1.2,hp:.85};
+function drinkTonic(){
+  const L=CAREER.lion;if(!L||!invCount(L,'tonic'))return false;
+  if(!CAREER.locked){toast('Finish the lion first');return false;}
+  if(CAREER.tonic){toast(L.name+' already has the tonic in its blood');return false;}
+  invTake(L,'tonic');CAREER.tonic=1;SFX.roar();
+  toast(L.name+' drinks it down. Next bout: +20% damage, \u221215% health');
+  Store.save();refresh();if(UI.sheet&&UI.sheet.kind==='inv')openInventory();return true;
 }
 /* the Scout's Map: every lion left in the run is announced, and where each bout is fought */
 function useScout(){
@@ -3579,7 +3595,7 @@ function careerLoadCode(txt){
   closeSheet();SFX.bell();Store.save();refresh();toast(c.name+' moves into the den');
 }
 /* ---------- the Lion Store ---------- */
-const SHOP={price:{shopCoat:20,shopPotion:30,shopWeapon:60,shopTrain:100,shopRename:60,shopScout:13,shopSalts:60},quip:'',
+const SHOP={price:{shopCoat:20,shopPotion:30,shopWeapon:60,shopTrain:100,shopRename:60,shopScout:13,shopSalts:60,shopTonic:30},quip:'',
   hello:['Welcome, welcome! Mind the merchandise.','Ah, a paying customer. My favourite kind.',
          'Gold first. Questions never.','Everything here is genuine. Mostly.','Fresh stock today. Well, fresh-ish.'],
   thanks:['Pleasure doing business.','No refunds. Ever.','Looks good on you. Probably.','Come again! Bring more gold.'],
@@ -3632,6 +3648,7 @@ function shopHTML(L){
       item('shopTrain','token','Upgrade Token','A guaranteed training session. Pick the stat when you use it.')+
       item('shopRename','plaque','Name Plaque','A new name, engraved in brass.')+
       item('shopScout','scout','Scout\u2019s Map','Reveals every lion left in this championship, and where each bout is fought.')+
+      item('shopTonic','tonic','Bloodlust Tonic','Next championship bout: +20% damage, \u221215% health. Drink it from the bag.')+
       item('shopSalts','salts','Smelling Salts','If your lion goes down in a championship bout, it gets back up once, on a quarter of its health.')+
     '</div>'+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
@@ -3647,7 +3664,7 @@ const FENCE={skull:25,crate:45,quip:'',
   thanks:['Pleasure. We never met.','Hehehe. Good choice.','Nice doing business, big cat.'],
   broke:['Come back richer. I will be here. Probably.','No gold, no goods. That is the rule.'],
   noskull:['No skulls? Go and win something.']};
-const FENCE_POOL=[['coat','shopCoat'],['potion','shopPotion'],['weapon','shopWeapon'],['train','shopTrain'],['plaque','shopRename'],['reforge','reforge'],['salts','shopSalts']];
+const FENCE_POOL=[['coat','shopCoat'],['potion','shopPotion'],['weapon','shopWeapon'],['train','shopTrain'],['plaque','shopRename'],['reforge','reforge'],['salts','shopSalts'],['tonic','shopTonic']];
 const HYENACOLS={mane:'#4a3a2a',body:'#a08a64',edge:'#5c4a34',muz:'#3a2e22',plate:'#5c4a34'};
 function fenceSay(list){FENCE.quip=pickOne(list);}
 function fenceBase(k){return k==='reforge'?SMITH.reforge:SHOP.price[FENCE_POOL.filter(p=>p[0]===k)[0][1]];}
@@ -5048,6 +5065,7 @@ function newRound(){
   a.foe=b;b.foe=a;G.lions=[a,b];
   a.abil.forEach(k=>{a.cd[k]=1.2;});b.abil.forEach(k=>{b.cd[k]=1.2;});
   a.hp=a.maxHp;b.hp=b.maxHp;
+  if(G.ctx==='career'&&CAREER.tonic){a.dmgMult*=TONIC.dmg;a.maxHp*=TONIC.hp;a.hp=a.maxHp;a.bloodlust=1;G.tonic=1;}
   if(G.ctx==='career'&&CAREER.weak){a.hp=Math.round(a.maxHp*.75);G.weak=1;}
   if(G.ctx==='career'&&DEV.oneHit)b.hp=1;
   if(G.ctx==='career'&&CAREER.cub&&CAREER.cub.wait<=0)G.cubDue=1;
@@ -5055,6 +5073,7 @@ function newRound(){
   makeCrowd();crowdReact(.42);
   buildHud();
   if(G.ctx==='career'&&CAREER.wager)log('<em class="gold">The Royal Lion</em> watches from the royal box. Every coin rides on this.');
+  if(G.tonic)log('<em class="blood">Bloodlust.</em> '+a.name+' comes out of the gate shaking with it: harder hits, thinner skin.');
   if(G.weak)log('<em style="color:#c9adff">The Mystic\u2019s price:</em> '+a.name+' starts on three quarters of its health.');
   log(G.ctx==='career'
     ? 'Bout '+(CAREER.champ.i+1)+' of championship '+CAREER.champ.n+' — <em class="gold">'+b.name+'</em> steps out.'
@@ -7079,6 +7098,12 @@ function drawLion(e){
 }
 function drawLionBody(e){
   const R=e.r;
+  if(e.bloodlust&&!e.dead){
+    const p=.5+.5*Math.sin(G.t*6);ctx.save();
+    const gr=ctx.createRadialGradient(e.x,e.y,R*.6,e.x,e.y,R*2+p*5);
+    gr.addColorStop(0,'rgba(255,40,40,.32)');gr.addColorStop(1,'rgba(255,40,40,0)');
+    ctx.fillStyle=gr;ctx.beginPath();ctx.arc(e.x,e.y,R*2+p*5,0,7);ctx.fill();ctx.restore();
+  }
   if(e.dark){
     const t=G.t,pulse=.5+.5*Math.sin(t*2.2);
     ctx.save();
@@ -7392,6 +7417,10 @@ function evSettle(L,won){
     CAREER.story.push({k:'weak',html:won?'It walked in at three quarters of its health, and won anyway.':'It walked in at three quarters of its health. Maybe that was the difference.'});
     CAREER.weak=null;
   }
+  if(CAREER.tonic){
+    CAREER.story.push({k:'tonic',html:won?'Bloodlust carried it through. The tonic wears off on the walk back to the den.':'Bloodlust was not enough this time. The tonic wears off, and the ache sets in.'});
+    CAREER.tonic=0;
+  }
   if(CAREER.mascot>0){
     CAREER.mascot--;
     if(!CAREER.mascot)CAREER.story.push({k:'mascot',html:'That was the last of the five bouts. The mascot deal is over and the Lion Store is back to full price. The sign stays up, though.'});
@@ -7673,7 +7702,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   if(CAREER.story&&CAREER.story.length&&(kind==='bout'||kind==='champion'||kind==='survived'||kind==='death'||kind==='retry')){
     const STK={rival:['Rivalry','duel'],nem:['A nemesis is born','skull'],avenge:['Nemesis avenged','check'],
       royal:['The wager pays','crown'],royalL:['The wager is lost','crown'],weak:['The Mystic\u2019s price','flame'],mascot:['The mascot deal ends','coin'],
-      salts:['Smelling Salts','salts'],cub:['The cub came back','paw']};
+      salts:['Smelling Salts','salts'],cub:['The cub came back','paw'],tonic:['Bloodlust Tonic','tonic']};
     CAREER.story.forEach(function(st){const K=STK[st.k]||STK.rival;
       P.innerHTML+='<div class="lootCard storyCard '+st.k+'"><span class="rico">'+ico(K[1])+'</span><div><h5>'+K[0]+'</h5><p>'+st.html+'</p></div></div>';
     });
@@ -7942,7 +7971,7 @@ function evRollAfterWin(){
   CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
   return true;
 }
-function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;CAREER.mascot=0;CAREER.cub=null;}
+function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;CAREER.mascot=0;CAREER.cub=null;CAREER.tonic=0;}
 function evChip(cls,icon,txt){return '<span class="'+cls+'">'+ico(icon)+txt+'</span>';}
 const EVENTS={
   royal:{title:'The Royal Lion',sub:'A visitor from the palace',col:'#ffc233',bg:'rgba(255,194,51,.16)',draw:drawRoyalScene,
@@ -8026,6 +8055,7 @@ function evPillsHTML(){
   if(CAREER.wager)out+='<span class="fxPill royal">'+ico('crown')+'Royal wager: win ×2 gold, lose it all</span>';
   if(CAREER.mascot>0)out+='<span class="fxPill shop">'+ico('coin')+'Store mascot: 30% off · '+CAREER.mascot+' bout'+(CAREER.mascot>1?'s':'')+' left</span>';
   if(CAREER.weak)out+='<span class="fxPill mystic">'+ico('flame')+'Mystic’s price: next bout at 75% health</span>';
+  if(CAREER.tonic)out+='<span class="fxPill tonic">'+ico('tonic')+'Bloodlust: next bout +20% damage, \u221215% health</span>';
   if(CAREER.cub)out+='<span class="fxPill cub">'+ico('paw')+esc(CAREER.cub.name)+(CAREER.cub.wait>0?' is growing up \u00b7 back in '+(CAREER.cub.wait+1)+' bouts':' is close by \u00b7 it helps in your next bout')+'</span>';
   return out?'<div class="fxPills">'+out+'</div>':'';
 }
@@ -9061,18 +9091,18 @@ function grudgeSetup(L){
   E.foe=c;E.rid=rid;E.prize=grudgePrize(L);E.arena=pickOne(['pit','colonnade','mud','thorns','night','quarry','fire']);
   Store.save();return E;
 }
-EVENTS.rival={title:'A Grudge on the Road',sub:'Someone is waiting under the lamp',col:'#ff7a5c',bg:'rgba(255,122,92,.15)',draw:drawGrudgeScene,
+EVENTS.rival={title:'A Grudge on the Road',sub:'Someone is waiting by the torch',col:'#ff7a5c',bg:'rgba(255,122,92,.15)',draw:drawGrudgeScene,
   nodes:{
     start:function(L){const E=grudgeSetup(L),c=E.foe,R=rivalById(E.rid),lose=Math.min(L.gold||0,E.prize);
       return {scene:'arrive',lines:[
-        ['n','The road back to the den runs past an old lamp post. Tonight somebody is leaning on it.'],
+        ['n','Halfway back to the den, a torch is burning, jammed into the ground beside the track. Somebody is standing in its light.'],
         R?['n','You know that mane. '+c.name+'. Your rival: '+h2hText(R)+'.']:['n','It is '+c.name+', the lion '+L.name+' just beat. It has been waiting a while, by the look of it.'],
         [c.name,R?'Thought you could walk past me? You and me, out here. No crowd. No record. Just gold.':'I slipped. That is all that was. Again, out here, with nobody watching.'],
         [c.name,E.prize+' gold says I take you. Win, and it is yours. Lose, and it is mine. Nobody dies on a road.']],
         stake:evChip('up','coin','Win: +'+E.prize+' gold')+evChip('dn','coin','Lose: −'+lose+' gold')+evChip('','duel','Off the record, nobody dies'),
         choices:[{t:'Fight '+esc(c.name),go:'grudge',yes:1},{t:'Walk on',go:'decline'}]};},
     decline:function(L){const E=CAREER.event,c=E&&E.foe;EV.gStep=1;CAREER.event=null;Store.save();
-      return {scene:'decline',lines:[[c?c.name:'Rival','Ha. Scared. I will remember this.'],['n','It spits in the dust and steps aside to let '+L.name+' past. The lamp flickers.']],
+      return {scene:'decline',lines:[[c?c.name:'Rival','Ha. Scared. I will remember this.'],['n','It spits in the dust and steps aside to let '+L.name+' past. The torch gutters in the wind.']],
         choices:[{t:'Back to the den',go:'done',yes:1}]};}
   }};
 function grudgeOver(){
@@ -9091,15 +9121,26 @@ function drawGrudgeScene(g,w,h,t,ph,tt){
   const E=CAREER.event,c=(E&&E.foe)||EV.gFoe;if(E&&E.foe)EV.gFoe=E.foe;
   const cx=w/2;
   g.fillStyle='#0e0d10';g.fillRect(0,0,w,h);
-  g.fillStyle='#1a1715';g.fillRect(cx-70,0,140,h);
-  g.strokeStyle='rgba(255,230,190,.06)';g.lineWidth=2;if(g.setLineDash)g.setLineDash([10,12]);g.beginPath();g.moveTo(cx,0);g.lineTo(cx,h);g.stroke();if(g.setLineDash)g.setLineDash([]);
-  /* the lamp */
-  const lx=cx-88,ly=30,fl=.85+.1*Math.sin(t*7)+(Math.sin(t*31)>.92?-.4:0);
-  const lg=g.createRadialGradient(lx+14,ly+40,4,lx+14,ly+40,w*.42*Math.max(.3,fl));lg.addColorStop(0,'rgba(255,200,120,.32)');lg.addColorStop(1,'rgba(255,200,120,0)');
+  /* a dirt track, worn by paws, stones along the edges */
+  g.fillStyle='#1d1813';g.beginPath();g.moveTo(cx-58,0);g.quadraticCurveTo(cx-78,h*.5,cx-64,h);g.lineTo(cx+64,h);g.quadraticCurveTo(cx+80,h*.5,cx+58,0);g.closePath();g.fill();
+  g.fillStyle='rgba(255,220,170,.035)';for(let i=0;i<14;i++){const y=(i*37)%h,x=cx+((i*53)%90)-45;g.beginPath();g.ellipse(x,y,7,3,0,0,7);g.fill();}
+  for(let i=0;i<16;i++){const s=i%2?1:-1,y=(i*29+7)%h,x=cx+s*(64+((i*13)%10))+Math.sin(y*.05)*6;g.fillStyle=i%3?'#2c2620':'#363029';g.beginPath();g.ellipse(x,y,4.5,3.2,i,0,7);g.fill();}
+  /* the torch: a stake jammed in the ground, a pitch-wrapped head, a living flame */
+  const lx=cx-96,ly=44,fl=.88+.08*Math.sin(t*9)+.05*Math.sin(t*23+1)+(Math.sin(t*3.1)>.97?-.15:0);
+  const lg=g.createRadialGradient(lx,ly,4,lx,ly,w*.5*fl);lg.addColorStop(0,'rgba(255,150,60,.34)');lg.addColorStop(.5,'rgba(255,120,40,.1)');lg.addColorStop(1,'rgba(255,120,40,0)');
   g.fillStyle=lg;g.fillRect(0,0,w,h);
-  g.strokeStyle='#3a3530';g.lineWidth=4;g.beginPath();g.moveTo(lx,h*.62);g.lineTo(lx,ly);g.lineTo(lx+16,ly);g.stroke();
-  g.fillStyle='#ffd27a';g.globalAlpha=Math.max(.3,fl);g.beginPath();g.arc(lx+16,ly+5,4,0,7);g.fill();g.globalAlpha=1;
-  for(let i=0;i<10;i++){const p=(t*.06+i*.1)%1;g.globalAlpha=.25*(1-Math.abs(p-.5)*2);g.fillStyle='#e8d2a8';g.beginPath();g.arc(lx+8+((i*29)%90)-30,ly+10+p*90,1,0,7);g.fill();}
+  g.fillStyle='rgba(0,0,0,.4)';g.beginPath();g.ellipse(lx+3,h*.62+2,8,3,0,0,7);g.fill();
+  g.strokeStyle='#4a3420';g.lineWidth=5;g.lineCap='round';g.beginPath();g.moveTo(lx+2,h*.62);g.lineTo(lx,ly+10);g.stroke();
+  g.strokeStyle='#6b4a2a';g.lineWidth=1.4;g.beginPath();g.moveTo(lx+1,h*.6);g.lineTo(lx-.6,ly+14);g.stroke();
+  g.fillStyle='#2a1e14';g.beginPath();if(g.roundRect)g.roundRect(lx-5,ly+2,10,11,3);else g.rect(lx-5,ly+2,10,11);g.fill();
+  g.strokeStyle='#5a4028';g.lineWidth=1;for(let k=0;k<3;k++){g.beginPath();g.moveTo(lx-5,ly+4+k*3.4);g.lineTo(lx+5,ly+5.5+k*3.4);g.stroke();}
+  g.save();g.globalCompositeOperation='lighter';
+  for(let k=0;k<7;k++){const s=(9-k)*fl*(1+.14*Math.sin(t*12+k*1.7)),fx=lx+Math.sin(t*5+k)*1.6,fy=ly-k*2.6;
+    const fg=g.createRadialGradient(fx,fy,0,fx,fy,s);fg.addColorStop(0,'rgba(255,244,190,.85)');fg.addColorStop(.45,'rgba(255,140,40,.55)');fg.addColorStop(1,'rgba(255,90,20,0)');
+    g.fillStyle=fg;g.beginPath();g.arc(fx,fy,s,0,7);g.fill();}
+  g.restore();
+  for(let i=0;i<9;i++){const p=(t*.55+i/9)%1,ex=lx+Math.sin(t*2+i*2.3)*(4+p*10),ey=ly-6-p*42;
+    g.globalAlpha=.9*(1-p);g.fillStyle=i%2?'#ffb347':'#ffdf8a';g.fillRect(ex-.8,ey-.8,1.6,1.6);}
   g.globalAlpha=1;
   /* the challenger, blocking the road, pacing */
   if(c){
