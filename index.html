@@ -138,6 +138,10 @@ button{cursor:pointer}
 .tabbar button:active .ti{transform:scale(.94)}
 /* Championship is the heart of the game: a raised amber button in the middle of the bar */
 .tabbar .tabMain{position:relative}
+.tabbar button[data-mode="duel"],.tabbar button[data-mode="pack"]{flex:1.5;max-width:225px}
+.tabbar .tabOn .ti{color:#7cc2ff}
+.tabbar .tabOn[aria-pressed="true"]{color:#9fd0ff}.tabbar .tabOn[aria-pressed="true"] .ti{background:rgba(124,194,255,.16)}
+@media (max-width:400px){.tabbar button{font-size:10.5px}.tabbar .ti{width:46px}}
 .tabbar .tabMain .ti{width:62px;height:62px;border-radius:50%;margin-top:-26px;margin-bottom:1px;
   background:radial-gradient(circle at 35% 30%,#ffd27a,#ffb340 55%,#d98a1a);color:#241701;
   box-shadow:0 0 0 5px #0a0a0c,0 8px 22px rgba(0,0,0,.6),0 0 0 6px rgba(255,179,64,.25);transition:transform .2s,box-shadow .3s}
@@ -1024,6 +1028,49 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .lootCard.pitCard h5,.lootCard.pitCard .rico{color:#9fd0ff}
 .lootCard.pitCard p b{color:var(--t1)}
 .lootCard.pitCard em{font-style:normal;font-weight:700;margin-left:4px}.lootCard.pitCard em.up{color:#5ee6a8}.lootCard.pitCard em.dn{color:#ff6b5e}
+/* ---------- the Online tab ---------- */
+.olHero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:18px 18px 16px;margin-bottom:12px;border-radius:var(--r);
+  background:radial-gradient(ellipse at 50% 0%,rgba(124,194,255,.18),transparent 70%),var(--s1)}
+.olHero .ico{width:44px;height:44px;color:#7cc2ff}
+.olHero b{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-.02em}
+.olHero small{font-size:14px;color:var(--t2);line-height:1.45;max-width:320px}
+.olAuth{padding:12px 0 10px}
+.olAuth .acTabs{margin:0 16px 12px}.olAuth .acctForm{padding:0 16px}.olAuth .acMsg{margin:10px 16px 0}
+.olMe{padding:14px 16px 10px;position:relative}
+.olMeTop{display:flex;align-items:center;gap:12px}
+.olMeTop>span:nth-child(2){display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.olMeTop b{font-size:18px;color:var(--t1)}.olMeTop small{font-size:13px;color:var(--t2)}
+.olAv{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;background:linear-gradient(135deg,#7cc2ff,#4a7ad8);color:#06101e;font-size:20px;font-weight:800}
+.olElo{display:flex;flex-direction:column;align-items:center;justify-content:center;width:74px;height:58px;border-radius:15px;background:rgba(124,194,255,.12);flex:none}
+.olElo b{font-family:var(--disp);font-weight:400;font-size:26px;line-height:1;color:#9fd0ff}
+.olElo small{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.olLion{display:flex;align-items:center;gap:12px;margin-top:12px;padding:8px;border-radius:14px;background:var(--bg);border:1px solid var(--sep)}
+.olLion .olCvBig{width:110px;height:76px;border-radius:10px;flex:none}
+.olLion.empty>span{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:var(--s2);color:var(--t3);flex:none}
+.olLion.empty>span .ico{width:26px;height:26px}
+.olLionTx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.olLionTx b{font-size:17px;color:var(--t1)}.olLionTx small{font-size:12.5px;color:var(--t2)}
+.olMe .act{padding:12px 0 0}
+.olOut{display:block;margin:10px auto 0;font-size:12.5px;color:var(--t3);padding:4px 8px}
+.olBoard{padding:2px 0}
+.olRow{display:flex;align-items:center;gap:10px;width:100%;padding:9px 14px;text-align:left;border-bottom:1px solid var(--sep)}
+.olRow:last-child{border-bottom:none}
+.olRow:active{background:var(--s2)}
+.olRow.mine{background:rgba(124,194,255,.08)}
+.olRk{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--t2);background:var(--s2);flex:none}
+.olRk.t1{background:#ffc233;color:#2a1a00}.olRk.t2{background:#c9ced6;color:#15171a}.olRk.t3{background:#d08a4a;color:#2a1405}
+.olCv{width:42px;height:42px;border-radius:11px;flex:none}
+.olTx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.olTx b{font-size:15px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.olTx small{font-size:12.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.olBelt{font-style:normal;display:inline-flex;align-items:center;gap:2px;font-size:11.5px;color:#ffc233;vertical-align:1px}
+.olBelt .ico{width:12px;height:12px}
+.olRt{display:flex;flex-direction:column;align-items:flex-end;flex:none}
+.olRt b{font-family:var(--disp);font-weight:400;font-size:21px;line-height:1;color:var(--t1)}
+.olRt small{font-size:11.5px;color:var(--t3)}
+.olOdds{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 20px 4px;font-size:13px;color:var(--t3)}
+.olOdds span{padding:6px 10px;border-radius:10px;background:var(--s2)}
+.olOdds .up{color:#5ee6a8;background:rgba(94,230,168,.12)}.olOdds .dn{color:#ff8a7a;background:rgba(255,90,77,.12)}
 /* ---------- the guided creator ---------- */
 .wizStage{position:relative;overflow:hidden}
 .wizStage .wizCv{height:210px;background:radial-gradient(ellipse at 50% 55%,#1a1a20,#0a0a0c 72%)}
@@ -1153,7 +1200,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <button id="moreBtn" aria-label="More" aria-expanded="false"></button>
     </div>
     <div class="moreMenu hidden" id="moreMenu" role="menu">
-      <button id="acctBtn" role="menuitem"><span class="mi" id="acctIco"></span><span class="mt"><b id="acctLbl">Online</b><small id="acctSub">Save online, fight other players</small></span></button>
+      <button id="acctBtn" role="menuitem"><span class="mi" id="acctIco"></span><span class="mt"><b id="acctLbl">Online</b><small id="acctSub">Accounts and the leaderboard</small></span></button>
       <button id="soundBtn" aria-pressed="false" role="menuitem"><span class="mi" id="soundIco"></span><span class="mt"><b id="soundLbl">Sound</b><small>Tap to change</small></span></button>
       <button id="infoBtn" role="menuitem"><span class="mi" id="infoIco"></span><span class="mt"><b>How it works</b><small>Every rule, in one place</small></span></button>
       <button id="tutBtn2" role="menuitem"><span class="mi" id="tutIco2"></span><span class="mt"><b>Tutorial</b><small>Old Lion walks you through it</small></span></button>
@@ -1166,6 +1213,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <button data-mode="duel" aria-pressed="false"><span class="ti navico" data-i="duel"></span><span class="tl">Duel</span></button>
     <button data-mode="pack" aria-pressed="false"><span class="ti navico" data-i="pack"></span><span class="tl">Challenges</span></button>
     <button data-mode="career" aria-pressed="true" class="tabMain"><span class="ti navico" data-i="lion"></span><span class="tl">Championship</span></button>
+    <button data-mode="online" aria-pressed="false" class="tabOn"><span class="ti navico" data-i="globe"></span><span class="tl">Online</span></button>
     <button data-mode="tourn" aria-pressed="false"><span class="ti navico" data-i="trophy"></span><span class="tl">Tournament</span></button>
     <button id="editorBtn" class="tabEd" aria-pressed="false"><span class="ti eico"></span><span class="tl elabel">Editor</span></button>
   </nav>
@@ -1175,6 +1223,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   <section id="editor" class="hidden"></section>
   <section id="pack" class="hidden"></section>
   <section id="tourn" class="hidden"></section>
+  <section id="online" class="hidden"></section>
 
   <div class="dock" id="launchBar"></div>
   <div class="sheetWrap hidden" id="sheetWrap"><div class="sheetPanel" id="sheetPanel"></div></div>
@@ -1203,7 +1252,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them (unless you have made a deal with the Mystic Lion), so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion. Very rarely (about one opponent in fifty) a lion you face carries a <b>bound soul</b>, divine or demonic, with the glowing eyes, the aura and +10% to everything; the den and the gate intro tell you when one is next.</p>
       <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. a <b>Bloodlust Tonic</b> (30 gold, drink it from the bag) makes the next championship bout +20% damage but −15% health; <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
       <h6>Gold and the Lion Store</h6>
-      <p><b>Online.</b> Open the <b>⋯</b> menu and choose <b>Sign in to play online</b> to make a free account. Your championship save is then kept on your account, so it follows you to any device. In the den, the <b>Online Pit</b> lets you put your lion up against everyone else’s: pick a lion on the leaderboard and fight it. Win and your rating goes up (more for beating a higher-rated lion), and you earn a little gold. Other players can fight your lion too, and the pit shows you who did. Pit fights are off the record, and nobody dies.</p>
+      <p><b>Online.</b> Tap <b>Online</b> in the bar at the bottom and make a free account. Your championship save is then kept on your account, so it follows you to any device. Put your lion on the leaderboard, tap any other player’s lion to see its card, and fight it. Win and your rating goes up (more for beating a higher-rated lion), and you earn a little gold. Other players can fight your lion too, and the Online tab shows you who did. Pit fights are off the record, and nobody dies.</p>
       <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
@@ -3303,7 +3352,6 @@ function renderCareer(){
   if(UI.view==='smith'){host.innerHTML=smithHTML(L);return;}
   if(UI.view==='fence'){host.innerHTML=fenceHTML(L);return;}
   if(UI.view==='bookie'){host.innerHTML=bookieHTML(L);return;}
-  if(UI.view==='pit'){host.innerHTML=pitHTML(L);return;}
   if(UI.view==='edit'){host.innerHTML=editorHTML('career',L,L.name,true);return;}
   const rec=L.record,ch=CAREER.champ;
   host.innerHTML='<div class="hd"><h2>The den</h2><span>'+(ch?('In championship '+ch.n+'.'):'Resting between championships.')+'</span></div>'+
@@ -3326,7 +3374,6 @@ function renderCareer(){
       '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel')+'</small></span></button>'+
       '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
       '<button class="door wide" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span><span class="go">\u203a</span></button>'+
-      '<button class="door wide pitDoor" data-act="openPit"><span class="dic">'+ico('globe')+'</span><span><b>Online Pit</b><small class="pk">'+pitDoorLine()+'</small></span><span class="go">\u203a</span></button>'+
       '<button class="door" data-act="openInv"><span class="dic">'+ico('bag')+'</span><span><b>Bag</b><small>'+bagLine(L)+'</small></span></button>'+
       '<button class="door" data-act="hallJump"><span class="dic gold">'+ico('trophy')+'</span><span><b>Hall of Fame</b><small>'+CAREER.hall.length+' lion'+(CAREER.hall.length===1?'':'s')+'</small></span></button>'+
     '</div>'+
@@ -4376,8 +4423,14 @@ function renderLaunch(){
     else if(UI.bkSide)bar.innerHTML=leave+'<button class="go1" data-act="bookieGo">'+ico('coin')+'Bet '+(UI.bkStake||10)+' & watch</button>';
     else bar.innerHTML=leave+'<button class="go1 dim" data-act="bookieGo">'+ico('coin')+'Pick a lion to back</button>';
     return;}
-  if(UI.view==='pit'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Back to the den</button>';return;}
   if(UI.view==='fence'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Slip back out</button>';return;}
+  if(MATCH.mode==='online'){
+    if(!onlineOn())bar.innerHTML='<button class="go1 dim">'+ico('globe')+'Offline</button>';
+    else if(!signedIn())bar.innerHTML='<button class="go1" data-act="olFocus">'+ico('plus')+(ONLINE.tab==='in'?'Sign in':'Create a free account')+'</button>';
+    else if(!L||!CAREER.locked)bar.innerHTML='<button class="go1" data-mode="career">'+ico('lion')+'Make a lion in Championship</button>';
+    else bar.innerHTML='<button class="go1'+(ONLINE.board&&ONLINE.board.length>1?'':' dim')+'" data-act="olQuick">'+ico('duel')+'Quick fight</button>';
+    return;
+  }
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+(MATCH.duo?'Send in both teams':'Send them in')+'</button>';return;}
   if(MATCH.mode==='tourn'){
     if(!TOURN.br){bar.innerHTML='<button class="go1" data-act="tStart">'+ico('trophy')+'Start the tournament</button>';return;}
@@ -4421,17 +4474,18 @@ function renderHdrRes(){
 }
 function refresh(){
   if(typeof paintAcct==='function')paintAcct();
-  ['duel','career','pack','editor','tourn'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
+  ['duel','career','pack','editor','tourn','online'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
   $('modeSeg').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===MATCH.mode));
   $('editorBtn').setAttribute('aria-pressed',MATCH.mode==='editor');
   if(MATCH.mode==='editor')renderEditorMode();
   else if(MATCH.mode==='duel')renderDuel();
   else if(MATCH.mode==='career')renderCareer();
   else if(MATCH.mode==='tourn')renderTourn();
+  else if(MATCH.mode==='online')renderOnline();
   else renderPack();
   renderLaunch();
   renderHdrRes();
-  if(typeof document!=='undefined'&&document.querySelectorAll)try{paintRivalIcons();if(MATCH.mode==='pack')paintChalCanvases();paintMinis();
+  if(typeof document!=='undefined'&&document.querySelectorAll)try{paintRivalIcons();if(MATCH.mode==='pack')paintChalCanvases();if(MATCH.mode==='online')paintOnlineIcons();paintMinis();
     const hd=document.querySelector('.hdr');if(hd&&hd.offsetHeight)document.documentElement.style.setProperty('--hdrH',hd.offsetHeight+'px');}catch(e){}
   bindPreviews();
   requestAnimationFrame(bindPreviews);
@@ -4937,8 +4991,12 @@ function handleAct(a,el){
   if(a==='bkStake'){SFX.ui();UI.bkStake=+el.dataset.v;refresh();return;}
   if(a==='bookieGo'){bookieGo(false);return;}
   if(a==='bookieWatch'){bookieGo(true);return;}
-  if(a==='openPit'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='pit';refresh();
-    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);pitLoad(true);pitNews();if(signedIn())setTimeout(pitMarkSeen,1200);return;}
+  if(a==='openPit'){SFX.ui();openAccount();return;}
+  if(a==='olView'){SFX.ui();openOnlineLion(el&&el.dataset.u);return;}
+  if(a==='olFight'){olFight(el&&el.dataset.u);return;}
+  if(a==='olQuick'){olQuick();return;}
+  if(a==='olQuickR'){$('result').classList.add('hidden');showHome();olQuick();return;}
+  if(a==='olFocus'){const e=$(ONLINE.tab==='in'?'acEmail':'acName')||$('acEmail');if(e){e.scrollIntoView&&e.scrollIntoView({block:'center'});e.focus&&e.focus();}return;}
   if(a==='openAcct'){SFX.ui();openAccount();return;}
   if(a==='acctTab'){ONLINE.tab=(el&&el.dataset.v)||'in';SFX.ui();openAccount();return;}
   if(a==='acctIn'){acctSignIn();return;}
@@ -4947,8 +5005,8 @@ function handleAct(a,el){
   if(a==='acctName'){acctSaveName();return;}
   if(a==='pitEnter'){pitEnter(false);return;}
   if(a==='pitFight'){pitFight(el&&el.dataset.u);return;}
-  if(a==='pitRefresh'){SFX.ui();pitLoad(true);pitNews();return;}
-  if(a==='pitBack'){$('result').classList.add('hidden');UI.view='pit';showHome();pitLoad(true);return;}
+  if(a==='pitRefresh'){SFX.ui();olEnsure(true);return;}
+  if(a==='pitBack'){$('result').classList.add('hidden');MATCH.mode='online';UI.view='home';showHome();olEnsure(true);return;}
   if(a==='bookieDen'){$('result').classList.add('hidden');UI.view='home';showHome();return;}
   if(a==='fenceSkull'){fenceSkull();return;}
   if(a==='fenceCrate'){fenceCrate();return;}
@@ -5027,7 +5085,7 @@ function startFight(ctxName){
   if(ctxName==='ancient'||ctxName==='old'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
-  ['duel','career','pack','editor','tourn','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
+  ['duel','career','pack','editor','tourn','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
   closeSheet();
   $('fight').classList.remove('hidden');$('result').classList.add('hidden');
   fitCanvas();
@@ -5171,7 +5229,7 @@ function introKick(i,grp){
   if(c==='king')return i===0?(grp.lions.length>1?'The challengers':'The challenger')
     :(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark'));
   if(c==='survival')return SURV.ambush?'Ambushed in the trees':(grp.lions.length>1?'Into the pit':'Alone in the pit');
-  if(c==='pit')return i===0?'Online Pit':(CAREER.pit?CAREER.pit.player+'\u2019s lion \u00b7 rated '+CAREER.pit.rating:'The pit');
+  if(c==='pit')return i===0?'Online':(CAREER.pit?CAREER.pit.player+'\u2019s lion \u00b7 Elo '+CAREER.pit.rating:'Online');
   if(c==='grudge')return i===0?'Off the record':('A grudge match'+(CAREER.event&&CAREER.event.rid?' \u00b7 your rival':''));
   let k=i===0?'In this corner':'And in this corner';
   if((c==='career'||c==='grudge')&&i===0&&G.arenaK&&ARENAS[G.arenaK])k=ARENAS[G.arenaK].name+' \u00b7 '+k;
@@ -7556,7 +7614,7 @@ function buildHud(){
       html+='<div class="rp '+(G.wins[side]>idx?'on':'')+'"></div>';
     }
     $('roundPips').innerHTML=html;
-    $('roundLbl').textContent=G.ctx==='bookie'?'THE BOOKIE':(G.ctx==='grudge'?'GRUDGE MATCH':G.ctx==='pit'?'ONLINE PIT':(G.rounds>1?('ROUND '+G.round):''));
+    $('roundLbl').textContent=G.ctx==='bookie'?'THE BOOKIE':(G.ctx==='grudge'?'GRUDGE MATCH':G.ctx==='pit'?'ONLINE':(G.rounds>1?('ROUND '+G.round):''));
   }
 }
 function updateHud(){
@@ -7628,7 +7686,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -7885,11 +7943,11 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   }
   else if(kind==='pitWin'||kind==='pitLoss'){
     const Q=CAREER.pit||{},R=Q.res||{},won=kind==='pitWin';
-    V.textContent=won?'PIT WIN':'BEATEN IN THE PIT';V.className='verdict'+(won?' gold':' blood');
+    V.textContent=won?'ONLINE WIN':'BEATEN ONLINE';V.className='verdict'+(won?' gold':' blood');
     M.textContent=(G.method||'attrition')+' \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' \u00b7 vs '+(Q.name||'')+' ('+(Q.player||'')+') \u00b7 off the record';
     P.innerHTML='<div class="lootCard pitCard"><span class="rico">'+ico('globe')+'</span><div><h5>'+(won?'You beat '+esc(Q.player||'them')+'\u2019s lion':esc(Q.name||'Their lion')+' was too good')+'</h5>'+
       '<p id="pitRes">'+pitResText()+'</p>'+(R.gold?'<p>+'+R.gold+' gold for the win.</p>':'')+'</div></div>';
-    B.innerHTML='<button class="primary" data-act="pitBack">Back to the pit</button><button data-act="bookieDen">Back to the den</button>';
+    B.innerHTML='<button class="primary" data-act="pitBack">Back to Online</button><button data-act="olQuickR">Quick fight</button>';
     if(won)SFX.champ();
   }
   else if(kind==='grudgeWin'||kind==='grudgeLoss'){
@@ -9480,7 +9538,7 @@ if(typeof document!=='undefined'&&document.addEventListener){
    if the library or the internet is missing, the online parts simply don't show. The key below is the public
    ("publishable") one: what each player may touch is decided by the database's own security rules. */
 const ONLINE={url:'https://kosljokhwhgdegggzmll.supabase.co',key:'sb_publishable_iswziQYg_BLBNaTTSNMJKg_MtzHza0m',
-  sb:null,user:null,profile:null,profileChecked:false,board:null,boardAt:0,boardErr:'',news:[],busy:false,msg:'',msgOk:false,tab:'in',
+  sb:null,user:null,profile:null,profileChecked:false,board:null,boardAt:0,boardErr:'',news:[],busy:false,msg:'',msgOk:false,tab:'up',
   pushT:0,pending:null,pitDay:null};
 const PIT={winGold:5,goldWins:5};
 function sbLib(){return (typeof window!=='undefined'&&window.LIONSIM_SB)||(typeof supabase!=='undefined'?supabase:null);}
@@ -9519,7 +9577,7 @@ async function onlineSignedIn(){
   }catch(e){}
   await cloudPull();
   paintAcct();pitNews();
-  if(UI.view==='pit')pitLoad(true);
+  if(MATCH.mode==='online')olEnsure(true);
   refresh();
 }
 /* ---------- names ---------- */
@@ -9575,7 +9633,9 @@ async function acctSaveName(){
 }
 function acctMsg(m,good){ONLINE.msg=m;ONLINE.msgOk=!!good;const el=$('acMsg');if(el){el.textContent=m;el.className='acMsg'+(good?' good':'');}return false;}
 function acctBusy(b){ONLINE.busy=b;document.querySelectorAll&&document.querySelectorAll('.acctForm button').forEach(function(x){x.disabled=b;});}
-function openAccount(){
+function openAccount(){MATCH.mode='online';UI.view='home';closeSheet();moreMenu(false);refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);}
+function openAccountSheet(){
   UI.sheet={kind:'acct',field:'acct'};
   let body='';
   if(!onlineOn()){
@@ -9607,7 +9667,7 @@ function paintAcct(){
   const b=$('acctLbl'),s=$('acctSub');if(!b)return;
   if(!onlineOn()){b.textContent='Online';if(s)s.textContent='Not available offline';return;}
   b.textContent=signedIn()?(onlineName()||'Signed in'):'Sign in to play online';
-  if(s)s.textContent=signedIn()?'Your account and save':'Save online, fight other players';
+  if(s)s.textContent=signedIn()?'Your account and the leaderboard':'Make an account, fight other players';
 }
 /* ---------- the cloud save ----------
    Every local save is also sent up (a couple of seconds later, so a burst of saves is one upload).
@@ -9658,7 +9718,7 @@ async function pitLoad(force){
     const r=await ONLINE.sb.from('pit_board').select('*').order('rating',{ascending:false}).limit(100);
     if(r.error)ONLINE.boardErr=errText(r.error);else{ONLINE.board=r.data||[];ONLINE.boardAt=Date.now();}
   }catch(e){ONLINE.boardErr=errText(e);}
-  if(UI.view==='pit'&&MATCH.mode==='career')bKeepScroll(refresh);else if(MATCH.mode==='career')renderCareer();
+  if(MATCH.mode==='online')bKeepScroll(refresh);
 }
 async function pitNews(){
   if(!signedIn())return;
@@ -9669,7 +9729,7 @@ async function pitNews(){
     let names={};
     if(ids.length){const p=await ONLINE.sb.from('profiles').select('id,name').in('id',ids);(p.data||[]).forEach(x=>{names[x.id]=x.name;});}
     ONLINE.news=r.data.map(x=>Object.assign({who:names[x.attacker]||'Someone'},x));
-    if(MATCH.mode==='career')bKeepScroll(refresh);
+    if(MATCH.mode==='online')bKeepScroll(refresh);
   }catch(e){}
 }
 function pitSeen(){try{return +(window.localStorage&&window.localStorage.getItem('lionsim:pitSeen:'+(ONLINE.user?ONLINE.user.id:'')))||0;}catch(e){return 0;}}
@@ -9728,54 +9788,146 @@ function pitResText(){
   const P=CAREER.pit,R=P&&P.res;if(!R)return '';
   if(R.state==='saving')return 'Saving the result…';
   if(R.state==='err')return esc(R.err);
-  return 'Your rating: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>';
+  return 'Your Elo: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>';
 }
 function pitResPaint(){const el=$('pitRes');if(el)el.innerHTML=pitResText();}
-function pitHTML(L){
-  const head='<button class="back" data-act="back">‹ Back to the den</button>'+
-    '<div class="hd"><h2>Online Pit</h2><span>Your lion against other players’ lions. Off the record: nobody dies.</span></div>';
-  if(!onlineOn())return head+'<div class="card pad"><p class="muted" style="margin:0">The Online Pit needs the internet. Everything else still works.</p></div>';
-  let me='';
-  if(!signedIn()){
-    me='<div class="card pitMe"><div class="pitMeTop">'+ico('globe')+'<span><b>Sign in to fight</b><small>Make a free account, put your lion in the pit, and fight everyone else’s.</small></span></div>'+
-      '<div class="act"><button class="key" data-act="openAcct">'+ico('check')+'Sign in or create an account</button></div></div>';
-  } else if(!onlineName()&&ONLINE.profileChecked){
-    me='<div class="card pitMe"><div class="pitMeTop">'+ico('globe')+'<span><b>Pick a player name</b><small>It goes on the leaderboard next to your lion.</small></span></div>'+
-      '<div class="act"><button class="key" data-act="openAcct">'+ico('edit')+'Pick a name</button></div></div>';
-  } else {
-    const m=pitMine(),same=m&&L&&m.name===L.name;
-    me='<div class="card pitMe"><div class="pitMeTop"><span class="pitRate"><b>'+(m?m.rating:1000)+'</b><small>rating</small></span><span><b>'+esc(onlineName())+'</b>'+
-      '<small>'+(m?('Pit record '+m.pit_wins+'–'+m.pit_losses+' · defended '+m.defends+' time'+(m.defends===1?'':'s')):'Not in the pit yet')+'</small>'+
-      (m?'<small>Your lion in the pit: <b>'+esc(m.name)+'</b></small>':'')+'</span></div>'+
-      (L&&CAREER.locked?('<div class="act"><button class="'+(m?'':'key')+'" data-act="pitEnter">'+ico(m?'refresh':'plus')+(m?(same?'Update '+esc(L.name)+' in the pit':'Put '+esc(L.name)+' in instead'):'Put '+esc(L.name)+' in the pit')+'</button></div>')
-        :'<p class="muted" style="margin:8px 0 0">Finish a championship lion to fight here.</p>')+'</div>';
-    if(ONLINE.news&&ONLINE.news.length){
-      const seen=pitSeen();
-      me+='<div class="hd sub2"><h2>Who fought your lion</h2><span>Newest first</span></div><div class="card">'+ONLINE.news.slice(0,5).map(function(n){
-        const lost=n.attacker_won,fresh=Date.parse(n.created_at)>seen;
-        return '<div class="listRow pitNews'+(fresh?' fresh':'')+'"><span class="num">'+ico(lost?'skull':'check')+'</span><div><h4>'+esc(n.who)+(lost?' beat your lion':' lost to your lion')+'</h4>'+
-          '<small>'+timeAgo(n.created_at)+' · rating '+(lost?'−':'+')+Math.abs(n.delta|0)+'</small></div><span></span></div>';}).join('')+'</div>';
-    }
-  }
-  let list;
-  if(ONLINE.boardErr)list='<div class="card pad"><p class="muted" style="margin:0">'+esc(ONLINE.boardErr)+'</p><div class="act"><button data-act="pitRefresh">'+ico('refresh')+'Try again</button></div></div>';
-  else if(!ONLINE.board)list='<div class="card pad"><p class="muted" style="margin:0">Loading the leaderboard…</p></div>';
-  else if(!ONLINE.board.length)list='<div class="card pad"><p class="muted" style="margin:0">Nobody is in the pit yet. Be the first.</p></div>';
-  else{
-    const can=signedIn()&&L&&CAREER.locked;
-    list='<div class="card pitBoard">'+ONLINE.board.map(function(r,i){
-      const mine=signedIn()&&r.user_id===ONLINE.user.id,c=r.lion||{};
-      const look=(BUILDS[c.build]?BUILDS[c.build].name:'')+(WEAPONS[c.weapon]?' · '+WEAPONS[c.weapon].name:'');
-      return '<div class="listRow pitRow'+(mine?' mine':'')+'"><span class="num">'+(i+1)+'</span><div><h4>'+esc(r.name)+(r.belts?' <span class="badge gold">'+ico('belt')+r.belts+'</span>':'')+'</h4>'+
-        '<small><b>'+esc(r.player)+'</b>'+(mine?' (you)':'')+' · '+look+'</small><small>'+r.pit_wins+'–'+r.pit_losses+' in the pit</small></div>'+
-        '<div class="pitR"><b>'+r.rating+'</b>'+(mine?'':'<button class="pitGo'+(can?'':' dim')+'" data-act="pitFight" data-u="'+r.user_id+'">Fight</button>')+'</div></div>';}).join('')+'</div>';
-  }
-  return head+me+'<div class="hd sub2"><h2>Leaderboard</h2><span><button class="linkBtn" data-act="pitRefresh">'+ico('refresh')+'Refresh</button></span></div>'+list+
-    '<p class="muted" style="padding:0 2px 8px">Win and your rating goes up, more for beating a higher-rated lion. A win also pays '+PIT.winGold+' gold, up to '+PIT.goldWins+' times a day. '+
-    'Pit fights never count on your championship record, and nobody dies.</p>';
-}
 function timeAgo(iso){const s=Math.max(0,(Date.now()-Date.parse(iso))/1000);
   if(s<90)return 'just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+' h ago';return Math.round(s/86400)+' days ago';}
+
+/* ---------- the Online tab: sign up right there, your spot on the board, everyone else's lions ---------- */
+function eloOdds(mine,theirs){const ea=1/(1+Math.pow(10,(theirs-mine)/400));return {win:Math.round(24*(1-ea)),lose:Math.round(24*(0-ea))};}
+function olMyRating(){const m=pitMine();return m?m.rating:1000;}
+function olRank(){if(!ONLINE.board||!signedIn())return 0;const i=ONLINE.board.findIndex(r=>r.user_id===ONLINE.user.id);return i<0?0:i+1;}
+function olEnsure(force){
+  if(!onlineOn()||ONLINE.loading)return;
+  if(!force&&Date.now()-(ONLINE.boardTry||0)<20000)return;
+  ONLINE.boardTry=Date.now();ONLINE.loading=true;
+  Promise.all([pitLoad(true),pitNews()]).then(function(){ONLINE.loading=false;},function(){ONLINE.loading=false;});
+}
+function olAuthHTML(){
+  const up=ONLINE.tab!=='in';
+  return '<div class="card olAuth"><div class="acTabs"><button class="'+(up?'on':'')+'" data-act="acctTab" data-v="up">Create account</button><button class="'+(up?'':'on')+'" data-act="acctTab" data-v="in">Sign in</button></div>'+
+    '<div class="acctForm">'+
+      (up?'<label>Player name<input id="acName" maxlength="16" autocomplete="nickname" placeholder="Shown on the leaderboard"></label>':'')+
+      '<label>Email<input id="acEmail" type="email" autocomplete="email" inputmode="email"></label>'+
+      '<label>Password<input id="acPass" type="password" autocomplete="'+(up?'new-password':'current-password')+'" placeholder="'+(up?'At least 6 characters':'')+'"></label>'+
+      '<button class="key" data-act="'+(up?'acctUp':'acctIn')+'">'+ico(up?'plus':'check')+(up?'Create account':'Sign in')+'</button></div>'+
+    '<p class="acMsg'+(ONLINE.msgOk?' good':'')+'" id="acMsg">'+esc(ONLINE.msg||'')+'</p></div>';
+}
+function olMeHTML(L){
+  const nm=onlineName(),m=pitMine(),rk=olRank(),n=ONLINE.board?ONLINE.board.length:0;
+  if(!nm&&ONLINE.profileChecked)return '<div class="card olMe"><div class="olMeTop"><span class="olAv">?</span><span><b>Pick a player name</b><small>It goes on the leaderboard next to your lion.</small></span></div>'+
+    '<div class="acctForm"><label>Player name<input id="acName" maxlength="16" autocomplete="nickname"></label><button class="key" data-act="acctName">'+ico('check')+'Save name</button></div>'+
+    '<p class="acMsg" id="acMsg"></p></div>';
+  let lion;
+  if(m){const c=m.lion||{};
+    lion='<div class="olLion"><canvas class="prevCv olCvBig" data-prev="olMine"></canvas><div class="olLionTx"><small>Your lion on the board</small><b>'+esc(m.name)+'</b>'+
+      '<small>'+(BUILDS[c.build]?BUILDS[c.build].name:'')+(WEAPONS[c.weapon]?' · '+WEAPONS[c.weapon].name:'')+'</small></div></div>';
+  } else lion='<div class="olLion empty"><span>'+ico('lion')+'</span><div class="olLionTx"><b>No lion on the board yet</b><small>Put your championship lion up and other players can fight it.</small></div></div>';
+  let btn='';
+  if(L&&CAREER.locked){
+    if(!m)btn='<button class="key" data-act="pitEnter">'+ico('plus')+'Put '+esc(L.name)+' on the board</button>';
+    else if(m.name!==L.name||!m.lion||m.lion.born!==L.born)btn='<button data-act="pitEnter">'+ico('refresh')+'Swap in '+esc(L.name)+'</button>';
+    else btn='<button data-act="pitEnter">'+ico('refresh')+'Update '+esc(L.name)+'’s card</button>';
+  } else btn='<button class="key" data-mode="career">'+ico('lion')+'Make a lion in Championship</button>';
+  return '<div class="card olMe"><div class="olMeTop"><span class="olAv">'+esc((nm||'?').charAt(0).toUpperCase())+'</span>'+
+      '<span><b>'+esc(nm||'Signed in')+'</b><small>'+(rk?('Rank '+rk+' of '+n):'Not ranked yet')+(m?' · '+m.pit_wins+'–'+m.pit_losses:'')+'</small></span>'+
+      '<span class="olElo"><b>'+(m?m.rating:1000)+'</b><small>Elo</small></span></div>'+
+    lion+'<div class="act">'+btn+'</div>'+
+    '<button class="olOut" data-act="acctOut">Sign out</button></div>';
+}
+function olNewsHTML(){
+  if(!signedIn()||!ONLINE.news||!ONLINE.news.length)return '';
+  const seen=pitSeen();
+  return '<div class="hd sub2"><h2>Who fought your lion</h2><span>Newest first</span></div><div class="card">'+ONLINE.news.slice(0,5).map(function(n){
+    const lost=n.attacker_won,fresh=Date.parse(n.created_at)>seen;
+    return '<div class="listRow pitNews'+(fresh?' fresh':'')+'"><span class="num">'+ico(lost?'skull':'check')+'</span><div><h4>'+esc(n.who)+(lost?' beat your lion':' lost to your lion')+'</h4>'+
+      '<small>'+timeAgo(n.created_at)+' · Elo '+(lost?'−':'+')+Math.abs(n.delta|0)+'</small></div><span></span></div>';}).join('')+'</div>';
+}
+function olBoardHTML(){
+  let list;
+  if(ONLINE.boardErr&&!ONLINE.board)list='<div class="card pad"><p class="muted" style="margin:0">'+esc(ONLINE.boardErr)+'</p><div class="act"><button data-act="pitRefresh">'+ico('refresh')+'Try again</button></div></div>';
+  else if(!ONLINE.board)list='<div class="card pad"><p class="muted" style="margin:0">Loading the leaderboard…</p></div>';
+  else if(!ONLINE.board.length)list='<div class="card pad"><p class="muted" style="margin:0">Nobody is on the board yet. Be the first.</p></div>';
+  else list='<div class="card olBoard">'+ONLINE.board.map(function(r,i){
+    const mine=signedIn()&&r.user_id===ONLINE.user.id,c=r.lion||{};
+    const look=(BUILDS[c.build]?BUILDS[c.build].name:'')+(WEAPONS[c.weapon]?' · '+WEAPONS[c.weapon].name:'');
+    return '<button class="olRow'+(mine?' mine':'')+'" data-act="olView" data-u="'+r.user_id+'"><span class="olRk'+(i<3?' t'+(i+1):'')+'">'+(i+1)+'</span>'+
+      '<canvas class="olCv" data-ol="'+i+'"></canvas><span class="olTx"><b>'+esc(r.name)+(r.belts?' <i class="olBelt">'+ico('belt')+r.belts+'</i>':'')+'</b>'+
+      '<small>'+esc(r.player)+(mine?' (you)':'')+' · '+look+'</small></span>'+
+      '<span class="olRt"><b>'+r.rating+'</b><small>'+r.pit_wins+'–'+r.pit_losses+'</small></span></button>';}).join('')+'</div>';
+  return '<div class="hd"><h2>Leaderboard</h2><span><button class="linkBtn" data-act="pitRefresh">'+ico('refresh')+'Refresh</button></span></div>'+list;
+}
+function renderOnline(){
+  const host=$('online');if(!host)return;
+  const keep={},af=document.activeElement&&document.activeElement.id;
+  ['acName','acEmail','acPass'].forEach(function(id){const e=$(id);if(e&&e.value!=null)keep[id]=e.value;});
+  const L=CAREER.lion;
+  let h='<div class="hd"><h2>Online</h2><span>Your lion against everyone else’s</span></div>';
+  if(!onlineOn())h+='<div class="card pad"><p class="muted" style="margin:0">Online play needs the internet. Everything else still works.</p></div>';
+  else{
+    if(!signedIn())h+='<div class="olHero">'+ico('globe')+'<b>Play online</b><small>Make a free account, put your lion on the leaderboard and fight everyone else’s. Win and your Elo goes up.</small></div>'+olAuthHTML();
+    else h+=olMeHTML(L)+olNewsHTML();
+    h+=olBoardHTML()+'<p class="muted" style="padding:0 2px 8px">Tap any lion to see its card. Beat a higher-rated lion for more Elo. A win also pays your championship lion '+PIT.winGold+' gold, up to '+PIT.goldWins+' times a day. Online fights never count on your championship record, and nobody dies.</p>';
+  }
+  ONLINE.msg='';
+  host.innerHTML=h;
+  if(signedIn()&&ONLINE.news&&ONLINE.news.length&&!ONLINE.seenT)ONLINE.seenT=setTimeout(function(){pitMarkSeen();ONLINE.seenT=0;},2500);
+  Object.keys(keep).forEach(function(id){const e=$(id);if(e)e.value=keep[id];});
+  if(af&&keep[af]!=null){const e=$(af);if(e&&e.focus){e.focus();try{e.setSelectionRange(e.value.length,e.value.length);}catch(x){}}}
+  olEnsure(false);
+}
+function paintOnlineIcons(){
+  if(typeof document==='undefined'||!document.querySelectorAll||!ONLINE.board)return;
+  document.querySelectorAll('canvas.olCv').forEach(function(cv){
+    const r=ONLINE.board[+cv.dataset.ol];if(!r||!r.lion)return;
+    const w=cv.clientWidth||40,h=cv.clientHeight||40,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
+    const g=cv.getContext('2d');g.scale(d,d);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
+    const c=r.lion;
+    try{paintLion(g,{x:w/2,y:h/2+1,R:w*.27,ang:-Math.PI/2,t:0,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor,eyes:lionEyes(c),eyeGlow:!!soulOf(c)});}catch(e){}
+  });
+}
+function olFind(uid){return (ONLINE.board||[]).filter(r=>r.user_id===uid)[0]||null;}
+/* a player's lion, with its card and full summary, and a Fight button */
+function openOnlineLion(uid){
+  const r=olFind(uid);if(!r||!r.lion)return;
+  const c=Object.assign(JSON.parse(JSON.stringify(r.lion)),{name:r.name,side:'A'}),mine=signedIn()&&uid===ONLINE.user.id,L=CAREER.lion;
+  UI.sheet={kind:'hall',field:'hall'};UI.hallLion=c;
+  let fight='';
+  if(!mine){
+    const o=eloOdds(olMyRating(),r.rating);
+    fight='<div class="olOdds"><span class="up">Win <b>+'+o.win+'</b></span><span class="dn">Lose <b>'+o.lose+'</b></span><span>Elo '+olMyRating()+' vs '+r.rating+'</span></div>'+
+      '<div class="act"><button class="key" data-act="olFight" data-u="'+uid+'">'+ico('duel')+
+      (!signedIn()?'Sign in to fight':(!L||!CAREER.locked?'Make a lion to fight':'Fight with '+esc(L.name)))+'</button></div>';
+  }
+  const body='<canvas class="lionCv prevCv" data-prev="hall"></canvas>'+
+    '<div class="hallHead"><h4>'+esc(r.name)+(r.belts?' <span class="badge gold">'+r.belts+'×</span>':'')+'</h4>'+
+      '<small><b>'+esc(r.player)+'</b>'+(mine?' (you)':'')+' · Elo '+r.rating+' · '+r.pit_wins+'–'+r.pit_losses+' online · defended '+r.defends+' time'+(r.defends===1?'':'s')+'</small>'+
+      '<small>'+(r.wins|0)+' championship wins in '+(r.fights|0)+' bouts</small></div>'+fight+
+    cardBlockHTML()+lionSummaryHTML(c);
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>'+(mine?'Your lion':esc(r.player)+'’s lion')+'</h3><button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+body+'</div>';
+  $('sheetWrap').classList.remove('hidden');
+  CARD.lion=c;CARD.url=null;
+  setTimeout(function(){try{const cv=drawLionCard(c);CARD.canvas=cv;CARD.url=cv.toDataURL('image/png');const im=$('cardPrev');if(im)im.src=CARD.url;}catch(e){}},30);
+  if(typeof requestAnimationFrame!=='undefined')requestAnimationFrame(bindPreviews);
+}
+function olFight(uid){
+  if(!signedIn()){closeSheet();ONLINE.tab='up';MATCH.mode='online';refresh();if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);toast('Make an account first');return;}
+  if(!CAREER.lion||!CAREER.locked){closeSheet();MATCH.mode='career';UI.view='home';refresh();toast('Finish a championship lion first');return;}
+  closeSheet();pitFight(uid);
+}
+/* the dock's Quick fight: someone close to your Elo */
+function olQuick(){
+  if(!signedIn()||!ONLINE.board)return;
+  const me=olMyRating();let pool=ONLINE.board.filter(r=>r.user_id!==ONLINE.user.id&&r.lion);
+  if(!pool.length){toast('Nobody else is on the board yet');return;}
+  const last=CAREER.pit&&CAREER.pit.uid;
+  if(last&&pool.length>1)pool=pool.filter(r=>r.user_id!==last);
+  pool.sort((a,b)=>Math.abs(a.rating-me)-Math.abs(b.rating-me));
+  const pick=(pool[1]&&Math.abs(pool[1].rating-me)-Math.abs(pool[0].rating-me)<40&&Math.random()<.5)?pool[1]:pool[0];
+  olFight(pick.user_id);
+}
+function olMineCfg(){const m=pitMine();return m&&m.lion?Object.assign(JSON.parse(JSON.stringify(m.lion)),{name:m.name}):null;}
 
 if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')cloudFlush();});
 /* ========== BOOT ========== */
