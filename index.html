@@ -979,6 +979,46 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .bNav .doneTag .ico{width:16px;height:16px}
 .bMore{display:flex;align-items:center;justify-content:space-between;width:100%;margin:0 0 12px;padding:14px 16px;border-radius:var(--r);background:var(--s1);color:var(--t2);font-size:14px;font-weight:600}
 .nameRow .badge .ico{width:13px;height:13px;margin-right:4px;vertical-align:-2px}
+/* ---------- the guided creator ---------- */
+.wizStage{position:relative;overflow:hidden}
+.wizStage .wizCv{height:210px;background:radial-gradient(ellipse at 50% 55%,#1a1a20,#0a0a0c 72%)}
+.wizSkip{position:absolute;top:10px;right:10px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--t2);font-size:13px;font-weight:600}
+.wizProg{display:flex;justify-content:space-between;gap:4px;padding:10px 12px 12px;border-top:1px solid var(--sep)}
+.wizProg>*{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:var(--s2);color:var(--t3);flex:none;padding:0}
+.wizProg .ico{width:14px;height:14px}
+.wizProg .done{background:rgba(255,179,64,.16);color:var(--amber)}
+.wizProg .now{background:var(--amber);color:#1a1100;box-shadow:0 0 0 3px rgba(255,179,64,.25)}
+.wizQ{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px 10px}
+.wizQ h3{font-size:25px;font-weight:700;letter-spacing:-.02em;margin:0;line-height:1.15}
+.wizQ p{margin:3px 0 0;color:var(--t3);font-size:13.5px}
+.wizDice{width:46px;height:46px;border-radius:14px;background:var(--s2);color:var(--amber);display:grid;place-items:center;flex:none}
+.wizDice .ico{width:21px;height:21px}
+.wizPane{padding:12px;animation:bIn .3s ease}
+.wizInfo{margin:12px 2px 0;font-size:13.5px;color:var(--t2);line-height:1.4}
+.wizInfo b{color:var(--t1)}
+.wizInfo+.wizInfo{margin-top:4px}
+.wizSw{justify-content:center;gap:10px}
+.wizSw+.wizInfo{text-align:center}
+.wizName{display:flex;gap:8px}
+.wizName .nameField{flex:1;min-width:0;width:100%;font-size:24px;font-weight:700;padding:12px 14px;background:var(--s2);border-radius:14px}
+.wizNameDice{width:56px;border-radius:14px;background:var(--s2);color:var(--amber);display:grid;place-items:center;flex:none}
+.wizNameDice .ico{width:22px;height:22px}
+.wizMeta{display:flex;align-items:center;gap:8px;margin:10px 2px 0;font-size:13px;color:var(--t3)}
+.wizAlt{display:flex;gap:8px;margin-top:16px}
+.wizAlt button{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;border-radius:12px;background:var(--bg);border:1px solid var(--sep);color:var(--t2);font-size:13.5px;font-weight:600}
+.wizAlt .ico{width:15px;height:15px}
+.wizFin{padding:0 0 2px}
+.wizFinName{display:flex;align-items:center;gap:10px;padding:14px 16px 8px}
+.wizFinName .nameField{flex:1;min-width:0;width:100%;font-size:26px;font-weight:700;background:transparent;padding:0;border:none;color:var(--t1)}
+.wizList{padding:2px 0}
+.wizList button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 16px;text-align:left;border-bottom:1px solid var(--sep)}
+.wizList button:last-child{border-bottom:none}
+.wizList button:active{background:var(--s2)}
+.wizList .ico{width:18px;height:18px;color:var(--amber);flex:none}
+.wizList span{flex:1;min-width:0;display:flex;flex-direction:column;font-size:15px;font-weight:600;color:var(--t1);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.wizList i{font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);font-weight:700}
+.wizList b{color:var(--t3);font-size:20px;font-weight:400}
+.go1.wizBack{flex:0 0 58px;max-width:58px;padding:0;background:var(--s2);color:var(--t1);box-shadow:none;font-size:28px;line-height:1}
 /* ---------- tutorial ---------- */
 .cutWrap{position:fixed;inset:0;z-index:35;display:flex;align-items:flex-end;justify-content:center;
   padding:20px 16px 34px;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));animation:cutIn 1.2s ease}
@@ -1113,7 +1153,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Tournament</h6>
       <p>Eight lions of your choosing in a knockout bracket. Every match is best of three, winners go through, and three rounds later there is one champion. Edit, roll or paste a code into any slot before it starts. Nothing in a tournament touches your championship lion.</p>
       <h6>Career</h6>
-      <p>You build your own lion: frame, armour, weapon, abilities, mind, personality, coat, mane and tail. Hit <b>Roll</b> if you would rather let chance decide, then tweak whatever you like. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
+      <p>You build your own lion one tap at a time, from grey clay to finished fighter: name, looks, size, armour, weapon, abilities, fighting style and personality. At the end, <b>All set?</b> shows everything; tap anything to change it. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them (unless you have made a deal with the Mystic Lion), so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion. Very rarely (about one opponent in fifty) a lion you face carries a <b>bound soul</b>, divine or demonic, with the glowing eyes, the aura and +10% to everything; the den and the gate intro tell you when one is next.</p>
       <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. a <b>Bloodlust Tonic</b> (30 gold, drink it from the bag) makes the next championship bout +20% damage but −15% health; <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
       <h6>Gold and the Lion Store</h6>
@@ -2648,50 +2688,54 @@ function bMeters(c){
     (td?'<em class="'+(td>0?'up':'dn')+'">'+(td>0?'+':'')+td+'</em>':'')+'</div>';
 }
 function bTile(f,v,on,inner,cls){return '<button class="bTile'+(on?' on':'')+(cls?' '+cls:'')+'" data-act="bset" data-f="'+f+'" data-v="'+v+'">'+inner+'</button>';}
+function pCoat(c,hd){return '<div class="bSec">'+(hd?'<h4>Coat</h4>':'')+'<div class="bSw">'+PELTS.map(function(p,i){return '<button class="'+((c.pelt||0)===i?'on':'')+'" data-act="bset" data-f="pelt" data-v="'+i+'" title="'+p.name+'"><i style="background:'+p.hex+'"></i></button>';}).join('')+
+  '</div><small class="bNote">'+PELTS[c.pelt||0].name+'</small></div>';}
+function pMane(c,hd){return '<div class="bSec">'+(hd?'<h4>Mane</h4>':'')+'<div class="bGrid g4">'+MANES.map(function(m,i){return bTile('mane',i,(c.mane||0)===i,'<canvas class="bMini" data-mini="mane:'+i+'"></canvas><b>'+m.name+'</b>');}).join('')+'</div>'+
+  (hd?'':'<small class="bNote">'+MANES[c.mane||0].name+': '+MANES[c.mane||0].note+'</small>')+'</div>';}
+function pTail(c,hd){return '<div class="bSec">'+(hd?'<h4>Tail</h4>':'')+'<div class="bGrid g4">'+TAILS.map(function(m,i){return bTile('tail',i,(c.tail||0)===i,'<canvas class="bMini" data-mini="tail:'+i+'"></canvas><b>'+m.name+'</b>');}).join('')+'</div>'+
+  (hd?'':'<small class="bNote">'+TAILS[c.tail||0].name+': '+TAILS[c.tail||0].note+'</small>')+'</div>';}
+function pFrame(c,hd){return '<div class="bSec">'+(hd?'<h4>Frame</h4>':'')+'<div class="bGrid g5">'+Object.keys(BUILDS).map(function(k){const B=BUILDS[k];
+    return bTile('build',k,c.build===k,'<canvas class="bMini tall" data-mini="build:'+k+'"></canvas><b>'+B.name+'</b>');}).join('')+'</div>'+
+    (function(){const B=BUILDS[c.build];return '<div class="bPicked">'+ico('frame')+'<span><b>'+B.name+'</b>'+BUILD_NOTE[c.build]+
+      bBar('HEALTH',(B.hp-.8)/.4)+bBar('SPEED',(B.spd-.7)/.66)+bBar('HIT',(B.dmg-.8)/.5)+'</span></div>';})()+'</div>';}
+function pArmor(c,hd){return '<div class="bSec">'+(hd?'<h4>Armour</h4>':'')+'<div class="bGrid g4">'+Object.keys(ARMORS).map(function(k,i){const A=ARMORS[k];
+    return bTile('armor',k,c.armor===k,'<span class="bShield">'+'<i></i>'.repeat(i)+(i?'':'—')+'</span><b>'+A.name+'</b><small>'+(A.dr?'−'+Math.round(A.dr*100)+'% hurt':'fastest')+'</small>');}).join('')+
+    '</div><small class="bNote">'+(function(A){const s=Math.round((A.spd-1)*100);return (A.dr?Math.round(A.dr*100)+'% less damage taken':'No protection at all')+' \u00b7 '+(s>0?s+'% faster':s<0?(-s)+'% slower':'normal speed')+' on its feet';})(ARMORS[c.armor])+'</small></div>';}
+function pWeapon(c){
+  const ks=Object.keys(WEAPONS).filter(k=>!WEAPONS[k].hidden),W=WEAPONS[c.weapon];
+  return '<div class="bSec"><div class="bGrid g2">'+ks.map(function(k){const S=WSTAT[k];
+    return bTile('weapon',k,c.weapon===k,'<span class="bIco '+WEAPONS[k].cls+'">'+svgI(WICO[k]||'')+'</span><span class="bTx"><b>'+WEAPONS[k].name+'</b>'+
+      '<small>'+(WEAPONS[k].cls==='melee'?'Melee':'Ranged')+'</small>'+bBar('POW',S.p)+bBar('REACH',S.r)+bBar('RATE',S.s)+'</span>','wide');}).join('')+'</div></div>'+
+    '<div class="bPicked">'+svgI(WICO[c.weapon]||'')+'<span><b>'+wName(c)+'</b>'+W.desc+'</span></div>'+
+    (wlvOf(c)?'<p class="bHint warn">Changing weapon loses the Lv'+wlvOf(c)+' finish.</p>':'');}
+function pSkills(c){
+  const ks=Object.keys(ABILITIES);
+  return '<div class="bSec"><h4>Pick two <small>'+c.abil.length+' of 2</small></h4><div class="bGrid g3">'+ks.map(function(k){const n=c.abil.indexOf(k);
+    return bTile('abil',k,n>=0,(n>=0?'<em class="bNum">'+(n+1)+'</em>':'')+'<span class="bIco '+(ABILITIES[k].active?'act':'pas')+'">'+svgI(AICO[k]||'')+'</span><b>'+ABILITIES[k].name+'</b><small>'+(ABILITIES[k].active?'Active':'Passive')+'</small>');}).join('')+'</div></div>'+
+    c.abil.map(function(k){return '<div class="bPicked">'+svgI(AICO[k]||'')+'<span><b>'+ABILITIES[k].name+'</b>'+ABILITIES[k].desc+'</span></div>';}).join('');}
+function pBrain(c,hd){return '<div class="bSec">'+(hd?'<h4>How it fights</h4>':'')+'<div class="bList">'+Object.keys(BRAINS).map(function(k){
+    return bTile('brain',k,c.brain===k,'<span class="bIco">'+ico(MICO[k])+'</span><span class="bTx"><b>'+BRAINS[k].name+'</b><small>'+MIND_LINE[k]+'</small></span>','row');}).join('')+'</div></div>';}
+function pTraits(c,hd){return '<div class="bSec">'+(hd?'<h4>Personality <small>pick two · '+((c.traits||[]).length)+' of 2</small></h4>':'<h4>Pick two <small>'+((c.traits||[]).length)+' of 2 \u00b7 opposites cannot pair</small></h4>')+'<div class="bTraits">'+Object.keys(TRAITS).map(function(k){const T=TRAITS[k],on=(c.traits||[]).indexOf(k)>=0;
+    return '<button class="'+(on?'on':'')+'" data-act="bset" data-f="traits" data-v="'+k+'">'+traitIco(T)+T.name+'</button>';}).join('')+'</div>'+
+    ((c.traits||[]).map(function(k){const T=TRAITS[k];return T?'<div class="bPicked">'+traitIco(T)+'<span><b>'+T.name+'</b>'+T.desc+'</span></div>':'';}).join(''))+'</div>';}
 function bPane(c,st,o){
   if(st==='look'){
-    let h='<div class="bSec"><h4>Coat</h4><div class="bSw">'+PELTS.map(function(p,i){return '<button class="'+((c.pelt||0)===i?'on':'')+'" data-act="bset" data-f="pelt" data-v="'+i+'" title="'+p.name+'"><i style="background:'+p.hex+'"></i></button>';}).join('')+
-      '</div><small class="bNote">'+PELTS[c.pelt||0].name+'</small></div>';
-    h+='<div class="bSec"><h4>Mane</h4><div class="bGrid g4">'+MANES.map(function(m,i){return bTile('mane',i,(c.mane||0)===i,'<canvas class="bMini" data-mini="mane:'+i+'"></canvas><b>'+m.name+'</b>');}).join('')+'</div></div>';
-    h+='<div class="bSec"><h4>Tail</h4><div class="bGrid g4">'+TAILS.map(function(m,i){return bTile('tail',i,(c.tail||0)===i,'<canvas class="bMini" data-mini="tail:'+i+'"></canvas><b>'+m.name+'</b>');}).join('')+'</div></div>';
+    let h=pCoat(c,1)+pMane(c,1)+pTail(c,1);
     if(o.scars)h+='<div class="bSec"><h4>Scars <small>'+((c.scars||[]).length||'none')+'</small></h4><div class="bChips">'+
       '<button data-act="bscar" data-v="face">+ Face</button><button data-act="bscar" data-v="body">+ Body</button><button data-act="bscar" data-v="clear">Clear</button></div></div>';
     return h+'<p class="bHint">Looks only. None of this changes a fight.</p>';
   }
   if(st==='body'){
-    let h='<div class="bSec"><h4>Frame</h4><div class="bGrid g5">'+Object.keys(BUILDS).map(function(k){const B=BUILDS[k];
-      return bTile('build',k,c.build===k,'<canvas class="bMini tall" data-mini="build:'+k+'"></canvas><b>'+B.name+'</b>');}).join('')+'</div>'+
-      (function(){const B=BUILDS[c.build];return '<div class="bPicked">'+ico('frame')+'<span><b>'+B.name+'</b>'+BUILD_NOTE[c.build]+
-        bBar('HEALTH',(B.hp-.8)/.4)+bBar('SPEED',(B.spd-.7)/.66)+bBar('HIT',(B.dmg-.8)/.5)+'</span></div>';})()+'</div>';
-    h+='<div class="bSec"><h4>Armour</h4><div class="bGrid g4">'+Object.keys(ARMORS).map(function(k,i){const A=ARMORS[k];
-      return bTile('armor',k,c.armor===k,'<span class="bShield">'+'<i></i>'.repeat(i)+(i?'':'—')+'</span><b>'+A.name+'</b><small>'+(A.dr?'−'+Math.round(A.dr*100)+'% hurt':'fastest')+'</small>');}).join('')+
-      '</div><small class="bNote">'+(function(A){const s=Math.round((A.spd-1)*100);return (A.dr?Math.round(A.dr*100)+'% less damage taken':'No protection at all')+' \u00b7 '+(s>0?s+'% faster':s<0?(-s)+'% slower':'normal speed')+' on its feet';})(ARMORS[c.armor])+'</small></div>';
+    let h=pFrame(c,1)+pArmor(c,1);
     if(o.iv)h+='<div class="bSec"><h4>IV <small>born strength, 1 to 10</small></h4><div class="bChips iv">'+Array.from({length:10},function(_,i){return '<button class="'+((c.iv||5)===i+1?'on':'')+'" data-act="bset" data-f="iv" data-v="'+(i+1)+'">'+(i+1)+'</button>';}).join('')+'</div></div>';
     return h;
   }
-  if(st==='weapon'){
-    const ks=Object.keys(WEAPONS).filter(k=>!WEAPONS[k].hidden);
-    const W=WEAPONS[c.weapon];
-    return '<div class="bSec"><div class="bGrid g2">'+ks.map(function(k){const S=WSTAT[k];
-      return bTile('weapon',k,c.weapon===k,'<span class="bIco '+WEAPONS[k].cls+'">'+svgI(WICO[k]||'')+'</span><span class="bTx"><b>'+WEAPONS[k].name+'</b>'+
-        '<small>'+(WEAPONS[k].cls==='melee'?'Melee':'Ranged')+'</small>'+bBar('POW',S.p)+bBar('REACH',S.r)+bBar('RATE',S.s)+'</span>','wide');}).join('')+'</div></div>'+
-      '<div class="bPicked">'+svgI(WICO[c.weapon]||'')+'<span><b>'+wName(c)+'</b>'+W.desc+'</span></div>'+
-      (wlvOf(c)?'<p class="bHint warn">Changing weapon loses the Lv'+wlvOf(c)+' finish.</p>':'');
-  }
-  if(st==='skills'){
-    const ks=Object.keys(ABILITIES);
-    return '<div class="bSec"><h4>Pick two <small>'+c.abil.length+' of 2</small></h4><div class="bGrid g3">'+ks.map(function(k){const n=c.abil.indexOf(k);
-      return bTile('abil',k,n>=0,(n>=0?'<em class="bNum">'+(n+1)+'</em>':'')+'<span class="bIco '+(ABILITIES[k].active?'act':'pas')+'">'+svgI(AICO[k]||'')+'</span><b>'+ABILITIES[k].name+'</b><small>'+(ABILITIES[k].active?'Active':'Passive')+'</small>');}).join('')+'</div></div>'+
-      c.abil.map(function(k){return '<div class="bPicked">'+svgI(AICO[k]||'')+'<span><b>'+ABILITIES[k].name+'</b>'+ABILITIES[k].desc+'</span></div>';}).join('');
-  }
+  if(st==='weapon')return pWeapon(c);
+  if(st==='skills')return pSkills(c);
   /* mind */
-  let h='<div class="bSec"><h4>How it fights</h4><div class="bList">'+Object.keys(BRAINS).map(function(k){
-    return bTile('brain',k,c.brain===k,'<span class="bIco">'+ico(MICO[k])+'</span><span class="bTx"><b>'+BRAINS[k].name+'</b><small>'+MIND_LINE[k]+'</small></span>','row');}).join('')+'</div></div>';
-  if(o.traits){
-    h+='<div class="bSec"><h4>Personality <small>pick two · '+((c.traits||[]).length)+' of 2</small></h4><div class="bTraits">'+Object.keys(TRAITS).map(function(k){const T=TRAITS[k],on=(c.traits||[]).indexOf(k)>=0;
-      return '<button class="'+(on?'on':'')+'" data-act="bset" data-f="traits" data-v="'+k+'">'+traitIco(T)+T.name+'</button>';}).join('')+'</div>'+
-      ((c.traits||[]).map(function(k){const T=TRAITS[k];return T?'<div class="bPicked">'+traitIco(T)+'<span><b>'+T.name+'</b>'+T.desc+'</span></div>':'';}).join(''))+'</div>';
-  } else if((c.traits||[]).length){
+  let h=pBrain(c,1);
+  if(o.traits)h+=pTraits(c,1);
+  else if((c.traits||[]).length){
     h+='<div class="bSec"><h4>Personality <small>born with it</small></h4><div class="bTraits">'+(c.traits||[]).map(function(k){const T=TRAITS[k];return T?'<button class="on" disabled>'+traitIco(T)+T.name+'</button>':'';}).join('')+'</div></div>';
   }
   return h;
@@ -2700,7 +2744,7 @@ function bPane(c,st,o){
 function builderHTML(c,o){
   const st=UI.bstep||'look',i=BSTEPS.findIndex(s=>s[0]===st),nx=BSTEPS[i+1],pv=BSTEPS[i-1];
   return '<div class="card bTop">'+
-      '<canvas class="lionCv prevCv" data-prev="'+o.prevKey+'"></canvas>'+o.nameRow+bMeters(c)+'</div>'+
+      '<canvas class="lionCv prevCv" data-prev="'+o.prevKey+'"></canvas>'+o.nameRow+bMeters(c)+'</div>'+(o.recap||'')+
     '<div class="bSteps">'+BSTEPS.map(function(s,j){return '<button data-act="bstep" data-s="'+s[0]+'" class="'+(st===s[0]?'on':(j<i?'done':''))+'"><span>'+ico(s[2])+'</span><b>'+s[1]+'</b></button>';}).join('')+'</div>'+
     '<div class="card bPane" data-step="'+st+'">'+bPane(c,st,o)+
       '<div class="bNav">'+(pv?'<button data-act="bstep" data-s="'+pv[0]+'" class="ghost">‹ '+pv[1]+'</button>':'<span></span>')+
@@ -2723,6 +2767,7 @@ function bset(f,v){
   }
   else if(f==='pelt'||f==='mane'||f==='tail'||f==='iv'){if(f==='iv'&&career)return;c[f]=+v;}
   else{if(f==='weapon'&&c.weapon!==v&&c.wlv){delete c.wlv;toast('The weapon finish is lost');}c[f]=v;}
+  if(MATCH.mode==='career'&&wizOn(CAREER.lion))UI.wizPop=Date.now();
   SFX.ui();bKeepScroll(refresh);
 }
 function bscar(v){const c=currentLion();if(!c||MATCH.mode!=='editor')return;c.scars=c.scars||[];
@@ -2758,6 +2803,151 @@ function paintMinis(){
     if(k==='build'){R=Math.min(w,h)*(.14+(BUILDS[v].r-14)/18*.2);x=w*.56;ang=-.4;}
     paintLion(g,{x:x,y:y,R:R,ang:ang,t:0,pelt:o.pelt,mane:o.mane,tail:o.tail,seed:3,scars:[],armor:o.armor});
   });
+}
+
+/* ========== 7c. THE GUIDED CREATOR ==========
+   A new championship lion, one tap-choice per screen. The lion on the stage starts as grey clay and
+   picks up each thing as you choose it. Then "All set?": everything in a list, tap any line to change it. */
+const WIZ=[
+  {k:'name',  t:'Name',       ico:'edit',  q:'Name your lion',     h:''},
+  {k:'pelt',  t:'Coat',       ico:'drop',  q:'Pick a coat',        h:'Looks only'},
+  {k:'mane',  t:'Mane',       ico:'lion',  q:'Pick a mane',        h:'Looks only'},
+  {k:'tail',  t:'Tail',       ico:'reach', q:'Pick a tail',        h:'Looks only'},
+  {k:'build', t:'Size',       ico:'frame', q:'How big?',           h:'Bigger is tougher, but slower'},
+  {k:'armor', t:'Armour',     ico:'shield',q:'Pick armour',        h:'More armour is safer, but slower'},
+  {k:'weapon',t:'Weapon',     ico:'sword', q:'Pick a weapon',      h:''},
+  {k:'abil',  t:'Abilities',  ico:'spark', q:'Pick 2 abilities',   h:''},
+  {k:'brain', t:'Fighting style',ico:'mind',q:'How does it fight?',h:'You never control it in a fight'},
+  {k:'traits',t:'Personality',ico:'heart', q:'Pick 2 traits',      h:''}];
+const CLAYCOLS={mane:'#4a4a52',body:'#2b2b31',edge:'#5c5c66',muz:'#6c6c76',plate:'#7c7c86'};
+function wizOn(L){return !!(L&&L.wiz&&!CAREER.locked&&L.wiz.s<WIZ.length);}
+function wizVal(L,k){
+  if(k==='name')return esc(L.name||'');
+  if(k==='pelt')return PELTS[L.pelt||0].name;
+  if(k==='mane')return MANES[L.mane||0].name;
+  if(k==='tail')return TAILS[L.tail||0].name;
+  if(k==='build')return BUILDS[L.build].name;
+  if(k==='armor')return ARMORS[L.armor].name;
+  if(k==='weapon')return wName(L);
+  if(k==='abil')return L.abil.map(a=>ABILITIES[a].name).join(' + ');
+  if(k==='brain')return BRAINS[L.brain].name;
+  return traitNames(L);
+}
+function wizOk(L){if(!L.wiz||!WIZ[L.wiz.s])return '';const k=WIZ[L.wiz.s].k;
+  if(k==='abil'&&L.abil.length<2)return 'Pick two';
+  if(k==='traits'&&(L.traits||[]).length<2)return 'Pick two';
+  if(k==='name'&&!(L.name||'').trim())return 'Give it a name';
+  return '';}
+/* one line about what is picked */
+function wizInfo(L,k){
+  const line=(b,t)=>'<p class="wizInfo"><b>'+b+'</b>'+t+'</p>';
+  if(k==='build')return line(BUILDS[L.build].name+'. ',BUILD_NOTE[L.build]);
+  if(k==='armor'){const A=ARMORS[L.armor],s=Math.round((1-A.spd)*100);
+    return line(A.name+'. ',A.dr?'Takes '+Math.round(A.dr*100)+'% less damage'+(s>0?', '+s+'% slower.':'.'):'No protection, but the fastest.');}
+  if(k==='weapon')return line(WEAPONS[L.weapon].name+'. ',WEAPONS[L.weapon].desc);
+  if(k==='abil')return L.abil.map(a=>line(ABILITIES[a].name+'. ',ABILITIES[a].desc)).join('');
+  if(k==='traits')return (L.traits||[]).map(t=>TRAITS[t]?line(TRAITS[t].name+'. ',TRAITS[t].desc):'').join('');
+  return '';
+}
+function wizPane(L,k){
+  const tile=(f,v,on,inner)=>bTile(f,v,on,inner);
+  if(k==='name')return '<div class="wizName"><input class="nameField" data-scope="career" value="'+esc(L.name)+'" maxlength="16" aria-label="Name your lion">'+
+      '<button class="wizNameDice" data-act="wizName" aria-label="Random name">'+ico('dice')+'</button></div>'+
+    '<div class="wizMeta"><span class="badge amber">IV '+(L.iv||5)+'</span><span>born with it, 1 to 10</span></div>'+
+    '<div class="wizAlt"><button data-act="careerRoll">'+ico('dice')+'Random lion</button><button data-act="careerLoad">'+ico('paste')+'Load a code</button></div>';
+  if(k==='pelt')return '<div class="bSw wizSw">'+PELTS.map(function(p,i){return '<button class="'+((L.pelt||0)===i?'on':'')+'" data-act="bset" data-f="pelt" data-v="'+i+'" title="'+p.name+'"><i style="background:'+p.hex+'"></i></button>';}).join('')+'</div>'+
+    '<p class="wizInfo"><b>'+PELTS[L.pelt||0].name+'</b></p>';
+  if(k==='mane')return '<div class="bGrid g4">'+MANES.map((m,i)=>tile('mane',i,(L.mane||0)===i,'<canvas class="bMini" data-mini="mane:'+i+'"></canvas><b>'+m.name+'</b>')).join('')+'</div>';
+  if(k==='tail')return '<div class="bGrid g4">'+TAILS.map((m,i)=>tile('tail',i,(L.tail||0)===i,'<canvas class="bMini" data-mini="tail:'+i+'"></canvas><b>'+m.name+'</b>')).join('')+'</div>';
+  if(k==='build')return '<div class="bGrid g5">'+Object.keys(BUILDS).map(b=>tile('build',b,L.build===b,'<canvas class="bMini tall" data-mini="build:'+b+'"></canvas><b>'+BUILDS[b].name+'</b>')).join('')+'</div>'+wizInfo(L,k);
+  if(k==='armor')return '<div class="bGrid g4">'+Object.keys(ARMORS).map((a,i)=>tile('armor',a,L.armor===a,'<span class="bShield">'+'<i></i>'.repeat(i)+(i?'':'—')+'</span><b>'+ARMORS[a].name+'</b>')).join('')+'</div>'+wizInfo(L,k);
+  if(k==='weapon')return '<div class="bGrid g3">'+Object.keys(WEAPONS).filter(w=>!WEAPONS[w].hidden).map(w=>tile('weapon',w,L.weapon===w,
+      '<span class="bIco '+WEAPONS[w].cls+'">'+svgI(WICO[w]||'')+'</span><b>'+WEAPONS[w].name+'</b><small>'+(WEAPONS[w].cls==='melee'?'Close up':'Ranged')+'</small>')).join('')+'</div>'+wizInfo(L,k);
+  if(k==='abil')return '<div class="bGrid g3">'+Object.keys(ABILITIES).map(function(a){const n=L.abil.indexOf(a);
+      return tile('abil',a,n>=0,(n>=0?'<em class="bNum">'+(n+1)+'</em>':'')+'<span class="bIco '+(ABILITIES[a].active?'act':'pas')+'">'+svgI(AICO[a]||'')+'</span><b>'+ABILITIES[a].name+'</b>');}).join('')+'</div>'+wizInfo(L,k);
+  if(k==='brain')return '<div class="bList">'+Object.keys(BRAINS).map(b=>bTile('brain',b,L.brain===b,'<span class="bIco">'+ico(MICO[b])+'</span><span class="bTx"><b>'+BRAINS[b].name+'</b><small>'+MIND_LINE[b]+'</small></span>','row')).join('')+'</div>';
+  return '<div class="bTraits">'+Object.keys(TRAITS).map(function(t){const T=TRAITS[t],on=(L.traits||[]).indexOf(t)>=0;
+      return '<button class="'+(on?'on':'')+'" data-act="bset" data-f="traits" data-v="'+t+'">'+traitIco(T)+T.name+'</button>';}).join('')+'</div>'+wizInfo(L,k);
+}
+function wizStage(L,s,edit){
+  const prog=edit?'':'<div class="wizProg">'+WIZ.map(function(w,i){
+    return i<s?'<button class="done" data-act="wizGo" data-i="'+i+'" aria-label="'+w.t+'">'+ico(w.ico)+'</button>'
+      :'<span class="'+(i===s?'now':'')+'">'+ico(w.ico)+'</span>';}).join('')+'</div>';
+  return '<div class="card wizStage"><canvas class="lionCv prevCv wizCv" data-prev="career"></canvas>'+
+    (s<WIZ.length&&!edit?'<button class="wizSkip" data-act="wizEnd">Skip ›</button>':'')+prog+'</div>';
+}
+function wizHTML(L){
+  const s=L.wiz.s,W=WIZ[s],edit=!!L.wiz.edit;
+  return wizStage(L,s,edit)+
+    '<div class="wizQ"><div><h3>'+W.q+'</h3>'+(W.h?'<p>'+W.h+'</p>':'')+'</div>'+
+      (W.k==='name'?'':'<button class="wizDice" data-act="wizDice" aria-label="Surprise me">'+ico('dice')+'</button>')+'</div>'+
+    '<div class="card wizPane" data-step="'+W.k+'">'+wizPane(L,W.k)+'</div>';
+}
+/* the end: the lion, its numbers, and everything you picked. Tap a line to change it */
+function wizFinalHTML(L){
+  return wizStage(L,WIZ.length,true)+
+    '<div class="card wizFin"><div class="wizFinName"><input class="nameField" data-scope="career" value="'+esc(L.name)+'" maxlength="16" aria-label="Rename">'+
+      '<span class="badge amber">IV '+(L.iv||5)+'</span></div>'+bMeters(L)+'</div>'+
+    '<div class="wizQ"><div><h3>All set?</h3><p>Tap anything to change it</p></div></div>'+
+    '<div class="card wizList">'+WIZ.slice(1).map(function(w,j){
+      return '<button data-act="wizEdit" data-i="'+(j+1)+'">'+ico(w.ico)+'<span><i>'+w.t+'</i>'+wizVal(L,w.k)+'</span><b>›</b></button>';}).join('')+'</div>';
+}
+function wizStep(d){
+  const L=CAREER.lion;if(!L||CAREER.locked)return;
+  if(!L.wiz)L.wiz={s:0};
+  if(d>0&&L.wiz.s>=WIZ.length)return;
+  if(d>0){const why=wizOk(L);if(why){toast(why);return;}}
+  if(L.wiz.edit&&d>0)L.wiz={s:WIZ.length};
+  else L.wiz.s=clamp(L.wiz.s+d,0,WIZ.length);
+  UI.wizPop=Date.now();SFX.ui();Store.save();refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
+}
+function wizGo(i){const L=CAREER.lion;if(!L||CAREER.locked)return;L.wiz={s:clamp(i|0,0,WIZ.length-1)};SFX.ui();Store.save();refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);}
+function wizEdit(i){const L=CAREER.lion;if(!L||CAREER.locked)return;L.wiz={s:clamp(i|0,0,WIZ.length-1),edit:1};SFX.ui();Store.save();refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);}
+function wizEnd(){const L=CAREER.lion;if(!L||CAREER.locked)return;L.wiz={s:WIZ.length};UI.wizPop=Date.now();SFX.ui();Store.save();refresh();
+  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);}
+/* a random pick for just this step */
+function wizDice(){
+  const L=CAREER.lion;if(!wizOn(L))return;const k=WIZ[L.wiz.s].k,r=a=>a[(Math.random()*a.length)|0];
+  if(k==='pelt')L.pelt=(Math.random()*PELTS.length)|0;
+  else if(k==='mane')L.mane=(Math.random()*MANES.length)|0;
+  else if(k==='tail')L.tail=(Math.random()*TAILS.length)|0;
+  else if(k==='build')L.build=r(Object.keys(BUILDS));
+  else if(k==='armor')L.armor=r(Object.keys(ARMORS));
+  else if(k==='weapon')L.weapon=r(Object.keys(WEAPONS).filter(x=>!WEAPONS[x].hidden&&x!==L.weapon));
+  else if(k==='abil'){const ks=Object.keys(ABILITIES);const a=r(ks);let b=r(ks);while(b===a)b=r(ks);L.abil=[a,b];}
+  else if(k==='brain')L.brain=r(Object.keys(BRAINS));
+  else if(k==='traits')L.traits=rollTraits();
+  UI.wizPop=Date.now();SFX.roll?SFX.roll():SFX.ui();bKeepScroll(refresh);
+}
+/* draw a 16x16 icon (raw svg paths) onto a canvas */
+function glyph(g,src,x,y,s,col){
+  g.save();g.translate(x-s/2,y-s/2);g.scale(s/16,s/16);g.strokeStyle=col;g.lineWidth=1.7;g.lineCap='round';g.lineJoin='round';
+  if(typeof Path2D!=='undefined'){
+    src.replace(/ d="([^"]+)"/g,function(m,d){try{g.stroke(new Path2D(d));}catch(e){}return m;});
+    src.replace(/<circle cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g,function(m,cx,cy,r){g.beginPath();g.arc(+cx,+cy,+r,0,7);g.stroke();return m;});
+  }
+  g.restore();
+}
+/* the guide's preview: clay until it has a coat, no mane or tail until they are picked, and so on */
+function wizPaint(g,p,L){
+  const s=L.wiz.edit?WIZ.length:Math.min(L.wiz.s,WIZ.length),R=BUILDS[s>=4?L.build:'prime'].r*.78*1.8;p.R=R;
+  /* centre stage: it stands still and looks about */
+  p.x=p.w/2;p.y=p.h/2+6;p.ang=Math.sin(p.t*.5)*.6-.2;p.tx=p.x;p.ty=p.y;
+  const now=Date.now(),pop=UI.wizPop?(now-UI.wizPop)/650:9;
+  if(pop<1){const k=pop;g.save();g.strokeStyle='rgba(255,179,64,'+(1-k).toFixed(3)+')';g.lineWidth=2.5;g.beginPath();g.arc(p.x,p.y,R*(1.1+k*1.8),0,7);g.stroke();
+    for(let i=0;i<10;i++){const a=i*.628+k*1.5,r=R*(1+k*2.2);g.fillStyle='rgba(255,210,120,'+(1-k).toFixed(3)+')';g.fillRect(p.x+Math.cos(a)*r-1.2,p.y+Math.sin(a)*r-1.2,2.4,2.4);}
+    g.restore();}
+  paintLion(g,{x:p.x,y:p.y,R:R,ang:p.ang,t:p.t,pelt:L.pelt||0,cols:s>=1?null:CLAYCOLS,mane:L.mane||0,tail:L.tail||0,noMane:s<2,noTail:s<3,
+    seed:hashStr(L.name),scars:[],armor:s>=5?L.armor:'none',anim:p.anim>0});
+  if(s>=6&&WICO[L.weapon]){const bx=p.x+R*1.25,by=p.y-R*1.25,mel=WEAPONS[L.weapon].cls==='melee';
+    g.fillStyle='rgba(10,10,12,.82)';g.strokeStyle=mel?'rgba(255,179,64,.75)':'rgba(124,194,255,.75)';g.lineWidth=1.4;g.beginPath();g.arc(bx,by,10.5,0,7);g.fill();g.stroke();
+    glyph(g,WICO[L.weapon],bx,by,13,mel?'#ffb340':'#7cc2ff');}
+  if(s>=7)L.abil.forEach(function(a,i){const an=p.t*1.3+i*Math.PI,ox=p.x+Math.cos(an)*R*1.75,oy=p.y+Math.sin(an)*R*1.75*.8,act=ABILITIES[a].active;
+    g.fillStyle='rgba(10,10,12,.82)';g.strokeStyle=act?'rgba(255,179,64,.6)':'rgba(94,230,168,.6)';g.lineWidth=1.2;g.beginPath();g.arc(ox,oy,8.5,0,7);g.fill();g.stroke();
+    glyph(g,AICO[a]||'',ox,oy,11,act?'#ffb340':'#5ee6a8');});
 }
 
 /* ---------- picker sheet ---------- */
@@ -3035,7 +3225,7 @@ function renderCareer(){
       '<small>Tap <b>?</b> and Old Lion will walk you through everything. He has been around a while.</small></span><span class="go">\u203a</span></button>'+rivalsHTML()+hallHTML();
     return;
   }
-  if(!CAREER.locked){host.innerHTML=editorHTML('career',L,'Create your lion',true);return;}
+  if(!CAREER.locked){host.innerHTML=wizOn(L)?wizHTML(L):(L.wiz?wizFinalHTML(L):editorHTML('career',L,'Create your lion',true));return;}
   if(UI.view==='shop'){host.innerHTML=shopHTML(L);return;}
   if(UI.view==='mystic'){host.innerHTML=mysticHTML(L);return;}
   if(UI.view==='smith'){host.innerHTML=smithHTML(L);return;}
@@ -4129,6 +4319,13 @@ function renderLaunch(){
     return;
   }
   if(!L){bar.innerHTML='<button class="go1" data-act="create">'+ico('plus')+'Create a lion</button>';return;}
+  if(!CAREER.locked&&wizOn(L)){
+    const s=L.wiz.s,why=wizOk(L);
+    bar.innerHTML=L.wiz.edit?'<button class="go1'+(why?' dim':'')+'" data-act="wizNext">'+ico('check')+'Done</button>'
+      :(s>0?'<button class="go1 wizBack" data-act="wizBack" aria-label="Back">\u2039</button>':'')+
+      '<button class="go1'+(why?' dim':'')+'" data-act="wizNext">Next \u203a</button>';
+    return;
+  }
   if(!CAREER.locked){
     const sure=UI.finishAt&&(Date.now()-UI.finishAt<4000);
     bar.innerHTML='<button class="go1" data-act="careerRoll" style="max-width:120px;background:var(--s2);color:var(--t1);box-shadow:none">'+ico('dice')+'Roll</button>'+
@@ -4389,8 +4586,8 @@ function newCareerLion(){
   const L=randomLion('A');
   L.epithet=pickOne(EPITHET);
   L.record={champs:0,wins:0,fights:0,losses:0};
-  L.perks=[];L.scars=[];
-  CAREER.lion=L;CAREER.locked=false;CAREER.champ=null;evClear();UI.view='home';UI.finishAt=0;
+  L.perks=[];L.scars=[];L.wiz={s:0};
+  CAREER.lion=L;CAREER.locked=false;CAREER.champ=null;evClear();UI.view='home';UI.finishAt=0;UI.wizPop=0;
   delete PREVMEM.career;
   SFX.bell();Store.save();refresh();
 }
@@ -4399,12 +4596,13 @@ function rollCareerDraft(){
   const L=CAREER.lion,r=randomLion('A');
   ['build','armor','weapon','abil','brain','pelt','mane','tail','traits'].forEach(k=>{L[k]=r[k];});
   if(!L.named)L.name=r.name;
+  if(L.wiz)L.wiz={s:WIZ.length};UI.wizPop=Date.now();
   delete PREVMEM.career;
   Store.save();refresh();
 }
 function finishCareerLion(){
   const L=CAREER.lion;
-  L.name=(L.name||'').trim()||rollName();delete L.named;
+  L.name=(L.name||'').trim()||rollName();delete L.named;delete L.wiz;
   L.scars=[];L.perks=[];L.record={champs:0,wins:0,fights:0,losses:0};L.born=Date.now();
   CAREER.locked=true;CAREER.champ=null;UI.view='home';
   SFX.bell();Store.save();refresh();toast(L.name+' is yours');
@@ -4620,11 +4818,19 @@ function handleAct(a,el){
     if(!CAREER.lion)newCareerLion(); else refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
     return;}
+  if(a==='wizNext'){wizStep(1);return;}
+  if(a==='wizBack'){wizStep(-1);return;}
+  if(a==='wizGo'){wizGo(el&&el.dataset.i);return;}
+  if(a==='wizEnd'){wizEnd();return;}
+  if(a==='wizEdit'){wizEdit(el&&el.dataset.i);return;}
+  if(a==='wizDice'){wizDice();return;}
+  if(a==='wizName'){const L=CAREER.lion;if(!L||CAREER.locked)return;let n=rollName(),q=0;while(n===L.name&&q++<9)n=rollName();L.name=n;L.named=true;UI.wizPop=Date.now();SFX.ui();refresh();return;}
   if(a==='careerRoll'){
     if(!CAREER.lion||CAREER.locked)return;
     SFX.ui();rollCareerDraft();toast('Rolled');return;}
   if(a==='finishLion'){
     if(!CAREER.lion||CAREER.locked)return;
+    if(wizOn(CAREER.lion)){CAREER.lion.wiz={s:WIZ.length};refresh();}
     if(!(UI.finishAt&&Date.now()-UI.finishAt<4000)){
       SFX.ui();UI.finishAt=Date.now();renderLaunch();
       setTimeout(function(){if(UI.finishAt&&Date.now()-UI.finishAt>=4000){UI.finishAt=0;renderLaunch();}},4100);
@@ -7038,7 +7244,7 @@ function paintLion(g,o){
   g.rotate(ang);
   if(o.dead)g.globalAlpha=.28;
 
-  drawTail(g,C,R,t,o.tail|0);
+  if(!o.noTail)drawTail(g,C,R,t,o.tail|0);
 
   const lunge=o.anim?R*.18:0;
   g.fillStyle=o.flash?FX.blood:C.body;g.strokeStyle=C.edge;g.lineWidth=1.8;
@@ -7053,7 +7259,7 @@ function paintLion(g,o){
   if(o.belts)drawBelt(g,R,lunge,o.belts);
 
   if(o.scars&&o.scars.length)drawScars(g,C,R,lunge,o.scars.filter(v=>v<1000));
-  drawMane(g,C,R,lunge,o.mane|0,o.seed||0);
+  if(!o.noMane)drawMane(g,C,R,lunge,o.mane|0,o.seed||0);
 
   g.fillStyle=o.flash?FX.blood:C.body;
   g.beginPath();g.arc(R*.42+lunge,0,R*.5,0,7);g.fill();
@@ -7373,6 +7579,7 @@ function stepPreviews(dt){
       g.fillStyle='#17171c';
       for(let x=14;x<p.w;x+=26)for(let y=14;y<p.h;y+=26){g.fillRect(x,y,1.5,1.5);}
     }
+    if(p.key==='career'&&p.cfg===CAREER.lion&&p.cfg.wiz&&!CAREER.locked){wizPaint(g,p,p.cfg);continue;}
     if(isGab(p.cfg))gabAura(g,p.x,p.y,p.R,p.t);
     const pso=soulOf(p.cfg);
     if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,true);
