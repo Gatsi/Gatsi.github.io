@@ -585,7 +585,8 @@ button{cursor:pointer}
 .badge.holy,.badge.blood{display:inline-flex;align-items:center;gap:5px}
 .badge.holy .ico,.badge.blood .ico{width:14px;height:14px}
 .invSlot.bone.on{background:rgba(232,220,196,.1);border-color:#e8dcc4;box-shadow:0 0 0 1px #e8dcc4 inset}
-.invDet{display:flex;gap:14px;align-items:flex-start;margin:16px 20px 12px;padding:14px;border-radius:var(--rs);background:var(--s2)}
+.invTop{margin-bottom:16px}.invTop .act{padding-top:0}.invTop .act button.key{flex:1}
+.invDet{display:flex;gap:14px;align-items:flex-start;margin:4px 20px 12px;padding:14px;border-radius:var(--rs);background:var(--s2)}
 .invDet .rico{color:var(--amber);flex:none}
 .invDet .rico .ico,.lootCard .rico .ico{width:28px;height:28px}
 .lootCard .rico{flex:none}
@@ -1051,6 +1052,10 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .olLionTx{display:flex;flex-direction:column;gap:2px;min-width:0}
 .olLionTx b{font-size:17px;color:var(--t1)}.olLionTx small{font-size:12.5px;color:var(--t2)}
 .olMe .act{padding:12px 0 0}
+.olLive{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:var(--t2);line-height:1.4}
+.olLive i{width:8px;height:8px;border-radius:50%;background:var(--t3);flex:none;animation:olPulse 1.2s ease-in-out infinite}
+.olLive.on i{background:#5ee6a8;box-shadow:0 0 0 3px rgba(94,230,168,.18);animation:none}
+@keyframes olPulse{50%{opacity:.3}}
 .olOut{display:block;margin:10px auto 0;font-size:12.5px;color:var(--t3);padding:4px 8px}
 .olBoard{padding:2px 0}
 .olRow{display:flex;align-items:center;gap:10px;width:100%;padding:9px 14px;text-align:left;border-bottom:1px solid var(--sep)}
@@ -1652,7 +1657,7 @@ const Store={
   },
   async save(){
     try{const o=saveObj();await Store.put(JSON.stringify(o));LOCAL_AT=o.savedAt;if(o.owner)LOCAL_OWNER=o.owner;
-      if(typeof cloudQueue==='function')cloudQueue(o);}catch(e){}
+      if(typeof cloudQueue==='function'){cloudQueue(o);pitAuto();}}catch(e){}
   }
 };
 
@@ -3511,7 +3516,7 @@ function openInventory(sel){
     '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+
     '<div class="invHead"><div><b>'+esc(L.name)+'’s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
     '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span></div>'+
-    crateMsg+'<div class="invGrid">'+grid+'</div>'+det+
+    crateMsg+'<div class="invTop">'+det+'</div><div class="invGrid">'+grid+'</div>'+
     '<div class="grp">The bag belongs to '+esc(L.name)+'. When it retires or dies, the bag goes with it.</div>'+
     '</div>';
   $('sheetWrap').classList.remove('hidden');
@@ -9576,7 +9581,7 @@ async function onlineSignedIn(){
     if(!ONLINE.profile&&want)await onlineSetName(want,true);
   }catch(e){}
   await cloudPull();
-  paintAcct();pitNews();
+  paintAcct();pitNews();pitAuto();
   if(MATCH.mode==='online')olEnsure(true);
   refresh();
 }
@@ -9587,7 +9592,7 @@ async function onlineSetName(name,quiet){
   if(!NAME_RX.test(name)){if(!quiet)acctMsg('Names are 2 to 16 letters, numbers or spaces');return false;}
   const r=await ONLINE.sb.from('profiles').upsert({id:ONLINE.user.id,name:name});
   if(r.error){if(!quiet)acctMsg(/duplicate|unique|23505/i.test(r.error.message+' '+(r.error.code||''))?'That name is taken. Try another':errText(r.error));return false;}
-  ONLINE.profile={id:ONLINE.user.id,name:name};
+  ONLINE.profile={id:ONLINE.user.id,name:name};setTimeout(pitAuto,0);
   try{window.localStorage&&window.localStorage.removeItem('lionsim:pendingName');}catch(e){}
   return true;
 }
@@ -9623,7 +9628,7 @@ async function acctSignIn(){
 async function acctSignOut(){
   await cloudFlush();
   try{await ONLINE.sb.auth.signOut();}catch(e){}
-  ONLINE.user=null;ONLINE.profile=null;ONLINE.profileChecked=false;ONLINE.news=[];ONLINE.tab='in';
+  ONLINE.user=null;ONLINE.profile=null;ONLINE.profileChecked=false;ONLINE.news=[];ONLINE.tab='in';ONLINE.pitSig='';clearTimeout(ONLINE.pitT);
   toast('Signed out. Your save stays on your account');closeSheet();paintAcct();refresh();
 }
 async function acctSaveName(){
@@ -9718,7 +9723,7 @@ async function pitLoad(force){
     const r=await ONLINE.sb.from('pit_board').select('*').order('rating',{ascending:false}).limit(100);
     if(r.error)ONLINE.boardErr=errText(r.error);else{ONLINE.board=r.data||[];ONLINE.boardAt=Date.now();}
   }catch(e){ONLINE.boardErr=errText(e);}
-  if(MATCH.mode==='online')bKeepScroll(refresh);
+  if(MATCH.mode==='online'&&$('fight').classList.contains('hidden'))bKeepScroll(refresh);
 }
 async function pitNews(){
   if(!signedIn())return;
@@ -9729,7 +9734,7 @@ async function pitNews(){
     let names={};
     if(ids.length){const p=await ONLINE.sb.from('profiles').select('id,name').in('id',ids);(p.data||[]).forEach(x=>{names[x.id]=x.name;});}
     ONLINE.news=r.data.map(x=>Object.assign({who:names[x.attacker]||'Someone'},x));
-    if(MATCH.mode==='online')bKeepScroll(refresh);
+    if(MATCH.mode==='online'&&$('fight').classList.contains('hidden'))bKeepScroll(refresh);
   }catch(e){}
 }
 function pitSeen(){try{return +(window.localStorage&&window.localStorage.getItem('lionsim:pitSeen:'+(ONLINE.user?ONLINE.user.id:'')))||0;}catch(e){return 0;}}
@@ -9742,13 +9747,24 @@ function pitDoorLine(){
   if(u)return u+' new fight'+(u>1?'s':'')+' against your lion';
   return m?('Rating '+m.rating+' · '+m.pit_wins+'–'+m.pit_losses):'Fight other players’ lions';
 }
+/* your championship lion IS your online lion: whenever anything about it changes (items, training, belts,
+   scars, a new weapon or name, a new lion), its leaderboard card is sent up a few seconds later */
+function pitSig(L){const rec=L.record||{};return JSON.stringify([L.name,rec.champs|0,rec.wins|0,rec.fights|0,pitCfg(L)]);}
+function pitAuto(){
+  const L=CAREER.lion;
+  if(!signedIn()||!onlineName()||!L||!CAREER.locked)return;
+  if(pitSig(L)===ONLINE.pitSig)return;
+  clearTimeout(ONLINE.pitT);
+  ONLINE.pitT=setTimeout(function(){ONLINE.pitT=0;const M=CAREER.lion;if(M&&CAREER.locked&&pitSig(M)!==ONLINE.pitSig)pitEnter(true);},2500);
+}
 async function pitEnter(quiet){
   const L=CAREER.lion;if(!signedIn()||!L||!CAREER.locked)return false;
-  if(!onlineName()){openAccount();return false;}
-  const rec=L.record||{};
-  const r=await ONLINE.sb.from('pit').upsert({user_id:ONLINE.user.id,name:String(L.name||'Lion').slice(0,16),lion:pitCfg(L),
-    belts:rec.champs|0,wins:rec.wins|0,fights:rec.fights|0,updated_at:new Date().toISOString()});
-  if(r.error){toast(errText(r.error));return false;}
+  if(!onlineName()){if(!quiet)openAccount();return false;}
+  const rec=L.record||{},sig=pitSig(L);
+  let r;try{r=await ONLINE.sb.from('pit').upsert({user_id:ONLINE.user.id,name:String(L.name||'Lion').slice(0,16),lion:pitCfg(L),
+    belts:rec.champs|0,wins:rec.wins|0,fights:rec.fights|0,updated_at:new Date().toISOString()});}catch(e){r={error:e};}
+  if(r.error){if(!quiet)toast(errText(r.error));return false;}
+  ONLINE.pitSig=sig;
   if(!quiet){toast(L.name+' is in the Online Pit');SFX.bell();}
   await pitLoad(true);return true;
 }
@@ -9823,12 +9839,11 @@ function olMeHTML(L){
   if(m){const c=m.lion||{};
     lion='<div class="olLion"><canvas class="prevCv olCvBig" data-prev="olMine"></canvas><div class="olLionTx"><small>Your lion on the board</small><b>'+esc(m.name)+'</b>'+
       '<small>'+(BUILDS[c.build]?BUILDS[c.build].name:'')+(WEAPONS[c.weapon]?' · '+WEAPONS[c.weapon].name:'')+'</small></div></div>';
-  } else lion='<div class="olLion empty"><span>'+ico('lion')+'</span><div class="olLionTx"><b>No lion on the board yet</b><small>Put your championship lion up and other players can fight it.</small></div></div>';
+  } else lion='<div class="olLion empty"><span>'+ico('lion')+'</span><div class="olLionTx"><b>No lion on the board yet</b><small>Your championship lion goes up here by itself.</small></div></div>';
   let btn='';
   if(L&&CAREER.locked){
-    if(!m)btn='<button class="key" data-act="pitEnter">'+ico('plus')+'Put '+esc(L.name)+' on the board</button>';
-    else if(m.name!==L.name||!m.lion||m.lion.born!==L.born)btn='<button data-act="pitEnter">'+ico('refresh')+'Swap in '+esc(L.name)+'</button>';
-    else btn='<button data-act="pitEnter">'+ico('refresh')+'Update '+esc(L.name)+'’s card</button>';
+    const live=m&&ONLINE.pitSig===pitSig(L);
+    btn='<p class="olLive'+(live?' on':'')+'"><i></i>'+(live?esc(L.name)+' is live. Any change to it updates here by itself.':'Sending '+esc(L.name)+' to the board\u2026')+'</p>';
   } else btn='<button class="key" data-mode="career">'+ico('lion')+'Make a lion in Championship</button>';
   return '<div class="card olMe"><div class="olMeTop"><span class="olAv">'+esc((nm||'?').charAt(0).toUpperCase())+'</span>'+
       '<span><b>'+esc(nm||'Signed in')+'</b><small>'+(rk?('Rank '+rk+' of '+n):'Not ranked yet')+(m?' · '+m.pit_wins+'–'+m.pit_losses:'')+'</small></span>'+
