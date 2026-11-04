@@ -79,6 +79,31 @@ button{cursor:pointer}
 .mark .logoIco .ico{width:26px;height:26px;filter:drop-shadow(0 0 9px rgba(255,179,64,.45))}
 .mark span{color:var(--t3);font-weight:400}
 .hdrBtns{display:flex;gap:10px}
+#newsBtn{position:relative;padding:0;width:38px;color:var(--t2)}
+#newsBtn .newsDot{display:none;position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff5a3a;box-shadow:0 0 0 2px var(--s1)}
+#newsBtn.fresh .newsDot{display:block}#newsBtn.fresh{color:var(--amber)}
+@media (max-width:440px){.hdr{gap:8px}.hdrBtns{gap:6px}.hdrBtns button{min-width:36px;height:36px}#newsBtn{width:36px}.hdrRes .resChip{padding:0 9px;gap:4px}}
+@media (max-width:410px){.mark span{display:none}}
+@media (max-width:380px){.hdr{gap:6px}.hdrBtns{gap:5px}.hdrBtns button{min-width:34px;height:34px}#newsBtn{width:34px}.hdrRes .resChip{padding:0 7px;gap:3px;font-size:13px;height:32px}.hdrRes .resChip .ico{width:14px;height:14px}.hdr .hdrRes{gap:4px}.mark .logoIco .ico{width:24px;height:24px}}
+.giftHero{display:flex;gap:12px;align-items:center;margin:4px 20px 14px;padding:12px 14px;border-radius:var(--rs);background:rgba(255,179,64,.1);color:var(--t2);font-size:14px;line-height:1.4}
+.giftHero .ico{width:28px;height:28px;color:var(--amber);flex:none}
+.giftForm select,.giftForm textarea{font:inherit;font-size:16px;padding:11px 12px;border-radius:12px;background:var(--s2);color:var(--t1);border:1px solid var(--sep);resize:vertical}
+.giftForm label small{font-weight:500;letter-spacing:0;color:var(--t3)}
+.giftRow{display:flex;gap:10px}.giftRow label{flex:1;min-width:0}.giftRow label.sm{flex:0 0 96px}
+.giftRow input{width:100%;box-sizing:border-box}
+.giftNote{margin:12px 20px 18px;font-size:12.5px;color:var(--t3);line-height:1.45}
+.giftIn{margin:4px 20px 14px;padding:14px;border-radius:var(--rs);background:linear-gradient(140deg,rgba(255,179,64,.14),var(--s2) 70%);border:1px solid rgba(255,179,64,.3)}
+.giftTop{display:flex;gap:12px;align-items:center}.giftTop .ico{width:30px;height:30px;color:var(--amber);flex:none}
+.giftTop small{display:block;font-size:12.5px;color:var(--t2)}.giftTop b{display:block;font-size:19px;color:var(--t1)}
+.giftThings{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.giftThing{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--s3);font-size:13.5px;font-weight:600;color:var(--t1)}
+.giftThing i{display:flex}.giftThing .ico{width:15px;height:15px;color:var(--amber)}.giftThing.gold{color:var(--amber)}.giftThing.bone .ico{color:#e8dcc4}
+.giftMsg{margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--amber);background:rgba(0,0,0,.25);border-radius:0 10px 10px 0;font-size:15px;color:var(--t1);font-style:italic;line-height:1.4;overflow-wrap:anywhere}
+.newsCv{display:block;width:calc(100% - 40px);height:200px;margin:4px 20px 16px;border-radius:var(--rs);border:1px solid rgba(255,190,110,.25)}
+.newsList{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px}
+.newsRow{display:flex;gap:12px;align-items:flex-start}
+.newsRow .rico{color:var(--amber);flex:none;margin-top:1px}
+.newsRow b{display:block;font-size:15px;color:var(--t1)}.newsRow small{display:block;font-size:13.5px;color:var(--t2);line-height:1.45;margin-top:2px}
 .hdrBtns button{min-width:38px;height:38px;padding:0 14px;border-radius:19px;background:var(--s1);
   color:var(--t2);font-size:15px;font-weight:500;display:grid;place-items:center;transition:.2s}
 .hdrBtns button:hover{background:var(--s2);color:var(--t1)}
@@ -176,17 +201,39 @@ button{cursor:pointer}
 .runStrip .dots .ico{width:18px;height:18px;color:var(--gold);margin-left:3px}
 .runStrip.idle .nx{color:var(--t2);font-weight:500;font-size:14px}
 .doors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.door{display:flex;align-items:center;gap:12px;padding:13px;border-radius:18px;background:var(--s1);text-align:left;transition:.18s;min-width:0}
+.door{display:flex;align-items:center;gap:10px;padding:13px 11px;border-radius:18px;background:var(--s1);text-align:left;transition:.18s;min-width:0}
 .door:hover{background:var(--s2)}
 .door:active{transform:scale(.98)}
-.door .shopIco,.door .dic{width:42px;height:42px;border-radius:12px;flex:none}
+.door .shopIco,.door .dic{width:40px;height:40px;border-radius:12px;flex:none}
 .door .dic{display:grid;place-items:center;background:var(--s2);color:var(--t2)}
 .door .dic .ico{width:21px;height:21px}
 .door .dic.gold{color:var(--gold)}
-.door b{display:block;font-size:15px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.door small{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--t2);margin-top:1px;font-weight:500}
+.door b{display:block;font-size:14.5px;letter-spacing:-.01em;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.door small{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--t2);margin-top:1px;font-weight:500;white-space:nowrap;overflow:hidden}
+.door>span:last-child{min-width:0}
+@media (max-width:380px){.doors{gap:8px}.door{gap:8px;padding:12px 9px}.door .shopIco,.door .dic{width:34px;height:34px;border-radius:10px}.door b{font-size:13.5px}.door small{font-size:12px}}
 .door small .ico{width:13px;height:13px}
-.door small.g{color:var(--amber)} .door small.s{color:#e8dcc4}
+.door small.g{color:var(--amber)} .door small.s{color:#e8dcc4} .door small.cz{color:#ff8a5c}
+.rico.czg,.row .rico.czg{color:#f2c230}.rico.czs,.row .rico.czs{color:#d6dbe4}.rico.czw,.row .rico.czw{color:#e8dcc4}
+.price.skp{color:#e8dcc4;background:rgba(232,220,196,.1)}
+.cosLock{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.04em;color:#ffd24a;margin-left:6px;vertical-align:1px}
+.bossLoot{display:flex;gap:12px;align-items:center;margin-top:10px;padding:12px 14px;border-radius:var(--rs);background:rgba(255,210,74,.09);border:1px solid rgba(255,210,74,.35);text-align:left}
+.bossLoot .rico{color:#ffd24a;flex:none}.bossLoot b{display:block;font-size:15px;color:var(--t1)}.bossLoot small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
+.cosBoss{display:flex;gap:8px;align-items:flex-start}.cosBoss .ico{width:16px;height:16px;flex:none;margin-top:2px;color:#ffd24a}
+.cosOn{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.04em;color:#ff8a5c;margin-left:6px;vertical-align:1px}
+.cosWear{display:flex;gap:8px;align-items:flex-start}.cosWear .ico{width:16px;height:16px;flex:none;margin-top:2px;color:#ff8a5c}
+.cosCv{display:block;width:calc(100% - 40px);height:170px;margin:4px 20px 14px;border-radius:var(--rs)}
+.cosQ{margin:0 20px 12px;font-size:15px;color:var(--t2);line-height:1.4}
+.cosSides{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 14px}
+.cosSide{display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 10px;border-radius:var(--rs);background:var(--s2);border:1.5px solid rgba(255,138,92,.4)}
+.cosSide .ico{width:24px;height:24px;color:#ff8a5c}
+.cosSide b{font-size:16px;color:var(--t1)}.cosSide small{font-size:12.5px;color:var(--t2)}
+.cosSide:not([disabled]):active{transform:scale(.98)}
+.cosSide.full{opacity:.5;border-style:dashed;border-color:var(--sep)}
+.cosmoEmpty{display:flex;gap:14px;align-items:center;padding:22px 18px}
+.cosmoEmpty .rico{color:#ff9cc2;flex:none}
+.cosmoEmpty b{display:block;font-size:16px;font-weight:600;color:var(--t1)}
+.cosmoEmpty small{display:block;font-size:14px;color:var(--t2);line-height:1.45;margin-top:3px}
 .loadRow{margin-bottom:28px}
 .hofHd{scroll-margin-top:84px}
 
@@ -585,7 +632,13 @@ button{cursor:pointer}
 .badge.holy,.badge.blood{display:inline-flex;align-items:center;gap:5px}
 .badge.holy .ico,.badge.blood .ico{width:14px;height:14px}
 .invSlot.bone.on{background:rgba(232,220,196,.1);border-color:#e8dcc4;box-shadow:0 0 0 1px #e8dcc4 inset}
-.invTop{margin-bottom:16px}.invTop .act{padding-top:0}.invTop .act button.key{flex:1}
+.invTop{margin-bottom:16px}
+.act button.invBin{flex:none;min-width:0;width:46px;padding:0;color:var(--t2)}
+.act button.invBin .ico{margin:0}
+.act button.invBin:hover{color:#ff8a7a}
+.invBinAsk p{margin:0 20px 10px;font-size:14px;color:var(--t2);line-height:1.4}.invBinAsk p b{color:var(--t1)}
+.act button.bin{background:rgba(255,90,77,.16);color:#ff8a7a;font-weight:600}
+.act button.bin:hover{background:rgba(255,90,77,.26)}.invTop .act{padding-top:0}.invTop .act button.key{flex:1}
 .invDet{display:flex;gap:14px;align-items:flex-start;margin:4px 20px 12px;padding:14px;border-radius:var(--rs);background:var(--s2)}
 .invDet .rico{color:var(--amber);flex:none}
 .invDet .rico .ico,.lootCard .rico .ico{width:28px;height:28px}
@@ -844,7 +897,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .arChip.ar-thorns{color:#a8d873;background:rgba(155,212,106,.12)}
 .arChip.ar-quarry{color:#d8d2c8;background:rgba(200,194,184,.12)}
 .arChip.ar-night{color:#aebfff;background:rgba(159,180,255,.13)}
-.arRow{margin-top:6px}
+.arRow{margin-top:6px;display:flex;flex-wrap:wrap;gap:5px}
+.upChip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 8px 3px 6px;border-radius:999px;background:var(--s2);color:var(--t2)}
+.upChip .ico{width:12px;height:12px}.upChip.gear{color:#ff8a5c}
 .arLine{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--t2);line-height:1.35}
 .listRow.scouted h4{color:var(--t1)}
 .scoutedTxt{display:inline-flex;align-items:center;gap:4px;color:#e8c27a;font-weight:600}
@@ -1202,6 +1257,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <div class="hdrRes" id="hdrRes"></div>
     <div class="hdrBtns">
       <button id="helpBtn" class="glowBtn" aria-label="Tutorial with Old Lion"></button>
+      <button id="newsBtn" aria-label="What's new in this update"></button>
       <button id="moreBtn" aria-label="More" aria-expanded="false"></button>
     </div>
     <div class="moreMenu hidden" id="moreMenu" role="menu">
@@ -2153,7 +2209,8 @@ function encodeLion(c,rec){
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
     soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':''),
-    wlvOf(c)||''];
+    wlvOf(c)||'',
+    (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
 }
 function decodeLion(str){
@@ -2178,6 +2235,8 @@ function decodeLion(str){
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
     if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';
     if(a[19]){const wl=clamp(+a[19]|0,0,3);if(wl)c.wlv=wl;}
+    if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
+      if(M[v]&&i<3)o[k]=M[v];else{const x=COS_VALS[k][(+v|0)-1];if(x)o[k]=x;}});if(Object.keys(o).length)c.cos=o;}
     return c;
   }catch(e){return null;}
 }
@@ -2225,6 +2284,18 @@ const ICONS={
   summary:'<path d="M3.2 4.2h9.6M3.2 8h9.6M3.2 11.8h6.4"/>',
   dice:'<rect x="2.8" y="2.8" width="10.4" height="10.4" rx="2.4"/><path d="M5.9 5.9v.1M8 8v.1M10.1 10.1v.1"/>',
   refresh:'<path d="M13.2 8a5.2 5.2 0 1 1-1.6-3.7"/><path d="M13.4 2.6v3h-3"/>',
+  fang:'<path d="M5.2 3.2h5.6L8.9 12.6c-.2.9-1.6.9-1.8 0z"/><path d="M5.2 3.2h5.6"/>',
+  bone:'<path d="M5.4 10.6 10.6 5.4"/><path d="M5.4 10.6a1.6 1.6 0 1 1-2.2.6 1.6 1.6 0 1 1 .6-2.2M10.6 5.4a1.6 1.6 0 1 1 2.2-.6 1.6 1.6 0 1 1-.6 2.2"/>',
+  patch:'<path d="M2.2 3.8 13.8 12.2"/><path d="M5.6 7.6c0-1.7 1.4-2.8 3-2.8s3 1.1 3 2.8-1.4 3.6-3 3.6-3-1.9-3-3.6z"/>',
+  paint:'<path d="M3.6 12.6 7 3.4M7.4 13 10.6 4M11.2 13.2l2.4-6.6"/>',
+  gift:'<path d="M2.6 6.4h10.8v2.4H2.6zM3.6 8.8h8.8v5H3.6zM8 6.4v7.4"/><path d="M8 6.4C6.6 6.4 4.6 5.8 4.6 4.3S6.4 2.6 8 6.4zM8 6.4c1.4 0 3.4-.6 3.4-2.1S9.6 2.6 8 6.4z"/>',
+  sash:'<path d="M3.2 2.6 13 12.4"/><path d="M5.6 2.6l7.4 7.4"/><path d="M11.2 11.6l-.8 2.4M12.4 10.6l2 .8"/>',
+  party:'<path d="M8 2.4 12.4 13.2H3.6z"/><path d="M5.4 9 10.2 7.2M4.6 11.2l6.8-2.4"/><circle cx="8" cy="1.9" r="1.1"/>',
+  laurel:'<path d="M8 13.8c-3.3-.6-5.6-3.3-5.6-6.9M8 13.8c3.3-.6 5.6-3.3 5.6-6.9"/><path d="M3 9.6 1.4 8.9M3.9 11.6l-1.6.3M2.6 7.1 1.6 5.8M13 9.6l1.6-.7M12.1 11.6l1.6.3M13.4 7.1l1-1.3"/>',
+  earring:'<circle cx="8" cy="3.6" r="1.3"/><path d="M8 4.9v1.3"/><circle cx="8" cy="10" r="3.8"/>',
+  nosering:'<path d="M4.2 7.4a3.8 3.8 0 1 0 7.6 0"/><circle cx="4.2" cy="7" r="1.1"/><circle cx="11.8" cy="7" r="1.1"/>',
+  shears:'<circle cx="4.4" cy="11.6" r="2"/><circle cx="11.6" cy="11.6" r="2"/><path d="M5.8 10.2 12.4 2.6M10.2 10.2 3.6 2.6"/>',
+  trash:'<path d="M2.8 4.3h10.4M6.3 4.3V2.7h3.4v1.6"/><path d="M4 4.3l.7 8.9c.1.7.6 1.1 1.2 1.1h4.2c.6 0 1.1-.4 1.2-1.1l.7-8.9"/><path d="M6.7 6.9v4.6M9.3 6.9v4.6"/>',
   retire:'<path d="M6.4 2.8H3.2v10.4h3.2"/><path d="m9.8 5.4 2.6 2.6-2.6 2.6M12.4 8H6.2"/>',
   copy:'<rect x="5.6" y="5.6" width="7.6" height="7.6" rx="2"/><path d="M10.4 5.6V4.4a1.6 1.6 0 0 0-1.6-1.6H4.4a1.6 1.6 0 0 0-1.6 1.6v4.4a1.6 1.6 0 0 0 1.6 1.6h1.2"/>',
   save:'<path d="M8 2.8v7.4M5.2 7.6 8 10.4l2.8-2.8M2.8 12.4h10.4"/>',
@@ -2298,6 +2369,7 @@ function lionSummaryText(c){
   L.push(c.abil.map(k=>ABILITIES[k].name).join(' + ')+' \u00b7 '+BRAINS[c.brain].name+' mind');
   L.push(PELTS[c.pelt||0].name+' coat \u00b7 '+MANES[c.mane||0].name+' mane \u00b7 '+TAILS[c.tail||0].name+' tail \u00b7 IV '+(c.iv||5)+' of 10'+
     (sc?(' \u00b7 '+sc+' scar'+(sc>1?'s':'')):''));
+  if(cosOf(c))L.push('Wearing: '+cosText(c));
   L.push(bornText(c)+(c.born?' \u00b7 '+ageText(c):''));
   if(isHog(c)){L.push('');L.push('AWAKENED \u2014 this one answers to the wrong name');}
   if(isGab(c)){L.push('');L.push('ASCENDED \u2014 navy and gold, slow as a king, and it brings the stars down');}
@@ -2424,7 +2496,7 @@ function drawLionCard(c){
     g.fillStyle=hg;g.beginPath();g.arc(lx,ly,R*2.6,0,7);g.fill();}
   g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(lx+8,ly+R*.9,R*1.5,R*.32,0,0,7);g.fill();
   paintLion(g,{x:lx,y:ly,R:R,ang:ang,t:1.3,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),
-    scars:c.scars||[],belts:belts,armor:c.armor,cols:hog?KINGCOLS:(gab?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!cso});
+    scars:c.scars||[],belts:belts,armor:c.armor,cols:hog?KINGCOLS:(gab?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!cso,cos:cosOf(c)});
   if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,false);
   if(c.old)drawOldBits(g,lx,ly,R,ang,1.3,false,0);
   g.restore();
@@ -3357,6 +3429,7 @@ function renderCareer(){
   if(UI.view==='smith'){host.innerHTML=smithHTML(L);return;}
   if(UI.view==='fence'){host.innerHTML=fenceHTML(L);return;}
   if(UI.view==='bookie'){host.innerHTML=bookieHTML(L);return;}
+  if(UI.view==='cosmo'){host.innerHTML=cosmoHTML(L);return;}
   if(UI.view==='edit'){host.innerHTML=editorHTML('career',L,L.name,true);return;}
   const rec=L.record,ch=CAREER.champ;
   host.innerHTML='<div class="hd"><h2>The den</h2><span>'+(ch?('In championship '+ch.n+'.'):'Resting between championships.')+'</span></div>'+
@@ -3378,7 +3451,8 @@ function renderCareer(){
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s')+'</small></span></button>'+
       '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel')+'</small></span></button>'+
       '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
-      '<button class="door wide" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span><span class="go">\u203a</span></button>'+
+      '<button class="door" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span></button>'+
+      '<button class="door" data-act="openCosmo">'+cosmoIconHTML()+'<span><b>Cosmetic Lion</b><small class="cz">'+ico('paint')+'War gear</small></span></button>'+
       '<button class="door" data-act="openInv"><span class="dic">'+ico('bag')+'</span><span><b>Bag</b><small>'+bagLine(L)+'</small></span></button>'+
       '<button class="door" data-act="hallJump"><span class="dic gold">'+ico('trophy')+'</span><span><b>Hall of Fame</b><small>'+CAREER.hall.length+' lion'+(CAREER.hall.length===1?'':'s')+'</small></span></button>'+
     '</div>'+
@@ -3389,7 +3463,7 @@ function renderCareer(){
         const st=i<ch.i?'done':(i===ch.i?'now':'');
         return '<div class="listRow '+st+(ch.scouted&&i>ch.i?' scouted':'')+'"><span class="num">'+(i+1)+'</span><div>'+
           (i<=ch.i||ch.scouted?('<h4>'+esc(f.name)+' '+beltBadge(f)+rivalBadge(f)+soulBadge(f)+'</h4><small><b style="color:var(--t1)">'+recWL(f)+'</b> \u00b7 '+BUILDS[f.build].name+' \u00b7 '+WEAPONS[f.weapon].name+
-            ' \u00b7 '+BRAINS[f.brain].name+' mind</small>'+(i>=ch.i?'<div class="arRow">'+arenaChip(arenaOf(f))+'</div>':''))
+            ' \u00b7 '+BRAINS[f.brain].name+' mind</small>'+(i>=ch.i?'<div class="arRow">'+arenaChip(arenaOf(f))+foeUpChips(f)+'</div>':''))
            :(rivalOf(f)&&rivalOf(f).nem?'<h4 style="color:#ff5a4d">Unannounced</h4><small>something is waiting for you at the end</small>'
            :rivalOf(f)?'<h4 style="color:var(--dim)">Unannounced</h4><small>a familiar face, maybe</small>'
            :beltsOf(f)?'<h4 style="color:var(--dim)">Unannounced '+beltBadge(f)+'</h4><small>a belt holder waits at the end</small>'
@@ -3417,9 +3491,9 @@ function runStripHTML(L,ch){
 }
 function bookieDoorLine(){
   const c=bookieCard();
-  if(c.bet)return 'Your bet is down. Go and watch';
-  if(!c.left)return 'Closed till your next bout';
-  return esc(c.a.name)+' vs '+esc(c.b.name)+' \u00b7 '+c.left+' fight'+(c.left>1?'s':'')+' left';
+  if(c.bet)return 'Bet down';
+  if(!c.left)return 'Closed';
+  return c.left+' fight'+(c.left>1?'s':'')+' on';
 }
 function bagLine(L){
   const inv=invOf(L);if(!inv.length)return 'Empty';
@@ -3447,7 +3521,7 @@ function renderHall(){}
 /* ---------- inventory ----------
    Every championship lion carries its own bag, saved on the lion itself (L.inv = [{k,n}]), never on the player.
    Store purchases land here and are used from here. Skulls are trophies: they stack and do nothing else (yet). */
-const INV_SLOTS=16,INV_STACK=99;
+const INV_SLOTS=20,INV_STACK=99;
 const ITEMS={
   coat:  {name:'Colour Change',     ico:'drop', use:'shopCoat',  desc:'A pot of dye. Use it to give your lion any coat you like.'},
   potion:{name:'Personality Potion',ico:'flask',use:'shopPotion',desc:'Rerolls one of its two traits. You choose which one goes.'},
@@ -3464,8 +3538,31 @@ const ITEMS={
   crate: {name:'Mystery Crate',     ico:'crate',use:'crate',desc:'Nailed shut, smells of hyena. Could be gold, skulls, or anything from any shop.'},
   scout: {name:'Scout\u2019s Map',   ico:'scout',use:'scout',desc:'Drawn by a hyena who has seen the card. Use it during a championship and every lion left in the run is revealed, with the arena each bout is fought in.'},
   tonic: {name:'Bloodlust Tonic',   ico:'tonic',use:'tonic',desc:'A red brew that smells of iron. Drink it and your lion\u2019s next championship bout is fought in a rage: +20% damage, but \u221215% health.'},
-  salts: {name:'Smelling Salts',    ico:'salts',use:null,passive:1,desc:'If your lion goes down in a championship bout, one sniff and it is back on its feet with a quarter of its health. Once a bout, one bottle each time. Works from the bag on its own.'}};
-const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic'};
+  salts: {name:'Smelling Salts',    ico:'salts',use:null,passive:1,desc:'If your lion goes down in a championship bout, one sniff and it is back on its feet with a quarter of its health. Once a bout, one bottle each time. Works from the bag on its own.'},
+  earGold:  {name:'Gold Earring',    ico:'earring',use:'cos',cs:'ear',val:'gold',  desc:'A heavy gold hoop. Pick an ear, left or right.'},
+  earSilver:{name:'Silver Earring',  ico:'earring',use:'cos',cs:'ear',val:'silver',desc:'A bright silver hoop. Pick an ear, left or right.'},
+  noseGold: {name:'Gold Nose Ring',  ico:'nosering',use:'cos',cs:'nose',val:'gold',  desc:'A thick gold ring through the nose.'},
+  noseSilver:{name:'Silver Nose Ring',ico:'nosering',use:'cos',cs:'nose',val:'silver',desc:'A silver ring through the nose.'},
+  shears:   {name:'Cosmetic Shears',          ico:'shears',use:'shears',desc:'Snips one cosmetic off your lion, for good. Whatever you cut off is lost, not put back in the bag.'},
+  earFang:  {name:'Fang Earring',    ico:'fang',use:'cos',cs:'ear',val:'fang',desc:'A rival\u2019s fang on a leather cord. Pick an ear, left or right.'},
+  noseBone: {name:'Bone Nose Ring',  ico:'bone',use:'cos',cs:'nose',val:'bone',desc:'A sharpened bone pushed clean through the nose.'},
+  maneBones:{name:'Mane Bones',      ico:'bone',use:'cos',cs:'mane',val:'bones',desc:'Small bones knotted into the mane, the old way.'},
+  patch:    {name:'Eyepatch',        ico:'patch',use:'cos',cs:'patch',desc:'Black leather over one eye. Pick which one.'},
+  paintBlood:{name:'War Paint: Blood',ico:'paint',use:'cos',cs:'paint',val:'blood',desc:'Three red claw stripes dragged across the face.'},
+  paintBone:{name:'War Paint: Bone', ico:'paint',use:'cos',cs:'paint',val:'bone',desc:'White paint round the eyes and down the brow, like a skull.'},
+  paintAsh: {name:'War Paint: Ash',  ico:'paint',use:'cos',cs:'paint',val:'ash',desc:'A black band of soot across the eyes.'},
+  neckFangs:{name:'Fang Necklace',   ico:'fang',use:'cos',cs:'neck',val:'fangs',desc:'A string of fangs, one from every lion worth remembering.'},
+  laurel:   {name:'Victor\u2019s Laurel',ico:'laurel',use:'cos',cs:'crown',val:'laurel',desc:'A gold laurel, the old crown of the arena. Only a lion that has won a belt may buy one.'},
+  fangCaps: {name:'Gold Fang Caps',  ico:'fang',use:'cos',cs:'teeth',val:'gold',desc:'Gold capped over both fangs. They flash when it snarls.'},
+  leafLaurel:{name:'Leaf Laurel',    ico:'laurel',use:'cos',cs:'crown',val:'leaf',desc:'A wreath of fresh green bay leaves, the kind the crowd throws to a lion it loves.'},
+  sashRed:  {name:'Red and Gold Sash',ico:'sash',use:'cos',cs:'sash',val:'redgold',desc:'Crimson silk edged in gold, worn across the body from shoulder to hip.'},
+  sashNavy: {name:'Navy Sash',       ico:'sash',use:'cos',cs:'sash',val:'navy',desc:'Dark navy silk with a silver edge. Quiet, and it means business.'},
+  sashBone: {name:'Bone and Black Sash',ico:'sash',use:'cos',cs:'sash',val:'bone',desc:'Bleached linen striped with black, like the old arena guards wore.'},
+  sashKing: {name:'Fallen King\u2019s Sash',ico:'sash',use:'cos',cs:'sash',val:'king',boss:'king',desc:'Black silk edged in blood red, with his broken crown stitched in. Torn from the Lion King. Only won by beating him.'},
+  sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
+  gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
+  partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
+const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic',shopGift:'gift'};
 function invOf(L){
   if(!Array.isArray(L.inv))L.inv=[];
   L.inv=L.inv.filter(function(it){return it&&ITEMS[it.k]&&it.n>0;});
@@ -3488,6 +3585,7 @@ function openInventory(sel){
   const L=CAREER.lion;if(!L)return;
   const items=invOf(L);
   if(sel===undefined||!items[sel])sel=items.length?0:-1;
+  if(UI.invTrash!==sel)UI.invTrash=-1;
   UI.invSel=sel;
   let grid='';
   for(let i=0;i<INV_SLOTS;i++){
@@ -3503,9 +3601,16 @@ function openInventory(sel){
       (it.n>1?' <em>×'+it.n+'</em>':'')+'</b><small>'+I.desc+'</small></div></div>'+
       (I.use==='pact'?'<div class="grp">a gamble: the new IV is rolled fresh, from 1 to 10. '+esc(L.name)+' is IV '+(L.iv||5)+' now</div>':'')+
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
+      ((I.use==='cos'||I.use==='shears')&&cosOf(L)?'<div class="grp">'+esc(L.name)+' is wearing: '+esc(cosText(L))+'</div>':'')+
       (I.soul&&soulOf(L)?'<div class="grp">'+esc(L.name)+' already carries a '+SOULS[soulOf(L)].name.toLowerCase()+'. '+(soulOf(L)===I.soul?'It cannot hold two of the same.':'This one would drive it out.')+'</div>':'')+
-      '<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':'Use'))))))+'</button>'
-        :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+'</div>';
+      (UI.invTrash===sel
+        ?'<div class="invBinAsk"><p>'+(it.n>1?'Throw away <b>'+I.name+'</b>? You have '+it.n+'. Whatever you throw is gone for good.':'Throw away the <b>'+I.name+'</b>? It\u2019s gone for good.')+'</p>'+
+          '<div class="act"><button data-act="invTrashNo">Keep it</button>'+
+          '<button class="bin" data-act="invTrashGo" data-n="1">'+ico('trash')+(it.n>1?'Throw 1':'Throw away')+'</button>'+
+          (it.n>1?'<button class="bin" data-act="invTrashGo" data-n="all">'+ico('trash')+'All '+it.n+'</button>':'')+'</div></div>'
+        :'<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':(I.use==='cos'?(I.cs==='paint'?'Paint it on':'Put it on'):(I.use==='shears'?'Snip something off':(I.use==='gift'?'Wrap a gift':'Use')))))))))+'</button>'
+        :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+
+        '<button class="invBin" data-act="invTrash" aria-label="Throw away" title="Throw away">'+ico('trash')+'</button></div>');
   } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
       'Beat lions in a championship and now and then you take a skull home.</small></div></div>';
   let crateMsg='';
@@ -3521,6 +3626,16 @@ function openInventory(sel){
     '</div>';
   $('sheetWrap').classList.remove('hidden');
 }
+/* throwing an item away: one, or the whole stack */
+function invTrash(all){
+  const L=CAREER.lion;if(!L)return;
+  const items=invOf(L),i=UI.invSel,it=items[i];UI.invTrash=-1;
+  if(!it){openInventory();return;}
+  const I=ITEMS[it.k],n=all?it.n:1;
+  it.n-=n;if(it.n<=0)items.splice(i,1);
+  SFX.ui();toast(n>1?('Threw away '+n+' \u00d7 '+I.name):('Threw away the '+I.name));
+  Store.save();refresh();openInventory(items[i]?i:Math.max(0,i-1));
+}
 /* using an item opens the same picker the store used to */
 function invUse(k){
   const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!I.use||!invCount(L,k))return;
@@ -3529,6 +3644,14 @@ function invUse(k){
   if(I.use==='crate'){openCrate();return;}
   if(I.use==='scout'){useScout();return;}
   if(I.use==='tonic'){drinkTonic();return;}
+  if(I.use==='cos'){
+    const o=cosOf(L)||{};
+    if(I.cs==='ear'){if(o.earL&&o.earR){toast('Both ears are taken. Snip one off with Cosmetic Shears first');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
+    if(I.cs==='patch'){if(o.patch){toast(L.name+' already wears an eyepatch. Snip it off with Cosmetic Shears first');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
+    cosPut(k);return;
+  }
+  if(I.use==='gift'){SFX.ui();openGift();return;}
+  if(I.use==='shears'){if(!cosOf(L)){toast(L.name+' has nothing to snip off');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
   if(I.use==='cleanse'){
     if(!soulOf(L)){toast(L.name+' has no soul to cleanse');return;}
     const was=SOULS[soulOf(L)].name;invTake(L,'cleanse');delete L.soul;SFX.heal();
@@ -3808,7 +3931,7 @@ function paintChalCanvases(){
     if(isGab(c))gabAura(g,w/2,h/2,R,1);
     if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,true);
     paintLion(g,{x:w/2,y:h/2+2,R:R,ang:-Math.PI/2,t:1,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],belts:beltsOf(c),armor:c.armor,
-      cols:isHog(c)?KINGCOLS:(isGab(c)?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!so});
+      cols:isHog(c)?KINGCOLS:(isGab(c)?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!so,cos:cosOf(c)});
     if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,false);
   });
 }
@@ -3911,7 +4034,7 @@ function careerLoadCode(txt){
   closeSheet();SFX.bell();Store.save();refresh();toast(c.name+' moves into the den');
 }
 /* ---------- the Lion Store ---------- */
-const SHOP={price:{shopCoat:20,shopPotion:30,shopWeapon:60,shopTrain:100,shopRename:60,shopScout:13,shopSalts:60,shopTonic:30},quip:'',
+const SHOP={price:{shopCoat:20,shopPotion:30,shopWeapon:60,shopTrain:100,shopRename:60,shopScout:13,shopSalts:60,shopTonic:30,shopGift:15},quip:'',
   hello:['Welcome, welcome! Mind the merchandise.','Ah, a paying customer. My favourite kind.',
          'Gold first. Questions never.','Everything here is genuine. Mostly.','Fresh stock today. Well, fresh-ish.'],
   thanks:['Pleasure doing business.','No refunds. Ever.','Looks good on you. Probably.','Come again! Bring more gold.'],
@@ -3966,6 +4089,7 @@ function shopHTML(L){
       item('shopScout','scout','Scout\u2019s Map','Reveals every lion left in this championship, and where each bout is fought.')+
       item('shopTonic','tonic','Bloodlust Tonic','Next championship bout: +20% damage, \u221215% health. Drink it from the bag.')+
       item('shopSalts','salts','Smelling Salts','If your lion goes down in a championship bout, it gets back up once, on a quarter of its health.')+
+      item('shopGift','gift','Gift Parcel','Wrap an item, gold or skulls with a note and send it to another player online.')+
     '</div>'+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
       '<span class="v">Open the bag<small>Bought items go in the bag. Use them from there whenever you like.</small></span>'+
@@ -4131,6 +4255,178 @@ function drawFenceScene(g,p){
   g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,9);else g.rect(bx,by,bw,bh);g.fill();
   g.beginPath();g.moveTo(bx,by+bh*.55);g.lineTo(bx-8,by+bh*.7);g.lineTo(bx+4,by+bh*.8);g.fill();
   g.fillStyle='#2a2016';lines.forEach(function(l,i){g.fillText(l,bx+9,by+18+i*15);});
+}
+/* ---------- the Cosmetic Lion: an old war-painted lion in a hide tent. Bones, paint and steel. Looks only ---------- */
+const COSMO={quip:'',
+  hello:['The gold laurel is for champions only.','Leaves for the crowd\u2019s favourite. Gold for the champion.','A party hat? Even killers like cake.','Wear your kills.','Scars tell the story. Paint shouts it.','A lion should look like a threat.','Bones in the mane. The old way.','Gold for the vain. Bone for the brave.','Let them see you coming.'],
+  thanks:['Now you look like a killer.','The arena will remember that face.','Good. Let them fear you.','That is a war face.'],
+  broke:['No gold, no war paint.','Come back when you have won something.'],
+  groups:[['Tools',['shears']],['Arena trophies',['laurel','leafLaurel','fangCaps','partyHat']],['Sashes',['sashRed','sashNavy','sashBone']],['Face',['paintBlood','paintBone','paintAsh','patch']],['Mane',['maneBones']],
+    ['Neck',['neckFangs']],['Ears',['earGold','earSilver','earFang']],['Nose',['noseGold','noseSilver','noseBone']]],
+  price:{earGold:200,earSilver:20,noseGold:200,noseSilver:20,patch:40,shears:15,laurel:250,leafLaurel:40,fangCaps:150,partyHat:30,sashRed:70,sashNavy:70,sashBone:70},
+  skulls:{paintBlood:3,paintBone:3,paintAsh:3,maneBones:3,noseBone:3,earFang:3,neckFangs:3}};
+const COSMOCOLS={mane:'#7a1c16',body:'#3a3230',edge:'#16110f',muz:'#bfae96',plate:'#5a4e48'};
+const COSMOWEARS={paint:'bone',mane:'bones',earL:'gold',earR:'fang',nose:'bone',neck:'fangs'};
+function cosmoSay(list){COSMO.quip=pickOne(list);}
+let COSMOICON=null;
+function paintCosmo(g,x,y,R,ang,t,anim){
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:0,cols:COSMOCOLS,mane:3,tail:0,seed:21,scars:[1284,617,1450],armor:'none',anim:anim,eyes:'#ffb23a',eyeGlow:true,cos:COSMOWEARS});
+}
+function cosmoIconHTML(){
+  if(COSMOICON===null){
+    try{
+      const c=document.createElement('canvas');c.width=88;c.height=88;const g=c.getContext('2d');
+      g.fillStyle='#140c09';g.fillRect(0,0,88,88);g.scale(2,2);
+      const gr=g.createRadialGradient(8,8,1,8,8,32);gr.addColorStop(0,'rgba(255,120,40,.45)');gr.addColorStop(1,'rgba(255,120,40,0)');
+      g.fillStyle=gr;g.fillRect(0,0,44,44);
+      paintCosmo(g,22,24,11,Math.PI/2,0,false);
+      COSMOICON=c.toDataURL?c.toDataURL():'';
+    }catch(e){COSMOICON='';}
+  }
+  return COSMOICON?'<img class="shopIco" src="'+COSMOICON+'" alt="">':'<span class="dic">'+ico('paint')+'</span>';
+}
+function drawCosmoScene(g,p){
+  const w=p.w,h=p.h,t=p.t;
+  g.fillStyle='#120b08';g.fillRect(0,0,w,h);
+  /* the tent: stitched hide panels */
+  g.fillStyle='#24160f';g.fillRect(0,0,w,70);
+  g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=1.4;
+  for(let x=40;x<w;x+=64){g.beginPath();g.moveTo(x,0);g.lineTo(x-10,70);g.stroke();
+    g.strokeStyle='rgba(190,150,100,.18)';g.lineWidth=1;for(let y=6;y<66;y+=8){g.beginPath();g.moveTo(x-3-y*.15,y);g.lineTo(x+3-y*.15,y+3);g.stroke();}
+    g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=1.4;}
+  /* torches either side */
+  const torch=function(x){const f=.8+.2*Math.sin(t*9+x)+.08*Math.sin(t*23+x);
+    const gl=g.createRadialGradient(x,14,2,x,14,90*f);gl.addColorStop(0,'rgba(255,140,50,.38)');gl.addColorStop(1,'rgba(255,140,50,0)');
+    g.fillStyle=gl;g.fillRect(0,0,w,h);
+    g.fillStyle='#3a2616';g.fillRect(x-2,16,4,26);
+    g.fillStyle='#ff9a2e';g.beginPath();g.moveTo(x-5,17);g.quadraticCurveTo(x,17-16*f,x+5,17);g.fill();
+    g.fillStyle='#ffe08a';g.beginPath();g.moveTo(x-2.4,17);g.quadraticCurveTo(x,17-8*f,x+2.4,17);g.fill();};
+  torch(18);torch(w-18);
+  /* a rack of spears and a skull on a pole */
+  g.strokeStyle='#5a3d24';g.lineWidth=2;
+  for(let i=0;i<3;i++){const x=40+i*9;g.beginPath();g.moveTo(x,64);g.lineTo(x+4,10);g.stroke();
+    g.fillStyle=CSTEEL;g.beginPath();g.moveTo(x+4,4);g.lineTo(x+7,12);g.lineTo(x+1,12);g.closePath();g.fill();}
+  const px=w-58;g.strokeStyle='#5a3d24';g.lineWidth=2.4;g.beginPath();g.moveTo(px,66);g.lineTo(px,22);g.stroke();
+  g.fillStyle=CBONE;g.beginPath();g.ellipse(px,18,8,7,0,0,7);g.fill();g.fillRect(px-5,20,10,6);
+  g.fillStyle='#1a120c';g.beginPath();g.arc(px-3,17,2,0,7);g.arc(px+3,17,2,0,7);g.fill();
+  /* embers rising */
+  for(let i=0;i<7;i++){const ph=(t*.22+i*.143)%1;g.globalAlpha=.8*(1-ph);g.fillStyle=i%2?'#ffb04a':'#ff6a2a';
+    g.beginPath();g.arc(20+((i*47)%Math.max(40,w-40))+Math.sin(t*2+i)*4,h-10-ph*(h-20),1.2,0,7);g.fill();}
+  g.globalAlpha=1;
+  /* the Cosmetic Lion behind a rough table */
+  const kx=w/2,ky=46,kR=20,ka=Math.PI/2+Math.sin(t*.9)*.18;
+  paintCosmo(g,kx,ky,kR,ka,t,(t%5)<.15);
+  g.fillStyle='#3a2416';g.fillRect(8,70,w-16,18);g.fillStyle='#4e3220';g.fillRect(8,70,w-16,4);
+  g.fillStyle='rgba(0,0,0,.4)';g.fillRect(8,88,w-16,4);
+  /* paint pots, loose bones, a fang and a ring on the table */
+  [['#b3121a',kx-62],['#ece2cc',kx-48],['#141212',kx-34]].forEach(function(q){
+    g.fillStyle='#2a1a10';g.fillRect(q[1]-6,72,12,10);g.fillStyle=q[0];g.beginPath();g.ellipse(q[1],73,5,2.2,0,0,7);g.fill();});
+  boneAt(g,kx+36,80,14,2.4,.3);boneAt(g,kx+52,78,11,2,-.5);
+  fangAt(g,kx+66,79,.2,9,4.5);
+  g.strokeStyle='#f2c230';g.lineWidth=1.6;g.beginPath();g.arc(kx-80,80,3.4,0,7);g.stroke();
+  /* what he says, on a scrap of hide */
+  const say=COSMO.quip||COSMO.hello[0];
+  g.font='italic 600 12px -apple-system,BlinkMacSystemFont,sans-serif';
+  const maxW=Math.max(90,Math.min(160,w/2-50)),words=say.split(' '),lines=[];let ln='';
+  words.forEach(function(wd){const tst=ln?ln+' '+wd:wd;if(g.measureText(tst).width>maxW&&ln){lines.push(ln);ln=wd;}else ln=tst;});
+  if(ln)lines.push(ln);
+  const bw=Math.min(maxW,Math.max.apply(null,lines.map(l=>g.measureText(l).width)))+18,bh=lines.length*15+12;
+  const bx=Math.max(kx+28,Math.min(kx+32,w-30-bw)),by=Math.max(4,32-bh/2);
+  g.fillStyle='rgba(226,206,170,.96)';
+  g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,6);else g.rect(bx,by,bw,bh);g.fill();
+  g.beginPath();g.moveTo(bx,by+bh*.55);g.lineTo(bx-8,by+bh*.7);g.lineTo(bx+4,by+bh*.8);g.fill();
+  g.fillStyle='#2a1810';lines.forEach(function(l,i){g.fillText(l,bx+9,by+18+i*15);});
+}
+function cosmoHTML(L){
+  const gold=L.gold||0,sk=invCount(L,'skull'),o=cosOf(L)||{};
+  const row=function(k){
+    const I=ITEMS[k],skp=COSMO.skulls[k],pr=skp?skp:COSMO.price[k],ok=skp?sk>=skp:gold>=pr;
+    const slot=I.cs==='ear'?null:I.cs,worn=slot&&slot!=='patch'&&o[slot]===I.val;
+    return '<button class="row" data-act="cosBuy" data-k="'+k+'"><span class="rico '+(I.val==='gold'?'czg':(I.val==='silver'?'czs':'czw'))+'">'+ico(I.ico)+'</span>'+
+      '<span class="v">'+I.name+(worn?' <em class="cosOn">Wearing</em>':'')+(k==='laurel'&&!beltsOf(L)?' <em class="cosLock">Belt holders</em>':'')+'<small>'+I.desc+'</small></span>'+
+      '<span class="price'+(ok?'':' poor')+(skp?' skp':'')+'">'+ico(skp?'skull':'coin')+pr+'</span></button>';
+  };
+  return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
+    '<div class="hd"><h2>The Cosmetic Lion</h2><span>War paint, bones and steel. Looks only: none of it changes how '+esc(L.name)+' fights. '+
+      esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b> and <b style="color:#e8dcc4">'+sk+' skull'+(sk===1?'':'s')+'</b>. Paint and bone cost skulls.</span></div>'+
+    '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="cosmo"></canvas></div>'+
+    (cosOf(L)?'<div class="grp cosWear">'+ico('lion')+'<span>'+esc(L.name)+' wears: '+esc(cosText(L))+'</span></div>':'')+
+    COSMO.groups.map(function(gr){return '<div class="hd sub2"><h2>'+gr[0]+'</h2></div><div class="card">'+gr[1].map(row).join('')+'</div>'+
+      (gr[0]==='Sashes'?'<div class="grp cosBoss">'+ico('crown')+'<span>Two more sashes cannot be bought. The <b>Fallen King\u2019s Sash</b> comes off the Lion King, and the <b>Starfall Sash</b> off the Ancient Lion. Beat them to take them.</span></div>':'');}).join('')+
+    '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
+      '<span class="v">Open the bag<small>Everything goes in the bag. Put it on from there.</small></span><span class="go">\u203a</span></button></div>';
+}
+function cosBuy(k){
+  const L=CAREER.lion,I=ITEMS[k],skp=COSMO.skulls[k],pr=COSMO.price[k];if(!L||!CAREER.locked||!I||(pr==null&&!skp))return;
+  L.gold=L.gold||0;
+  if(k==='laurel'&&!beltsOf(L)){cosmoSay(['The laurel is for champions. Win a belt first.']);toast('Win a belt first');refresh();return;}
+  if(skp){
+    const have=invCount(L,'skull');
+    if(have<skp){cosmoSay(['Paint is paid in skulls. Go and take some.','Bone for bone. Bring me skulls.']);toast('You need '+(skp-have)+' more skull'+(skp-have===1?'':'s'));refresh();return;}
+    for(let i=0;i<skp;i++)invTake(L,'skull');
+    if(!invAdd(L,k,1)){invAdd(L,'skull',skp);toast('The bag is full');return;}
+    SFX.coin();cosmoSay(COSMO.thanks);toast(I.name+' for '+skp+' skulls \u00b7 in the bag');
+    Store.save();refresh();return;
+  }
+  if(L.gold<pr){cosmoSay(COSMO.broke);toast('You need '+(pr-L.gold)+' more gold');refresh();return;}
+  if(!invAdd(L,k,1)){toast('The bag is full');return;}
+  L.gold-=pr;SFX.coin();cosmoSay(COSMO.thanks);toast(I.name+' for '+pr+' gold \u00b7 in the bag');
+  Store.save();refresh();
+}
+/* putting something on, and the shears that take it off */
+function openCosSheet(k){
+  const L=CAREER.lion,I=ITEMS[k];if(!L||!I)return;
+  const o=cosOf(L)||{};let body='';
+  if(I.use==='cos'&&(I.cs==='ear'||I.cs==='patch')){
+    const ear=I.cs==='ear';
+    const side=function(v,lab){const on=ear?o[v]:null;
+      return '<button class="cosSide'+(on?' full':'')+'" data-act="cosPut" data-k="'+k+'" data-s="'+v+'"'+(on?' disabled':'')+'>'+ico(I.ico)+'<b>'+lab+'</b>'+
+        '<small>'+(on?'Wearing '+ITEMS[cosItemFor(v,on)].name.toLowerCase():'Free')+'</small></button>';};
+    body='<p class="cosQ">'+(ear?'Which ear?':'Which eye?')+'</p><div class="cosSides">'+(ear?side('earL','Left ear')+side('earR','Right ear'):side('L','Left eye')+side('R','Right eye'))+'</div>'+
+      (ear&&o.earL&&o.earR?'<div class="grp">Both ears are taken. Snip one off with Cosmetic Shears first.</div>':'');
+  } else if(I.use==='shears'){
+    const l=cosList(L);
+    const x=UI.cosCut&&l.filter(q=>q.slot===UI.cosCut)[0];
+    if(x)body='<p class="cosQ">Snip off the '+x.name.toLowerCase()+(x.where?' ('+x.where+')':'')+'? It\u2019s lost for good.</p>'+
+        '<div class="act"><button data-act="cosCutNo">Keep it</button><button class="bin" data-act="cosCutGo">'+ico('shears')+'Snip it off</button></div>';
+    else body='<p class="cosQ">What comes off?</p><div class="card">'+l.map(function(q){
+      return '<button class="row" data-act="cosCut" data-s="'+q.slot+'"><span class="rico '+(q.val==='gold'?'czg':(q.val==='silver'?'czs':'czw'))+'">'+ico(q.ico)+'</span>'+
+        '<span class="v">'+q.name+'<small>'+(q.where?'On the '+q.where:'Worn now')+'</small></span><span class="go">\u203a</span></button>';}).join('')+'</div>';
+  }
+  UI.sheet={kind:'cos',field:k};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>'+I.name+'</h3><button data-act="invBack">'+ico('check')+'Back</button></div>'+
+    '<div class="sheetBody"><canvas class="cosCv" id="cosCv"></canvas>'+body+'</div>';
+  $('sheetWrap').classList.remove('hidden');
+  const cv=$('cosCv');
+  if(cv&&cv.getContext)try{const w=cv.clientWidth||300,h=cv.clientHeight||170,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
+    const g=cv.getContext('2d');g.scale(d,d);g.fillStyle='#140c09';g.fillRect(0,0,w,h);
+    const R=Math.min(56,h*.34);
+    paintLion(g,{x:w/2,y:h/2+R*.55,R:R,ang:-Math.PI/2,t:0,pelt:L.pelt||0,cols:colsOf(L),mane:lookOf(L,'mane'),tail:lookOf(L,'tail'),seed:hashStr(L.name),
+      scars:L.scars||[],armor:L.armor,eyes:lionEyes(L),eyeGlow:!!soulOf(L),cos:o});
+    if(I.cs==='ear'||I.cs==='patch'){g.font='600 12px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,255,255,.5)';g.textAlign='center';
+      g.fillText('LEFT',w/2-R*1.75,h/2+R*.2);g.fillText('RIGHT',w/2+R*1.75,h/2+R*.2);g.textAlign='start';}
+  }catch(e){}
+}
+function cosPut(k,side){
+  const L=CAREER.lion,I=ITEMS[k];if(!L||!I||I.use!=='cos'||!invCount(L,k))return;
+  L.cos=cosOf(L)||{};
+  let slot=I.cs,val=I.val;
+  if(I.cs==='ear'){if(side!=='earL'&&side!=='earR')return;slot=side;}
+  if(I.cs==='patch'){if(side!=='L'&&side!=='R')return;val=side;}
+  if(L.cos[slot]){const was=ITEMS[cosItemFor(slot,L.cos[slot])].name.toLowerCase();
+    toast(I.cs==='ear'?'That ear is taken':L.name+' already wears the '+was+'. Snip it off with Cosmetic Shears first');if(!Object.keys(L.cos).length)delete L.cos;return;}
+  invTake(L,k);L.cos[slot]=val;SFX.roar();
+  const where=I.cs==='ear'?' in its '+COS_WHERE[slot]:(I.cs==='patch'?' over its '+COS_WHERE[val]:'');
+  toast(L.name+(I.cs==='paint'?' is painted for war':' wears the '+I.name.toLowerCase()+where));
+  delete PREVMEM.career;Store.save();refresh();openInventory();
+}
+function cosCutGo(){
+  const L=CAREER.lion,slot=UI.cosCut;UI.cosCut=null;
+  const o=cosOf(L);if(!L||!o||!o[slot]||!invCount(L,'shears')){openInventory();return;}
+  const nm=ITEMS[cosItemFor(slot,o[slot])].name.toLowerCase();
+  invTake(L,'shears');delete L.cos[slot];if(!cosOf(L))delete L.cos;
+  SFX.ui();toast('Snip. The '+nm+' is gone');
+  delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
 const SMITH={reforge:50,quip:'',hit:0,
@@ -4429,6 +4725,7 @@ function renderLaunch(){
     else bar.innerHTML=leave+'<button class="go1 dim" data-act="bookieGo">'+ico('coin')+'Pick a lion to back</button>';
     return;}
   if(UI.view==='fence'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Slip back out</button>';return;}
+  if(UI.view==='cosmo'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the boutique</button>';return;}
   if(MATCH.mode==='online'){
     if(!onlineOn())bar.innerHTML='<button class="go1 dim">'+ico('globe')+'Offline</button>';
     else if(!signedIn())bar.innerHTML='<button class="go1" data-act="olFocus">'+ico('plus')+(ONLINE.tab==='in'?'Sign in':'Create a free account')+'</button>';
@@ -4597,7 +4894,8 @@ function moreMenu(open){
 }
 $('helpBtn').innerHTML=ico('help');$('moreBtn').innerHTML=ico('more');
 $('infoIco').innerHTML=ico('info');$('tutIco2').innerHTML=ico('help');
-$('helpBtn').onclick=function(){SFX.ui();moreMenu(false);openTut();};paintSoundIcon();
+$('helpBtn').onclick=function(){SFX.ui();moreMenu(false);openTut();};
+$('newsBtn').innerHTML=ico('info')+'<i class="newsDot"></i>';$('newsBtn').onclick=function(){SFX.ui();moreMenu(false);openNews();};setTimeout(newsDot,0);paintSoundIcon();
 $('moreBtn').onclick=function(e){e.stopPropagation();SFX.ui();moreMenu();};
 $('tutBtn2').onclick=function(){SFX.ui();moreMenu(false);openTut();};
 document.addEventListener('click',function(e){
@@ -4772,6 +5070,52 @@ function h2hText(R){const w=R.h2h.w,l=R.h2h.l;
   return w>l?('you lead '+w+'\u2013'+l):(l>w?('they lead '+l+'\u2013'+w):('level '+w+'\u2013'+l));}
 /* very rarely, a championship opponent carries a bound soul of its own: +10% to everything, and you can see it coming */
 const SOUL_FOE=.02;
+/* opponents carry upgrades the way your lion does: training that keeps pace with yours, forged weapons,
+   medallions, now and then a bound soul, and from the second championship on, war gear */
+const FOE_UP={share:[.35,.5,.6,.65,.7],base:.7,bout:.4,
+  fin:{per:.1,bout:.05,mine:.1,max:.8},perk:{base:.25,bout:.08,per:.05},
+  soul:{first:.015,base:.03,per:.008,bout:.006,belt:.08,max:.1},
+  cos:{from:2,base:.05,per:.03,bout:.01,belt:.1,max:.3}};
+function foeCos(belt){
+  const o={},pool=['ear','ear','nose','paint','paint','patch','mane','neck','teeth','leaf'].concat(belt?['crown','crown']:[]),n=1+(Math.random()<.45?1:0)+(Math.random()<.2?1:0);
+  for(let q=0;q<n*3&&Object.keys(o).length<n;q++){
+    const k=pickOne(pool);
+    if(k==='ear'){const sd=Math.random()<.5?'earL':'earR';if(!o[sd])o[sd]=pickOne(COS_VALS.earL);}
+    else if(k==='patch'){if(!o.patch)o.patch=Math.random()<.5?'L':'R';}
+    else if(k==='leaf'){if(!o.crown)o.crown='leaf';}
+    else if(k==='crown'){if(!o.crown)o.crown='laurel';}
+    else if(!o[k]){const vs=COS_VALS[k].filter(v=>v!=='-');if(vs.length)o[k]=pickOne(vs);}
+  }
+  return o;
+}
+function foeUpgrade(f,L,n,i,belt){
+  const U=FOE_UP,mine=trainCount(L),myW=wlvOf(L);
+  /* training: a share of yours, plus a little more every championship and every bout */
+  const pts=Math.max(0,Math.round(mine*U.share[Math.min(n-1,U.share.length-1)]*rnd(.8,1.15)+(n-1)*U.base+i*U.bout+rnd(-.6,.6)));
+  if(pts){const t={};for(let q=0;q<pts;q++){const k=pickOne(TRAIN_K);t[k]=(t[k]||0)+1;}f.train=t;}
+  /* a forged weapon */
+  if(n>=2&&Math.random()<clamp(U.fin.per*(n-1)+U.fin.bout*i+U.fin.mine*myW,0,U.fin.max))
+    f.wlv=clamp(1+((Math.random()*Math.min(3,n-1+(myW?1:0)))|0),1,3);
+  /* medallions, the way a belt gives you one */
+  if(n>=2&&!belt&&Math.random()<U.perk.base+U.perk.bout*i+U.perk.per*(n-2)){
+    f.perks=(f.perks||[]).slice();f.perks.push(pickOne(PERKS).k);
+    if(n>=4&&Math.random()<.4)f.perks.push(pickOne(PERKS).k);
+  }
+  /* a soul: rare, more likely later on and on a belt holder */
+  const sc=n<2?U.soul.first:clamp(U.soul.base+U.soul.per*(n-2)+U.soul.bout*i+(belt?U.soul.belt:0),0,U.soul.max+(belt?U.soul.belt:0));
+  if(Math.random()<sc)f.soul=Math.random()<.5?'divine':'demon';
+  /* war gear, from the second championship */
+  if(n>=U.cos.from&&Math.random()<clamp(U.cos.base+U.cos.per*(n-2)+U.cos.bout*i+(belt?U.cos.belt:0),0,U.cos.max)){const o=foeCos(belt);if(Object.keys(o).length)f.cos=o;}
+}
+/* what a foe brings with it: training, a forged weapon, medallions, war gear */
+function foeUpChips(f){
+  const out=[],t=trainCount(f),w=wlvOf(f),pk=(f.perks||[]).length;
+  if(t)out.push('<span class="upChip">'+ico('token')+'+'+t+' trained</span>');
+  if(w)out.push('<span class="upChip" style="color:'+finCol(f)+'">'+ico('hammer')+'Lv'+w+'</span>');
+  if(pk&&!beltsOf(f))out.push('<span class="upChip">'+ico('crown')+pk+' medallion'+(pk>1?'s':'')+'</span>');
+  if(cosOf(f))out.push('<span class="upChip gear">'+ico('paint')+'War gear</span>');
+  return out.join('');
+}
 function soulBadge(f){const s=soulOf(f);if(!s)return '';
   return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul</span>';}
 function rivalBadge(f){
@@ -4851,7 +5195,7 @@ function paintRivalIcons(){
     if(R.nem&&!R.avenged){const gr=g.createRadialGradient(w/2,h/2,2,w/2,h/2,w*.6);gr.addColorStop(0,'rgba(226,56,44,.45)');gr.addColorStop(1,'rgba(226,56,44,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);}
     const c=R.cfg;
     paintLion(g,{x:w/2,y:h/2+1,R:w*.27,ang:-Math.PI/2,t:0,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor,
-      eyes:R.nem&&!R.avenged?'#ff3a2a':null,eyeGlow:R.nem&&!R.avenged,dead:false});
+      eyes:R.nem&&!R.avenged?'#ff3a2a':null,eyeGlow:R.nem&&!R.avenged,dead:false,cos:cosOf(c)});
   });
 }
 /* opponents come with a past: early on they are as green as you (1-0, 2-3),
@@ -4890,7 +5234,6 @@ function startChampionship(){
     const marks=(Math.random()*(i+2))|0;
     for(let q=0;q<marks;q++)f.scars.push((Math.random()<.5?1000:0)+((Math.random()*1000)|0));
     f.record=foeRecord(L,n,i);
-    if(Math.random()<SOUL_FOE)f.soul=Math.random()<.5?'divine':'demon';
     foes.push(f);
   }
   /* once you own a belt, the last lion in the run is a belt holder too */
@@ -4902,6 +5245,8 @@ function startChampionship(){
     for(let q=0;q<belts;q++)last.perks.push(pickOne(PERKS).k);
     last.epithet='the belt holder';
   }
+  if(!(typeof window!=='undefined'&&window.NO_FOE_UP))foes.forEach(function(f,i){foeUpgrade(f,L,n,i,i===4&&L.record.champs>0);});
+  else foes.forEach(function(f){if(Math.random()<SOUL_FOE)f.soul=Math.random()<.5?'divine':'demon';});
   rivalsInto(foes,n,L);
   foes.forEach(function(f,i){f.arena=champArena(n,i);});
   const RK0=ROOKIE[n-1];
@@ -4987,6 +5332,8 @@ function handleAct(a,el){
   if(a==='openSmith'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='smith';smithSay(SMITH.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='smithFinish'){smithFinish();return;}
+  if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
+    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='openFence'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='fence';fenceSay(FENCE.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='fenceDeal'){fenceDeal(+el.dataset.i);return;}
@@ -5000,6 +5347,9 @@ function handleAct(a,el){
   if(a==='olView'){SFX.ui();openOnlineLion(el&&el.dataset.u);return;}
   if(a==='olFight'){olFight(el&&el.dataset.u);return;}
   if(a==='olQuick'){olQuick();return;}
+  if(a==='giftSend'){giftSend();return;}
+  if(a==='giftTo'){const u=el&&el.dataset.u,L=CAREER.lion;if(!L||!invCount(L,'gift')){toast('Buy a Gift Parcel at the Lion Store first');return;}SFX.ui();openGift(u);return;}
+  if(a==='giftOpenOk'){SFX.ui();closeSheet();refresh();return;}
   if(a==='olQuickR'){$('result').classList.add('hidden');showHome();olQuick();return;}
   if(a==='olFocus'){const e=$(ONLINE.tab==='in'?'acEmail':'acName')||$('acEmail');if(e){e.scrollIntoView&&e.scrollIntoView({block:'center'});e.focus&&e.focus();}return;}
   if(a==='openAcct'){SFX.ui();openAccount();return;}
@@ -5019,6 +5369,15 @@ function handleAct(a,el){
   if(a==='shopItem'){const k=el&&el.dataset.item;if(!SHOP.price[k])return;shopBuy(k);return;}
   if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
   if(a==='invUse'){invUse(el.dataset.k);return;}
+  if(a==='cosBuy'){cosBuy(el.dataset.k);return;}
+  if(a==='cosPut'){cosPut(el.dataset.k,el.dataset.s);return;}
+  if(a==='cosCut'){SFX.ui();UI.cosCut=el.dataset.s;openCosSheet('shears');return;}
+  if(a==='cosCutNo'){SFX.ui();UI.cosCut=null;openCosSheet('shears');return;}
+  if(a==='cosCutGo'){cosCutGo();return;}
+  if(a==='invBack'){SFX.ui();UI.cosCut=null;openInventory(UI.invSel);return;}
+  if(a==='invTrash'){SFX.ui();UI.invTrash=UI.invSel;openInventory(UI.invSel);return;}
+  if(a==='invTrashNo'){SFX.ui();UI.invTrash=-1;openInventory(UI.invSel);return;}
+  if(a==='invTrashGo'){invTrash(el.dataset.n==='all');return;}
   if(a==='useScout'){useScout();return;}
   if(a==='renameGo'){const v=($('renameIn')||{value:''}).value;invApply('shopRename',v);return;}
   if(a==='tEdit'){SFX.ui();UI.tslot=+el.dataset.i;UI.view='edit';refresh();
@@ -7413,23 +7772,203 @@ function paintLion(g,o){
     g.globalAlpha/=.85;
   }
   if(o.belts)drawBelt(g,R,lunge,o.belts);
+  if(o.cos&&o.cos.sash)cosSash(g,R,lunge,o.cos.sash,t);
 
   if(o.scars&&o.scars.length)drawScars(g,C,R,lunge,o.scars.filter(v=>v<1000));
   if(!o.noMane)drawMane(g,C,R,lunge,o.mane|0,o.seed||0);
+  if(o.cos)cosBack(g,R,lunge,o.cos,t,C);
 
   g.fillStyle=o.flash?FX.blood:C.body;
   g.beginPath();g.arc(R*.42+lunge,0,R*.5,0,7);g.fill();
   g.strokeStyle=C.edge;g.lineWidth=1.5;g.stroke();
   g.fillStyle=C.mane;
   [-1,1].forEach(function(s){g.beginPath();g.arc(R*.3+lunge,s*R*.42,R*.14,0,7);g.fill();});
+  if(o.cos)cosFace(g,R,lunge,o.cos);
   g.fillStyle=o.eyes?o.eyes:(o.stunned?FX.gold:'#07070a');
   if(o.eyeGlow&&o.eyes){g.save();g.shadowColor=o.eyes;g.shadowBlur=Math.max(5,R*.7);}
   [-1,1].forEach(function(s){g.beginPath();g.arc(R*.68+lunge,s*R*.17,R*(o.eyeGlow?.105:.09),0,7);g.fill();});
   if(o.eyeGlow&&o.eyes)g.restore();
+  if(o.cos&&o.cos.patch)cosPatch(g,R,lunge,o.cos.patch);
   g.fillStyle=C.muz;
   g.beginPath();g.arc(R*.86+lunge,0,R*.13,0,7);g.fill();
   if(o.scars&&o.scars.length)drawScars(g,C,R,lunge,o.scars.filter(v=>v>=1000));
+  if(o.cos)drawCos(g,R,lunge,o.cos);
   g.restore();
+}
+/* cosmetics: looks only. One thing per slot; ears and eyes pick a side */
+const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash'];
+const COS_VALS={earL:['gold','silver','fang'],earR:['gold','silver','fang'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
+  paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party'],sash:['redgold','navy','bone','king','ancient']};
+const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
+const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
+const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
+function cosOf(c){const o=c&&c.cos;if(!o)return null;const r={};COS_SLOTS.forEach(k=>{if(COS_VALS[k].indexOf(o[k])>=0)r[k]=o[k];});
+  return Object.keys(r).length?r:null;}
+function cosItemFor(slot,val){
+  const cs=(slot==='earL'||slot==='earR')?'ear':slot;
+  return Object.keys(ITEMS).filter(k=>ITEMS[k].use==='cos'&&ITEMS[k].cs===cs&&(cs==='patch'||ITEMS[k].val===val))[0]||null;
+}
+function cosList(c){const o=cosOf(c)||{};return COS_SLOTS.filter(k=>o[k]).map(function(k){const it=cosItemFor(k,o[k]),I=ITEMS[it];
+  return {slot:k,val:o[k],item:it,name:I.name,ico:I.ico,where:k==='patch'?COS_WHERE[o[k]]:(COS_WHERE[k]||'')};});}
+function cosText(c){return cosList(c).map(x=>x.name+(x.where?' ('+x.where+')':'')).join(', ');}
+function boneAt(g,x,y,len,w,ang){
+  g.save();g.translate(x,y);g.rotate(ang);
+  g.strokeStyle=CBONED;g.lineCap='round';g.lineWidth=w+Math.max(.6,w*.5);
+  g.beginPath();g.moveTo(-len/2,0);g.lineTo(len/2,0);g.stroke();
+  g.fillStyle=CBONED;[-1,1].forEach(function(e){[-1,1].forEach(function(q){g.beginPath();g.arc(e*len/2,q*w*.55,w*.85,0,7);g.fill();});});
+  g.strokeStyle=CBONE;g.lineWidth=w;g.beginPath();g.moveTo(-len/2,0);g.lineTo(len/2,0);g.stroke();
+  g.fillStyle=CBONE;[-1,1].forEach(function(e){[-1,1].forEach(function(q){g.beginPath();g.arc(e*len/2,q*w*.55,w*.6,0,7);g.fill();});});
+  g.restore();
+}
+function fangAt(g,x,y,ang,len,base,fill,edge){
+  g.save();g.translate(x,y);g.rotate(ang);
+  g.fillStyle=fill||CBONE;g.strokeStyle=edge||CBONED;g.lineWidth=Math.max(.5,base*.25);
+  g.beginPath();g.moveTo(0,-base/2);g.quadraticCurveTo(len*.6,-base*.35,len,0);g.quadraticCurveTo(len*.6,base*.35,0,base/2);g.closePath();g.fill();g.stroke();
+  g.restore();
+}
+function cosDark(hex,f){const m=/^#?([0-9a-f]{6})$/i.exec(hex||'');if(!m)return '#3a2a1e';const v=parseInt(m[1],16);
+  return 'rgb('+[(v>>16)&255,(v>>8)&255,v&255].map(x=>Math.round(x*f)).join(',')+')';}
+/* under the head: bones in the mane, braids, and whatever is round the neck */
+const SASH={redgold:{band:'#b51f18',trim:'#f2c230'},navy:{band:'#1a2744',trim:'#c3c9d4',mid:'#26385e'},bone:{band:'#e8dfcc',trim:'#141414',mid:'#141414'},
+  king:{band:'#111114',trim:'#c4161c',crown:1},ancient:{band:'#141d48',trim:'#ffc72c',stars:1}};
+/* a sash from the front shoulder across to the back hip, knotted there with two tails */
+function cosSash(g,R,lunge,v,t){
+  const S=SASH[v];if(!S)return;const bx=-lunge*.4,w=R*.27,a=-1.1,ca=Math.cos(a),sa=Math.sin(a),cx=bx-R*.5,cy=-R*.06;
+  g.save();g.beginPath();g.ellipse(bx,0,R*.92,R*.68,0,0,7);g.clip();
+  g.translate(cx,cy);g.rotate(a);
+  g.fillStyle='rgba(0,0,0,.3)';g.fillRect(-R*1.4,-w/2+R*.03,R*2.8,w);
+  g.fillStyle=S.band;g.fillRect(-R*1.4,-w/2,R*2.8,w);
+  g.fillStyle=S.trim;g.fillRect(-R*1.4,-w/2,R*2.8,w*.16);g.fillRect(-R*1.4,w/2-w*.16,R*2.8,w*.16);
+  if(S.mid){g.fillStyle=S.mid;g.fillRect(-R*1.4,-w*.08,R*2.8,w*.16);}
+  if(S.crown){/* a broken crown, stitched in red, on the back of the body */
+    g.save();g.translate(-R*.02,0);g.rotate(Math.PI/2);g.fillStyle='#c4161c';
+    g.beginPath();g.moveTo(-R*.09,R*.05);g.lineTo(-R*.09,-R*.04);g.lineTo(-R*.05,0);g.lineTo(-R*.01,-R*.06);g.lineTo(R*.01,-R*.01);g.lineTo(R*.04,-R*.06);g.lineTo(R*.05,-R*.01);g.lineTo(R*.09,-R*.04);g.lineTo(R*.09,R*.05);g.closePath();g.fill();
+    g.strokeStyle='#111114';g.lineWidth=Math.max(.5,R*.02);g.beginPath();g.moveTo(R*.015,-R*.06);g.lineTo(-R*.01,R*.05);g.stroke();g.restore();}
+  if(S.stars){for(let k=0;k<6;k++){const x=-R*.55+k*R*.18,y=(k%2?.04:-.04)*R,tw=.55+.45*Math.sin((t||0)*3+k*1.7);
+    g.fillStyle='rgba(255,215,90,'+tw+')';g.beginPath();
+    for(let q=0;q<8;q++){const rr=q%2?R*.018:R*.045,aa=q/8*Math.PI*2;g.lineTo(x+Math.cos(aa)*rr,y+Math.sin(aa)*rr);}g.closePath();g.fill();}}
+  g.restore();
+  /* the knot at the hip and the two tails hanging past the flank */
+  const kd=R*.44,kx=cx-ca*kd,ky=cy-sa*kd;
+  g.fillStyle=S.band;g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=Math.max(.6,R*.025);
+  [[-.25,.34],[.3,.28]].forEach(function(q){const ta=a+Math.PI+q[0],tl=R*q[1];
+    g.beginPath();g.moveTo(kx-Math.sin(ta)*R*.05,ky+Math.cos(ta)*R*.05);g.lineTo(kx+Math.cos(ta)*tl-Math.sin(ta)*R*.04,ky+Math.sin(ta)*tl+Math.cos(ta)*R*.04);
+    g.lineTo(kx+Math.cos(ta)*tl*1.08,ky+Math.sin(ta)*tl*1.08);g.lineTo(kx+Math.cos(ta)*tl+Math.sin(ta)*R*.04,ky+Math.sin(ta)*tl-Math.cos(ta)*R*.04);
+    g.lineTo(kx+Math.sin(ta)*R*.05,ky-Math.cos(ta)*R*.05);g.closePath();g.fill();g.stroke();
+    g.strokeStyle=S.trim;g.lineWidth=Math.max(.5,R*.02);g.beginPath();g.moveTo(kx,ky);g.lineTo(kx+Math.cos(ta)*tl,ky+Math.sin(ta)*tl);g.stroke();g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=Math.max(.6,R*.025);});
+  g.fillStyle=S.band;g.beginPath();g.ellipse(kx,ky,R*.08,R*.065,a,0,7);g.fill();g.stroke();
+  g.fillStyle=S.trim;g.beginPath();g.arc(kx,ky,Math.max(.6,R*.028),0,7);g.fill();
+}
+function cosBack(g,R,lunge,o,t,C){
+  const hx=R*.42+lunge;
+
+  if(o.mane==='bones')[1.7,2.35,3.14,3.93,4.58].forEach(function(a,i){
+    const rr=R*(.7+(i%2)*.06);boneAt(g,hx+Math.cos(a)*rr,Math.sin(a)*rr,R*.3,Math.max(1,R*.06),a+Math.PI/2+(i%2?.3:-.3));});
+  if(o.neck==='fangs'){
+    g.strokeStyle='#4a3420';g.lineWidth=Math.max(.8,R*.035);g.beginPath();g.arc(hx,0,R*.57,1.35,Math.PI*2-1.35);g.stroke();
+    for(let a=1.6;a<=Math.PI*2-1.6+.01;a+=.38)fangAt(g,hx+Math.cos(a)*R*.57,Math.sin(a)*R*.57,a,R*.2,R*.09);
+  }
+}
+/* on the face, before the eyes: war paint and helms */
+function cosFace(g,R,lunge,o){
+  const hx=R*.42+lunge,ex=R*.68+lunge;
+  if(o.crown){
+    /* two branches start at the back of the head and run forward round its rim; each leaf is pointed, with a vein, angled forward */
+    const leaf=o.crown==='leaf',r=R*.45,open=.55,n=7;
+    const C1=leaf?'#3f7a26':'#c9901a',C2=leaf?'#79b84a':'#ffd75a',CE=leaf?'#1f3f12':'#6e4a06',CV=leaf?'rgba(220,255,190,.55)':'rgba(255,248,210,.75)';
+    const drawLeaf=function(x,y,a,len,wd,lightSide){
+      g.save();g.translate(x,y);g.rotate(a);
+      const gr=g.createLinearGradient(0,-wd,0,wd);gr.addColorStop(0,lightSide?C2:C1);gr.addColorStop(1,lightSide?C1:C2);
+      g.fillStyle=gr;g.strokeStyle=CE;g.lineWidth=Math.max(.45,R*.018);
+      g.beginPath();g.moveTo(0,0);g.bezierCurveTo(len*.3,-wd*1.3,len*.75,-wd*1.0,len,0);g.bezierCurveTo(len*.75,wd*1.0,len*.3,wd*1.3,0,0);g.closePath();g.fill();g.stroke();
+      g.strokeStyle=CV;g.lineWidth=Math.max(.35,R*.012);g.beginPath();g.moveTo(len*.08,0);g.lineTo(len*.85,0);g.stroke();
+      g.restore();};
+    [1,-1].forEach(function(sd){
+      /* the stem */
+      g.strokeStyle=leaf?'#4a3220':CE;g.lineWidth=Math.max(.7,R*.03);g.beginPath();
+      for(let q=0;q<=20;q++){const th=sd*(Math.PI-q/20*(Math.PI-open)),x=hx+Math.cos(th)*r,y=Math.sin(th)*r;if(q)g.lineTo(x,y);else g.moveTo(x,y);}g.stroke();
+      for(let q=0;q<n;q++){const tt=(q+.5)/n,th=sd*(Math.PI-tt*(Math.PI-open)),x=hx+Math.cos(th)*r,y=Math.sin(th)*r;
+        const dir=sd>0?Math.atan2(-Math.cos(th),Math.sin(th)):Math.atan2(Math.cos(th),-Math.sin(th)),len=R*(.15-.03*tt),wd=R*.05;
+        drawLeaf(x,y,dir-sd*.62,len,wd,true);drawLeaf(x,y,dir+sd*.62,len*.9,wd*.9,false);}
+      /* the tip leaf at the front of each branch */
+      const th=sd*open,x=hx+Math.cos(th)*r,y=Math.sin(th)*r,dir=sd>0?Math.atan2(-Math.cos(th),Math.sin(th)):Math.atan2(Math.cos(th),-Math.sin(th));
+      drawLeaf(x,y,dir,R*.13,R*.045,true);
+      if(leaf){g.fillStyle='#c8342a';g.beginPath();g.arc(x+Math.cos(dir+sd*1.2)*R*.05,y+Math.sin(dir+sd*1.2)*R*.05,Math.max(.6,R*.032),0,7);g.fill();}
+    });
+    /* where the branches meet at the back: a tie */
+    if(!leaf){g.fillStyle='#b8221a';[-1,1].forEach(function(sd){g.beginPath();g.moveTo(hx-r,0);g.lineTo(hx-r-R*.16,sd*R*.1);g.lineTo(hx-r-R*.12,sd*R*.02);g.closePath();g.fill();});}
+    g.fillStyle=leaf?'#4a3220':'#ffe58a';g.beginPath();g.arc(hx-r,0,Math.max(.8,R*.04),0,7);g.fill();
+  }
+  if(o.hat==='party'){
+    /* a flat paper cone sat on the back of the head, tipped back and to one side, with a pom-pom on the point */
+    const bx=hx-R*.24,by=-R*.04,ax=Math.PI+.5,hh=R*.62,hw=R*.2;
+    const tx=bx+Math.cos(ax)*hh,ty=by+Math.sin(ax)*hh,nx=-Math.sin(ax),ny=Math.cos(ax);
+    const p1=[bx+nx*hw,by+ny*hw],p2=[bx-nx*hw,by-ny*hw];
+    g.save();
+    g.beginPath();g.moveTo(p1[0],p1[1]);g.lineTo(tx,ty);g.lineTo(p2[0],p2[1]);g.closePath();
+    g.fillStyle='#ff4d8d';g.fill();g.save();g.clip();
+    const cols=['#ffd23a','#3ac8ff','#7ce05a'];
+    for(let k=0;k<6;k++){const f0=.12+k*.15;const cx0=bx+Math.cos(ax)*hh*f0,cy0=by+Math.sin(ax)*hh*f0;
+      g.strokeStyle=cols[k%3];g.lineWidth=R*.07;g.beginPath();g.moveTo(cx0+nx*R*.4+Math.cos(ax)*R*.12,cy0+ny*R*.4+Math.sin(ax)*R*.12);g.lineTo(cx0-nx*R*.4-Math.cos(ax)*R*.12,cy0-ny*R*.4-Math.sin(ax)*R*.12);g.stroke();}
+    const sh=g.createLinearGradient(p1[0],p1[1],p2[0],p2[1]);sh.addColorStop(0,'rgba(255,255,255,.22)');sh.addColorStop(.5,'rgba(255,255,255,0)');sh.addColorStop(1,'rgba(0,0,0,.25)');
+    g.fillStyle=sh;g.fillRect(-R*3,-R*3,R*6,R*6);
+    g.restore();
+    g.strokeStyle='#5a2440';g.lineWidth=Math.max(.8,R*.035);g.lineJoin='round';
+    g.beginPath();g.moveTo(p1[0],p1[1]);g.lineTo(tx,ty);g.lineTo(p2[0],p2[1]);g.closePath();g.stroke();
+    g.strokeStyle='#ffe9a8';g.lineWidth=Math.max(1.2,R*.06);g.lineCap='round';g.beginPath();g.moveTo(p1[0],p1[1]);g.lineTo(p2[0],p2[1]);g.stroke();
+    g.fillStyle='#fff6e0';[[0,0,.09],[.06,-.04,.055],[-.05,.05,.055],[.05,.06,.05],[-.06,-.05,.05],[.0,-.08,.045]].forEach(function(q){g.beginPath();g.arc(tx+q[0]*R,ty+q[1]*R,q[2]*R,0,7);g.fill();});
+    g.lineCap='butt';g.lineJoin='miter';g.restore();
+  }
+  if(o.paint==='blood'){
+    g.save();g.beginPath();g.arc(hx,0,R*.5,0,7);g.clip();
+    g.strokeStyle='rgba(196,18,24,.9)';g.lineCap='round';g.lineWidth=Math.max(1.2,R*.07);
+    for(let i=0;i<3;i++){const off=(i-1)*R*.13;g.beginPath();g.moveTo(hx+R*.02+off,-R*.44);g.lineTo(hx+R*.42+off,R*.02);g.stroke();}
+    g.restore();
+  }
+  if(o.paint==='bone'){
+    g.fillStyle=CBONE;[-1,1].forEach(function(s){g.beginPath();g.arc(ex,s*R*.17,R*.16,0,7);g.fill();});
+    g.strokeStyle=CBONE;g.lineCap='round';g.lineWidth=Math.max(1.2,R*.08);g.beginPath();g.moveTo(hx-R*.3,0);g.lineTo(ex-R*.04,0);g.stroke();
+    g.lineWidth=Math.max(.8,R*.04);[-1,1].forEach(function(s){g.beginPath();g.moveTo(ex+R*.1,s*R*.08);g.lineTo(ex+R*.28,s*R*.12);g.stroke();});
+  }
+  if(o.paint==='ash'){
+    g.save();g.beginPath();g.arc(hx,0,R*.5,0,7);g.clip();
+    g.fillStyle='rgba(14,12,12,.85)';g.fillRect(ex-R*.11,-R*.5,R*.2,R);g.restore();
+  }
+}
+function cosPatch(g,R,lunge,side){
+  const s=side==='L'?-1:1,ex=R*.68+lunge,ey=s*R*.17;
+  g.lineCap='round';
+  [[Math.max(1.6,R*.08),'#1a120c'],[Math.max(.8,R*.04),'#8a6440']].forEach(function(q){g.strokeStyle=q[1];g.lineWidth=q[0];
+    g.beginPath();g.moveTo(ex,ey);g.lineTo(R*.2+lunge,-s*R*.4);g.stroke();
+    g.beginPath();g.moveTo(ex,ey);g.lineTo(R*.48+lunge,s*R*.48);g.stroke();});
+  g.fillStyle='#120c08';g.strokeStyle='#a07a50';g.lineWidth=Math.max(.8,R*.04);
+  g.beginPath();g.ellipse(ex,ey,R*.14,R*.13,0,0,7);g.fill();g.stroke();
+  g.fillStyle='#a07a50';g.beginPath();g.arc(ex+R*.04,ey-s*R*.04,Math.max(.5,R*.025),0,7);g.fill();
+}
+/* last: ear and nose pieces */
+function drawCos(g,R,lunge,o){
+  const lw=Math.max(.9,R*.05);
+  /* an open hoop: (ex,ey) is the centre of the ear or nose it pierces, rr its radius. The gap faces in, so the hoop looks like it goes through */
+  const hoop=function(ex,ey,rr,d,m){const M=COS_MET[m],r=Math.max(1.3,R*.085),D=rr+r*.12,x=ex+Math.cos(d)*D,y=ey+Math.sin(d)*D,a0=d+Math.PI-2.05,a1=d+Math.PI+2.05;
+    g.lineCap='round';
+    g.fillStyle='rgba(0,0,0,.45)';[a0,a1].forEach(function(a){g.beginPath();g.arc(x+Math.cos(a)*r,y+Math.sin(a)*r,lw*.7,0,7);g.fill();});
+    g.lineWidth=lw+Math.max(.6,R*.025);g.strokeStyle=M.dk;g.beginPath();g.arc(x,y,r,a1-Math.PI*2,a0);g.stroke();
+    g.lineWidth=lw;g.strokeStyle=M.ring;g.beginPath();g.arc(x,y,r,a1-Math.PI*2,a0);g.stroke();
+    g.fillStyle=M.hi;g.beginPath();g.arc(x+Math.cos(d-.5)*r,y+Math.sin(d-.5)*r,Math.max(.45,lw*.42),0,7);g.fill();
+    g.lineCap='butt';};
+  [['earL',-1],['earR',1]].forEach(function(q){const v=o[q[0]],s=q[1];if(!v)return;
+    const ex=R*.3+lunge,ey=s*R*.42,d=s*(Math.PI/2+.35);
+    if(v==='fang'){const px=ex+Math.cos(d)*R*.13,py=ey+Math.sin(d)*R*.13;
+      g.fillStyle='rgba(0,0,0,.45)';g.beginPath();g.arc(px,py,lw*.7,0,7);g.fill();
+      g.strokeStyle='#4a3420';g.lineWidth=Math.max(.7,R*.03);g.beginPath();g.moveTo(px,py);g.lineTo(px+Math.cos(d)*R*.07,py+Math.sin(d)*R*.07);g.stroke();
+      fangAt(g,px+Math.cos(d)*R*.06,py+Math.sin(d)*R*.06,d,R*.22,R*.1);}
+    else hoop(ex,ey,R*.14,d,v);});
+  if(o.teeth==='gold')[-1,1].forEach(function(sd){
+    fangAt(g,R*.88+lunge,sd*R*.09,sd*.18,R*.2,R*.09,'#f2c230','#7a5a08');
+    g.fillStyle='#fff6c8';g.beginPath();g.arc(R*.95+lunge,sd*R*.08,Math.max(.4,R*.018),0,7);g.fill();});
+  if(o.nose==='bone')boneAt(g,R*.9+lunge,0,R*.5,Math.max(1,R*.06),Math.PI/2);
+  else if(o.nose)hoop(R*.86+lunge,0,R*.13,0,o.nose);
 }
 /* a championship belt cinched round the middle; one stud per extra belt */
 function drawBelt(g,R,lunge,n){
@@ -7500,7 +8039,7 @@ function drawLionBody(e){
       const gh=e.ghosts[q];
       ctx.globalAlpha=(gh.life/.26)*.22;
       paintLion(ctx,{x:gh.x,y:gh.y,R:R,ang:gh.ang,t:clk(),pelt:e.cfg.pelt||0,cols:e.gab?GABCOLS:null,
-        mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),armor:e.cfg.armor,scars:[]});
+        mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),armor:e.cfg.armor,scars:[],cos:cosOf(e.cfg)});
     }
     ctx.globalAlpha=1;
   }
@@ -7516,7 +8055,7 @@ function drawLionBody(e){
     }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
     cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
-    mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),
+    mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),cos:cosOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
   if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false);
   if(e.cfg.old){ctx.save();if(e.hidden>0)ctx.globalAlpha=.16;if(e.dead)ctx.globalAlpha=.28;
@@ -7691,7 +8230,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -7701,9 +8240,9 @@ function bindPreviews(){
     const g=el.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
     const R=BUILDS[conf.build].r*.78,m=R*2.5;
     const mem=PREVMEM[key]||{};
-    const my=(key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?Math.min(h-m-1,96+m*.6):m;
+    const my=(key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?Math.min(h-m-1,96+m*.6):m;
     PREV.push({key:key,g:g,w:w,h:h,cfg:conf,R:R,m:m,my:my,
-      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
+      x:clamp(mem.x||w/2,m,Math.max(m+1,w-m)),y:clamp(mem.y||((key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?(my+h-m)/2:h/2),my,Math.max(my+1,h-m)),
       tx:clamp(mem.tx||rnd(m,w-m),m,Math.max(m+1,w-m)),ty:clamp(mem.ty||rnd(my,h-m),my,Math.max(my+1,h-m)),
       ang:mem.ang||0,t:mem.t||Math.random()*9,wait:rnd(.2,1),anim:0,swipeT:rnd(2.5,6)});
   });
@@ -7730,6 +8269,7 @@ function stepPreviews(dt){
     else if(p.key==='smith')drawSmithScene(g,p);
     else if(p.key==='fence')drawFenceScene(g,p);
     else if(p.key==='bookie')drawBookieScene(g,p);
+    else if(p.key==='cosmo')drawCosmoScene(g,p);
     else{
       g.fillStyle='#0a0a0c';g.fillRect(0,0,p.w,p.h);
       g.fillStyle='#17171c';
@@ -7741,7 +8281,7 @@ function stepPreviews(dt){
     if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,true);
     paintLion(g,{x:p.x,y:p.y,R:p.R,ang:p.ang,t:p.t,pelt:p.cfg.pelt||0,
       mane:lookOf(p.cfg,'mane'),tail:lookOf(p.cfg,'tail'),seed:hashStr(p.cfg.name),scars:p.cfg.scars||[],belts:beltsOf(p.cfg),armor:p.cfg.armor,
-      cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:lionEyes(p.cfg),eyeGlow:!!pso&&!isHog(p.cfg)&&!isGab(p.cfg),anim:p.anim>0});
+      cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:lionEyes(p.cfg),eyeGlow:!!pso&&!isHog(p.cfg)&&!isGab(p.cfg),anim:p.anim>0,cos:cosOf(p.cfg)});
     if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,false);
   }
 }
@@ -7789,11 +8329,19 @@ function evSettle(L,won){
     if(!CAREER.mascot)CAREER.story.push({k:'mascot',html:'That was the last of the five bouts. The mascot deal is over and the Lion Store is back to full price. The sign stays up, though.'});
   }
 }
+/* beat the Lion King or the Ancient Lion and it drops its sash, once per lion */
+const BOSS_SASH={king:'sashKing',ancient:'sashAncient'};
+function bossDrop(L){
+  const k=BOSS_SASH[BOSSKIND];if(!L||!k)return null;
+  const I=ITEMS[k],worn=cosOf(L)&&cosOf(L).sash===I.val;
+  if(worn||invCount(L,k))return {k:k,had:true};
+  return {k:k,ok:invAdd(L,k,1)};
+}
 function kingOver(won){
-  const L=CAREER.lion;
+  const L=CAREER.lion;UI.bossDrop=null;
   if(L&&L.record){
     const kk=BOSSES[BOSSKIND].kk,kt=BOSSES[BOSSKIND].kt;
-    if(won)L.record[kk]=(L.record[kk]||0)+1;
+    if(won){L.record[kk]=(L.record[kk]||0)+1;UI.bossDrop=bossDrop(L);}
     else L.record[kt]=(L.record[kt]||0)+1;
     Store.save();
   }
@@ -8037,8 +8585,11 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     V.textContent=anc?'THE ANCIENT LION FALLS':'THE KING IS DEAD';V.className='verdict gold';
     M.textContent='killed in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
       ' \u00b7 '+(anc?(n+' time'+(n>1?'s':'')+' now'):(n+' crown'+(n>1?'s':'')+' taken'));
+    const D=UI.bossDrop,DI=D&&ITEMS[D.k];
     P.innerHTML='<div class="perkCard"><h5>It stood over him</h5>'+
-      '<p>Very few lions manage this. Nothing changes on the record, but everyone in the pit saw it.</p></div>';
+      '<p>Very few lions manage this. Nothing changes on the record, but everyone in the pit saw it.</p></div>'+
+      (DI?'<div class="lootCard bossLoot"><span class="rico">'+ico('sash')+'</span><div><b>'+(D.had?esc(L.name)+' already has the '+DI.name:(D.ok?DI.name+' \u00b7 in the bag':'The bag is full. The '+DI.name+' stays in the sand.'))+'</b>'+
+        '<small>'+(D.had?'One is enough. It\u2019s yours for good.':(D.ok?'Torn off '+(anc?'the Ancient Lion':'the Lion King')+'. Put it on from the bag.':'Make room and beat '+(anc?'it':'him')+' again.'))+'</small></div></div>':'');
     B.innerHTML='<button class="primary" data-act="again">Again</button>'+
       '<button data-act="home">Back to the den</button>';
     SFX.champ();
@@ -8179,6 +8730,56 @@ const TUT=[
    vis:()=>''}
 ];
 const TS={i:0,shown:0,full:'',raf:0,t:0,last:0,arena:null};
+/* ---------- what's new ---------- */
+const NEWS={id:'2026-11-gift-cosmetic',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
+  items:[['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
+    ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
+    ['laurel','Laurels and a party hat','Victor\u2019s Laurel (belt holders only) and the Leaf Laurel now sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
+    ['paint','The Cosmetic Lion','A war tent at the den. Paint, bone and steel for your lion. Looks only, none of it changes a fight. War paint and bone gear cost 3 skulls.'],
+    ['shears','Cosmetic Shears','Snip anything off. It is gone for good.'],
+    ['trophy','Earlier: tougher championships','Opponents train alongside you, carry forged weapons and medallions, wear war gear from your second belt, and now and then carry a soul.']]};
+function newsSeen(){try{return window.localStorage&&window.localStorage.getItem('lionsim:news')===NEWS.id;}catch(e){return false;}}
+function newsDot(){const b=$('newsBtn');if(b)b.classList.toggle('fresh',!newsSeen());}
+function newsBanner(cv){
+  const w=cv.clientWidth||340,h=cv.clientHeight||190,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
+  const g=cv.getContext('2d');g.scale(d,d);
+  const bg=g.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#1c120c');bg.addColorStop(1,'#0a0806');g.fillStyle=bg;g.fillRect(0,0,w,h);
+  const sp=g.createRadialGradient(w/2,h*.95,10,w/2,h*.95,w*.65);sp.addColorStop(0,'rgba(255,170,70,.32)');sp.addColorStop(1,'rgba(255,170,70,0)');g.fillStyle=sp;g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(255,210,150,.06)';g.lineWidth=1;for(let y=h*.62;y<h;y+=12){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
+  for(let i=0;i<14;i++){const x=(i*61)%w,y=h*.2+((i*37)%(h*.6));g.fillStyle='rgba(255,'+(140+(i*13)%90)+',60,'+(.25+(i%3)*.15)+')';g.beginPath();g.arc(x,y,1.1,0,7);g.fill();}
+  const R=Math.min(24,h*.12);
+  const A={pelt:8,mane:3,tail:0,build:'prime'},cA={crown:'laurel',teeth:'gold',earL:'gold',sash:'ancient'};
+  paintLion(g,{x:w*.24,y:h*.8,R:R,ang:-.12,t:1,pelt:0,mane:3,tail:0,seed:4,scars:[1284],armor:'none',cos:cA,eyes:'#ffd24a',eyeGlow:true});
+  paintLion(g,{x:w*.76,y:h*.8,R:R,ang:Math.PI+.12,t:2,pelt:8,mane:0,tail:2,seed:9,scars:[617,1450],armor:'none',cos:{sash:'king',paint:'blood',patch:'L',nose:'gold',earR:'fang'},eyes:'#ff3a2a',eyeGlow:true});
+  g.textAlign='center';
+  g.font='700 10px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,190,110,.85)';
+  if(g.letterSpacing!==undefined)g.letterSpacing='3px';g.fillText('NEW UPDATE',w/2,h*.14);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
+  const big=Math.min(28,w*.078),ty=h*.14;
+  g.font='800 '+big+'px -apple-system,BlinkMacSystemFont,sans-serif';
+  const gold=g.createLinearGradient(0,h*.22,0,h*.5);gold.addColorStop(0,'#fff1b8');gold.addColorStop(.5,'#ffc43a');gold.addColorStop(1,'#d2861a');
+  g.shadowColor='rgba(255,150,40,.55)';g.shadowBlur=14;g.fillStyle=gold;
+  g.fillText(NEWS.top,w/2,ty+big*1.2);g.fillText(NEWS.bottom,w/2,ty+big*2.25);
+  g.shadowBlur=0;g.font='700 '+Math.round(big*.5)+'px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='#f5e6cc';
+  if(g.letterSpacing!==undefined)g.letterSpacing='4px';g.fillText('SEND ONE TO A RIVAL',w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
+  /* the parcel between them */
+  const px=w/2,py=h*.82,ps=Math.min(30,h*.15);
+  g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(px+3,py+ps*.55,ps*.7,ps*.18,0,0,7);g.fill();
+  g.fillStyle='#b9895a';g.fillRect(px-ps*.6,py-ps*.35,ps*1.2,ps*.85);
+  g.fillStyle='#d4a574';g.fillRect(px-ps*.66,py-ps*.55,ps*1.32,ps*.25);
+  g.fillStyle='#c4161c';g.fillRect(px-ps*.08,py-ps*.55,ps*.16,ps*1.05);g.fillRect(px-ps*.6,py-ps*.08,ps*1.2,ps*.14);
+  [-1,1].forEach(function(sd){g.beginPath();g.moveTo(px,py-ps*.55);g.quadraticCurveTo(px+sd*ps*.55,py-ps*1.15,px+sd*ps*.2,py-ps*.5);g.fill();});
+  g.textAlign='start';
+}
+function openNews(){
+  UI.sheet={kind:'news',field:'news'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>What\u2019s new</h3><button data-act="closeSheet">'+ico('check')+'Done</button></div>'+
+    '<div class="sheetBody"><canvas class="newsCv" id="newsCv" role="img" aria-label="'+NEWS.title+'"></canvas>'+
+    '<div class="newsList">'+NEWS.items.map(function(q){return '<div class="newsRow"><span class="rico">'+ico(q[0])+'</span><div><b>'+q[1]+'</b><small>'+q[2]+'</small></div></div>';}).join('')+'</div></div>';
+  $('sheetWrap').classList.remove('hidden');
+  const cv=$('newsCv');if(cv&&cv.getContext)try{newsBanner(cv);}catch(e){}
+  try{window.localStorage&&window.localStorage.setItem('lionsim:news',NEWS.id);}catch(e){}
+  newsDot();
+}
 function openTut(){TS.i=0;$('tut').classList.remove('hidden');renderTut();
   if(!TS.raf&&typeof requestAnimationFrame!=='undefined')TS.raf=requestAnimationFrame(tutTick);}
 function closeTut(){$('tut').classList.add('hidden');}
@@ -8537,7 +9138,7 @@ function evYou(g,x,y,R,ang,t,anim){
   const L=CAREER.lion;if(!L)return;const so=soulOf(L);
   if(so)soulAura(g,x,y,R,ang,t,so,true);
   paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:L.pelt,cols:colsOf(L),mane:L.mane,tail:L.tail,seed:3,scars:L.scars||[],armor:L.armor||'none',
-    eyes:lionEyes(L),eyeGlow:!!so,belts:beltsOf(L),anim:anim});
+    eyes:lionEyes(L),eyeGlow:!!so,belts:beltsOf(L),anim:anim,cos:cosOf(L)});
   if(so)soulAura(g,x,y,R,ang,t,so,false);
 }
 function evVignette(g,w,h){
@@ -9522,7 +10123,7 @@ function drawGrudgeScene(g,w,h,t,ph,tt){
     const so=soulOf(c);
     if(so)soulAura(g,fx,fy,20,fa,t,so,true);
     paintLion(g,{x:fx,y:fy,R:20,ang:fa,t:t,pelt:c.pelt||0,cols:colsOf(c),mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor||'none',
-      eyes:lionEyes(c),eyeGlow:!!so,belts:beltsOf(c),anim:(t*.7%1)<.08});
+      eyes:lionEyes(c),eyeGlow:!!so,belts:beltsOf(c),anim:(t*.7%1)<.08,cos:cosOf(c)});
     if(so)soulAura(g,fx,fy,20,fa,t,so,false);
   }
   const yy=h-44;let py=yy,ya=-Math.PI/2,walk=false;
@@ -9581,7 +10182,7 @@ async function onlineSignedIn(){
     if(!ONLINE.profile&&want)await onlineSetName(want,true);
   }catch(e){}
   await cloudPull();
-  paintAcct();pitNews();pitAuto();
+  paintAcct();pitNews();pitAuto();setTimeout(giftCheck,600);
   if(MATCH.mode==='online')olEnsure(true);
   refresh();
 }
@@ -9819,6 +10420,7 @@ function olEnsure(force){
   if(!force&&Date.now()-(ONLINE.boardTry||0)<20000)return;
   ONLINE.boardTry=Date.now();ONLINE.loading=true;
   Promise.all([pitLoad(true),pitNews()]).then(function(){ONLINE.loading=false;},function(){ONLINE.loading=false;});
+  giftCheck();
 }
 function olAuthHTML(){
   const up=ONLINE.tab!=='in';
@@ -9899,7 +10501,7 @@ function paintOnlineIcons(){
     const w=cv.clientWidth||40,h=cv.clientHeight||40,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
     const g=cv.getContext('2d');g.scale(d,d);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
     const c=r.lion;
-    try{paintLion(g,{x:w/2,y:h/2+1,R:w*.27,ang:-Math.PI/2,t:0,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor,eyes:lionEyes(c),eyeGlow:!!soulOf(c)});}catch(e){}
+    try{paintLion(g,{x:w/2,y:h/2+1,R:w*.27,ang:-Math.PI/2,t:0,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor,eyes:lionEyes(c),eyeGlow:!!soulOf(c),cos:cosOf(c)});}catch(e){}
   });
 }
 function olFind(uid){return (ONLINE.board||[]).filter(r=>r.user_id===uid)[0]||null;}
@@ -9913,7 +10515,8 @@ function openOnlineLion(uid){
     const o=eloOdds(olMyRating(),r.rating);
     fight='<div class="olOdds"><span class="up">Win <b>+'+o.win+'</b></span><span class="dn">Lose <b>'+o.lose+'</b></span><span>Elo '+olMyRating()+' vs '+r.rating+'</span></div>'+
       '<div class="act"><button class="key" data-act="olFight" data-u="'+uid+'">'+ico('duel')+
-      (!signedIn()?'Sign in to fight':(!L||!CAREER.locked?'Make a lion to fight':'Fight with '+esc(L.name)))+'</button></div>';
+      (!signedIn()?'Sign in to fight':(!L||!CAREER.locked?'Make a lion to fight':'Fight with '+esc(L.name)))+'</button>'+
+      (signedIn()&&L&&CAREER.locked?'<button data-act="giftTo" data-u="'+uid+'">'+ico('gift')+'Send a gift</button>':'')+'</div>';
   }
   const body='<canvas class="lionCv prevCv" data-prev="hall"></canvas>'+
     '<div class="hallHead"><h4>'+esc(r.name)+(r.belts?' <span class="badge gold">'+r.belts+'×</span>':'')+'</h4>'+
@@ -9942,6 +10545,123 @@ function olQuick(){
   const pick=(pool[1]&&Math.abs(pool[1].rating-me)-Math.abs(pool[0].rating-me)<40&&Math.random()<.5)?pool[1]:pool[0];
   olFight(pick.user_id);
 }
+/* ---------- gift parcels: wrap something up and send it to another player ---------- */
+const GIFT={maxN:10,maxGold:500,maxSkulls:20,msg:140,noSend:['gift','skull','sashKing','sashAncient']};
+const GIFT_BAD=/\b(f+u+c+k+\w*|sh+i+t+(?:e|s|ty|ting|head)?|c+u+n+t+s?|b+i+t+c+h+\w*|n+i+g+g+\w*|f+a+g+s?|f+a+g+g+o+t+s?|w+h+o+r+e+s?|d+i+c+k+s?|p+u+s+s+y+|a+s+s+h+o+l+e+s?|r+e+t+a+r+d+\w*|s+l+u+t+s?|w+a+n+k+\w*|t+w+a+t+s?|p+r+i+c+k+s?)\b/gi;
+function giftClean(t){return String(t||'').replace(GIFT_BAD,function(w){return w.charAt(0)+'\u2022'.repeat(Math.max(2,w.length-1));});}
+function giftErr(e){
+  const m=String((e&&(e.message||e.code))||e||'');
+  if(/daily_limit/.test(m))return 'You have sent 10 gifts today. Try again tomorrow';
+  if(/their_box_full/.test(m))return 'Their gift box is full. Try later';
+  if(/no_name/.test(m))return 'Pick a player name first';
+  if(/no_such_player/.test(m))return 'That player is gone';
+  if(/not_yourself/.test(m))return 'You can\u2019t send a gift to yourself';
+  if(/empty_gift/.test(m))return 'Put something in the parcel';
+  if(/too_much/.test(m))return 'That is more than a parcel can hold';
+  if(/PGRST202|Could not find the function|does not exist/i.test(m))return 'Gifts aren\u2019t switched on yet';
+  return errText(e);
+}
+function giftables(L){return invOf(L).filter(it=>GIFT.noSend.indexOf(it.k)<0);}
+function openGift(to){
+  const L=CAREER.lion;if(!L)return;
+  if(!signedIn()){closeSheet();MATCH.mode='online';refresh();if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);toast('Sign in to send gifts');return;}
+  if(!onlineName()){toast('Pick a player name first');return;}
+  if(!invCount(L,'gift')){toast('You need a Gift Parcel');return;}
+  const pool=(ONLINE.board||[]).filter(r=>r.user_id!==ONLINE.user.id);
+  if(!pool.length&&!ONLINE.board)pitLoad(true).then(function(){if(UI.sheet&&UI.sheet.kind==='gift')openGift(to);});
+  const sk=invCount(L,'skull'),gold=L.gold||0,items=giftables(L);
+  const keep={};['gfTo','gfItem','gfN','gfGold','gfSk','gfMsg'].forEach(function(id){const e=$(id);if(e)keep[id]=e.value;});
+  const body=(!pool.length?'<p class="cosQ">'+(ONLINE.board?'Nobody else is on the leaderboard yet.':'Loading the players\u2026')+'</p>':
+    '<div class="acctForm giftForm">'+
+      '<label>Send to<select id="gfTo">'+pool.map(function(r){return '<option value="'+r.user_id+'"'+(r.user_id===to?' selected':'')+'>'+esc(r.player)+' \u00b7 '+esc(r.name)+'</option>';}).join('')+'</select></label>'+
+      '<div class="giftRow"><label>Item<select id="gfItem"><option value="">No item</option>'+items.map(function(it){return '<option value="'+it.k+'">'+ITEMS[it.k].name+(it.n>1?' (you have '+it.n+')':'')+'</option>';}).join('')+'</select></label>'+
+        '<label class="sm">How many<input id="gfN" type="number" inputmode="numeric" min="1" max="'+GIFT.maxN+'" value="1"></label></div>'+
+      '<div class="giftRow"><label>Gold <small>(you have '+gold+')</small><input id="gfGold" type="number" inputmode="numeric" min="0" max="'+Math.min(gold,GIFT.maxGold)+'" value="0"></label>'+
+        '<label>Skulls <small>(you have '+sk+')</small><input id="gfSk" type="number" inputmode="numeric" min="0" max="'+Math.min(sk,GIFT.maxSkulls)+'" value="0"></label></div>'+
+      '<label>Note <small>(up to '+GIFT.msg+' letters)</small><textarea id="gfMsg" maxlength="'+GIFT.msg+'" rows="2" placeholder="Good luck in the arena"></textarea></label>'+
+      '<button class="key" data-act="giftSend">'+ico('gift')+'Wrap it and send</button></div>'+
+    '<p class="giftNote">Uses one Gift Parcel. Whatever goes in leaves '+esc(L.name)+'\u2019s bag for good. Up to '+GIFT.maxN+' of an item, '+GIFT.maxGold+' gold and '+GIFT.maxSkulls+' skulls a parcel, 10 parcels a day. Boss sashes can\u2019t be given away.</p>');
+  UI.sheet={kind:'gift',field:'gift'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Gift Parcel</h3><button data-act="closeSheet">'+ico('check')+'Done</button></div>'+
+    '<div class="sheetBody"><div class="giftHero">'+ico('gift')+'<span>Wrap something up for another player. They get it, and your note, next time they sign in.</span></div>'+body+'</div>';
+  $('sheetWrap').classList.remove('hidden');
+  Object.keys(keep).forEach(function(id){const e=$(id);if(e&&keep[id]!=null)e.value=keep[id];});
+}
+async function giftSend(){
+  const L=CAREER.lion;if(!L||!signedIn()||ONLINE.giftBusy)return;
+  const to=($('gfTo')||{}).value,k=($('gfItem')||{}).value||'',msg=String(($('gfMsg')||{}).value||'').replace(/\s+/g,' ').trim().slice(0,GIFT.msg);
+  let n=k?clamp(parseInt(($('gfN')||{}).value,10)||1,1,GIFT.maxN):0,gold=clamp(parseInt(($('gfGold')||{}).value,10)||0,0,GIFT.maxGold),sk=clamp(parseInt(($('gfSk')||{}).value,10)||0,0,GIFT.maxSkulls);
+  if(!to){toast('Pick who it is for');return;}
+  if(!invCount(L,'gift')){toast('You need a Gift Parcel');return;}
+  if(k&&(GIFT.noSend.indexOf(k)>=0||!ITEMS[k])){toast('That can\u2019t go in a parcel');return;}
+  if(k&&invCount(L,k)<n){toast('You only have '+invCount(L,k));return;}
+  if(gold>(L.gold||0)){toast('You only have '+(L.gold||0)+' gold');return;}
+  if(sk>invCount(L,'skull')){toast('You only have '+invCount(L,'skull')+' skulls');return;}
+  if(!k&&!gold&&!sk){toast('Put something in the parcel');return;}
+  const who=(ONLINE.board||[]).filter(r=>r.user_id===to)[0];
+  ONLINE.giftBusy=true;let err=null;
+  try{const r=await ONLINE.sb.rpc('send_gift',{p_to:to,p_item:k||null,p_n:n,p_gold:gold,p_skulls:sk,p_msg:msg});if(r&&r.error)err=r.error;}catch(e){err=e;}
+  ONLINE.giftBusy=false;
+  if(err){toast(giftErr(err));return;}
+  invTake(L,'gift');for(let i=0;i<n;i++)invTake(L,k);for(let i=0;i<sk;i++)invTake(L,'skull');L.gold=(L.gold||0)-gold;
+  SFX.coin();toast('Gift sent to '+(who?who.player:'them'));
+  Store.save();refresh();openInventory();
+}
+/* opening gifts: only when there is a lion to receive them and room in its bag */
+function giftFits(L,parts){
+  const inv=invOf(L).map(x=>({k:x.k,n:x.n}));
+  return parts.every(function(q){let left=q.n;
+    inv.forEach(function(x){if(left&&x.k===q.k&&x.n<INV_STACK){const t=Math.min(left,INV_STACK-x.n);x.n+=t;left-=t;}});
+    while(left>0){if(inv.length>=INV_SLOTS)return false;const t=Math.min(left,INV_STACK);inv.push({k:q.k,n:t});left-=t;}
+    return true;});
+}
+function giftParts(g){const p=[];if(g.item&&ITEMS[g.item]&&GIFT.noSend.indexOf(g.item)<0&&g.item_n>0)p.push({k:g.item,n:g.item_n|0});if(g.skulls>0)p.push({k:'skull',n:g.skulls|0});return p;}
+async function giftCheck(){
+  const L=CAREER.lion;
+  if(!signedIn()||!L||!CAREER.locked||ONLINE.giftChecking)return;
+  if(typeof document!=='undefined'&&!$('fight').classList.contains('hidden'))return;
+  ONLINE.giftChecking=true;ONLINE.giftAt=Date.now();
+  try{
+    const r=await ONLINE.sb.from('gifts').select('id,sender_name,item,item_n,gold,skulls,message,created_at').eq('recipient',ONLINE.user.id).is('claimed_at',null).order('id',{ascending:true}).limit(20);
+    if(r.error||!r.data||!r.data.length){ONLINE.giftChecking=false;return;}
+    const got=[];let waiting=0;
+    for(const g of r.data){
+      const parts=giftParts(g);
+      if(!giftFits(CAREER.lion,parts)){waiting++;continue;}
+      const c=await ONLINE.sb.rpc('claim_gift',{p_id:g.id});
+      const d=c&&!c.error&&c.data;if(!d)continue;
+      const M=CAREER.lion;giftParts(d).forEach(function(q){invAdd(M,q.k,q.n);});M.gold=(M.gold||0)+(d.gold|0);
+      got.push(d);
+    }
+    if(got.length){Store.save();refresh();showGifts(got,waiting);}
+    else if(waiting&&!ONLINE.giftWarned){ONLINE.giftWarned=1;toast(waiting+' gift'+(waiting>1?'s are':' is')+' waiting. Make room in the bag');}
+  }catch(e){}
+  ONLINE.giftChecking=false;
+}
+function giftLine(g){const out=[];
+  if(g.item&&ITEMS[g.item]&&g.item_n>0)out.push('<span class="giftThing"><i>'+ico(ITEMS[g.item].ico)+'</i>'+ITEMS[g.item].name+(g.item_n>1?' \u00d7'+g.item_n:'')+'</span>');
+  if(g.gold>0)out.push('<span class="giftThing gold"><i>'+ico('coin')+'</i>'+g.gold+' gold</span>');
+  if(g.skulls>0)out.push('<span class="giftThing bone"><i>'+ico('skull')+'</i>'+g.skulls+' skull'+(g.skulls>1?'s':'')+'</span>');
+  return out.join('');}
+function showGifts(list,waiting){
+  if(typeof document!=='undefined'&&!$('fight').classList.contains('hidden')){ONLINE.giftQueue=(ONLINE.giftQueue||[]).concat(list);return;}
+  const L=CAREER.lion,one=list.length===1;
+  UI.sheet={kind:'giftIn',field:'giftIn'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>'+(one?'A gift for you':list.length+' gifts for you')+'</h3><button data-act="giftOpenOk">'+ico('check')+'Done</button></div>'+
+    '<div class="sheetBody">'+list.map(function(g){
+      return '<div class="giftIn"><div class="giftTop">'+ico('gift')+'<div><small>You received a gift from</small><b>'+esc(g.sender_name)+'</b></div></div>'+
+        '<div class="giftThings">'+giftLine(g)+'</div>'+
+        (g.message?'<blockquote class="giftMsg">\u201c'+esc(giftClean(g.message))+'\u201d</blockquote>':'')+'</div>';}).join('')+
+    '<p class="giftNote">'+(L?'It\u2019s all in '+esc(L.name)+'\u2019s bag now.':'')+(waiting?' '+waiting+' more '+(waiting>1?'are':'is')+' waiting: make room in the bag and they\u2019ll come in.':'')+'</p>'+
+    '<div class="act"><button class="key" data-act="giftOpenOk">'+ico('check')+'Lovely</button></div></div>';
+  $('sheetWrap').classList.remove('hidden');SFX.champ&&SFX.coin();
+}
+if(typeof setInterval!=='undefined')setInterval(function(){
+  if(!signedIn()||(typeof document!=='undefined'&&document.visibilityState==='hidden'))return;
+  if(ONLINE.giftQueue&&ONLINE.giftQueue.length&&$('fight').classList.contains('hidden')&&!UI.sheet){const q=ONLINE.giftQueue;ONLINE.giftQueue=[];showGifts(q,0);return;}
+  if(Date.now()-(ONLINE.giftAt||0)>90000&&!UI.sheet)giftCheck();
+},5000);
+
 function olMineCfg(){const m=pitMine();return m&&m.lion?Object.assign(JSON.parse(JSON.stringify(m.lion)),{name:m.name}):null;}
 
 if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')cloudFlush();});
