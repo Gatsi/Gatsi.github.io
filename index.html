@@ -4968,7 +4968,11 @@ function openDev(){
       btn('ev_forest','crate','Crate in the trees','Item, then hyenas')+btn('ev_shop','coin','Lion Store','Mascot deal')+
       btn('ev_hut','help','Old Lion’s Hut','A lesson')+btn('ev_rob','scar','Robbed!','Pay or fight')+
       btn('ev_cub','paw','A cub by the road','Nurse it, it comes back')+btn('ev_merchant','lantern','Wandering Merchant','A strange price')+
-      btn('ev_rival','duel','A grudge','Off-record fight for gold')+btn('ev_rand','dice','Random event','Any of the nine')+'</div>'+
+      btn('ev_rival','duel','A grudge','Off-record fight for gold')+
+      btn('ev_carrion','skull','Carrion Feast','Claws or respects')+btn('ev_fix','coin','The Fix','Throw it, or the heavy')+
+      btn('ev_exile','crown','Exiled King','Free him or turn him in')+btn('ev_clan','paw','Clan War','Bone or Ash')+
+      btn('ev_feud','paw','The Clan Remembers',CAREER.feud?'The '+CLANS[CAREER.feud.by].name+' clan':'The payback ambush')+btn('ev_mirror','flame','Mystic\u2019s Mirror','Fight your shadow')+
+      btn('ev_scavenge','shield','Scavenger Night','Search the sand')+btn('ev_rand','dice','Random event','Any of the fifteen')+'</div>'+
     '<div class="grp">Arenas and the cub</div><div class="devGrid">'+
       btn('arena','map','Next bout’s arena',CAREER.champ?ARENAS[arenaOf(CAREER.champ.foes[CAREER.champ.i])].name+' · tap to change':'Starts a championship')+
       btn('cubNow','paw','Cub joins next bout',CAREER.cub?(CAREER.cub.wait>0?'Waiting '+CAREER.cub.wait:'Ready'):'No cub yet')+'</div>';
@@ -5005,6 +5009,9 @@ function devDo(k){
     if(e==='rob'&&(L.gold||0)<10)L.gold=50;
     if(e==='cub'&&(L.gold||0)<CUB.price)L.gold=CUB.price;
     if(e==='cub')CAREER.cub=null;
+    if(e==='feud'&&!CAREER.feud)CAREER.feud={by:pickOne(['bone','ash']),wait:0};
+    if(e==='clan')CAREER.feud=null;
+    if(e==='carrion')CAREER.boon=null;
     if(!CAREER.champ)startChampionship();
     CAREER.event={k:e};closeSheet();MATCH.mode='career';UI.view='home';
     Store.save();refresh();enterEvent();return;
