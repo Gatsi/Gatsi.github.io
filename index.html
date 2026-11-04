@@ -3592,6 +3592,8 @@ const ITEMS={
   sashNavy: {name:'Navy Sash',       ico:'sash',use:'cos',cs:'sash',val:'navy',desc:'Dark navy silk with a silver edge. Quiet, and it means business.'},
   sashBone: {name:'Bone and Black Sash',ico:'sash',use:'cos',cs:'sash',val:'bone',desc:'Bleached linen striped with black, like the old arena guards wore.'},
   sashKing: {name:'Fallen King\u2019s Sash',ico:'sash',use:'cos',cs:'sash',val:'king',boss:'king',desc:'Black silk edged in blood red, with his broken crown stitched in. Torn from the Lion King. Only won by beating him.'},
+  sashGate: {name:'Iron Gate Sash',  ico:'sash',use:'cos',cs:'sash',val:'gate',boss:'gate',desc:'Grey steel links with a rivet trim, cut from the Gatekeeper\u2019s chain. Only won by beating him.'},
+  sashTwins:{name:'Twin Crown Sash', ico:'sash',use:'cos',cs:'sash',val:'twins',boss:'twins',desc:'Half black silk, half white, with a split crown where they meet. Taken from the Twin Kings. Only won by beating both.'},
   sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
   partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
@@ -3869,7 +3871,7 @@ const CHAL={
   king:{name:'The Lion King',act:'startKing',go:'Challenge the Lion King',diff:3,diffName:'Hard',col:'#ff5a4d',
     blurb:'One fight. A giant in black plate.',
     desc:'Three times the size of your lion, in plate armour, with a maul that stuns and a roar that throws you across the sand.',
-    reward:'Crowns taken stay on your lion’s record',tip:'Keep moving. Ranged lions can kite him, and allies split his attention.'},
+    reward:'The Fallen King\u2019s Sash, the first time you beat him',tip:'Keep moving. Ranged lions can kite him, and allies split his attention.'},
   old:{name:'Old Lion',act:'startOld',go:'Challenge Old Lion',diff:4,diffName:'Very hard',col:'#d2cbbd',
     blurb:'Your tutor, out of retirement.',
     desc:'Patient, clever and much harder than he looks. He taught you everything, and he kept a few things back.',
@@ -3877,11 +3879,19 @@ const CHAL={
   ancient:{name:'The Ancient Lion',act:'startAncient',go:'Wake the Ancient Lion',diff:5,diffName:'Brutal',col:'#ffc72c',
     blurb:'Older than the arena.',
     desc:'A navy and gold colossus, slow and enormous. Get close and it blasts you with a gold nova. Stay back and it brings the stars down on you.',
-    reward:'Felling it is the rarest mark a lion can carry',tip:'Bring two allies. Alone, it wins most fights.'}};
-const CHAL_K=['pack','king','old','ancient'];
+    reward:'The Starfall Sash, the first time you fell it',tip:'Bring two allies. Alone, it wins most fights.'},
+  gate:{name:'The Gatekeeper',act:'startGate',go:'Face the Gatekeeper',diff:4,diffName:'Very hard',col:'#aeb6c2',
+    blurb:'Plated head to tail.',
+    desc:'A giant who guards the gates, covered in iron plates. Small blows ring off them: crack the plates with heavy hits, Quake Slam or boulders, then he bleeds. Once he is hurt he bolts new plates on, and the walls close in fast.',
+    reward:'The Iron Gate Sash, the first time you beat him',tip:'Big weapons and area hits break iron. Claws will take all day.'},
+  twins:{name:'The Twin Kings',act:'startTwins',go:'Face the Twin Kings',diff:5,diffName:'Brutal',col:'#e8e4da',
+    blurb:'Two kings. One crown.',
+    desc:'Kaldur, huge and slow in white, and Sevrin, black and quick. The exile\u2019s brothers, fighting together. Kill one and the other goes mad with grief: stronger, faster, and healed.',
+    reward:'The Twin Crown Sash, the first time you beat both',tip:'Pick one and finish it, then brace for the other. Allies help a lot.'}};
+const CHAL_K=['pack','king','old','ancient','gate','twins'];
 function chalRecord(k,rec){
   if(k==='pack')return rec.bestWave?('Best wave '+rec.bestWave+' · '+(rec.packKills||0)+' killed'):'Never faced';
-  const kk={king:'kingKills',old:'oldKills',ancient:'ancientKills'}[k],kt={king:'kingTries',old:'oldTries',ancient:'ancientTries'}[k];
+  const kk=BOSSES[k]&&BOSSES[k].kk,kt=BOSSES[k]&&BOSSES[k].kt;
   const w=rec[kk]|0,l=rec[kt]|0;
   if(!w&&!l)return 'Never faced';
   return (w?(w+' win'+(w>1?'s':'')):'No wins yet')+(l?' · '+l+' loss'+(l>1?'es':''):'');
@@ -3934,7 +3944,7 @@ function paintChalCanvases(){
   const sz=function(cv){const w=cv.clientWidth||160,h=cv.clientHeight||110,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.scale(d,d);return [g,w,h];};
   document.querySelectorAll('canvas.chalCv').forEach(function(cv){
     const k=cv.dataset.chal,q=sz(cv),g=q[0],w=q[1],h=q[2];
-    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16']}[k];
+    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16'],gate:['#232830','#0b0d10'],twins:['#2a2622','#0b0a09']}[k];
     const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,bg[0]);gr.addColorStop(1,bg[1]);g.fillStyle=gr;g.fillRect(0,0,w,h);
     g.fillStyle='rgba(255,255,255,.035)';for(let x=8;x<w;x+=16)for(let y=8;y<h;y+=16)g.fillRect(x,y,1.2,1.2);
     const cx=w/2,cy=h/2+6;
@@ -3950,6 +3960,17 @@ function paintChalCanvases(){
       const c=ancientCfg();paintLion(g,{x:cx,y:cy,R:h*.27,ang:Math.PI/2+.4,t:1,pelt:0,mane:c.mane,tail:c.tail,seed:3,scars:[],armor:'scale',cols:GABCOLS,eyes:'#ffe14d',eyeGlow:true});
       g.fillStyle='#ffe48a';for(let i=0;i<9;i++){const a=i*.7,d=h*(.36+.08*(i%3));g.globalAlpha=.5+.5*((i*37)%10)/10;g.beginPath();g.arc(cx+Math.cos(a)*d*1.4,cy+Math.sin(a)*d,1.4,0,7);g.fill();}
       g.globalAlpha=1;
+    } else if(k==='gate'){
+      g.strokeStyle='rgba(174,182,194,.25)';g.lineWidth=3;for(let x=10;x<w;x+=18){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke();}
+      g.lineWidth=2;for(let y=14;y<h;y+=26){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
+      const c=gateCfg(),R=h*.26,e={x:cx,y:cy,ang:Math.PI/2+.4,shell:1,shellMax:1,cfg:c};
+      paintLion(g,{x:cx,y:cy,R:R,ang:e.ang,t:1,pelt:3,mane:c.mane,tail:c.tail,seed:4,scars:c.scars,armor:'plate',cols:GATE.cols,eyes:'#ffd24a',eyeGlow:true});
+      drawGateShell(g,e,R);
+    } else if(k==='twins'){
+      const rg=g.createRadialGradient(cx,cy,6,cx,cy,h*.7);rg.addColorStop(0,'rgba(232,228,218,.22)');rg.addColorStop(1,'rgba(232,228,218,0)');g.fillStyle=rg;g.fillRect(0,0,w,h);
+      twinCfgs().forEach(function(c,i){const R=h*(i?.17:.22),x=cx+(i?w*.2:-w*.16),y=cy+(i?6:-2),a=Math.PI/2+(i?-.5:.5);
+        paintLion(g,{x:x,y:y,R:R,ang:a,t:1+i,pelt:c.pelt,mane:c.mane,tail:c.tail,seed:8+i,scars:c.scars,armor:c.armor,cols:c.bossCols,eyes:'#ffd24a',eyeGlow:true});
+        drawHalfCrown(g,{x:x,y:y,ang:a,cfg:c},R);});
     } else {
       const R=h*.25;paintLion(g,{x:cx,y:cy,R:R,ang:Math.PI/2+.4,t:1,pelt:0,mane:0,tail:0,seed:7,scars:[1284,617],armor:'hide',cols:OLDCOLS});
       drawOldBits(g,cx,cy,R,Math.PI/2+.4,1,false,0);
@@ -4386,7 +4407,7 @@ function cosmoHTML(L){
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="cosmo"></canvas></div>'+
     (cosOf(L)?'<div class="grp cosWear">'+ico('lion')+'<span>'+esc(L.name)+' wears: '+esc(cosText(L))+'</span></div>':'')+
     COSMO.groups.map(function(gr){return '<div class="hd sub2"><h2>'+gr[0]+'</h2></div><div class="card">'+gr[1].map(row).join('')+'</div>'+
-      (gr[0]==='Sashes'?'<div class="grp cosBoss">'+ico('crown')+'<span>Two more sashes cannot be bought. The <b>Fallen King\u2019s Sash</b> comes off the Lion King, and the <b>Starfall Sash</b> off the Ancient Lion. Beat them to take them.</span></div>':'');}).join('')+
+      (gr[0]==='Sashes'?'<div class="grp cosBoss">'+ico('crown')+'<span>Four more sashes cannot be bought: the <b>Fallen King\u2019s Sash</b> from the Lion King, the <b>Starfall Sash</b> from the Ancient Lion, the <b>Iron Gate Sash</b> from the Gatekeeper and the <b>Twin Crown Sash</b> from the Twin Kings. Beat them to take them.</span></div>':'');}).join('')+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
       '<span class="v">Open the bag<small>Everything goes in the bag. Put it on from there.</small></span><span class="go">\u203a</span></button></div>';
 }
@@ -5455,6 +5476,8 @@ function handleAct(a,el){
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
   if(a==='startAncient'){SFX.unlock();startFight('ancient');return;}
   if(a==='startOld'){SFX.unlock();startFight('old');return;}
+  if(a==='startGate'){SFX.unlock();startFight('gate');return;}
+  if(a==='startTwins'){SFX.unlock();startFight('twins');return;}
   if(a==='cutNext'){cutAdvance();return;}
   if(a==='startChamp'){if(!CAREER.locked)return;SFX.unlock();startChampionship();Store.save();return;}
   if(a==='nextBout'){if(CAREER.event){SFX.ui();enterEvent();return;}SFX.unlock();startFight('career');return;}
@@ -5497,7 +5520,7 @@ function makeLion(c,x,y,ang,light){
 function startFight(ctxName){
   if(ctxName==='ambush'){SURV.ambush=true;ctxName='survival';}
   else if(ctxName==='survival')SURV.ambush=false;
-  if(ctxName==='ancient'||ctxName==='old'){BOSSKIND=ctxName;ctxName='king';}
+  if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
   ['duel','career','pack','editor','tourn','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
@@ -5621,13 +5644,14 @@ function liftCol(hex,minL){
   return L>=minL?hex:mix(hex,'#ffffff',(minL-L)/(1-L));
 }
 function introCols(e){
-  if(e.boss){const c=BOSSES[BOSSKIND].col;return [c,liftCol(mix(c,'#ffffff',.35),.6),c];}
+  if(e.boss){const c=e.cfg.twin==='quick'?'#c9a227':BOSSES[BOSSKIND].col;return [c,liftCol(mix(c,'#ffffff',.35),.6),c];}
   if(e.dark)return ['#ff5a4d','#b9b9c2','#e2382c'];
   const C=colsOf(e.cfg);
   return [liftCol(C.mane,.5),liftCol(C.body,.6),liftCol(C.mane,.42)];
 }
 function introRec(e){
   const c=e.cfg;
+  if(e.boss&&BOSSES[BOSSKIND].rec)return BOSSES[BOSSKIND].rec;
   if(e.boss)return BOSSKIND==='ancient'?'Older than the arena':(BOSSKIND==='old'?'Retired. Mostly.':'Undefeated');
   if(e.gab)return 'Record: unknown';
   const R=c.record,f=R?(R.fights|0):0,w=R?(R.wins|0):0;
@@ -5642,7 +5666,7 @@ function introKick(i,grp){
   if(c==='bookie'){const bt=CAREER.bookie&&CAREER.bookie.bet;
     return (bt&&bt.side&&((bt.side==='a')===(i===0)))?'Your money is on':(i===0?'In this corner':'And in this corner');}
   if(c==='king')return i===0?(grp.lions.length>1?'The challengers':'The challenger')
-    :(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark'));
+    :(BOSSES[BOSSKIND].kick||(BOSSKIND==='ancient'?'Awakened':(BOSSKIND==='old'?'Out of retirement':'Out of the dark')));
   if(c==='survival')return SURV.ambush?'Ambushed in the trees':(grp.lions.length>1?'Into the pit':'Alone in the pit');
   if(c==='pit')return i===0?'Online':(CAREER.pit?CAREER.pit.player+'\u2019s lion \u00b7 Elo '+CAREER.pit.rating:'Online');
   if(c==='grudge')return i===0?'Off the record':('A grudge match'+(CAREER.event&&CAREER.event.rid?' \u00b7 your rival':''));
@@ -5791,6 +5815,19 @@ function newRound(){
     });
     G.token=++ROUND_TOKEN;
     makeCrowd();crowdReact(.5);
+    if(G.ctx==='king'&&(BOSSKIND==='gate'||BOSSKIND==='twins')){
+      const T=BOSS_TUNE[BOSSKIND],twins=BOSSKIND==='twins';
+      const ks=twins?twinCfgs().map(function(c,i){return makeLion(c,ARENA/2+(i?110:-110),170,Math.PI/2);}):[makeLion(gateCfg(),ARENA/2,165,Math.PI/2)];
+      ks.forEach(function(k){k.boss=1;k.foe=G.lions[0];k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;G.lions.push(k);});
+      if(!twins){const k=ks[0];k.shellMax=k.maxHp*GATE.shell;k.shell=k.shellMax;k.mass*=2;k.kbRes*=.35;k.speed*=.8;}
+      KING.maxHp=ks.reduce((a,k)=>a+k.maxHp,0);
+      if(introOn())startIntro([G.lions.filter(l=>!l.boss),ks],function(){banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
+      else{banner(twins?'THE TWIN KINGS':'THE GATEKEEPER',1.7,true);SFX.roar();crowdReact(1.5);}
+      log(twins?'<em class="blood">Kaldur and Sevrin</em> walk out together, half a crown each. Their brother was the exile.'
+        :'<em class="gold">The Gatekeeper</em> steps out from the gate, plated head to tail. Small blows will only ring off that iron.');
+      buildHud();
+      return;
+    }
     if(G.ctx==='king'){
       const anc=BOSSKIND==='ancient',old=BOSSKIND==='old';
       const k=makeLion(anc?ancientCfg():(old?oldCfg():kingCfg()),ARENA/2,160,Math.PI/2);
@@ -5899,6 +5936,7 @@ function hurt(t,amt,src,o){
     dmg*=t.tr.taken;
   }
   if(t.barrier>0){const abs=Math.min(t.barrier,dmg);t.barrier-=abs;dmg-=abs;spark(t.x,t.y,FX.shield,5);}
+  if(t.shell>0)return gateShellHit(t,dmg,src,o);
   dmg*=(1-t.dr);
   if(dmg<=0)return 0;
   t.hp-=dmg;t.hitFlash=.18;t.stats.taken+=dmg;
@@ -5955,6 +5993,7 @@ function kill(t,by){
     }
     const alive=G.lions.filter(l=>!l.dead&&l.side!==t.side)[0];if(alive)t.foe=alive;
   }
+  if(G.ctx==='king'&&t.boss&&!G.over){const o=G.lions.filter(l=>l.boss&&!l.dead&&l!==t)[0];if(o){twinGrief(o,t);return;}}
   if(G.over)return;                  /* a double knockout: the first to fall already decided it */
   G.over=true;G.winner=t.foe;G.method=by;
   G.slow=RM?0:1.35;G.shake=RM?0:13;G.flash=.55;G.freeze=RM?0:.16;
@@ -6260,19 +6299,24 @@ function kingCfg(){
 }
 const KING_SCALE=3.2, KING_DMG=.75;
 /* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
-const BOSS_TUNE={king:{hp:6,dmg:.32,clock:240},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150}};
+const BOSS_TUNE={king:{hp:6,dmg:.32,clock:240},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:240}};
 function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
 const BOSS_PHASE={
   king:   ['THE KING IS BLEEDING','THE KING WILL NOT KNEEL'],
   ancient:['THE STARS STIR','THE ANCIENT ONE ROARS'],
-  old:    ['\u201cNOT BAD, KID.\u201d','\u201cNOW I\u2019M AWAKE.\u201d']};
+  old:    ['\u201cNOT BAD, KID.\u201d','\u201cNOW I\u2019M AWAKE.\u201d'],
+  gate:   ['NEW PLATES, BOLTED ON','THE GATES WILL NOT OPEN'],
+  twins:  ['THE BROTHERS CLOSE IN','ONE CROWN. TWO KINGS.']};
 function bossPhase(b,n){
   const lines=BOSS_PHASE[BOSSKIND]||BOSS_PHASE.king;
+  if(BOSSKIND==='gate'&&n===1&&!b.dead){b.shell=b.shellMax*GATE.replate;}
   banner(lines[n-1],1.6,BOSSKIND!=='king');SFX.roar();crowdReact(1.7,b.x,b.y);
   if(!RM){G.shake=Math.max(G.shake,8);G.slow=Math.max(G.slow||0,.5);}
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*4.5,life:.6,max:.6,col:BOSSES[BOSSKIND].col});
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*3,life:.45,max:.45,col:'#ffffff'});
-  log((BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.')));
+  log(BOSSKIND==='gate'?(n===1?'<em class="gold">The Gatekeeper</em> bolts fresh iron over the cracks. Break it again.':'<em class="gold">The Gatekeeper</em> plants his halberd. The walls grind closer.')
+    :(BOSSKIND==='twins'?'<em class="blood">The Twin Kings</em> circle wider, one each side.'
+    :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.'))));
 }
 /* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
 const ANC={scale:1.8,dmg:.36,spd:.80,size:1.5,nova:.5,star:.4};
@@ -6285,7 +6329,79 @@ function ancientCfg(){
 const BOSSES={
   king:   {name:'The Lion King',   hud:'THE LION KING',col:'#ff5a4d',meta:'Titan \u00b7 Plate \u00b7 Great Maul',kk:'kingKills',kt:'kingTries'},
   ancient:{name:'The Ancient Lion',hud:'ANCIENT LION', col:'#ffc72c',meta:'Titan \u00b7 Nova \u00b7 Starfall',kk:'ancientKills',kt:'ancientTries'},
-  old:    {name:'Old Lion',        hud:'OLD LION',     col:'#d2cbbd',meta:'Retired champion \u00b7 still got it',kk:'oldKills',kt:'oldTries'}};
+  old:    {name:'Old Lion',        hud:'OLD LION',     col:'#d2cbbd',meta:'Retired champion \u00b7 still got it',kk:'oldKills',kt:'oldTries'},
+  gate:   {name:'The Gatekeeper',  hud:'THE GATEKEEPER',col:'#aeb6c2',meta:'Titan \u00b7 Iron plates \u00b7 Halberd',kk:'gateKills',kt:'gateTries',
+    winV:'THE GATES ARE OPEN',lossV:'THE GATES HOLD',who:'him',from:'the Gatekeeper',kick:'Guarding the gates',rec:'Nothing gets past'},
+  twins:  {name:'The Twin Kings',  hud:'THE TWIN KINGS',col:'#e8e4da',meta:'Two kings, one crown',kk:'twinsKills',kt:'twinsTries',
+    winV:'BOTH KINGS FALL',lossV:'THE TWIN KINGS STAND',who:'them',from:'the Twin Kings',kick:'One crown, two kings',rec:'Never beaten apart'}};
+/* ---------- the Gatekeeper: plated head to tail. The plates soak every hit until heavy blows crack them ---------- */
+const GATE={scale:2.9,dmg:.72,shell:.36,replate:.5,heavy:30,chip:.25,aoe:1.6,wall:{at:16,rate:9},
+  cols:{mane:'#5c6370',body:'#363b44',edge:'#aeb6c2',muz:'#7d848f',plate:'#d0d6de'}};
+function gateCfg(){
+  return {side:'P',name:'The Gatekeeper',build:'titan',armor:'plate',weapon:'spear',abil:['aegis','roar'],brain:'duelist',perks:[],pelt:3,mane:7,tail:4,iv:10,
+    scars:[1284,300,1700],traits:['patient','thicknecked'],scale:GATE.scale,dmgScale:GATE.dmg,boss:1,gate:1,bossCols:GATE.cols};
+}
+/* hits on the plates: small blows barely scratch them, heavy ones (big hits, Quake Slam, boulders) crack them fast */
+function gateShellHit(t,amt,src,o){
+  const W=src&&src.cfg&&WEAPONS[src.cfg.weapon],area=!!(W&&(W.aoe||W.splash)),big=amt>=GATE.heavy;
+  let sd=(big||area)?amt*(area?GATE.aoe:1):amt*GATE.chip;if(o.dot)sd*=.3;
+  t.shell=Math.max(0,t.shell-sd);t.hitFlash=.12;
+  if(!o.dot)num(t.x,t.y-t.r-6,(big||area)?'CRACK':'clang',(big||area)?'#ffd24a':'#aeb6c2',(big||area)?16:11);
+  spark(t.x,t.y,'#d0d6de',big||area?10:3);
+  if(!o.dot)SFX.hit(big||area?1.1:.35);
+  if(t.shell<=0)gateBreak(t);
+  return 0;
+}
+function gateBreak(t){
+  t.shell=0;banner('THE PLATES CRACK',1.4,true);SFX.roar();crowdReact(1.8,t.x,t.y);
+  if(!RM){G.shake=Math.max(G.shake,10);G.slow=Math.max(G.slow||0,.45);}
+  for(let i=0;i<26;i++)spark(t.x,t.y,i%2?'#d0d6de':'#ffd24a',1);
+  G.parts.push({ring:1,x:t.x,y:t.y,rad:t.r,maxRad:t.r*4,life:.6,max:.6,col:'#d0d6de'});
+  log('<em class="gold">The Gatekeeper\u2019s plates crack open.</em> Now he bleeds.');
+}
+function drawGateShell(c,e,R){
+  if(!(e.shell>0))return;
+  const f=clamp(e.shell/(e.shellMax||1),0,1);
+  c.save();c.translate(e.x,e.y);c.rotate(e.ang);if(e.dead)c.globalAlpha=.28;
+  c.strokeStyle='rgba(208,214,222,'+(.35+.55*f)+')';c.lineWidth=Math.max(2,R*.09);
+  for(let i=0;i<7;i++){const a0=-2.6+i*.74,a1=a0+.6;c.beginPath();c.arc(-R*.05,0,R*1.02,a0,a1);c.stroke();}
+  c.fillStyle='#e6eaf0';for(let i=0;i<7;i++){const a=-2.3+i*.74;c.beginPath();c.arc(-R*.05+Math.cos(a)*R*1.02,Math.sin(a)*R*1.02,Math.max(1,R*.05),0,7);c.fill();}
+  /* the iron face guard, bars like a portcullis */
+  c.strokeStyle='rgba(60,66,76,.95)';c.lineWidth=Math.max(1.4,R*.06);
+  for(let i=-1;i<=1;i++){c.beginPath();c.moveTo(R*.62,i*R*.22);c.lineTo(R*.98,i*R*.2);c.stroke();}
+  c.beginPath();c.moveTo(R*.66,-R*.32);c.lineTo(R*.66,R*.32);c.stroke();
+  if(f<.5){c.strokeStyle='rgba(20,20,24,.8)';c.lineWidth=Math.max(1,R*.04);c.beginPath();c.moveTo(-R*.6,-R*.5);c.lineTo(-R*.2,-R*.1);c.lineTo(-R*.4,R*.3);c.stroke();}
+  c.restore();
+}
+/* ---------- the Twin Kings: the exile's other brothers. A heavy one and a quick one. Kill one and the other goes mad with grief ---------- */
+const TWINS={hp:3.4,dmg:.3,grief:{dmg:1.45,spd:1.22,heal:.3},
+  heavy:{name:'Kaldur',cols:{mane:'#ece7dc',body:'#5c5852',edge:'#f6f2e8',muz:'#d4ccbc',plate:'#f6f2e8'}},
+  quick:{name:'Sevrin',cols:{mane:'#141416',body:'#0c0c0e',edge:'#c9a227',muz:'#3a3a42',plate:'#c9a227'}}};
+function twinCfgs(){
+  return [{side:'P',name:TWINS.heavy.name,build:'titan',armor:'plate',weapon:'maul',abil:['roar','aegis'],brain:'adaptive',perks:[],pelt:2,mane:5,tail:0,iv:10,
+      scars:[1284,617],traits:['bold','thicknecked'],scale:2.4,dmgScale:.72,boss:1,twin:'heavy',bossCols:TWINS.heavy.cols},
+    {side:'P',name:TWINS.quick.name,build:'lean',armor:'hide',weapon:'claws',abil:['dash','frenzy'],brain:'berserk',perks:[],pelt:8,mane:3,tail:2,iv:10,
+      scars:[1401,220],traits:['rangy','lightfooted'],scale:1.9,dmgScale:.5,boss:1,twin:'quick',bossCols:TWINS.quick.cols}];
+}
+function twinGrief(o,dead){
+  const Q=TWINS.grief;o.grief=1;o.dmgMult*=Q.dmg;o.speed*=Q.spd;o.hp=Math.min(o.maxHp,o.hp+o.maxHp*Q.heal);o.frenzy=999;
+  banner(o.name.toUpperCase()+' GRIEVES',1.6,true);SFX.roar();crowdReact(2,o.x,o.y);
+  if(!RM){G.shake=Math.max(G.shake,9);G.slow=Math.max(G.slow||0,.6);}
+  G.parts.push({ring:1,x:o.x,y:o.y,rad:o.r,maxRad:o.r*5,life:.7,max:.7,col:'#ff3a2a'});
+  log('<em class="blood">'+dead.name+' falls.</em> '+o.name+' howls over the body and comes at you twice as hard.');
+}
+/* half a crown each: Kaldur wears the white half, Sevrin the black */
+function drawHalfCrown(c,e,R){
+  const side=e.cfg.twin==='heavy'?-1:1;
+  c.save();c.translate(e.x,e.y);c.rotate(e.ang);c.translate(R*.26,0);if(e.dead)c.globalAlpha=.28;
+  const rr=R*.28,lw=Math.max(1,R*.05);c.lineWidth=lw;c.strokeStyle='#5a4208';
+  for(let i=0;i<4;i++){const a=side*(.3+i*.62);
+    c.fillStyle=e.cfg.twin==='heavy'?'#f2ede0':'#1a1a1e';c.beginPath();c.moveTo(Math.cos(a-.24)*rr,Math.sin(a-.24)*rr);c.lineTo(Math.cos(a)*(rr+R*.22),Math.sin(a)*(rr+R*.22));
+    c.lineTo(Math.cos(a+.24)*rr,Math.sin(a+.24)*rr);c.closePath();c.fill();c.stroke();
+    c.fillStyle='#ffd24a';c.beginPath();c.arc(Math.cos(a)*(rr+R*.22),Math.sin(a)*(rr+R*.22),R*.045,0,7);c.fill();}
+  c.fillStyle='#c9a227';c.beginPath();c.arc(0,0,rr,side>0?-Math.PI/2:Math.PI/2,side>0?Math.PI/2:Math.PI*1.5);c.fill();
+  c.restore();
+}
 function bossName(){return BOSSES[BOSSKIND].name;}
 /* Old Lion: your tutor, out of retirement for one last fight */
 const OLD={scale:1.5,dmg:.62,size:1.2};
@@ -6711,13 +6827,14 @@ function step(dt){
   stepGates(dt);
   G.t+=dt;
   if(G.starting>0)G.starting-=dt;
-  if(fightClosing()&&G.t>26){
-    if(!G.warned){G.warned=true;banner('THE WALLS CLOSE',1.3);SFX.warn();log('The square begins to close.');}
-    G.wall=Math.min(WALL0+168,WALL0+(G.t-26)*7);
+  const gw=G.ctx==='king'&&BOSSKIND==='gate',wAt=gw?GATE.wall.at:26,wRate=gw?GATE.wall.rate:7;
+  if(fightClosing()&&G.t>wAt){
+    if(!G.warned){G.warned=true;banner('THE WALLS CLOSE',1.3);SFX.warn();log(gw?'The Gatekeeper drops the bars. The square closes fast.':'The square begins to close.');}
+    G.wall=Math.min(WALL0+168,WALL0+(G.t-wAt)*wRate);
   }
   if(G.ctx==='king'&&!G.over){
-    const b=G.bossE||(G.bossE=G.lions.filter(l=>l.boss)[0]);
-    if(b&&!b.dead){const f=b.hp/b.maxHp;
+    const bs=G.lions.filter(l=>l.boss),b=bs.filter(l=>!l.dead)[0]||bs[0];
+    if(b&&!b.dead){const f=bs.reduce((a,l)=>a+Math.max(0,l.hp),0)/bs.reduce((a,l)=>a+l.maxHp,0);
       if(!G.ph1&&f<.66){G.ph1=1;bossPhase(b,1);}
       if(!G.ph2&&f<.33){G.ph2=1;bossPhase(b,2);}}
   }
@@ -6960,7 +7077,7 @@ function explode(p,direct){
 function camUpdate(dt){
   const C=G.cam;if(!C||!G.lions.length)return;
   const a=G.lions[0];
-  const b=(G.ctx==='king')?(G.lions.filter(x=>x.boss)[0]||a)
+  const b=(G.ctx==='king')?(G.lions.filter(x=>x.boss&&!x.dead)[0]||G.lions.filter(x=>x.boss)[0]||a)
     :(G.ctx==='survival')?(a.foe&&!a.foe.dead?a.foe:a):(G.lions[1]||a);
   let fx,fy,tz;
   if(G.intro&&G.intro.ph!=='ready'){const f=introFocus();fx=f.x;fy=f.y;tz=1.28;}
@@ -7852,7 +7969,7 @@ function paintLion(g,o){
 const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash'];
 const COS_VALS={earL:['gold','silver','fang'],earR:['gold','silver','fang'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party'],sash:['redgold','navy','bone','king','ancient']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party'],sash:['redgold','navy','bone','king','ancient','gate','twins']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -7884,7 +8001,8 @@ function cosDark(hex,f){const m=/^#?([0-9a-f]{6})$/i.exec(hex||'');if(!m)return 
   return 'rgb('+[(v>>16)&255,(v>>8)&255,v&255].map(x=>Math.round(x*f)).join(',')+')';}
 /* under the head: bones in the mane, braids, and whatever is round the neck */
 const SASH={redgold:{band:'#b51f18',trim:'#f2c230'},navy:{band:'#1a2744',trim:'#c3c9d4',mid:'#26385e'},bone:{band:'#e8dfcc',trim:'#141414',mid:'#141414'},
-  king:{band:'#111114',trim:'#c4161c',crown:1},ancient:{band:'#141d48',trim:'#ffc72c',stars:1}};
+  king:{band:'#111114',trim:'#c4161c',crown:1},ancient:{band:'#141d48',trim:'#ffc72c',stars:1},
+  gate:{band:'#5a616c',trim:'#c9cfd8',links:1},twins:{band:'#efeae0',trim:'#c9a227',split:1}};
 /* a sash from the front shoulder across to the back hip, knotted there with two tails */
 function cosSash(g,R,lunge,v,t){
   const S=SASH[v];if(!S)return;const bx=-lunge*.4,w=R*.27,a=-1.1,ca=Math.cos(a),sa=Math.sin(a),cx=bx-R*.5,cy=-R*.06;
@@ -7898,6 +8016,11 @@ function cosSash(g,R,lunge,v,t){
     g.save();g.translate(-R*.02,0);g.rotate(Math.PI/2);g.fillStyle='#c4161c';
     g.beginPath();g.moveTo(-R*.09,R*.05);g.lineTo(-R*.09,-R*.04);g.lineTo(-R*.05,0);g.lineTo(-R*.01,-R*.06);g.lineTo(R*.01,-R*.01);g.lineTo(R*.04,-R*.06);g.lineTo(R*.05,-R*.01);g.lineTo(R*.09,-R*.04);g.lineTo(R*.09,R*.05);g.closePath();g.fill();
     g.strokeStyle='#111114';g.lineWidth=Math.max(.5,R*.02);g.beginPath();g.moveTo(R*.015,-R*.06);g.lineTo(-R*.01,R*.05);g.stroke();g.restore();}
+  if(S.links){g.strokeStyle='#2a2e34';g.lineWidth=Math.max(.6,R*.025);for(let k=0;k<9;k++){g.beginPath();g.ellipse(-R*.7+k*R*.16,0,R*.07,R*.05,0,0,7);g.stroke();}
+    g.fillStyle='#e6eaf0';for(let k=0;k<12;k++){g.beginPath();g.arc(-R*.75+k*R*.13,(k%2?1:-1)*w*.42,Math.max(.4,R*.018),0,7);g.fill();}}
+  if(S.split){g.fillStyle='#121214';g.fillRect(0,-w/2+w*.16,R*1.4,w*.68);
+    g.save();g.fillStyle='#c9a227';g.beginPath();g.moveTo(-R*.08,R*.06);g.lineTo(-R*.08,-R*.05);g.lineTo(-R*.04,-R*.01);g.lineTo(0,-R*.07);g.lineTo(R*.04,-R*.01);g.lineTo(R*.08,-R*.05);g.lineTo(R*.08,R*.06);g.closePath();g.fill();
+    g.strokeStyle='#efeae0';g.lineWidth=Math.max(.5,R*.02);g.beginPath();g.moveTo(0,-R*.08);g.lineTo(0,R*.07);g.stroke();g.restore();}
   if(S.stars){for(let k=0;k<6;k++){const x=-R*.55+k*R*.18,y=(k%2?.04:-.04)*R,tw=.55+.45*Math.sin((t||0)*3+k*1.7);
     g.fillStyle='rgba(255,215,90,'+tw+')';g.beginPath();
     for(let q=0;q<8;q++){const rr=q%2?R*.018:R*.045,aa=q/8*Math.PI*2;g.lineTo(x+Math.cos(aa)*rr,y+Math.sin(aa)*rr);}g.closePath();g.fill();}}
@@ -8107,10 +8230,12 @@ function drawLionBody(e){
         col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
     }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
-    cols:e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null)),eyes:e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
+    cols:e.cfg.bossCols||(e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null))),eyes:e.cfg.twin?(e.grief?'#ff3a2a':'#ffd24a'):e.cfg.gate?'#ffd24a':e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
     mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),cos:cosOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
   if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false);
+  if(e.cfg.gate)drawGateShell(ctx,e,R);
+  if(e.cfg.twin)drawHalfCrown(ctx,e,R);
   if(e.cfg.old){ctx.save();if(e.hidden>0)ctx.globalAlpha=.16;if(e.dead)ctx.globalAlpha=.28;
     drawOldBits(ctx,e.x,e.y,R,e.ang,G.t,false,e.anim>0?R*.18:0);ctx.restore();}
   ctx.save();ctx.translate(e.x,e.y);
@@ -8228,12 +8353,14 @@ function updateHud(){
       pp.classList.toggle('ready',me.cd[k]<=0);
     });
     if(G.ctx==='king'){
-      const k=G.lions.filter(x=>x.boss)[0];
-      const kr=k?Math.max(0,k.hp/k.maxHp):0;
+      const ks=G.lions.filter(x=>x.boss),k=ks[0];
+      const tot=ks.reduce((a,x)=>a+x.maxHp,0)||1,kr=ks.reduce((a,x)=>a+Math.max(0,x.hp),0)/tot;
       hb.querySelector('.hpFill').style.transform='scaleX('+kr+')';
       hb.querySelector('.hpGhost').style.transform='scaleX('+kr+')';
-      hb.querySelector('.shieldFill').style.transform='scaleX('+(k?Math.min(1,k.barrier/k.maxHp):0)+')';
-      hb.querySelector('.fmeta').textContent=BOSSES[BOSSKIND].meta;
+      const shield=k&&k.shell>0?k.shell/k.maxHp:(k?ks.reduce((a,x)=>a+(x.barrier||0),0)/tot:0);
+      hb.querySelector('.shieldFill').style.transform='scaleX('+Math.min(1,shield)+')';
+      hb.querySelector('.fmeta').textContent=BOSSKIND==='gate'&&k?(k.shell>0?'Plates '+Math.ceil(k.shell/k.shellMax*100)+'% \u00b7 hit hard to crack them':'Plates broken \u00b7 he bleeds')
+        :(BOSSKIND==='twins'?ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & '):BOSSES[BOSSKIND].meta);
       $('roundLbl').textContent=alliesUp()>1?(alliesUp()+' of you'):'';
     } else {
       const alive=packAlive();
@@ -8389,7 +8516,7 @@ function evSettle(L,won){
   }
 }
 /* beat the Lion King or the Ancient Lion and it drops its sash, once per lion */
-const BOSS_SASH={king:'sashKing',ancient:'sashAncient'};
+const BOSS_SASH={king:'sashKing',ancient:'sashAncient',gate:'sashGate',twins:'sashTwins'};
 function bossDrop(L){
   const k=BOSS_SASH[BOSSKIND];if(!L||!k)return null;
   const I=ITEMS[k],worn=cosOf(L)&&cosOf(L).sash===I.val;
@@ -8652,25 +8779,26 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="again">Again</button><button data-act="home">Back to the den</button>';
   }
   else if(kind==='kingWin'){
-    const anc=BOSSKIND==='ancient';
-    const L=CAREER.lion,n=(L&&L.record&&L.record[anc?'ancientKills':'kingKills'])||1;
-    V.textContent=anc?'THE ANCIENT LION FALLS':'THE KING IS DEAD';V.className='verdict gold';
+    const anc=BOSSKIND==='ancient',BX=BOSSES[BOSSKIND],nu=!!BX.winV;
+    const L=CAREER.lion,n=(L&&L.record&&L.record[BX.kk])||1;
+    V.textContent=nu?BX.winV:(anc?'THE ANCIENT LION FALLS':'THE KING IS DEAD');V.className='verdict gold';
     M.textContent='killed in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
-      ' \u00b7 '+(anc?(n+' time'+(n>1?'s':'')+' now'):(n+' crown'+(n>1?'s':'')+' taken'));
+      ' \u00b7 '+((anc||nu)?(n+' time'+(n>1?'s':'')+' now'):(n+' crown'+(n>1?'s':'')+' taken'));
     const D=UI.bossDrop,DI=D&&ITEMS[D.k];
     P.innerHTML='<div class="perkCard"><h5>It stood over him</h5>'+
       '<p>Very few lions manage this. Nothing changes on the record, but everyone in the pit saw it.</p></div>'+
       (DI?'<div class="lootCard bossLoot"><span class="rico">'+ico('sash')+'</span><div><b>'+(D.had?esc(L.name)+' already has the '+DI.name:(D.ok?DI.name+' \u00b7 in the bag':'The bag is full. The '+DI.name+' stays in the sand.'))+'</b>'+
-        '<small>'+(D.had?'One is enough. It\u2019s yours for good.':(D.ok?'Torn off '+(anc?'the Ancient Lion':'the Lion King')+'. Put it on from the bag.':'Make room and beat '+(anc?'it':'him')+' again.'))+'</small></div></div>':'');
+        '<small>'+(D.had?'One is enough. It\u2019s yours for good.':(D.ok?'Torn off '+(nu?BX.from:(anc?'the Ancient Lion':'the Lion King'))+'. Put it on from the bag.':'Make room and beat '+(nu?BX.who:(anc?'it':'him'))+' again.'))+'</small></div></div>':'');
     B.innerHTML='<button class="primary" data-act="again">Again</button>'+
       '<button data-act="home">Back to the den</button>';
     SFX.champ();
   }
   else if(kind==='kingLoss'){
     const k=G.lions.filter(x=>x.boss)[0];
-    V.textContent=BOSSKIND==='ancient'?'THE ANCIENT LION STANDS':'THE KING STANDS';V.className='verdict blood';
+    const BX=BOSSES[BOSSKIND],left=G.lions.filter(x=>x.boss&&!x.dead).reduce((a,x)=>a+x.hp,0);
+    V.textContent=BX.lossV||(BOSSKIND==='ancient'?'THE ANCIENT LION STANDS':'THE KING STANDS');V.className='verdict blood';
     M.textContent='beaten in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
-      ' \u00b7 he finished on '+Math.round(k?k.hp:0)+' health';
+      ' \u00b7 '+(BOSSKIND==='twins'?'they':'he')+' finished on '+Math.round(left)+' health'+(BOSSKIND==='gate'&&k&&k.shell>0?' and '+Math.ceil(k.shell/k.shellMax*100)+'% of his plates':'');
     P.innerHTML='<div class="perkCard neutral"><h5>Back on its feet</h5>'+
       '<p>A challenge costs nothing. Bring a second lion with you and try him again.</p></div>';
     B.innerHTML='<button class="primary" data-act="again">Again</button>'+
@@ -8861,8 +8989,9 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-gift-cosmetic-events',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
+const NEWS={id:'2026-11-gift-cosmetic-bosses',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
   items:[['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
+    ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds. The Twin Kings, Kaldur and Sevrin: kill one and the other goes mad with grief. Each drops its own sash.'],
     ['spark','Six new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror and Scavenger Night. Each one a choice with a price.'],
     ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
     ['laurel','Laurels and a party hat','Victor\u2019s Laurel (belt holders only) and the Leaf Laurel now sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
@@ -11029,7 +11158,7 @@ function olQuick(){
   olFight(pick.user_id);
 }
 /* ---------- gift parcels: wrap something up and send it to another player ---------- */
-const GIFT={maxN:10,maxGold:500,maxSkulls:20,msg:140,noSend:['gift','skull','sashKing','sashAncient']};
+const GIFT={maxN:10,maxGold:500,maxSkulls:20,msg:140,noSend:['gift','skull','sashKing','sashAncient','sashGate','sashTwins']};
 const GIFT_BAD=/\b(f+u+c+k+\w*|sh+i+t+(?:e|s|ty|ting|head)?|c+u+n+t+s?|b+i+t+c+h+\w*|n+i+g+g+\w*|f+a+g+s?|f+a+g+g+o+t+s?|w+h+o+r+e+s?|d+i+c+k+s?|p+u+s+s+y+|a+s+s+h+o+l+e+s?|r+e+t+a+r+d+\w*|s+l+u+t+s?|w+a+n+k+\w*|t+w+a+t+s?|p+r+i+c+k+s?)\b/gi;
 function giftClean(t){return String(t||'').replace(GIFT_BAD,function(w){return w.charAt(0)+'\u2022'.repeat(Math.max(2,w.length-1));});}
 function giftErr(e){
