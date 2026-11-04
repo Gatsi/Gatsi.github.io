@@ -4998,7 +4998,7 @@ function openDev(){
       btn('ev_carrion','skull','Carrion Feast','Claws or respects')+btn('ev_fix','coin','The Fix','Throw it, or the heavy')+
       btn('ev_exile','crown','Exiled King','Free him or turn him in')+btn('ev_clan','paw','Clan War','Bone or Ash')+
       btn('ev_feud','paw','The Clan Remembers',CAREER.feud?'The '+CLANS[CAREER.feud.by].name+' clan':'The payback ambush')+btn('ev_mirror','flame','Mystic\u2019s Mirror','Fight your shadow')+
-      btn('ev_scavenge','shield','Scavenger Night','Search the sand')+btn('ev_rand','dice','Random event','Any of the fifteen')+'</div>'+
+      btn('ev_scavenge','shield','Scavenger Night','Search the sand')+btn('ev_statue','crown','The Twin Statue','Pray, offer, or steal')+btn('ev_rand','dice','Random event','Any of the sixteen')+'</div>'+
     '<div class="grp">Arenas and the cub</div><div class="devGrid">'+
       btn('arena','map','Next bout’s arena',CAREER.champ?ARENAS[arenaOf(CAREER.champ.foes[CAREER.champ.i])].name+' · tap to change':'Starts a championship')+
       btn('cubNow','paw','Cub joins next bout',CAREER.cub?(CAREER.cub.wait>0?'Waiting '+CAREER.cub.wait:'Ready'):'No cub yet')+'</div>';
@@ -5037,7 +5037,7 @@ function devDo(k){
     if(e==='cub')CAREER.cub=null;
     if(e==='feud'&&!CAREER.feud)CAREER.feud={by:pickOne(['bone','ash']),wait:0};
     if(e==='clan')CAREER.feud=null;
-    if(e==='carrion')CAREER.boon=null;
+    if(e==='carrion'||e==='statue')CAREER.boon=null;
     if(!CAREER.champ)startChampionship();
     CAREER.event={k:e};closeSheet();MATCH.mode='career';UI.view='home';
     Store.save();refresh();enterEvent();return;
@@ -5819,6 +5819,8 @@ function newRound(){
       const T=BOSS_TUNE[BOSSKIND],twins=BOSSKIND==='twins';
       const ks=twins?twinCfgs().map(function(c,i){return makeLion(c,ARENA/2+(i?110:-110),170,Math.PI/2);}):[makeLion(gateCfg(),ARENA/2,165,Math.PI/2)];
       ks.forEach(function(k){k.boss=1;k.foe=G.lions[0];k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;G.lions.push(k);});
+      if(twins&&CAREER.lion&&CAREER.lion.twinThief){ks.forEach(function(k){k.dmgMult*=1.12;});log('<em class="blood">Kaldur and Sevrin</em> know who took the gold from their statue\u2019s eyes.');}
+      if(twins&&CAREER.lion&&CAREER.lion.twinFavour){log('<em class="gold">The Twin Kings</em> pause when they see '+esc(CAREER.lion.name)+'. They remember the offering. They fight anyway.');}
       if(!twins){const k=ks[0];k.shellMax=k.maxHp*GATE.shell;k.shell=k.shellMax;k.mass*=2;k.kbRes*=.35;k.speed*=.8;}
       KING.maxHp=ks.reduce((a,k)=>a+k.maxHp,0);
       if(introOn())startIntro([G.lions.filter(l=>!l.boss),ks],function(){banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
@@ -5877,7 +5879,7 @@ function newRound(){
   a.hp=a.maxHp;b.hp=b.maxHp;
   if(G.ctx==='career'&&CAREER.tonic){a.dmgMult*=TONIC.dmg;a.maxHp*=TONIC.hp;a.hp=a.maxHp;a.bloodlust=1;G.tonic=1;}
   if(G.ctx==='career'&&CAREER.weak){a.hp=Math.round(a.maxHp*.75);G.weak=1;}
-  if(G.ctx==='career'&&CAREER.boon){const Bn=CAREER.boon;if(Bn.dmg)a.dmgMult*=Bn.dmg;if(Bn.hpMax){a.maxHp*=Bn.hpMax;a.hp=a.maxHp;}if(Bn.hp)a.hp=Math.round(a.maxHp*Bn.hp);G.boon=1;}
+  if(G.ctx==='career'&&CAREER.boon){const Bn=CAREER.boon;if(Bn.dmg)a.dmgMult*=Bn.dmg;if(Bn.spd)a.speed*=Bn.spd;if(Bn.hpMax){a.maxHp*=Bn.hpMax;a.hp=a.maxHp;}if(Bn.hp)a.hp=Math.round(a.maxHp*Bn.hp);G.boon=1;}
   if(G.ctx==='career'&&DEV.oneHit)b.hp=1;
   if(G.ctx==='career'&&CAREER.cub&&CAREER.cub.wait<=0)G.cubDue=1;
   G.token=++ROUND_TOKEN;
@@ -8500,6 +8502,10 @@ function evSettle(L,won){
     CAREER.story.push({k:'weak',html:won?'It walked in at three quarters of its health, and won anyway.':'It walked in at three quarters of its health. Maybe that was the difference.'});
     CAREER.weak=null;
   }
+  if(CAREER.boon&&CAREER.boon.src){const Bn=CAREER.boon,nm=Bn.src==='kaldur'?'Kaldur':'Sevrin';
+    CAREER.story.push({k:'boon',html:won?(nm+'\u2019s blessing held. On the walk back the feeling fades, like stone cooling after a hot day.'):('Even '+nm+'\u2019s blessing was not enough this time.')});
+    CAREER.boon=null;
+  }
   if(CAREER.boon){const Bn=CAREER.boon;
     CAREER.story.push({k:'boon',html:Bn.curse?(won?'The dead champion\u2019s curse sat heavy on it, and it won anyway.':'The dead champion\u2019s curse sat heavy on it. Maybe that was the difference.')
       :(Bn.dmg?(won?'The dead champion\u2019s claws bit deep. They crumble to dust on the walk back.':'Even the dead champion\u2019s claws were not enough.')
@@ -8989,10 +8995,10 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-gift-cosmetic-bosses',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
+const NEWS={id:'2026-11-gift-cosmetic-bosses-statue',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
   items:[['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
     ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds. The Twin Kings, Kaldur and Sevrin: kill one and the other goes mad with grief. Each drops its own sash.'],
-    ['spark','Six new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror and Scavenger Night. Each one a choice with a price.'],
+    ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
     ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
     ['laurel','Laurels and a party hat','Victor\u2019s Laurel (belt holders only) and the Leaf Laurel now sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
     ['paint','The Cosmetic Lion','A war tent at the den. Paint, bone and steel for your lion. Looks only, none of it changes a fight. War paint and bone gear cost 3 skulls.'],
@@ -9195,7 +9201,7 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge','statue'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
@@ -9205,7 +9211,7 @@ function evRollAfterWin(){
   if(CAREER.feud&&CAREER.feud.wait>0)CAREER.feud.wait--;
   else if(CAREER.feud&&Math.random()<.5){CAREER.event={k:'feud'};CAREER.lastEv='feud';return true;}
   if(Math.random()>=EVENT_RATE)return false;
-  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price)&&!(k==='rob'&&((CAREER.lion&&CAREER.lion.gold)|0)<10)&&!(k==='cub'&&(CAREER.cub||((CAREER.lion&&CAREER.lion.gold)|0)<CUB.price))&&!(k==='clan'&&CAREER.feud)&&!(k==='carrion'&&CAREER.boon));
+  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price)&&!(k==='rob'&&((CAREER.lion&&CAREER.lion.gold)|0)<10)&&!(k==='cub'&&(CAREER.cub||((CAREER.lion&&CAREER.lion.gold)|0)<CUB.price))&&!(k==='clan'&&CAREER.feud)&&!((k==='carrion'||k==='statue')&&CAREER.boon));
   CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
   return true;
 }
@@ -9293,8 +9299,9 @@ function evPillsHTML(){
   if(CAREER.wager)out+='<span class="fxPill royal">'+ico('crown')+'Royal wager: win ×2 gold, lose it all</span>';
   if(CAREER.mascot>0)out+='<span class="fxPill shop">'+ico('coin')+'Store mascot: 30% off · '+CAREER.mascot+' bout'+(CAREER.mascot>1?'s':'')+' left</span>';
   if(CAREER.weak)out+='<span class="fxPill mystic">'+ico('flame')+'Mystic’s price: next bout at 75% health</span>';
-  if(CAREER.boon){const Bn=CAREER.boon;out+='<span class="fxPill '+(Bn.curse?'mystic':'royal')+'">'+ico(Bn.curse?'skull':(Bn.dmg?'sword':'halo'))+
-    (Bn.curse?'Cursed: next bout at 85% health':(Bn.dmg?'Dead champion\u2019s claws: next bout +10% damage':'Blessed: next bout +10% health'))+'</span>';}
+  if(CAREER.boon){const Bn=CAREER.boon;out+='<span class="fxPill '+(Bn.curse?'mystic':'royal')+'">'+ico(Bn.src?'crown':(Bn.curse?'skull':(Bn.dmg?'sword':'halo')))+
+    (Bn.src==='kaldur'?'Kaldur\u2019s blessing: next bout +15% health':(Bn.src==='sevrin'?'Sevrin\u2019s blessing: next bout +15% speed, +5% damage'
+    :(Bn.curse?'Cursed: next bout at 85% health':(Bn.dmg?'Dead champion\u2019s claws: next bout +10% damage':'Blessed: next bout +10% health'))))+'</span>';}
   if(CAREER.tonic)out+='<span class="fxPill tonic">'+ico('tonic')+'Bloodlust: next bout +20% damage, \u221215% health</span>';
   if(CAREER.cub)out+='<span class="fxPill cub">'+ico('paw')+esc(CAREER.cub.name)+(CAREER.cub.wait>0?' is growing up \u00b7 back in '+(CAREER.cub.wait+1)+' bouts':' is close by \u00b7 it helps in your next bout')+'</span>';
   return out?'<div class="fxPills">'+out+'</div>':'';
@@ -10581,6 +10588,106 @@ EVENTS.scavenge={title:'Scavenger Night',sub:'The arena floor after dark',col:'#
     leave:function(L){CAREER.event=null;Store.save();
       return {scene:'leave',lines:[['n','You leave the dead their things. Somewhere in the stands, something laughs.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
   }};
+/* ---- the Twin Statue: Kaldur and Sevrin in stone, at a crossroads shrine ---- */
+const STATUE={eyes:function(L){return Math.min(90,40+10*evChamps(L));},favour:.5};
+EVENTS.statue={title:'The Twin Statue',sub:'A shrine at the crossroads',col:'#e8e4da',bg:'rgba(232,228,218,.12)',draw:drawStatueScene,
+  nodes:{
+    start:function(L){const sk=invCount(L,'skull');EV.statueGlow=null;
+      return {scene:'arrive',lines:[
+        ['n','Where the old roads cross, under a dead tree, stands a statue nobody has cleaned in years.'],
+        ['n','Two lions in stone. One huge and heavy, one lean and coiled to spring. Half a crown carved on each. Kaldur and Sevrin, the Twin Kings.'],
+        ['n','Candle stubs, dried flowers and old bones are heaped round the plinth. Their eyes are set with gold, and in the moonlight it almost looks like they are watching.'],
+        L.freedExile?['n','A cold wind comes off the stone. They know what '+L.name+' did for their brother.']:['n',L.name+' could kneel here. Or it could take that gold.']],
+      stake:evChip('up','heart','Kaldur: +15% health next bout')+evChip('up','bolt','Sevrin: +15% speed next bout')+
+        evChip('up','skull','A skull for both: maybe their favour')+evChip('dn','coin','The gold eyes: +'+STATUE.eyes(L)+' gold, they remember'),
+      choices:[{t:'Pray to Kaldur',go:'kaldur',yes:1},{t:'Pray to Sevrin',go:'sevrin',yes:1},
+        {t:sk?'Leave a skull for both':'Leave a skull (you have none)',go:sk?'offer':'noskull'},{t:'Pry out the gold eyes',go:'thief'}]};},
+    kaldur:function(L){CAREER.boon={hpMax:1.15,src:'kaldur'};CAREER.event=null;EV.statueGlow='kaldur';Store.save();SFX.heal();
+      return {scene:'kaldur',lines:[
+        ['n',L.name+' lowers its head in front of the heavy one. Kaldur, who never ran from anything.'],
+        ['n','The stone under its paws goes warm. Something settles into its shoulders, slow and heavy and very hard to move.'],
+        ['n','Kaldur\u2019s blessing: +15% health in the next bout.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    sevrin:function(L){CAREER.boon={spd:1.15,dmg:1.05,src:'sevrin'};CAREER.event=null;EV.statueGlow='sevrin';Store.save();SFX.cast();
+      return {scene:'sevrin',lines:[
+        ['n',L.name+' kneels in front of the lean one. Sevrin, who was always first through the gate.'],
+        ['n','The candles all lean the same way at once, as if something fast just went past. '+L.name+'\u2019s legs feel lighter than they have in weeks.'],
+        ['n','Sevrin\u2019s blessing: +15% speed and +5% damage in the next bout.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    noskull:function(L){
+      return {scene:'arrive',lines:[['n','The offerings round the plinth are skulls, mostly. You have none to leave. The gold eyes watch you think about it.']],
+        choices:[{t:'Pray to Kaldur',go:'kaldur',yes:1},{t:'Pray to Sevrin',go:'sevrin',yes:1},{t:'Pry out the gold eyes',go:'thief'}]};},
+    offer:function(L){invTake(L,'skull');const yes=Math.random()<STATUE.favour;
+      if(yes){L.train=trainOf(L);L.train.hp++;L.train.spd++;Object.keys(L.train).forEach(x=>{if(!L.train[x])delete L.train[x];});L.twinFavour=1;delete PREVMEM.career;}
+      CAREER.event=null;EV.statueGlow=yes?'both':'none';Store.save();if(yes)SFX.champ();else SFX.ui();
+      return {scene:yes?'both':'none',lines:yes?[
+          ['n',L.name+' sets a skull between their paws and steps back.'],
+          ['n','For a moment nothing. Then both pairs of gold eyes light up, white and gold, and the dead tree creaks in a wind that is not there.'],
+          ['n','The Twins\u2019 favour: +1 Health and +1 Speed training, for good.']]
+        :[['n',L.name+' sets a skull between their paws and steps back.'],
+          ['n','The candles gutter. The stone stays stone. Whatever lives in it is not listening tonight.'],
+          ['n','The skull stays with the others. Maybe next time.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    thief:function(L){const g=STATUE.eyes(L);L.gold=(L.gold||0)+g;L.twinThief=1;CAREER.event=null;EV.statueGlow='thief';Store.save();SFX.coin();
+      return {scene:'thief',lines:[
+        ['n','Four gold eyes come out of the stone with four small cracks. '+g+' gold, easy.'],
+        ['n','Then a much bigger crack runs right down the middle of the statue, between the two brothers, with a sound like a bone breaking.'],
+        ['n','Somewhere, two kings wake up angry. If '+L.name+' ever faces the Twin Kings, they will hit harder.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+function drawStatueScene(g,w,h,t,ph,tt){
+  const cx=w/2;
+  const sky=g.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#141824');sky.addColorStop(1,'#0a0b10');g.fillStyle=sky;g.fillRect(0,0,w,h);
+  const mg=g.createRadialGradient(w*.82,h*.1,4,w*.82,h*.1,110);mg.addColorStop(0,'rgba(220,230,255,.3)');mg.addColorStop(1,'rgba(220,230,255,0)');g.fillStyle=mg;g.fillRect(0,0,w,h);
+  g.fillStyle='#dfe6f5';g.beginPath();g.arc(w*.82,h*.1,9,0,7);g.fill();
+  /* two old roads crossing */
+  g.fillStyle='#1a1914';g.fillRect(cx-34,0,68,h);g.fillRect(0,h*.36,w,52);
+  /* the dead tree behind */
+  g.strokeStyle='#0d0d0f';g.lineCap='round';
+  [[cx+92,h*.12,9],[cx+92,h*.12,0]].forEach(function(){});
+  g.lineWidth=7;g.beginPath();g.moveTo(cx+96,h*.62);g.lineTo(cx+90,h*.2);g.stroke();
+  g.lineWidth=3;[[-1,.3,26],[1,.24,22],[-1,.14,18],[1,.4,16]].forEach(function(q){g.beginPath();g.moveTo(cx+91,h*q[1]);g.lineTo(cx+91+q[0]*q[2],h*q[1]-14);g.stroke();});
+  /* the plinth */
+  const px=cx,py=h*.4;
+  g.fillStyle='rgba(0,0,0,.4)';g.beginPath();g.ellipse(px+4,py+8,78,40,0,0,7);g.fill();
+  g.fillStyle='#3a3934';g.beginPath();g.ellipse(px,py,74,36,0,0,7);g.fill();g.strokeStyle='#5a5850';g.lineWidth=2;g.stroke();
+  g.fillStyle='#2e2d29';g.beginPath();g.ellipse(px,py+4,60,26,0,0,7);g.fill();
+  /* the twins, in stone */
+  const glow=ph==='kaldur'||ph==='sevrin'||ph==='both'?ph:(EV.statueGlow&&ph!=='arrive'?EV.statueGlow:null);
+  const cfgs=twinCfgs(),pos=[[px-28,py-2,.18,13],[px+30,py+2,-.2,10]];
+  /* the twins, carved in stone: drawn once off-screen, tinted to stone, then stamped on */
+  if(!EV.statueImg){try{const oc=document.createElement('canvas');oc.width=320;oc.height=200;const o=oc.getContext('2d');o.scale(2,2);
+    cfgs.forEach(function(c,i){const q=pos[i],a=Math.PI/2+q[2],x=80+(q[0]-px),y=50+(q[1]-py);
+      paintLion(o,{x:x,y:y,R:q[3]*1.6,ang:a,t:0,pelt:0,cols:c.bossCols,mane:c.mane,tail:c.tail,seed:8+i,scars:[],armor:'none'});
+      drawHalfCrown(o,{x:x,y:y,ang:a,cfg:c},q[3]*1.6);});
+    o.globalCompositeOperation='source-atop';o.fillStyle='rgba(150,146,134,.78)';o.fillRect(0,0,160,100);
+    o.fillStyle='rgba(0,0,0,.12)';for(let i=0;i<40;i++){o.fillRect((i*37)%160,(i*23)%100,2,1);}
+    EV.statueImg=oc;}catch(e){EV.statueImg=null;}}
+  if(EV.statueImg)g.drawImage(EV.statueImg,px-80,py-50,160,100);
+  /* moss and the crack */
+  g.fillStyle='rgba(70,96,56,.5)';[[px-44,py+8,6],[px+12,py+14,5],[px+46,py-6,4],[px-10,py-18,3]].forEach(function(q){g.beginPath();g.arc(q[0],q[1],q[2],0,7);g.fill();});
+  if(ph==='thief'||EV.statueGlow==='thief'){const q=ph==='thief'?Math.min(1,Math.max(0,tt-1)/1.2):1;g.strokeStyle='#0a0a0c';g.lineWidth=2.2;g.beginPath();g.moveTo(px,py-34);
+    const pts=[[px+3,py-20],[px-4,py-6],[px+2,py+8],[px-3,py+22],[px+1,py+34]];pts.slice(0,Math.ceil(q*pts.length)).forEach(function(p){g.lineTo(p[0],p[1]);});g.stroke();}
+  /* gold eyes */
+  cfgs.forEach(function(c,i){const q=pos[i],R=q[3]*1.6,a=Math.PI/2+q[2];
+    if(ph==='thief'||EV.statueGlow==='thief')return;
+    const lit=glow==='both'||(glow==='kaldur'&&i===0)||(glow==='sevrin'&&i===1),f=lit?.8+.2*Math.sin(t*6):.35+.15*Math.sin(t*1.3+i);
+    [-1,1].forEach(function(s){const ex=q[0]+Math.cos(a)*R*.68-Math.sin(a)*s*R*.17,ey=q[1]+Math.sin(a)*R*.68+Math.cos(a)*s*R*.17;
+      const eg=g.createRadialGradient(ex,ey,0,ex,ey,lit?10:5);eg.addColorStop(0,'rgba(255,214,90,'+f+')');eg.addColorStop(1,'rgba(255,214,90,0)');g.fillStyle=eg;g.beginPath();g.arc(ex,ey,lit?10:5,0,7);g.fill();
+      g.fillStyle='rgba(255,226,120,'+Math.min(1,f+.3)+')';g.beginPath();g.arc(ex,ey,1.6,0,7);g.fill();});
+    if(lit){const col=i?'rgba(201,162,39,':'rgba(246,242,232,';const rg=g.createRadialGradient(q[0],q[1],R*.4,q[0],q[1],R*2.6);rg.addColorStop(0,col+(.28*Math.min(1,tt))+')');rg.addColorStop(1,col+'0)');g.fillStyle=rg;g.beginPath();g.arc(q[0],q[1],R*2.6,0,7);g.fill();}
+  });
+  /* candles and offerings round the plinth */
+  for(let i=0;i<9;i++){const a=Math.PI*.15+i*Math.PI*.09,x=px+Math.cos(a)*70,y=py+Math.sin(a)*34+6;
+    g.fillStyle='#d8cfb8';g.fillRect(x-1.5,y-5,3,6);const fl=.7+.3*Math.sin(t*9+i*1.7)+(glow==='sevrin'?.3:0);
+    const cg=g.createRadialGradient(x,y-7,0,x,y-7,8*fl);cg.addColorStop(0,'rgba(255,220,140,.9)');cg.addColorStop(1,'rgba(255,170,60,0)');g.fillStyle=cg;g.beginPath();g.arc(x+(glow==='sevrin'?2:0),y-7,8*fl,0,7);g.fill();}
+  [[px-60,py+24],[px+58,py+22],[px-20,py+36]].forEach(function(q){g.fillStyle=CBONE;g.beginPath();g.ellipse(q[0],q[1],5,4.4,0,0,7);g.fill();g.fillStyle='#1a1410';g.beginPath();g.arc(q[0]-1.6,q[1]-.6,1,0,7);g.arc(q[0]+1.6,q[1]-.6,1,0,7);g.fill();});
+  if(ph==='both'){for(let i=0;i<12;i++){const p=(t*.4+i/12)%1;g.globalAlpha=.8*(1-p);g.fillStyle=i%2?'#ffd24a':'#f6f2e8';g.fillRect(px+Math.sin(t+i*2)*(10+p*50)-1,py-10-p*70,2,2);}g.globalAlpha=1;}
+  /* your lion, kneeling or reaching up */
+  const P=evWalkIn(ph,tt,h);let py2=P.y;if(ph!=='arrive')py2=P.y-Math.min(1,tt/1.4)*(P.y-py-62);
+  evYou(g,cx,py2+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,ph==='thief'&&tt<.6);
+  evVignette(g,w,h);
+}
 /* ---- their scenes ---- */
 function evWalkIn(ph,tt,h){const yy=h-44;if(ph==='arrive'){const q=ease(tt/2);return {y:h+26-q*(h+26-yy),walk:q<1};}return {y:yy,walk:false};}
 function vulture(g,x,y,s,flap){g.strokeStyle='#140b08';g.lineWidth=Math.max(1.6,s*.25);g.lineCap='round';
