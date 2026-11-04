@@ -1710,7 +1710,7 @@ let G={speed:1};
 /* ========== 3. PERSISTENCE (optional) ========== */
 let LOCAL_AT=0,LOCAL_OWNER='';
 function saveObj(){
-  return {hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,tonic:CAREER.tonic|0,bookie:CAREER.bookie||null,
+  return {hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,tonic:CAREER.tonic|0,boon:CAREER.boon||null,feud:CAREER.feud||null,bookie:CAREER.bookie||null,
     tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null,savedAt:Date.now(),owner:(typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||LOCAL_OWNER||''};
 }
 /* put a whole save in place (from this device, or from your account) */
@@ -1721,7 +1721,7 @@ function applySave(d){
   CAREER.lion=d.lion||null;CAREER.locked=d.lion?(d.locked!==false):false;CAREER.champ=d.lion?(d.champ||null):null;
   CAREER.fence=(d.fence&&d.fence.deals)?d.fence:null;
   CAREER.rivals=Array.isArray(d.rivals)?d.rivals:[];
-  CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;CAREER.mascot=d.mascot|0;CAREER.cub=d.cub||null;CAREER.tonic=d.tonic|0;
+  CAREER.event=d.event||null;CAREER.wager=d.wager||null;CAREER.weak=d.weak||null;CAREER.lastEv=d.lastEv||null;CAREER.mascot=d.mascot|0;CAREER.cub=d.cub||null;CAREER.tonic=d.tonic|0;CAREER.boon=d.boon||null;CAREER.feud=d.feud||null;
   CAREER.bookie=(d.bookie&&d.bookie.a)?d.bookie:null;
   LOCAL_AT=+d.savedAt||0;LOCAL_OWNER=d.owner||'';
 }
@@ -4232,6 +4232,7 @@ function crateRoll(L){
 function crateUndo(L,r){
   if(!L||!r)return '';
   if(r.k==='gold'){const t=Math.min(L.gold||0,r.n);L.gold=(L.gold||0)-t;return t+' gold';}
+  if(r.k==='wlv'){L.wlv=Math.max(0,(L.wlv|0)-1);if(!L.wlv)delete L.wlv;return 'the new edge on its weapon';}
   let took=0;for(let i=0;i<r.n;i++)if(invTake(L,r.k))took++;
   if(took===r.n)return r.msg;
   const t=Math.min(L.gold||0,30*(r.n-took));L.gold=(L.gold||0)-t;
@@ -5779,6 +5780,7 @@ function newRound(){
       const anc=BOSSKIND==='ancient',old=BOSSKIND==='old';
       const k=makeLion(anc?ancientCfg():(old?oldCfg():kingCfg()),ARENA/2,160,Math.PI/2);
       k.boss=1;k.dark=(anc||old)?0:1;k.foe=G.lions[0];G.lions.push(k);
+      if(!anc&&!old&&CAREER.lion&&CAREER.lion.freedExile){k.maxHp*=1.12;k.hp=k.maxHp;log('<em class="blood">The Lion King knows who freed his brother.</em> He came angry.');}
       if(anc){k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;}
       if(old){k.r*=OLD.size;k.mass*=1.4;}
       const T=BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king;
@@ -5823,6 +5825,7 @@ function newRound(){
   a.hp=a.maxHp;b.hp=b.maxHp;
   if(G.ctx==='career'&&CAREER.tonic){a.dmgMult*=TONIC.dmg;a.maxHp*=TONIC.hp;a.hp=a.maxHp;a.bloodlust=1;G.tonic=1;}
   if(G.ctx==='career'&&CAREER.weak){a.hp=Math.round(a.maxHp*.75);G.weak=1;}
+  if(G.ctx==='career'&&CAREER.boon){const Bn=CAREER.boon;if(Bn.dmg)a.dmgMult*=Bn.dmg;if(Bn.hpMax){a.maxHp*=Bn.hpMax;a.hp=a.maxHp;}if(Bn.hp)a.hp=Math.round(a.maxHp*Bn.hp);G.boon=1;}
   if(G.ctx==='career'&&DEV.oneHit)b.hp=1;
   if(G.ctx==='career'&&CAREER.cub&&CAREER.cub.wait<=0)G.cubDue=1;
   G.token=++ROUND_TOKEN;
@@ -8355,6 +8358,12 @@ function evSettle(L,won){
     CAREER.story.push({k:'weak',html:won?'It walked in at three quarters of its health, and won anyway.':'It walked in at three quarters of its health. Maybe that was the difference.'});
     CAREER.weak=null;
   }
+  if(CAREER.boon){const Bn=CAREER.boon;
+    CAREER.story.push({k:'boon',html:Bn.curse?(won?'The dead champion\u2019s curse sat heavy on it, and it won anyway.':'The dead champion\u2019s curse sat heavy on it. Maybe that was the difference.')
+      :(Bn.dmg?(won?'The dead champion\u2019s claws bit deep. They crumble to dust on the walk back.':'Even the dead champion\u2019s claws were not enough.')
+      :(won?'The fallen champion watched over it. The feeling fades on the walk back.':'Even a blessing could not carry it through this one.'))});
+    CAREER.boon=null;
+  }
   if(CAREER.tonic){
     CAREER.story.push({k:'tonic',html:won?'Bloodlust carried it through. The tonic wears off on the walk back to the den.':'Bloodlust was not enough this time. The tonic wears off, and the ache sets in.'});
     CAREER.tonic=0;
@@ -8522,7 +8531,11 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     V.textContent=won?'THE PACK SCATTERS':'THE HYENAS WIN';V.className='verdict'+(won?' gold':' blood');
     M.textContent=SURV.kills+' of '+AMBUSH.n+' hyenas put down \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
       (won&&me?' \u00b7 '+Math.round(me.hp)+' health left':'');
-    P.innerHTML=won?('<div class="lootCard forestCard"><span class="rico">'+ico(lt?lt.ico:'crate')+'</span><div><h5>Yours to keep</h5><p>'+
+    if(A.k==='feud')P.innerHTML=won?('<div class="lootCard forestCard"><span class="rico">'+ico('skull')+'</span><div><h5>'+(A.sk?'+1 skull':'The feud is over')+'</h5><p>The '+esc(A.clan||'hyena')+' clan breaks and runs. '+(A.sk?'Their leader leaves a skull behind in the dust.':'')+' They will not come back.</p></div></div>')
+      :('<div class="perkCard neutral"><h5>They have had their revenge</h5><p>The '+esc(A.clan||'hyena')+' clan leaves your lion bitten in the dust and melts back into the grass. The feud is settled. Nothing goes on the record.</p></div>');
+    else if(A.k==='scavenge')P.innerHTML=won?('<div class="lootCard forestCard"><span class="rico">'+ico(lt?lt.ico:'shield')+'</span><div><h5>Yours to keep</h5><p>The scavengers scatter into the dark. '+(lt?'The '+esc(lt.msg)+' from the sand is yours.':'')+'</p></div></div>')
+      :('<div class="perkCard neutral"><h5>They took it</h5><p>'+(A.took?'The hyenas drag off '+esc(A.took)+'. ':'')+'Your lion limps home, bitten but breathing. Nothing goes on the record.</p></div>');
+    else P.innerHTML=won?('<div class="lootCard forestCard"><span class="rico">'+ico(lt?lt.ico:'crate')+'</span><div><h5>Yours to keep</h5><p>'+
         'The last hyena bolts into the trees. '+(lt?('The '+esc(lt.msg)+' from the crate is '+esc(CAREER.lion?CAREER.lion.name:'yours')+'\u2019s, fair and square.'):'The crate is yours.')+'</p></div></div>')
       :('<div class="perkCard neutral"><h5>They took it back</h5><p>'+(A.took?('The hyenas drag off '+esc(A.took)+'. '):'')+
         'Your lion limps home, bitten but breathing. This was no championship bout: nothing goes on its record.</p></div>');
@@ -8537,6 +8550,15 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       '<p id="pitRes">'+pitResText()+'</p>'+(R.gold?'<p>+'+R.gold+' gold for the win.</p>':'')+'</div></div>';
     B.innerHTML='<button class="primary" data-act="pitBack">Back to Online</button><button data-act="olQuickR">Quick fight</button>';
     if(won)SFX.champ();
+  }
+  else if(kind==='evFight'){
+    const R=CAREER.evRes||{},me=G.lions[0];
+    V.textContent=R.v||'';V.className='verdict'+(R.good?' gold':' blood');
+    M.textContent=(G.method||'attrition')+' \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+(R.good&&me?' \u00b7 '+Math.round(me.hp)+' health left':'')+' \u00b7 off the record';
+    P.innerHTML=R.good?'<div class="lootCard grudgeCard"><span class="rico">'+ico(R.ico||'coin')+'</span><div><h5>'+R.h+'</h5><p>'+R.p+'</p></div></div>'
+      :'<div class="perkCard neutral"><h5>'+R.h+'</h5><p>'+R.p+'</p></div>';
+    B.innerHTML='<button class="primary" data-act="home">Back to the den</button>';
+    if(R.good)SFX.coin();
   }
   else if(kind==='grudgeWin'||kind==='grudgeLoss'){
     const R=CAREER.grudge||{},won=kind==='grudgeWin',me=G.lions[0];
@@ -8824,8 +8846,9 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-gift-cosmetic',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
+const NEWS={id:'2026-11-gift-cosmetic-events',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
   items:[['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
+    ['spark','Six new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror and Scavenger Night. Each one a choice with a price.'],
     ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
     ['laurel','Laurels and a party hat','Victor\u2019s Laurel (belt holders only) and the Leaf Laurel now sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
     ['paint','The Cosmetic Lion','A war tent at the den. Paint, bone and steel for your lion. Looks only, none of it changes a fight. War paint and bone gear cost 3 skulls.'],
@@ -9028,18 +9051,21 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
 function evRollAfterWin(){
   CAREER.event=null;
+  /* a hyena clan you crossed comes back for you */
+  if(CAREER.feud&&CAREER.feud.wait>0)CAREER.feud.wait--;
+  else if(CAREER.feud&&Math.random()<.5){CAREER.event={k:'feud'};CAREER.lastEv='feud';return true;}
   if(Math.random()>=EVENT_RATE)return false;
-  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price)&&!(k==='rob'&&((CAREER.lion&&CAREER.lion.gold)|0)<10)&&!(k==='cub'&&(CAREER.cub||((CAREER.lion&&CAREER.lion.gold)|0)<CUB.price)));
+  const pool=EVENT_K.filter(k=>k!==CAREER.lastEv&&!(k==='shop'&&CAREER.mascot>0)&&!(k==='hut'&&((CAREER.lion&&CAREER.lion.gold)|0)<HUT.price)&&!(k==='rob'&&((CAREER.lion&&CAREER.lion.gold)|0)<10)&&!(k==='cub'&&(CAREER.cub||((CAREER.lion&&CAREER.lion.gold)|0)<CUB.price))&&!(k==='clan'&&CAREER.feud)&&!(k==='carrion'&&CAREER.boon));
   CAREER.event={k:pickOne(pool)};CAREER.lastEv=CAREER.event.k;
   return true;
 }
-function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;CAREER.mascot=0;CAREER.cub=null;CAREER.tonic=0;}
+function evClear(){CAREER.event=null;CAREER.wager=null;CAREER.weak=null;CAREER.mascot=0;CAREER.cub=null;CAREER.tonic=0;CAREER.boon=null;CAREER.feud=null;}
 function evChip(cls,icon,txt){return '<span class="'+cls+'">'+ico(icon)+txt+'</span>';}
 const EVENTS={
   royal:{title:'The Royal Lion',sub:'A visitor from the palace',col:'#ffc233',bg:'rgba(255,194,51,.16)',draw:drawRoyalScene,
@@ -9123,6 +9149,8 @@ function evPillsHTML(){
   if(CAREER.wager)out+='<span class="fxPill royal">'+ico('crown')+'Royal wager: win ×2 gold, lose it all</span>';
   if(CAREER.mascot>0)out+='<span class="fxPill shop">'+ico('coin')+'Store mascot: 30% off · '+CAREER.mascot+' bout'+(CAREER.mascot>1?'s':'')+' left</span>';
   if(CAREER.weak)out+='<span class="fxPill mystic">'+ico('flame')+'Mystic’s price: next bout at 75% health</span>';
+  if(CAREER.boon){const Bn=CAREER.boon;out+='<span class="fxPill '+(Bn.curse?'mystic':'royal')+'">'+ico(Bn.curse?'skull':(Bn.dmg?'sword':'halo'))+
+    (Bn.curse?'Cursed: next bout at 85% health':(Bn.dmg?'Dead champion\u2019s claws: next bout +10% damage':'Blessed: next bout +10% health'))+'</span>';}
   if(CAREER.tonic)out+='<span class="fxPill tonic">'+ico('tonic')+'Bloodlust: next bout +20% damage, \u221215% health</span>';
   if(CAREER.cub)out+='<span class="fxPill cub">'+ico('paw')+esc(CAREER.cub.name)+(CAREER.cub.wait>0?' is growing up \u00b7 back in '+(CAREER.cub.wait+1)+' bouts':' is close by \u00b7 it helps in your next bout')+'</span>';
   return out?'<div class="fxPills">'+out+'</div>':'';
@@ -9139,7 +9167,7 @@ function enterEvent(){
     '<div class="evStake" id="evStake"></div><div class="evBtns" id="evBtns"></div></div>';
   $('ev').classList.remove('hidden');
   evSize();
-  evNode(E.resume||(E.k==='forest'&&E.loot?'ambush':'start'));
+  evNode(E.resume||((E.k==='forest'||E.k==='scavenge')&&E.loot?'ambush':'start'));
   if(E.k==='royal')SFX.herald();else if(E.k==='mystic'||E.k==='merchant')SFX.cast();else SFX.ui();
   if(!EV.raf&&typeof requestAnimationFrame!=='undefined')EV.raf=requestAnimationFrame(evTick)||0;
   return true;
@@ -9186,6 +9214,7 @@ function evPick(i){
   if(c.go==='done'){evClose();refresh();return;}
   if(c.go==='fight'){evClose();SFX.unlock();startFight('ambush');return;}
   if(c.go==='grudge'){evClose();SFX.unlock();startFight('grudge');return;}
+  if(c.go==='fightAmb'){evClose();SFX.unlock();startFight('ambush');return;}
   evNode(c.go,c);
 }
 function evClose(){EV.on=false;EV.node=null;$('ev').classList.add('hidden');Store.save();}
@@ -9220,9 +9249,10 @@ function ambushWon(){
 }
 function ambushOver(won){
   const L=CAREER.lion,E=CAREER.event,loot=E&&E.loot;
-  CAREER.ambush={won:won,loot:loot||null,took:null};
+  CAREER.ambush={won:won,loot:loot||null,took:null,k:E&&E.k,clan:E&&E.clan};
   if(!won&&loot&&L)CAREER.ambush.took=crateUndo(L,loot);
-  if(E&&E.k==='forest')CAREER.event=null;
+  if(E&&E.k==='feud'){CAREER.feud=null;if(won&&L)CAREER.ambush.sk=invAdd(L,'skull',1);}
+  if(E&&(E.k==='forest'||E.k==='scavenge'||E.k==='feud'))CAREER.event=null;
   SURV.ambush=false;SURV.live=false;
   Store.save();
   showResult(won?'ambushWin':'ambushLoss');
@@ -10175,6 +10205,9 @@ EVENTS.rival={title:'A Grudge on the Road',sub:'Someone is waiting by the torch'
   }};
 function grudgeOver(){
   const L=CAREER.lion,E=CAREER.event,won=!!(G.winner&&G.winner===G.lions[0]);
+  if(E&&E.k!=='rival'&&EVENTS[E.k]&&EVENTS[E.k].over){
+    const r=EVENTS[E.k].over(won,L,E);CAREER.event=null;CAREER.evRes=r;Store.save();showResult('evFight');return;
+  }
   const res={won:won,name:G.lions[1]?G.lions[1].name:'',prize:0,lost:0,h2h:''};
   if(L&&E){
     if(won){res.prize=E.prize|0;L.gold=(L.gold||0)+res.prize;}
@@ -10224,6 +10257,289 @@ function drawGrudgeScene(g,w,h,t,ph,tt){
   if(ph==='arrive'){const q=ease(tt/2);py=h+26-q*(h+26-yy);walk=q<1;}
   if(ph==='decline'&&tt>1.6){py=yy-Math.min(1,(tt-1.6)/2)*(yy-30);walk=tt<3.6;}
   evYou(g,cx,py+(walk?Math.sin(t*10):0),17,ya,t,false);
+  evVignette(g,w,h);
+}
+
+/* ========== SIX MORE EVENTS: the Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic's Mirror, Scavenger Night ========== */
+function evChamps(L){return (L&&L.record&&L.record.champs)|0;}
+function evNextFoe(){const ch=CAREER.champ;return ch&&ch.foes[Math.min(ch.i,ch.foes.length-1)];}
+/* an event foe as strong as the next bout, off the record */
+function evFoeLike(c){const nx=evNextFoe();c.scale=(nx&&nx.scale)||1;if(nx&&nx.weak)c.weak=nx.weak;return c;}
+const FIX={pay:function(L){return Math.min(120,40+15*evChamps(L));},thugGold:function(L){return 15+5*evChamps(L);},
+  names:['Knuckles','Brick','Gravel','Two-Ton','Slab','Mallet']};
+const EXILE={gold:function(L){return Math.min(80,30+10*evChamps(L));}};
+const CLANS={bone:{name:'Bone',cols:{mane:'#d9ccae',body:'#c4b28a',edge:'#76664a',muz:'#5a4a36',plate:'#76664a'},gift:'2 skulls'},
+  ash:{name:'Ash',cols:{mane:'#2c2824',body:'#4a443d',edge:'#191613',muz:'#2a2420',plate:'#191613'},gift:'a Mystery Crate'}};
+function scavRoll(L){
+  const x=Math.random(),champ=evChamps(L);
+  if(x<.4)return {k:'reforge',n:1,msg:'Reforge Armour ticket',ico:'shield'};
+  if(x<.65&&wlvOf(L)<3)return {k:'wlv',n:1,msg:'Lv'+(wlvOf(L)+1)+' '+FINISH[wlvOf(L)+1].name+' edge for its weapon',ico:'hammer'};
+  const g=8+((Math.random()*10)|0)+champ*3;return {k:'gold',n:g,msg:g+' gold from a dead lion\u2019s purse',ico:'coin'};
+}
+function scavGive(L,r){
+  if(r.k==='gold'){L.gold=(L.gold||0)+r.n;return true;}
+  if(r.k==='wlv'){L.wlv=clamp((L.wlv|0)+1,1,3);return true;}
+  return invAdd(L,r.k,r.n);
+}
+EVENTS.carrion={title:'The Carrion Feast',sub:'Vultures over the sand',col:'#ff8a5c',bg:'rgba(255,138,92,.15)',draw:drawCarrionScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','Out past the arena wall, vultures are circling something in the long grass.'],
+        ['n','A champion lion. Old, scarred, a faded belt still round its middle. It fought here once. It will not fight again.'],
+        ['n','Its claws are still sharp. You could take them. Or you could leave it be, and pay it the respect it earned.']],
+      stake:evChip('up','sword','Claws: +1 skull, +10% damage next bout')+evChip('dn','skull','Risk: a curse')+evChip('up','halo','Respects: +10% health next bout'),
+      choices:[{t:'Take its claws',go:'take',yes:1},{t:'Pay your respects',go:'respect'}]};},
+    take:function(L){const ok=invAdd(L,'skull',1),curse=Math.random()<.35;
+      CAREER.boon=curse?{hp:.85,curse:1}:{dmg:1.1};CAREER.event=null;Store.save();if(curse)SFX.cast();else SFX.coin();
+      if(!ok)toast('The bag is full, so the skull stays in the grass');
+      return {scene:'take',lines:curse?[
+          ['n','The claws come away with a crack. You take the skull too.'],
+          ['n','Then the wind drops. The vultures go quiet. Something cold settles over '+L.name+'\u2019s back and stays there.'],
+          ['n','The dead do not like thieves. It walks into its next bout at 85% health.']]
+        :[['n','The claws come away with a crack. You take the skull too.'],
+          ['n','The vultures scream and scatter. Nothing else happens. '+L.name+' feels sharper already: +10% damage in its next bout.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    respect:function(L){CAREER.boon={hpMax:1.1};CAREER.event=null;Store.save();SFX.heal();
+      return {scene:'respect',lines:[
+        ['n',L.name+' drives the vultures off and stands over the old champion for a long moment, head low.'],
+        ['n','A breeze moves through the grass, warm for the hour. It feels like being watched by someone kind.'],
+        ['n','Blessed: +10% health in its next bout.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+EVENTS.fix={title:'The Fix',sub:'A knock at the den, after dark',col:'#6fc2a4',bg:'rgba(111,194,164,.15)',draw:drawFixScene,
+  nodes:{
+    start:function(L){const pay=FIX.pay(L);return {scene:'arrive',lines:[
+        ['n','Late. A knock at the den. The Bookie, cap pulled low, a lantern in one paw, looking over his shoulder.'],
+        ['Bookie','Evening. I have a little fight on tonight, off the card. Your lion against one of mine. Nobody important.'],
+        ['Bookie','All you have to do is lie down in the first minute. '+pay+' gold, cash, no questions. It goes on your record as a loss, of course. That is the whole point.']],
+      stake:evChip('up','coin','Throw it: +'+pay+' gold')+evChip('dn','skull','A loss on your record')+evChip('','duel','Refuse: his thugs'),
+      choices:[{t:'Take the money',go:'throw'},{t:'Refuse',go:'refuse',yes:1}]};},
+    throw:function(L){const pay=FIX.pay(L);L.gold=(L.gold||0)+pay;const rec=L.record||(L.record={champs:0,wins:0,fights:0});rec.fights=(rec.fights|0)+1;rec.losses=(rec.losses|0)+1;
+      CAREER.event=null;Store.save();SFX.coin();
+      return {scene:'throw',lines:[
+        ['n','A sandpit behind the stands. A handful of hyenas watching. '+L.name+' takes one swipe, then rolls over in the dust.'],
+        ['Bookie','Lovely. Very convincing. Pleasure doing business.'],
+        ['n','+'+pay+' gold. A loss goes on the record. Nobody is proud of this one.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    refuse:function(L){const E=CAREER.event;
+      if(!E.foe){const c=randomLion('B');c.build=pickOne(['heavy','titan']);c.armor=pickOne(['scale','plate']);c.name=pickOne(FIX.names);c.epithet='the Bookie\u2019s heavy';
+        c.cos={earL:'gold',nose:'gold'};E.foe=evFoeLike(c);E.arena='pit';Store.save();}
+      return {scene:'thugs',lines:[
+        ['Bookie','Shame. Shame. I did ask nicely.'],
+        ['n','He steps back. Something much bigger steps forward out of the dark: '+E.foe.name+', the Bookie\u2019s heavy, cracking its neck.'],
+        [E.foe.name,'Nothing personal.']],
+      stake:evChip('up','coin','Win: +'+FIX.thugGold(L)+' gold and a skull')+evChip('','duel','Lose: nothing happens. Off the record'),
+      choices:[{t:'Fight '+esc(E.foe.name),go:'grudge',yes:1}]};}
+  },
+  over:function(won,L,E){const nm=E.foe?E.foe.name:'The heavy';
+    if(won){const g=FIX.thugGold(L);L.gold=(L.gold||0)+g;const sk=invAdd(L,'skull',1);
+      return {good:1,v:'THE FIX IS OFF',ico:'coin',h:'+'+g+' gold'+(sk?' and a skull':''),p:esc(nm)+' goes down hard. The Bookie empties his own pockets to make it go away, and does not knock again.'};}
+    return {v:esc(nm).toUpperCase()+' WINS',h:'Nothing lost',p:esc(nm)+' leaves '+esc(L?L.name:'your lion')+' in the dust. The Bookie shrugs: no harm done, no record, no hard feelings. Mostly.'};}};
+EVENTS.exile={title:'The Exiled King',sub:'Chains in the old pit',col:'#ff5a4d',bg:'rgba(255,90,77,.14)',draw:drawExileScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','Under the old arena, where nobody fights any more, something is breathing in the dark.'],
+        ['n','A black lion, chained to two posts. Scars on every inch of him. A broken crown still caught in his mane.'],
+        ['Exile','I was King once, before my brother. He chained me here and took the crown. Free me, and I will teach your lion what I know.'],
+        ['n','Or the arena masters would pay well to know he is still alive.']],
+      stake:evChip('up','token','Free him: +1 Health, +1 Damage, for good')+evChip('dn','crown','The Lion King will remember')+evChip('up','coin','Turn him in: +'+EXILE.gold(L)+' gold'),
+      choices:[{t:'Break the chains',go:'free',yes:1},{t:'Turn him in',go:'turn'}]};},
+    free:function(L){L.train=trainOf(L);L.train.hp++;L.train.dmg++;Object.keys(L.train).forEach(x=>{if(!L.train[x])delete L.train[x];});L.freedExile=1;
+      CAREER.event=null;delete PREVMEM.career;Store.save();SFX.roar();
+      return {scene:'free',lines:[
+        ['n',L.name+' brings both forepaws down on the old chains. Once. Twice. They give.'],
+        ['Exile','Watch. Low on the first step, then through the shoulder. Again. Again.'],
+        ['n','By dawn he is gone, into the grass. '+L.name+' is stronger for good: +1 Health and +1 Damage training.'],
+        ['n','Somewhere above, the Lion King wakes in a bad mood.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};},
+    turn:function(L){const g=EXILE.gold(L);L.gold=(L.gold||0)+g;CAREER.event=null;Store.save();SFX.coin();
+      return {scene:'turn',lines:[
+        ['n','Two guards in plate come down the steps with torches. The exile does not fight them. He only looks at '+L.name+'.'],
+        ['Exile','Of course.'],
+        ['n','+'+g+' gold from the arena masters. It feels heavier than it should.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+EVENTS.clan={title:'The Clan War',sub:'Two packs, one water hole',col:'#d9b26a',bg:'rgba(217,178,106,.15)',draw:drawClanScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','Near the arena, two hyena clans are squared up across a dry water hole, cackling and snapping.'],
+        ['n','The Bone clan, pale and painted. The Ash clan, dark as soot. Both of them turn to look at '+L.name+'.'],
+        ['n','A lion on your side wins a war. They both know it. So do you.']],
+      stake:evChip('up','skull','Bone clan: 2 skulls')+evChip('up','crate','Ash clan: a Mystery Crate')+evChip('dn','paw','The other clan will want revenge'),
+      choices:[{t:'Side with the Bone clan',go:'bone',yes:1},{t:'Side with the Ash clan',go:'ash',yes:1},{t:'Stay out of it',go:'out'}]};},
+    bone:function(L){return EVENTS.clan.side(L,'bone','ash');},
+    ash:function(L){return EVENTS.clan.side(L,'ash','bone');},
+    out:function(L){CAREER.event=null;Store.save();
+      return {scene:'out',lines:[['n',L.name+' walks the long way round. Behind it, the cackling turns to screaming. Not your war.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  },
+  side:function(L,k,other){const C=CLANS[k],O=CLANS[other];let ok=true;
+    if(k==='bone')ok=invAdd(L,'skull',2);else ok=invAdd(L,'crate',1);
+    CAREER.feud={by:other,wait:1};CAREER.event=null;EV.clanSide=k;Store.save();SFX.roar();
+    if(!ok)toast('The bag is full, so their gift stays at the water hole');
+    return {scene:k,lines:[
+      ['n',L.name+' roars once and walks to the '+C.name+' side. That is all it takes. The '+O.name+' clan breaks and runs.'],
+      ['n','The '+C.name+' clan whoops and pushes '+C.gift+' into the dust at its feet.'],
+      ['n','From the long grass, the '+O.name+' clan watches '+L.name+' go. They will remember this.']],
+      choices:[{t:'Back to the den',go:'done',yes:1}]};}};
+EVENTS.feud={title:'The Clan Remembers',sub:'Eyes in the long grass',col:'#d9b26a',bg:'rgba(217,178,106,.15)',draw:drawClanScene,
+  nodes:{
+    start:function(L){const F=CAREER.feud||{by:'ash'},C=CLANS[F.by]||CLANS.ash;CAREER.event.clan=C.name;EV.feudBy=F.by;
+      return {scene:'feud',lines:[
+        ['n','On the way back from the arena the grass goes quiet.'],
+        ['n','The '+C.name+' clan. The one '+L.name+' turned its back on. Five of them, and they have come for payback.']],
+      stake:evChip('up','skull','Win: a skull, and the feud is over')+evChip('','paw','Lose: nothing else happens'),
+      choices:[{t:'Fight them off',go:'fightAmb',yes:1}]};}
+  }};
+EVENTS.mirror={title:'The Mystic\u2019s Mirror',sub:'A fire that burns violet',col:'#b48cff',bg:'rgba(180,140,255,.16)',draw:drawMirrorScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','The Mystic Lion again, by a fire that burns violet. He does not look up.'],
+        ['Mystic Lion','Every lion has a shadow. Most never meet it. I can call yours out of the fire, if you want to know how good you really are.'],
+        ['Mystic Lion','Beat it, and I will give you a skull for your trouble. Lose, and you lose nothing but pride.']],
+      stake:evChip('up','skull','Win: +1 skull')+evChip('','duel','Lose: nothing happens'),
+      choices:[{t:'Face your shadow',go:'call',yes:1},{t:'Walk away',go:'leave'}]};},
+    call:function(L){const E=CAREER.event;
+      if(!E.foe){const c=rivalSnap(L);['inv','gold','wiz','named','record','rivalId','cos','weak','scale','arena'].forEach(k=>{delete c[k];});
+        c.name=('Shadow '+L.name).slice(0,22);c.pelt=8;c.side='B';c.epithet='your shadow';E.foe=c;E.arena='night';Store.save();}
+      SFX.cast();
+      return {scene:'call',lines:[
+        ['n','He throws a pinch of something into the fire. It roars up violet, and a shape steps out of the smoke.'],
+        ['n','Same frame. Same weapon. Same way of standing. '+L.name+', but darker, and smiling.'],
+        ['Mystic Lion','Go on, then.']],
+      stake:evChip('up','skull','Win: +1 skull')+evChip('','duel','Lose: nothing happens'),
+      choices:[{t:'Fight your shadow',go:'grudge',yes:1}]};},
+    leave:function(L){CAREER.event=null;Store.save();
+      return {scene:'leave',lines:[['Mystic Lion','Another time. It will wait. Shadows are patient.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  },
+  over:function(won,L,E){
+    if(won){const ok=invAdd(L,'skull',1);
+      return {good:1,v:'THE SHADOW FADES',ico:'skull',h:ok?'+1 skull':'The bag is full',p:'The shadow breaks apart into violet smoke. The Mystic Lion nods, once.'+(ok?' A skull lands at '+esc(L.name)+'\u2019s feet.':' The skull stays by the fire: make room next time.')};}
+    return {v:'THE SHADOW WINS',h:'Nothing lost',p:'Your own shadow stands over '+esc(L?L.name:'your lion')+', then sinks back into the fire. The Mystic Lion says nothing at all. Nothing goes on the record.'};}};
+EVENTS.scavenge={title:'Scavenger Night',sub:'The arena floor after dark',col:'#c9cfd8',bg:'rgba(201,207,216,.13)',draw:drawScavScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','The big tournament is over. The stands are empty and the moon is up.'],
+        ['n','The arena floor is littered with what the fallen left behind: snapped spears, split shields, a sword hilt with no blade.'],
+        ['n','Something in the sand catches the moonlight. But you are not the only scavenger out tonight.']],
+      stake:evChip('up','shield','Armour, a weapon edge, or gold')+evChip('dn','paw','Hyenas may come for it'),
+      choices:[{t:'Search the sand',go:'search',yes:1},{t:'Leave it',go:'leave'}]};},
+    search:function(L){const r=scavRoll(L),ok=scavGive(L,r);
+      if(!ok){CAREER.event=null;Store.save();return {scene:'found',lines:[['n','You find a '+r.msg+'. But the bag is full, so it stays in the sand.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
+      const pack=Math.random()<.4;SFX.coin();
+      if(!pack){CAREER.event=null;delete PREVMEM.career;Store.save();
+        return {scene:'found',lines:[['n','There, half buried: a '+r.msg+'. Yours.'],['n','Nobody saw. '+L.name+' slips out the gate with it.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
+      CAREER.event={k:'scavenge',loot:r};Store.save();
+      return {scene:'eyes',lines:[['n','There, half buried: a '+r.msg+'. Yours.'],['n','Then the laughing starts. Five hyenas drop down from the empty stands. They saw it first.']],
+        stake:evChip('up',r.ico,'Win: keep it')+evChip('dn','skull','Lose: they take it'),choices:[{t:'Fight them off',go:'fightAmb',yes:1}]};},
+    ambush:function(L){const r=CAREER.event.loot;
+      return {scene:'eyes',lines:[['n','The hyenas are still down on the arena floor, waiting for the '+r.msg+'.']],
+        stake:evChip('up',r.ico,'Win: keep it')+evChip('dn','skull','Lose: they take it'),choices:[{t:'Fight them off',go:'fightAmb',yes:1}]};},
+    leave:function(L){CAREER.event=null;Store.save();
+      return {scene:'leave',lines:[['n','You leave the dead their things. Somewhere in the stands, something laughs.']],choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+/* ---- their scenes ---- */
+function evWalkIn(ph,tt,h){const yy=h-44;if(ph==='arrive'){const q=ease(tt/2);return {y:h+26-q*(h+26-yy),walk:q<1};}return {y:yy,walk:false};}
+function vulture(g,x,y,s,flap){g.strokeStyle='#140b08';g.lineWidth=Math.max(1.6,s*.25);g.lineCap='round';
+  g.beginPath();g.moveTo(x-s,y-flap);g.quadraticCurveTo(x-s*.45,y-s*.6-flap*.5,x,y);g.quadraticCurveTo(x+s*.45,y-s*.6-flap*.5,x+s,y-flap);g.stroke();}
+function drawCarrionScene(g,w,h,t,ph,tt){
+  const cx=w/2;
+  const sky=g.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#3e1610');sky.addColorStop(.5,'#1e0e0a');sky.addColorStop(1,'#0e0806');g.fillStyle=sky;g.fillRect(0,0,w,h);
+  const sx=w*.8,sy=h*.16,sg=g.createRadialGradient(sx,sy,4,sx,sy,90);sg.addColorStop(0,'rgba(255,120,60,.5)');sg.addColorStop(1,'rgba(255,120,60,0)');g.fillStyle=sg;g.fillRect(0,0,w,h);
+  g.fillStyle='#ff8848';g.beginPath();g.arc(sx,sy,11,0,7);g.fill();
+  g.strokeStyle='#33200f';g.lineWidth=1.4;for(let i=0;i<34;i++){const x=(i*47)%w,y=h*.3+((i*31)%(h*.65)),sw=Math.sin(t*1.3+i)*2;g.beginPath();g.moveTo(x,y);g.lineTo(x+sw-2,y-8);g.moveTo(x,y);g.lineTo(x+sw+3,y-7);g.stroke();}
+  const bx=cx,by=h*.42;
+  g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(bx+4,by+6,34,18,.3,0,7);g.fill();
+  paintLion(g,{x:bx,y:by,R:22,ang:.35,t:0,pelt:0,cols:{mane:'#5c5249',body:'#6c635a',edge:'#2a2420',muz:'#8a8078',plate:'#444'},mane:2,tail:0,seed:5,scars:[1200,1500,300,800],armor:'none',belts:2,eyes:'#120c0a'});
+  if(ph==='respect'){const q=Math.min(1,tt/1.5),lg=g.createLinearGradient(bx,0,bx,by);lg.addColorStop(0,'rgba(255,236,170,0)');lg.addColorStop(1,'rgba(255,236,170,'+(.28*q)+')');g.fillStyle=lg;g.fillRect(bx-30,0,60,by+20);}
+  if(ph==='take'&&tt<1.2){g.fillStyle='rgba(255,255,255,'+(1-tt/1.2)+')';for(let i=0;i<3;i++){g.beginPath();g.arc(bx+18+i*5,by+10-i*3,1.6,0,7);g.fill();}}
+  const scared=ph==='take'||ph==='respect';
+  for(let i=0;i<5;i++){const a=t*(.5+i*.07)+i*1.25,rr=(scared?60+tt*40:48+i*9),x=bx+Math.cos(a)*rr*1.3,y=by-34+Math.sin(a)*rr*.35-(scared?tt*20:0);vulture(g,x,y,7+(i%2)*2,Math.sin(t*7+i)*2);}
+  const P=evWalkIn(ph,tt,h);let py=P.y;if(ph==='respect'||ph==='take')py=P.y-Math.min(1,tt/1.4)*(P.y-by-50);
+  evYou(g,cx,py+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,ph==='take'&&tt<.4);
+  evVignette(g,w,h);
+}
+function drawFixScene(g,w,h,t,ph,tt){
+  const cx=w/2;g.fillStyle='#0b0f12';g.fillRect(0,0,w,h);
+  g.fillStyle='#141a1e';g.fillRect(cx-70,0,140,h*.5);g.strokeStyle='#2a3238';g.lineWidth=4;g.strokeRect(cx-70,-4,140,h*.5+4);
+  const lx=cx+56,ly=50,fl=.85+.12*Math.sin(t*7);
+  const lg=g.createRadialGradient(lx,ly,3,lx,ly,120*fl);lg.addColorStop(0,'rgba(255,214,140,.32)');lg.addColorStop(1,'rgba(255,214,140,0)');g.fillStyle=lg;g.fillRect(0,0,w,h);
+  g.strokeStyle='#5a4128';g.lineWidth=1.4;g.strokeRect(lx-4,ly-6,8,11);g.fillStyle='#ffd88a';g.beginPath();g.arc(lx,ly,2.6*fl,0,7);g.fill();
+  const kx=cx+26,ky=58,ka=Math.PI/2+Math.sin(t*.8)*.25;
+  paintLion(g,{x:kx,y:ky,R:18,ang:ka,t:t,pelt:0,cols:BOOKCOLS,mane:2,tail:0,seed:12,scars:[],armor:'none',anim:(t%3)<.12});drawFlatCap(g,kx,ky,18,ka,t);
+  if(ph==='thugs'){const q=ease(tt/1.4);[[-1,cx-90],[1,cx+110]].forEach(function(z,i){const x=z[1]+(i?-1:1)*q*24,y=96;
+    paintLion(g,{x:x,y:y,R:22,ang:Math.PI/2+z[0]*-.4,t:t,pelt:0,cols:GUARDCOLS,mane:4,tail:0,seed:20+i,scars:[600,1300],armor:'plate',anim:(t%2.2)<.1,cos:{earL:'gold',nose:'gold'}});});}
+  if(ph==='throw'){const q=Math.min(1,tt/1.2);g.fillStyle='#8a6a3a';g.beginPath();g.ellipse(cx-10,h-80+(1-q)*-20,9,8,0,0,7);g.fill();g.fillStyle='#ffd24a';g.font='bold 10px sans-serif';g.textAlign='center';g.fillText('$',cx-10,h-77+(1-q)*-20);g.textAlign='start';}
+  const P=evWalkIn(ph,tt,h);evYou(g,cx-10,P.y+(P.walk?Math.sin(t*10):0),17,ph==='throw'&&tt>1?Math.PI*.15:-Math.PI/2,t,false);
+  evVignette(g,w,h);
+}
+function drawExileScene(g,w,h,t,ph,tt){
+  const cx=w/2;g.fillStyle='#0c0b0c';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(255,255,255,.035)';g.lineWidth=1;for(let y=10;y<h;y+=22){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();for(let x=((y/22)%2)*20;x<w;x+=40){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+22);g.stroke();}}
+  const tl=g.createRadialGradient(cx,40,6,cx,40,w*.5);tl.addColorStop(0,'rgba(255,120,60,.18)');tl.addColorStop(1,'rgba(255,120,60,0)');g.fillStyle=tl;g.fillRect(0,0,w,h);
+  const kx=cx,ky=h*.38,px=[cx-82,cx+82];
+  let ex=kx,ey=ky,ea=Math.PI/2+Math.sin(t*.5)*.12;
+  if(ph==='free'&&tt>2.2){const q=ease((tt-2.2)/2);ey=ky-q*(ky+40);ea=-Math.PI/2;}
+  if(ph==='turn'&&tt>1){const q=ease((tt-1)/2.4);ex=kx-q*(kx+60);ea=Math.PI;}
+  px.forEach(function(x){g.fillStyle='#2a2420';g.fillRect(x-5,ky-40,10,80);g.fillStyle='#3a322a';g.fillRect(x-7,ky-44,14,6);});
+  const broken=ph==='free'&&tt>1.1;
+  px.forEach(function(x,i){const n=8;for(let k=0;k<=n;k++){const f=k/n;let lx=x+(kx+(i?14:-14)-x)*f,ly=ky-10+Math.sin(f*Math.PI)*16;
+      if(broken){ly+=Math.min(40,(tt-1.1)*60)*f;}if(!broken&&(ph==='free'||ph==='turn')&&ph!=='free'&&false){}
+      if(ph==='turn'&&tt>1)continue;
+      g.strokeStyle='#8a8f98';g.lineWidth=1.6;g.beginPath();g.ellipse(lx,ly,3.2,2,f*3+i,0,7);g.stroke();}});
+  if(ph==='turn'){const q=ease(Math.min(1,tt/1.2));[-1,1].forEach(function(sd,i){paintLion(g,{x:ex+20*sd-(1-q)*60,y:ey+sd*28,R:16,ang:Math.PI,t:t,pelt:0,cols:GUARDCOLS,mane:4,tail:0,seed:5+i,scars:[],armor:'plate'});});}
+  paintLion(g,{x:ex,y:ey,R:21,ang:ea,t:t,pelt:0,cols:{mane:'#1a1a1e',body:'#151517',edge:'#55555c',muz:'#3a3a42',plate:'#5c5c66'},mane:0,tail:0,seed:7,scars:[1284,617,1450,300,900,1700],armor:'none',eyes:'#ff3a2a',eyeGlow:ph!=='turn'});
+  drawCrown(g,ex,ey,21,ea,t);g.strokeStyle='#0c0b0c';g.lineWidth=2;g.beginPath();g.moveTo(ex-4,ey-10);g.lineTo(ex+3,ey+2);g.lineTo(ex-2,ey+8);g.stroke();
+  if(broken&&tt<1.6){g.strokeStyle='rgba(255,230,180,'+(1-(tt-1.1)/.5)+')';g.lineWidth=2;g.beginPath();g.arc(kx,ky,24+(tt-1.1)*60,0,7);g.stroke();}
+  const P=evWalkIn(ph,tt,h);evYou(g,cx,P.y+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,ph==='free'&&tt>.6&&tt<1.2);
+  evVignette(g,w,h);
+}
+function drawClanScene(g,w,h,t,ph,tt){
+  const cx=w/2;const sky=g.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#2a1c10');sky.addColorStop(1,'#120c08');g.fillStyle=sky;g.fillRect(0,0,w,h);
+  g.fillStyle='#2e2216';g.beginPath();g.ellipse(cx,h*.42,w*.32,h*.14,0,0,7);g.fill();g.strokeStyle='#4a3622';g.lineWidth=1;for(let i=0;i<8;i++){g.beginPath();g.moveTo(cx-60+i*15,h*.42-8+(i%3)*4);g.lineTo(cx-50+i*15,h*.42+6-(i%2)*4);g.stroke();}
+  for(let i=0;i<18;i++){g.fillStyle=i%2?'#2a2018':'#33281e';g.beginPath();g.ellipse((i*61)%w,(i*37)%h,6,4,i,0,7);g.fill();}
+  const feud=ph==='feud',side=feud?null:(ph==='bone'||ph==='ash'?ph:null),fb=EV.feudBy||'ash';
+  const grp=function(k,sx,dir){const C=CLANS[k];
+    for(let i=0;i<3;i++){let x=sx+dir*(i%2)*16,y=h*.28+i*24,a=dir>0?.1:Math.PI-.1;
+      if(side&&side!==k){const q=ease(tt/1.6);x+=-dir*q*(w*.4);a=dir>0?Math.PI:0;}
+      if(side===k)y+=Math.sin(t*8+i)*2;
+      paintLion(g,{x:x,y:y,R:13,ang:a+Math.sin(t*2+i)*.2,t:t,pelt:0,cols:C.cols,mane:4,tail:0,seed:30+i,scars:[],armor:'none',anim:(t*1.3+i*.4)%2<.12,eyes:'#ffd24a',eyeGlow:true});
+      if(k==='bone'){g.strokeStyle='rgba(120,20,16,.8)';g.lineWidth=1.2;g.beginPath();g.moveTo(x-4,y-5);g.lineTo(x+4,y-1);g.stroke();}}};
+  if(feud){const C=CLANS[fb];for(let i=0;i<5;i++){const a=-Math.PI/2+(i-2)*.45,q=Math.min(1,tt/2),r=(h*.6)-q*30,x=cx+Math.cos(a)*r*.9,y=h*.82+Math.sin(a)*r;
+      paintLion(g,{x:x,y:y,R:12,ang:Math.atan2(h-44-y,cx-x),t:t,pelt:0,cols:C.cols,mane:4,tail:0,seed:40+i,scars:[],armor:'none',anim:(t+i*.3)%1.8<.1,eyes:'#ffd24a',eyeGlow:true});}}
+  else{grp('bone',cx-w*.3,1);grp('ash',cx+w*.3,-1);}
+  const P=evWalkIn(ph,tt,h);let yx=cx;if(side==='bone')yx=cx-Math.min(1,tt/1.4)*w*.16;if(side==='ash')yx=cx+Math.min(1,tt/1.4)*w*.16;
+  evYou(g,yx,P.y+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,side&&tt<.4);
+  evVignette(g,w,h);
+}
+function drawMirrorScene(g,w,h,t,ph,tt){
+  const cx=w/2;g.fillStyle='#09070e';g.fillRect(0,0,w,h);
+  for(let i=0;i<12;i++){g.fillStyle='rgba(30,22,48,.9)';g.beginPath();g.arc((i*67)%w,(i%2?8:h-6),26+(i%3)*8,0,7);g.fill();}
+  const fx=cx,fy=h*.44,fl=.85+.1*Math.sin(t*8)+.05*Math.sin(t*19);
+  const fg=g.createRadialGradient(fx,fy,4,fx,fy,w*.45*fl);fg.addColorStop(0,'rgba(180,120,255,.42)');fg.addColorStop(1,'rgba(180,120,255,0)');g.fillStyle=fg;g.fillRect(0,0,w,h);
+  g.save();g.globalCompositeOperation='lighter';for(let k=0;k<7;k++){const s=(12-k)*fl,x=fx+Math.sin(t*5+k)*2,y=fy-k*3;const q=g.createRadialGradient(x,y,0,x,y,s);q.addColorStop(0,'rgba(240,220,255,.9)');q.addColorStop(.5,'rgba(170,110,255,.6)');q.addColorStop(1,'rgba(120,60,255,0)');g.fillStyle=q;g.beginPath();g.arc(x,y,s,0,7);g.fill();}g.restore();
+  g.fillStyle='#2a2030';for(let i=0;i<5;i++){g.beginPath();g.ellipse(fx-14+i*7,fy+8,4,2,i,0,7);g.fill();}
+  paintLion(g,{x:fx-70,y:fy-6,R:18,ang:Math.PI/2-.6,t:t,pelt:0,cols:MYSTCOLS,mane:3,tail:0,seed:9,scars:[],armor:'none',eyes:'#e6d4ff',eyeGlow:true,anim:ph==='call'&&tt<.3});
+  const L=CAREER.lion;
+  if(L&&ph==='call'){const q=ease(Math.min(1,tt/1.8)),sx=fx+62,sy=fy-4-(1-q)*10;g.globalAlpha=q;
+    const sh=g.createRadialGradient(sx,sy,4,sx,sy,40);sh.addColorStop(0,'rgba(160,100,255,.35)');sh.addColorStop(1,'rgba(160,100,255,0)');g.fillStyle=sh;g.beginPath();g.arc(sx,sy,40,0,7);g.fill();
+    paintLion(g,{x:sx,y:sy,R:17,ang:Math.PI/2+.5+Math.sin(t)*.1,t:t,pelt:8,cols:{mane:'#120e18',body:'#1a1622',edge:'#7a5aa8',muz:'#2a2236',plate:'#7a5aa8'},mane:L.mane,tail:L.tail,seed:3,scars:L.scars||[],armor:L.armor||'none',eyes:'#c9a8ff',eyeGlow:true});g.globalAlpha=1;}
+  for(let i=0;i<10;i++){const p=(t*.4+i/10)%1;g.globalAlpha=.8*(1-p);g.fillStyle=i%2?'#c9a8ff':'#f0e0ff';g.fillRect(fx+Math.sin(t*2+i*2)*(5+p*14)-.8,fy-8-p*50,1.6,1.6);}g.globalAlpha=1;
+  const P=evWalkIn(ph,tt,h);evYou(g,cx,P.y+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,false);
+  evVignette(g,w,h);
+}
+function drawScavScene(g,w,h,t,ph,tt){
+  const cx=w/2;g.fillStyle='#16130e';g.fillRect(0,0,w,h);
+  const mg=g.createRadialGradient(w*.25,-20,10,w*.25,-20,w*.9);mg.addColorStop(0,'rgba(190,210,255,.16)');mg.addColorStop(1,'rgba(190,210,255,0)');g.fillStyle=mg;g.fillRect(0,0,w,h);
+  g.fillStyle='rgba(255,240,210,.03)';for(let i=0;i<30;i++){g.beginPath();g.ellipse((i*53)%w,(i*29)%h,8,3,0,0,7);g.fill();}
+  g.strokeStyle='#5a4a36';g.lineWidth=2.4;g.lineCap='round';[[cx-110,40,.6],[cx+70,30,-.4],[cx-40,h*.55,1.2],[cx+120,h*.5,.3]].forEach(function(q){g.beginPath();g.moveTo(q[0],q[1]);g.lineTo(q[0]+Math.cos(q[2])*30,q[1]+Math.sin(q[2])*30);g.stroke();
+    g.fillStyle='#9aa0aa';g.beginPath();g.moveTo(q[0]+Math.cos(q[2])*30,q[1]+Math.sin(q[2])*30);g.lineTo(q[0]+Math.cos(q[2])*38+Math.sin(q[2])*3,q[1]+Math.sin(q[2])*38-Math.cos(q[2])*3);g.lineTo(q[0]+Math.cos(q[2])*38-Math.sin(q[2])*3,q[1]+Math.sin(q[2])*38+Math.cos(q[2])*3);g.fill();});
+  [[cx+30,h*.3,13],[cx-90,h*.36,11]].forEach(function(q){g.fillStyle='#4a3c2c';g.beginPath();g.arc(q[0],q[1],q[2],0,7);g.fill();g.strokeStyle='#8a7a5a';g.lineWidth=1.5;g.stroke();g.strokeStyle='#1a140e';g.beginPath();g.moveTo(q[0]-q[2],q[1]-3);g.lineTo(q[0]+q[2]*.6,q[1]+q[2]*.7);g.stroke();});
+  const gx=cx+8,gy=h*.42,found=ph==='found'||ph==='eyes';
+  if(!found||tt<1){const tw=.5+.5*Math.sin(t*4);g.fillStyle='rgba(255,250,220,'+(.6+.4*tw)+')';g.beginPath();for(let q=0;q<8;q++){const r=q%2?1.6:6*(.7+.3*tw),a=q/8*Math.PI*2;g.lineTo(gx+Math.cos(a)*r,gy+Math.sin(a)*r);}g.closePath();g.fill();}
+  if(ph==='eyes'){const q=Math.min(1,tt/1.5);for(let i=0;i<5;i++){const a=-Math.PI*.95+i*Math.PI*.22,x=cx+Math.cos(a)*w*.46,y=h*.55+Math.sin(a)*h*.5+q*10;
+      g.fillStyle='rgba(255,210,74,'+(.5+.5*Math.sin(t*3+i))+')';g.beginPath();g.arc(x-3,y,1.8,0,7);g.arc(x+3,y,1.8,0,7);g.fill();}}
+  const P=evWalkIn(ph,tt,h);let py=P.y;if(ph!=='arrive'&&ph!=='leave')py=P.y-Math.min(1,tt/1.4)*(P.y-gy-34);
+  evYou(g,cx+8,py+(P.walk?Math.sin(t*10):0),17,-Math.PI/2,t,found&&tt<.3);
   evVignette(g,w,h);
 }
 
