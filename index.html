@@ -1092,6 +1092,9 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .olHero b{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-.02em}
 .olHero small{font-size:14px;color:var(--t2);line-height:1.45;max-width:320px}
 .olAuth{padding:12px 0 10px}
+.acLink{display:block;margin:6px auto 4px;padding:6px 10px;font-size:14px;font-weight:600;color:#7cc2ff}
+.acForgotHd{display:flex;gap:12px;align-items:flex-start;margin:4px 16px 14px}.acForgotHd .ico{width:26px;height:26px;color:#7cc2ff;flex:none;margin-top:2px}
+.acForgotHd b{display:block;font-size:17px;color:var(--t1)}.acForgotHd small{display:block;font-size:13.5px;color:var(--t2);line-height:1.4;margin-top:2px}
 .olAuth .acTabs{margin:0 16px 12px}.olAuth .acctForm{padding:0 16px}.olAuth .acMsg{margin:10px 16px 0}
 .olMe{padding:14px 16px 10px;position:relative}
 .olMeTop{display:flex;align-items:center;gap:12px}
@@ -4759,7 +4762,7 @@ function renderLaunch(){
   if(UI.view==='cosmo'&&MATCH.mode==='career'){bar.innerHTML='<button class="go1" data-act="back">'+ico('check')+'Leave the boutique</button>';return;}
   if(MATCH.mode==='online'){
     if(!onlineOn())bar.innerHTML='<button class="go1 dim">'+ico('globe')+'Offline</button>';
-    else if(!signedIn())bar.innerHTML='<button class="go1" data-act="olFocus">'+ico('plus')+(ONLINE.tab==='in'?'Sign in':'Create a free account')+'</button>';
+    else if(!signedIn())bar.innerHTML='<button class="go1" data-act="olFocus">'+ico(ONLINE.tab==='forgot'?'check':'plus')+(ONLINE.tab==='forgot'?'Send a reset link':(ONLINE.tab==='in'?'Sign in':'Create a free account'))+'</button>';
     else if(!L||!CAREER.locked)bar.innerHTML='<button class="go1" data-mode="career">'+ico('lion')+'Make a lion in Championship</button>';
     else bar.innerHTML='<button class="go1'+(ONLINE.board&&ONLINE.board.length>1?'':' dim')+'" data-act="olQuick">'+ico('duel')+'Quick fight</button>';
     return;
@@ -4899,6 +4902,8 @@ document.addEventListener('keydown',function(e){
   if(e.key!=='Enter')return;
   const t=e.target;
   if(t&&t.id==='codeIn'){e.preventDefault();loadPastedCode();return;}
+  if(t&&(t.id==='rsPass'||t.id==='rsPass2')){e.preventDefault();acctResetSave();return;}
+  if(t&&t.id==='acEmail'&&ONLINE.tab==='forgot'){e.preventDefault();acctResetSend();return;}
   if(t&&t.id==='allyCode'){e.preventDefault();handleAct('allyPasteKey');return;}
   if(t&&t.id==='careerCode'){e.preventDefault();careerLoadCode(t.value);return;}
   if(t&&t.classList&&t.classList.contains('nameField')){e.preventDefault();t.blur();refresh();}
@@ -5394,9 +5399,12 @@ function handleAct(a,el){
   if(a==='giftTo'){const u=el&&el.dataset.u,L=CAREER.lion;if(!L||!invCount(L,'gift')){toast('Buy a Gift Parcel at the Lion Store first');return;}SFX.ui();openGift(u);return;}
   if(a==='giftOpenOk'){SFX.ui();closeSheet();refresh();return;}
   if(a==='olQuickR'){$('result').classList.add('hidden');showHome();olQuick();return;}
-  if(a==='olFocus'){const e=$(ONLINE.tab==='in'?'acEmail':'acName')||$('acEmail');if(e){e.scrollIntoView&&e.scrollIntoView({block:'center'});e.focus&&e.focus();}return;}
+  if(a==='olFocus'){if(ONLINE.tab==='forgot'&&$('acEmail')&&$('acEmail').value.trim()){acctResetSend();return;}const e=$(ONLINE.tab==='up'?'acName':'acEmail')||$('acEmail');if(e){e.scrollIntoView&&e.scrollIntoView({block:'center'});e.focus&&e.focus();}return;}
   if(a==='openAcct'){SFX.ui();openAccount();return;}
-  if(a==='acctTab'){ONLINE.tab=(el&&el.dataset.v)||'in';SFX.ui();openAccount();return;}
+  if(a==='acctTab'){ONLINE.tab=(el&&el.dataset.v)||'in';ONLINE.msg='';SFX.ui();openAccount();return;}
+  if(a==='acctResetSend'){acctResetSend();return;}
+  if(a==='acctResetSave'){acctResetSave();return;}
+  if(a==='resetLater'){SFX.ui();closeSheet();toast('You\u2019re signed in. Change your password from the reset link any time');return;}
   if(a==='acctIn'){acctSignIn();return;}
   if(a==='acctUp'){acctSignUp();return;}
   if(a==='acctOut'){acctSignOut();return;}
@@ -10567,9 +10575,13 @@ const PIT={winGold:5,goldWins:5};
 function sbLib(){return (typeof window!=='undefined'&&window.LIONSIM_SB)||(typeof supabase!=='undefined'?supabase:null);}
 function onlineInit(){
   const lib=sbLib();if(!lib||!lib.createClient)return;
-  try{ONLINE.sb=lib.createClient(ONLINE.url,ONLINE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'lionsim-auth'}});}
+  /* implicit flow: a reset link works even when it is opened on a different device or browser from the one that asked for it */
+  const badLink=resetLinkError();
+  try{ONLINE.sb=lib.createClient(ONLINE.url,ONLINE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit',storageKey:'lionsim-auth'}});}
   catch(e){ONLINE.sb=null;return;}
+  if(badLink)setTimeout(function(){ONLINE.tab='forgot';MATCH.mode='online';refresh();acctMsg(badLink);},400);
   ONLINE.sb.auth.onAuthStateChange(function(ev,session){
+    if(ev==='PASSWORD_RECOVERY'){ONLINE.recovery=true;setTimeout(openResetSheet,350);}
     const u=(session&&session.user)||null,was=ONLINE.user&&ONLINE.user.id;
     ONLINE.user=u;
     if(u&&u.id!==was)setTimeout(onlineSignedIn,0);
@@ -10839,7 +10851,60 @@ function olEnsure(force){
   Promise.all([pitLoad(true),pitNews()]).then(function(){ONLINE.loading=false;},function(){ONLINE.loading=false;});
   giftCheck();
 }
+/* ---------- forgotten passwords ---------- */
+function resetLinkError(){
+  try{const h=String((typeof location!=='undefined'&&location.hash)||'');if(!/error/.test(h))return '';
+    const q=new URLSearchParams(h.replace(/^#/,'')),c=q.get('error_code')||'',d=q.get('error_description')||'';
+    if(history&&history.replaceState)history.replaceState(null,'',location.pathname+location.search);
+    if(/otp_expired|expired/i.test(c+' '+d))return 'That reset link has expired or was already used. Send yourself a new one below.';
+    return 'That link didn\u2019t work. Send yourself a new one below.';
+  }catch(e){return '';}
+}
+function olForgotHTML(){
+  return '<div class="card olAuth"><div class="acForgotHd">'+ico('help')+'<div><b>Forgot your password?</b><small>Type the email you signed up with. We\u2019ll send you a link to set a new one.</small></div></div>'+
+    '<div class="acctForm"><label>Email<input id="acEmail" type="email" autocomplete="email" inputmode="email"></label>'+
+      '<button class="key" data-act="acctResetSend">'+ico('check')+'Send reset link</button></div>'+
+    '<p class="acMsg'+(ONLINE.msgOk?' good':'')+'" id="acMsg">'+esc(ONLINE.msg||'')+'</p>'+
+    '<button class="acLink" data-act="acctTab" data-v="in">\u2039 Back to sign in</button></div>';
+}
+async function acctResetSend(){
+  const email=(($('acEmail')||{}).value||'').trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return acctMsg('That email doesn\u2019t look right');
+  if(Date.now()-(ONLINE.resetAt||0)<60000)return acctMsg('A link is already on its way. Give it a minute, and check your spam folder.',true);
+  acctBusy(true);
+  try{
+    const r=await ONLINE.sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+    acctBusy(false);
+    if(r&&r.error)return acctMsg(errText(r.error));
+    ONLINE.resetAt=Date.now();
+    acctMsg('If there\u2019s an account for '+email+', a reset link is on its way. Open it on any device. Check your spam folder too.',true);
+  }catch(e){acctBusy(false);acctMsg(errText(e));}
+}
+function openResetSheet(){
+  UI.sheet={kind:'reset',field:'reset'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Set a new password</h3><button data-act="resetLater">Later</button></div>'+
+    '<div class="sheetBody acBody"><div class="acHero">'+ico('check')+'<b>Choose a new password</b><small>'+esc((ONLINE.user&&ONLINE.user.email)||'')+'</small></div>'+
+    '<div class="acctForm"><label>New password<input id="rsPass" type="password" autocomplete="new-password" placeholder="At least 6 characters"></label>'+
+      '<label>Type it again<input id="rsPass2" type="password" autocomplete="new-password"></label>'+
+      '<button class="key" data-act="acctResetSave">'+ico('check')+'Save new password</button></div>'+
+    '<p class="acMsg" id="acMsg"></p></div>';
+  $('sheetWrap').classList.remove('hidden');
+  const e=$('rsPass');if(e&&e.focus)setTimeout(function(){e.focus();},50);
+}
+async function acctResetSave(){
+  const a=($('rsPass')||{}).value||'',b=($('rsPass2')||{}).value||'';
+  if(a.length<6)return acctMsg('Use a password of at least 6 characters');
+  if(a!==b)return acctMsg('Those two don\u2019t match');
+  acctBusy(true);
+  try{
+    const r=await ONLINE.sb.auth.updateUser({password:a});
+    acctBusy(false);
+    if(r&&r.error){const m=String(r.error.message||'');return acctMsg(/same|different/i.test(m)?'That\u2019s your old password. Pick a new one':(/session|expired|jwt/i.test(m)?'The link has run out. Ask for a new one from the sign-in screen':errText(r.error)));}
+    ONLINE.recovery=false;closeSheet();toast('Password changed. You\u2019re signed in');MATCH.mode='online';refresh();
+  }catch(e){acctBusy(false);acctMsg(errText(e));}
+}
 function olAuthHTML(){
+  if(ONLINE.tab==='forgot')return olForgotHTML();
   const up=ONLINE.tab!=='in';
   return '<div class="card olAuth"><div class="acTabs"><button class="'+(up?'on':'')+'" data-act="acctTab" data-v="up">Create account</button><button class="'+(up?'':'on')+'" data-act="acctTab" data-v="in">Sign in</button></div>'+
     '<div class="acctForm">'+
@@ -10847,7 +10912,8 @@ function olAuthHTML(){
       '<label>Email<input id="acEmail" type="email" autocomplete="email" inputmode="email"></label>'+
       '<label>Password<input id="acPass" type="password" autocomplete="'+(up?'new-password':'current-password')+'" placeholder="'+(up?'At least 6 characters':'')+'"></label>'+
       '<button class="key" data-act="'+(up?'acctUp':'acctIn')+'">'+ico(up?'plus':'check')+(up?'Create account':'Sign in')+'</button></div>'+
-    '<p class="acMsg'+(ONLINE.msgOk?' good':'')+'" id="acMsg">'+esc(ONLINE.msg||'')+'</p></div>';
+    '<p class="acMsg'+(ONLINE.msgOk?' good':'')+'" id="acMsg">'+esc(ONLINE.msg||'')+'</p>'+
+    (up?'':'<button class="acLink" data-act="acctTab" data-v="forgot">Forgot password?</button>')+'</div>';
 }
 function olMeHTML(L){
   const nm=onlineName(),m=pitMine(),rk=olRank(),n=ONLINE.board?ONLINE.board.length:0;
