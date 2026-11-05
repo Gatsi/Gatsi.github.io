@@ -782,6 +782,16 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,.6) 62%,rgba(0,0,0,0))}
 .intro.top .skip{bottom:auto;top:8px}
 .intro.hidden{display:none}
+.ancAsk{position:absolute;left:0;right:0;bottom:0;padding:54px 16px 18px;line-height:1.3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;
+  border-radius:0 0 var(--r) var(--r);background:linear-gradient(to top,rgba(4,8,24,.96),rgba(4,8,24,.75) 60%,rgba(4,8,24,0));animation:ancIn .5s ease-out}
+.ancAsk.hidden{display:none}
+.ancAsk .aaK{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#9fb4ff;font-weight:700}
+.ancAsk h4{margin:0;font-family:var(--disp);font-size:clamp(26px,7vw,40px);font-weight:800;letter-spacing:.02em;color:#ffe9a8;text-shadow:0 0 22px rgba(255,210,74,.55)}
+.ancAsk p{margin:0;font-size:14px;color:#c9d3f2;max-width:300px}
+.ancAsk .aaBtns{display:flex;gap:10px;margin-top:4px}
+.ancAsk button{min-width:130px;padding:12px 18px;border-radius:999px;border:1px solid rgba(159,180,255,.35);background:rgba(20,28,60,.85);color:#dfe6ff;font:600 15px/1 var(--ui,inherit);cursor:pointer}
+.ancAsk button.aaY{background:linear-gradient(180deg,#ffe08a,#e0a52a);color:#1a1204;border-color:#ffe08a;box-shadow:0 0 22px rgba(255,210,74,.45)}
+@keyframes ancIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .intro.out{opacity:0;transition:opacity .25s}
 .intro .ik{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--t2);font-weight:600}
 .intro .inm{font-family:var(--disp);font-weight:800;font-size:clamp(28px,7.6vw,52px);letter-spacing:.02em;white-space:nowrap;max-width:100%}
@@ -1411,7 +1421,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
         <div class="fmeta"></div><div class="pips"></div>
       </div>
     </div>
-    <div class="arenaBox" id="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div><div class="intro hidden" id="intro"></div></div>
+    <div class="arenaBox" id="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div><div class="intro hidden" id="intro"></div><div class="ancAsk hidden" id="ancAsk"></div></div>
     <div class="ticker" id="ticker"></div>
     <div class="controls">
       <button class="ctl" data-speed="0.5">0.5×</button>
@@ -1641,6 +1651,10 @@ const ARENAS={
     make:()=>[[214,214,24,'bramble'],[426,426,24,'bramble']]},
   quarry:{name:'The Quarry',ico:'rock',hazard:1,rocks:1,floor:'#131211',grid:'#1e1c19',note:'Loose rock overhead. Watch for the shadows: when they land, they hurt.',
     make:()=>[[236,332,26],[404,308,26]]},
+  sanctum:{name:'The Star Sanctum',ico:'moon',boss:1,floor:'#0a0f22',grid:'rgba(0,0,0,0)',note:'Where the Ancient Lion sleeps.',
+    make:()=>[[168,168,20,'obelisk'],[472,168,20,'obelisk'],[168,472,20,'obelisk'],[472,472,20,'obelisk']]},
+  hall:{name:'The Fallen Hall',ico:'crown',boss:1,floor:'#0e0b0b',grid:'rgba(0,0,0,0)',note:'The Lion King\u2019s ruined hall.',
+    make:()=>[[186,206,27,'ruin'],[458,182,24,'ruin'],[204,452,23,'ruin'],[438,440,29,'ruin']]},
   throne:{name:'The Twin Throne',ico:'crown',boss:1,floor:'#141210',grid:'rgba(0,0,0,0)',note:'Where the Twin Kings hold court.',
     make:()=>[[190,190,26,'pillarW'],[190,450,26,'pillarW'],[450,190,26,'pillarB'],[450,450,26,'pillarB']]},
   night:{name:'Moonlit Pit',ico:'moon',hazard:1,night:1,floor:'#0c0e14',grid:'#151a26',note:'Fought in the dark. Long shots go wide.',
@@ -3961,16 +3975,16 @@ const CHAL={
     desc:'Every wave is bigger than the last: dogs first, hyenas once it gets serious. Clear a wave and your lion gets a breather and a little health back. Last as long as you can.',
     reward:'Bragging rights. Your best wave and kill count go on the record',tip:'Wide swings, Quake Slam and Roar thin a crowd fast.'},
   king:{name:'The Lion King',act:'startKing',go:'Challenge the Lion King',diff:3,diffName:'Hard',col:'#ff5a4d',
-    blurb:'One fight. A giant in black plate.',
-    desc:'Three times the size of your lion, in plate armour, with a maul that stuns and a roar that throws you across the sand.',
-    reward:'The Fallen King\u2019s Sash, the first time you beat him',tip:'Keep moving. Ranged lions can kite him, and allies split his attention.'},
+    blurb:'His three sons, then the giant in black plate.',
+    desc:'Fought in the Fallen Hall, his ruined throne room. First the Black Princes, Morrow, Vorn and Kael: smaller copies of their father, with mauls of their own. Whatever health you have left, you take to the Lion King: three times the size of your lion, in plate armour, with a maul that stuns and a roar that throws you across the sand.',
+    reward:'The Fallen King\u2019s Sash, the first time you beat him',tip:'Nothing heals between the princes and the king. Keep moving: ranged lions can kite them, and allies split their attention.'},
   old:{name:'Old Lion',act:'startOld',go:'Challenge Old Lion',diff:4,diffName:'Very hard',col:'#d2cbbd',
     blurb:'Your tutor, out of retirement.',
     desc:'Patient, clever and much harder than he looks. He taught you everything, and he kept a few things back.',
     reward:'Every win over him is remembered',tip:'Do not trade blows early. He waits for you to make a mistake.'},
   ancient:{name:'The Ancient Lion',act:'startAncient',go:'Wake the Ancient Lion',diff:5,diffName:'Brutal',col:'#ffc72c',
     blurb:'Older than the arena.',
-    desc:'A navy and gold colossus, slow and enormous. Get close and it blasts you with a gold nova. Stay back and it brings the stars down on you.',
+    desc:'He sleeps inside an orb in the Star Sanctum. Walk up to it and decide whether to wake him. A navy and gold colossus, slow and enormous: get close and he blasts you with a gold nova, stay back and he brings the stars down on you. Hurt him and the sky joins in.',
     reward:'The Starfall Sash, the first time you fell it',tip:'Bring two allies. Alone, it wins most fights.'},
   gate:{name:'The Gatekeeper',act:'startGate',go:'Face the Gatekeeper',diff:4,diffName:'Very hard',col:'#aeb6c2',
     blurb:'Plated head to tail.',
@@ -5595,6 +5609,8 @@ function handleAct(a,el){
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='smithFinish'){smithFinish();return;}
   if(a==='questStart'){questStart(el&&el.dataset.k);return;}
+  if(a==='ancYes'){ancAnswer(true);return;}
+  if(a==='ancNo'){ancAnswer(false);return;}
   if(a==='questForge'){questForge(el&&el.dataset.k);return;}
   if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
@@ -5754,10 +5770,12 @@ function fightArena(){
   if(G.ctx==='grudge'&&CAREER.event&&ARENAS[CAREER.event.arena])return CAREER.event.arena;
   if(G.ctx==='pit'&&CAREER.pit&&ARENAS[CAREER.pit.arena])return CAREER.pit.arena;
   if(G.ctx==='king'&&BOSSKIND==='twins')return 'throne';
+  if(G.ctx==='king'&&BOSSKIND==='king')return 'hall';
+  if(G.ctx==='king'&&BOSSKIND==='ancient')return 'sanctum';
   return G.ctx==='survival'&&SURV.ambush?'thicket':'colonnade';
 }
 /* the walls close in every fight but the Twin Throne, where the kings hold their ground */
-function fightClosing(){if(G&&G.ctx==='king'&&BOSSKIND==='twins')return false;return duelLike()?MATCH.closing:true;}
+function fightClosing(){if(G&&G.ctx==='king'&&(BOSSKIND==='twins'||BOSSKIND==='king'||BOSSKIND==='ancient'))return false;return duelLike()?MATCH.closing:true;}
 /* ========== 11b. THE GATES ==========
    Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
    corners (south-west and north-east) and stop on their marks. The other two stay shut. */
@@ -5998,7 +6016,7 @@ function newRound(){
     cam:{x:ARENA/2,y:ARENA/2,z:1},kill:null,freeze:0,flash:0,gates:makeGates(G.gates),intro:null,ic:0,
     arenaK:AK,hz:AR.hz?AR.hz():[],thorns:!!AR.thorns,rocks:!!AR.rocks,night:!!AR.night,floor:AR.floor||'',gridCol:AR.grid||'',
     rockT:HZ.rock.every[0],rubble:[],salted:0,cubDue:0,cubIn:0},keep);
-  $('intro').classList.add('hidden');
+  $('intro').classList.add('hidden');{const aa=$('ancAsk');if(aa)aa.classList.add('hidden');}
   if(G.ctx==='survival'||G.ctx==='king'){
     const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),ARENA/2,ARENA-170,-Math.PI/2,true);
     a.hp=a.maxHp;a.abil.forEach(k=>{a.cd[k]=1.2;});
@@ -6020,7 +6038,7 @@ function newRound(){
         const GP=[[250,250],[210,120],[390,250],[430,120],[320,250],[320,120]];
         const gs=twinGuardCfgs().map(function(c,i){return makeLion(c,GP[i%GP.length][0],GP[i%GP.length][1],Math.PI/2);});
         gs.forEach(function(k,i){k.guard=1;if(i%2)k.guardHold=1;k.foe=G.lions[0];k.maxHp*=TGUARD.hp;k.hp=k.maxHp;k.dmgMult*=TGUARD.dmg;G.lions.push(k);});
-        G.twinGuard=1;G.guardN=gs.length;KING.maxHp=gs.reduce((a,k)=>a+k.maxHp,0);
+        G.guardPh=1;G.guardN=gs.length;KING.maxHp=gs.reduce((a,k)=>a+k.maxHp,0);
         if(introOn())startIntro([G.lions.filter(l=>!l.guard),gs],function(){banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
         else{banner('THE KINGS\u2019 GUARD',1.7,true);SFX.roar();crowdReact(1.5);}
         log('<em class="gold">The Kings\u2019 Guard</em> steps down from the thrones, six of them: two of Kaldur\u2019s in white, two of Sevrin\u2019s in black, and two crown archers. Beat them all, and the Twin Kings will fight you themselves. Nothing heals in between.');
@@ -6035,6 +6053,26 @@ function newRound(){
       else{banner(twins?'THE TWIN KINGS':'THE GATEKEEPER',1.7,true);SFX.roar();crowdReact(1.5);}
       log(twins?'<em class="blood">Kaldur and Sevrin</em> walk out together, half a crown each. Their brother was the exile.'
         :'<em class="gold">The Gatekeeper</em> steps out from the gate, plated head to tail. Small blows will only ring off that iron.');
+      buildHud();
+      return;
+    }
+    if(G.ctx==='king'&&BOSSKIND==='ancient'){
+      G.lions.forEach(function(l,i){if(l.side!=='P'){l.y=ARENA-64;l.x=ARENA/2+(i?(i%2?1:-1)*(60+i*10):0);l.ang=l.aim=-Math.PI/2;}});
+      G.ancPh='walk';G.orb={x:ARENA/2,y:ARENA/2,lift:0,glow:.35,gone:0,t:0};G.dim=.1;G.cine=0;G.ancFx=[];G.ringLit=0;G.scorch=[];KING.maxHp=1;
+      banner('THE STAR SANCTUM',1.7,true);SFX.herald();crowdReact(.2);
+      log('<em class="gold">The Star Sanctum.</em> The crowd has gone quiet. In the middle of the floor an orb hangs over a ring of gold, humming.');
+      buildHud();
+      return;
+    }
+    if(G.ctx==='king'&&BOSSKIND==='king'){
+      CROWD.list=CROWD.list.filter(function(c){return !(c.y<0&&Math.abs(c.x-ARENA/2)<90);});
+      const PP=[[ARENA/2-130,200],[ARENA/2,170],[ARENA/2+130,200]];
+      const gs=kingPrinceCfgs().map(function(c,i){return makeLion(c,PP[i][0],PP[i][1],Math.PI/2);});
+      gs.forEach(function(k){k.guard=1;k.dark=1;k.foe=G.lions[0];k.maxHp*=KGUARD.hp;k.hp=k.maxHp;k.dmgMult*=KGUARD.dmg;G.lions.push(k);});
+      G.guardPh=1;G.guardN=gs.length;KING.maxHp=gs.reduce((a,k)=>a+k.maxHp,0);
+      if(introOn())startIntro([G.lions.filter(l=>!l.guard),gs],function(){banner('FIGHT',.85,true);SFX.bell();crowdReact(1.2);});
+      else{banner('THE BLACK PRINCES',1.7,true);SFX.roar();crowdReact(1.5);}
+      log('<em class="blood">The Black Princes</em> come down from the throne: Morrow, Vorn and Kael, his sons, in plate like their father. Beat all three and the Lion King will fight you himself. Nothing heals in between.');
       buildHud();
       return;
     }
@@ -6208,8 +6246,8 @@ function kill(t,by){
     const left=G.lions.filter(l=>l.guard&&!l.dead);
     guardStep(true);
     SFX.death();crowdReact(1.4,t.x,t.y);G.shake=Math.min(9,(G.shake||0)+5);
-    if(left.length){log('<em class="gold">'+t.name+'</em> falls. '+left.length+' of the guard still stand'+(left.length===1?'s':'')+'.');return;}
-    log('<em class="gold">'+t.name+'</em> falls, the last of the guard. The thrones are empty.');
+    if(left.length){log('<em class="gold">'+t.name+'</em> falls. '+left.length+(BOSSKIND==='king'?' of his brothers still stand':' of the guard still stand')+(left.length===1?'s':'')+'.');return;}
+    log(BOSSKIND==='king'?'<em class="blood">'+t.name+'</em> falls, the last of the princes. On the black throne, something moves.':'<em class="gold">'+t.name+'</em> falls, the last of the guard. The thrones are empty.');
     G.twinDue=G.t+(RM?.15:.9);
     return;
   }
@@ -6276,10 +6314,11 @@ function gabStep(e,dt){
   } else if(e.starCd<=0&&d>=reach*.8){
     e.starCd=GAB.star.cd;e.stats.abil++;
     const lead=.45;
-    for(let i=0;i<GAB.star.n;i++){
+    const nS=e.cfg.ancient?(GAB.star.n+(G.ph2?2:(G.ph1?1:0))):GAB.star.n;
+    for(let i=0;i<nS;i++){
       const a=i/GAB.star.n*6.283+Math.random(),off=i?rnd(26,54):0;
       G.gfx.push({k:'star',x:f.x+(f.vx||0)*lead+Math.cos(a)*off,y:f.y+(f.vy||0)*lead+Math.sin(a)*off,
-        t:0,life:GAB.star.delay+i*.14,src:e});
+        t:0,life:GAB.star.delay+i*.14,src:e,vol:G.t});
     }
     num(e.x,e.y-e.r-18,'STARFALL',FX.gold,15);
   }
@@ -6303,10 +6342,14 @@ function stepGab(dt){
       });
     } else if(g.k==='star'&&!g.done&&g.t>=g.life){
       g.done=1;g.boom=0;
-      spark(g.x,g.y,FX.gold,14);spark(g.x,g.y,'#6f8fff',6);SFX.hit(.9);G.shake=Math.min(9,G.shake+2.5);
+      const gr=g.r||GAB.star.r;
+      spark(g.x,g.y,FX.gold,g.big?30:14);spark(g.x,g.y,'#6f8fff',g.big?14:6);SFX.hit(g.big?1.6:.9);G.shake=Math.min(g.big?16:9,G.shake+(g.big?12:2.5));
+      if(g.big){G.flash=Math.max(G.flash||0,.6);SFX.boom();crowdReact(2,g.x,g.y);}
+      if(G.scorch&&G.scorch.length<40)G.scorch.push({x:g.x,y:g.y,r:gr*(g.big?.9:.55),t:0});
+      if(g.src&&g.src.cfg&&g.src.cfg.ancient)G.parts.push({ring:1,x:g.x,y:g.y,rad:gr*.3,maxRad:gr*(g.big?1.8:1.3),life:.45,max:.45,col:'#fff3b0'});
       gabFoes(g.src).forEach(function(l){
-        if(Math.hypot(l.x-g.x,l.y-g.y)<=GAB.star.r+l.r*.5){
-          hurt(l,GAB.star.dmg*g.src.dmgMult*(g.src.cfg.ancient?ANC.star:1),g.src,{col:FX.gold,by:'a falling star'});
+        if(Math.hypot(l.x-g.x,l.y-g.y)<=gr+l.r*.5){
+          hurt(l,GAB.star.dmg*(g.m||1)*g.src.dmgMult*(g.src.cfg.ancient?ANC.star:1),g.src,{col:FX.gold,by:g.big?'the sky falling':'a falling star'});
           if(l.hp<=0&&!l.dead)kill(l,'a falling star');
         }
       });
@@ -6326,22 +6369,40 @@ function drawGabFx(){
       ctx.beginPath();ctx.arc(g.x,g.y,r,0,7);ctx.stroke();
       ctx.globalAlpha=(1-k)*.35;ctx.strokeStyle='#6f8fff';ctx.lineWidth=22*(1-k)+2;
       ctx.beginPath();ctx.arc(g.x,g.y,r*.86,0,7);ctx.stroke();
+      if(g.src&&g.src.cfg&&g.src.cfg.ancient){
+        ctx.globalAlpha=(1-k)*.55;ctx.strokeStyle='#fff3b0';ctx.lineWidth=2;
+        for(let q=0;q<16;q++){const a=q*Math.PI/8+g.t*.6;ctx.beginPath();ctx.moveTo(g.x+Math.cos(a)*r*.3,g.y+Math.sin(a)*r*.3);ctx.lineTo(g.x+Math.cos(a)*r*1.05,g.y+Math.sin(a)*r*1.05);ctx.stroke();}
+      }
       ctx.restore();
     } else if(g.k==='star'){
       ctx.save();
+      const gr=g.r||GAB.star.r,anc=g.src&&g.src.cfg&&g.src.cfg.ancient;
       if(!g.done){
         const k=g.t/g.life;
-        ctx.globalAlpha=.25+.45*k;ctx.strokeStyle='#ffd24a';ctx.lineWidth=2;ctx.setLineDash([6,6]);
-        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r,0,7);ctx.stroke();ctx.setLineDash([]);
-        ctx.globalAlpha=.12+.2*k;ctx.fillStyle='#ffd24a';
-        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r*k,0,7);ctx.fill();
-        /* the star on its way down */
-        const h=(1-k)*140;ctx.globalAlpha=.9;ctx.fillStyle='#fff3b0';
-        drawStar(ctx,g.x,g.y-h,7+k*4,g.t*6);
+        ctx.globalAlpha=.25+.45*k;ctx.strokeStyle=g.big?'#ff8a5a':'#ffd24a';ctx.lineWidth=g.big?3:2;ctx.setLineDash([6,6]);
+        ctx.beginPath();ctx.arc(g.x,g.y,gr,0,7);ctx.stroke();ctx.setLineDash([]);
+        ctx.globalAlpha=.12+.2*k;ctx.fillStyle=g.big?'#ff8a5a':'#ffd24a';
+        ctx.beginPath();ctx.arc(g.x,g.y,gr*k,0,7);ctx.fill();
+        if(anc){
+          /* a constellation drawn between the stars of one volley */
+          for(let q=i+1;q<G.gfx.length;q++){const o=G.gfx[q];if(o.k==='star'&&!o.done&&o.vol===g.vol&&g.vol!=null){
+            ctx.globalAlpha=.18+.3*k;ctx.strokeStyle='#cfe0ff';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(g.x,g.y);ctx.lineTo(o.x,o.y);ctx.stroke();}}
+          /* the star itself, coming in at an angle with a long burning tail */
+          const h=(1-k)*(g.big?360:230),sx=g.x-h*.55,sy=g.y-h;
+          const tl=ctx.createLinearGradient(sx,sy,sx-h*.35,sy-h*.6);tl.addColorStop(0,'rgba(255,243,176,.95)');tl.addColorStop(1,'rgba(111,143,255,0)');
+          ctx.globalAlpha=1;ctx.strokeStyle=tl;ctx.lineWidth=g.big?16:6;ctx.lineCap='round';
+          ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx-h*.35,sy-h*.6);ctx.stroke();
+          ctx.shadowColor='#ffe9a8';ctx.shadowBlur=RM?0:18;ctx.fillStyle='#fffbe6';
+          drawStar(ctx,sx,sy,(g.big?18:8)+k*4,g.t*6);ctx.shadowBlur=0;
+        } else {
+          const h=(1-k)*140;ctx.globalAlpha=.9;ctx.fillStyle='#fff3b0';
+          drawStar(ctx,g.x,g.y-h,7+k*4,g.t*6);
+        }
       } else {
         const k=g.boom/.35;
-        ctx.globalAlpha=(1-k)*.8;ctx.fillStyle='#ffd24a';
-        ctx.beginPath();ctx.arc(g.x,g.y,GAB.star.r*(.6+k*.7),0,7);ctx.fill();
+        ctx.globalAlpha=(1-k)*.8;ctx.fillStyle=g.big?'#ffb86a':'#ffd24a';
+        ctx.beginPath();ctx.arc(g.x,g.y,gr*(.6+k*.7),0,7);ctx.fill();
+        if(anc){ctx.globalAlpha=(1-k);ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(g.x,g.y,gr*.35*(1-k),0,7);ctx.fill();}
       }
       ctx.restore();
     }
@@ -6519,8 +6580,8 @@ function kingCfg(){
 }
 const KING_SCALE=3.2, KING_DMG=.75;
 /* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
-const BOSS_TUNE={king:{hp:6,dmg:.32,clock:240},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330}};
-function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
+const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330}};
+function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):0)):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
 const BOSS_PHASE={
   king:   ['THE KING IS BLEEDING','THE KING WILL NOT KNEEL'],
   ancient:['THE STARS STIR','THE ANCIENT ONE ROARS'],
@@ -6534,6 +6595,7 @@ function bossPhase(b,n){
   if(!RM){G.shake=Math.max(G.shake,8);G.slow=Math.max(G.slow||0,.5);}
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*4.5,life:.6,max:.6,col:BOSSES[BOSSKIND].col});
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*3,life:.45,max:.45,col:'#ffffff'});
+  if(BOSSKIND==='ancient'&&!b.dead)ancShower(b,n);
   log(BOSSKIND==='gate'?(n===1?'<em class="gold">The Gatekeeper</em> bolts fresh iron over the cracks. Break it again.':'<em class="gold">The Gatekeeper</em> plants his halberd. The walls grind closer.')
     :(BOSSKIND==='twins'?'<em class="blood">The Twin Kings</em> circle wider, one each side.'
     :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.'))));
@@ -6627,10 +6689,35 @@ function twinGuardCfgs(){
   return TGUARD.list.map(function(q,i){return {side:'P',name:q.name,build:q.build,armor:q.armor,weapon:q.weapon,abil:q.abil.slice(),brain:q.brain,perks:[],
     pelt:q.pelt,mane:q.mane,tail:q.tail,iv:8,scars:[(i*517)%2000,(i*911+300)%2000],traits:q.traits.slice(),scale:TGUARD.scale,guard:1,bossCols:q.cols,cos:q.cos};});
 }
+/* the Black Princes: three of the Lion King's sons, smaller copies of him in black plate. Beat them, then him */
+const KGUARD={hp:1.6,dmg:.5,scale:1.45,dmgScale:.62,allIn:0,names:['Prince Morrow','Prince Vorn','Prince Kael']};
+function kingPrinceCfgs(){
+  return KGUARD.names.map(function(n,i){return {side:'P',name:n,build:'titan',armor:'plate',weapon:'maul',abil:[['roar'],['frenzy'],['roar','frenzy']][i],brain:'adaptive',perks:[],
+    pelt:3,mane:5,tail:0,iv:9,scars:[[1284],[617,220],[1401]][i],traits:['bold'],scale:KGUARD.scale,dmgScale:KGUARD.dmgScale,guard:1,prince:1};});
+}
+/* the last prince is down: the Lion King gets up off his throne */
+function kingArrive(){
+  if(!G||G.over||!G.guardPh)return;
+  G.guardPh=0;
+  const top=Math.max(G.wall+90,170);
+  const k=makeLion(kingCfg(),ARENA/2,top,Math.PI/2);
+  k.boss=1;k.dark=1;k.foe=nearestPrey(k)||G.lions[0];k.invuln=1.2;
+  const T=BOSS_TUNE.king;k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;
+  if(CAREER.lion&&CAREER.lion.freedExile){k.maxHp*=1.12;k.hp=k.maxHp;log('<em class="blood">The Lion King knows who freed his brother.</em> He came angry.');}
+  G.lions.push(k);KING.maxHp=k.maxHp;
+  G.parts.push({ring:1,x:k.x,y:k.y,rad:k.r,maxRad:k.r*4,life:1,max:1,col:'#e2382c'});
+  G.starting=Math.max(G.starting||0,1.1);
+  banner('THE LION KING',1.8,true);SFX.roar();crowdReact(2);
+  if(!RM){G.shake=Math.max(G.shake,10);G.flash=Math.max(G.flash||0,.4);}
+  const me=G.lions[0];
+  log('<em class="blood">The Lion King</em> rises from the black throne over the bodies of his sons. '+esc(me.name)+' has '+Math.max(0,Math.round(me.hp))+' health left for him.');
+  buildHud();
+}
+function bossArrive(){if(BOSSKIND==='king')kingArrive();else twinsArrive();}
 /* the last guard is down: the Twin Kings walk out of the north gate */
 function twinsArrive(){
-  if(!G||G.over||!G.twinGuard)return;
-  G.twinGuard=0;
+  if(!G||G.over||!G.guardPh)return;
+  G.guardPh=0;
   const T=BOSS_TUNE.twins,top=Math.max(G.wall+70,150),half=Math.min(110,(ARENA-G.wall*2)/2-70);
   const ks=twinCfgs().map(function(c,i){return makeLion(c,ARENA/2+(i?half:-half),top,Math.PI/2);});
   ks.forEach(function(k){k.boss=1;k.foe=nearestPrey(k)||G.lions[0];k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;k.invuln=1.2;G.lions.push(k);
@@ -7049,6 +7136,312 @@ function drawThornWalls(g,W){
   g.restore();
 }
 
+/* ---------- the Ancient Lion's summoning: walk to the orb, choose, and wake him ---------- */
+const ANC_SUM={stop:96,walk:.27,len:5.6,burst:3.4,rain:{n:12,dur:3.2,r:52},meteor:{r:96,m:2.4,warn:2.2}};
+function ancMove(e){
+  e.moveX=0;e.moveY=0;const O=G.orb;if(!O||e.side==='P')return;
+  const me=G.lions[0],idx=G.lions.filter(l=>l.side!=='P').indexOf(e);
+  let tx=O.x,ty=O.y+ANC_SUM.stop;
+  if(G.ancPh==='summon'&&G.sumT<1.4)ty=O.y+ANC_SUM.stop+60;
+  if(idx>0){tx=O.x+(idx%2?1:-1)*(64+idx*8);ty+=46;}
+  if(G.ancPh==='walk'||(G.ancPh==='summon'&&G.sumT<1.4)){
+    const dx=tx-e.x,dy=ty-e.y,d=Math.hypot(dx,dy);
+    if(d>5){const w=G.ancPh==='walk'?ANC_SUM.walk:.3;e.moveX=dx/d*w;e.moveY=dy/d*w;}
+  }
+  const boss=G.lions.find(l=>l.boss);const look=boss&&G.sumT>ANC_SUM.burst?boss:O;
+  e.ang=e.aim=Math.atan2(look.y-e.y,look.x-e.x);
+}
+function ancAskShow(){
+  const el=$('ancAsk');if(!el)return;
+  el.innerHTML='<div class="aaK">The orb</div><h4>Summon him?</h4><p>It is warm, and it hums. Something very old is asleep inside it.</p>'+
+    '<div class="aaBtns"><button class="aaY" data-act="ancYes">Summon him</button><button data-act="ancNo">No</button></div>';
+  el.classList.remove('hidden');SFX.herald();
+  log('<em class="gold">'+esc(G.lions[0].name)+'</em> stops in front of the orb. It hums louder.');
+}
+function ancAnswer(yes){
+  if(!G||G.ancPh!=='ask')return;
+  const el=$('ancAsk');if(el)el.classList.add('hidden');
+  if(!yes){
+    G.ancPh=null;G.over=true;G.winner=null;G.camFocus=null;
+    log('<em>'+esc(G.lions[0].name)+' backs away from the orb.</em>');
+    const tk=++ROUND_TOKEN;G.token=tk;
+    setTimeout(function(){if(G.token===tk)showResult('ancAfraid');},RM?100:700);
+    return;
+  }
+  G.ancPh='summon';G.sumT=0;G.ancSaid={};SFX.cast();
+  log('<em class="gold">'+esc(G.lions[0].name)+'</em> puts a paw on the orb.');
+}
+function ancSay(k,f){if(!G.ancSaid[k]){G.ancSaid[k]=1;f();}}
+function ancStep(dt){
+  const O=G.orb,me=G.lions[0];O.t+=dt;
+  if(!G.ancPh){G.cine=Math.max(0,(G.cine||0)-dt*1.2);G.dim+=((G.dimT||.18)-G.dim)*Math.min(1,dt*1.5);if(G.dimT>.18)G.dimT=Math.max(.18,G.dimT-dt*.12);
+    for(let i=G.scorch.length-1;i>=0;i--){G.scorch[i].t+=dt;if(G.scorch[i].t>7)G.scorch.splice(i,1);}
+    stepAncFx(dt);return;}
+  if(G.ancPh==='walk'){
+    G.camFocus={x:(me.x+O.x)/2,y:(me.y+O.y)/2+20,z:1.06};
+    if(Math.hypot(me.x-O.x,me.y-(O.y+ANC_SUM.stop))<12||G.t>14){G.ancPh='ask';ancAskShow();}
+    return;
+  }
+  if(G.ancPh==='ask'){G.camFocus={x:O.x,y:O.y+40,z:1.18};O.glow=.55+.15*Math.sin(O.t*3);return;}
+  /* the summoning */
+  G.sumT+=dt;const T=G.sumT,B=ANC_SUM.burst;
+  G.cine=Math.min(1,(G.cine||0)+dt*1.6);
+  G.dim+=((T<B?.62:.3)-G.dim)*Math.min(1,dt*2);
+  O.lift=ease(Math.min(1,T/1.4));O.glow=Math.min(1.6,.6+T*.35);
+  G.ringLit=clamp((T-.7)/2.2,0,1);
+  G.camFocus={x:O.x,y:O.y+(T<B?10:0),z:T<B?1.12+T*.05:1.0};
+  if(T<B){G.shake=Math.max(G.shake,.6+T*1.4);
+    if(!RM&&Math.random()<dt*(14+T*12)){const a=Math.random()*6.283,d=rnd(320,460);G.ancFx.push({k:'in',x:O.x+Math.cos(a)*d,y:O.y+Math.sin(a)*d-120,t:0,life:rnd(.45,.75)});}}
+  ancSay('a',function(){log('The stars over the sanctum begin to move.');crowdReact(.6);});
+  if(T>1.2)ancSay('b',function(){log('They are falling. All of them. Into the orb.');SFX.warn();});
+  if(T>2.4)ancSay('c',function(){SFX.beam();log('The gold rings on the floor light up, one by one.');});
+  if(T>=B)ancSay('burst',function(){
+    O.gone=1;G.flash=1;G.shake=16;if(!RM)G.slow=Math.max(G.slow||0,.9);
+    SFX.boom();SFX.roar();crowdReact(2.2,O.x,O.y);
+    const k=makeLion(ancientCfg(),O.x,O.y-8,Math.PI/2);
+    k.boss=1;k.dark=0;k.foe=me;k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;k.rFull=k.r;k.r=k.rFull*.15;k.invuln=99;
+    const TU=BOSS_TUNE.ancient;k.maxHp*=TU.hp;k.hp=k.maxHp;k.dmgMult*=TU.dmg;
+    G.lions.push(k);KING.maxHp=k.maxHp;
+    G.parts.push({ring:1,x:O.x,y:O.y,rad:20,maxRad:420,life:1.1,max:1.1,col:'#ffd24a'});
+    G.parts.push({ring:1,x:O.x,y:O.y,rad:10,maxRad:300,life:.8,max:.8,col:'#9fb4ff'});
+    for(let i=0;i<40;i++){const a=i/40*6.283;G.ancFx.push({k:'out',x:O.x,y:O.y,vx:Math.cos(a)*rnd(260,520),vy:Math.sin(a)*rnd(260,520),t:0,life:rnd(.6,1.1)});}
+    G.lions.forEach(function(l){if(l.side!=='P'){knock(l,Math.atan2(l.y-O.y,l.x-O.x),320);}});
+    log('<em class="gold">The orb breaks.</em> Something enormous unfolds out of the light.');
+    buildHud();
+  });
+  const boss=G.lions.find(l=>l.boss);
+  if(boss&&boss.rFull){boss.r=boss.rFull*(.15+.85*ease(Math.min(1,(T-B)/1.1)));boss.ang=boss.aim=Math.PI/2+Math.sin(T*2)*.08;}
+  if(T>B+.6)ancSay('name',function(){banner('THE ANCIENT LION',2.1,true);SFX.herald();log('<em class="gold">The Ancient Lion</em> wakes, and looks down at '+esc(me.name)+'.');});
+  if(T>=ANC_SUM.len){
+    G.ancPh=null;G.camFocus=null;G.ancT0=G.t;
+    if(boss){boss.r=boss.rFull;boss.invuln=.4;}
+    banner('FIGHT',.9,true);SFX.bell();crowdReact(1.6);buildHud();
+  }
+  stepAncFx(dt);
+}
+function stepAncFx(dt){
+  const O=G.orb;
+  for(let i=G.ancFx.length-1;i>=0;i--){const p=G.ancFx[i];p.t+=dt;
+    if(p.k==='out'){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.2,dt);p.vy*=Math.pow(.2,dt);}
+    if(p.t>=p.life)G.ancFx.splice(i,1);}
+}
+/* the two great moments in the fight: a rain of stars, then the sky itself */
+function ancShower(b,n){
+  G.dimT=.55;
+  const foes=G.lions.filter(l=>l.side!=='P'&&!l.dead);if(!foes.length)return;
+  if(n===1){
+    const R=ANC_SUM.rain;banner('STAR RAIN',1.4,true);
+    for(let i=0;i<R.n;i++){const f=pickOne(foes),near=Math.random()<.55;
+      const x=near?f.x+rnd(-90,90):rnd(G.wall+40,ARENA-G.wall-40),y=near?f.y+rnd(-90,90):rnd(G.wall+40,ARENA-G.wall-40);
+      G.gfx.push({k:'star',x:clamp(x,G.wall+20,ARENA-G.wall-20),y:clamp(y,G.wall+20,ARENA-G.wall-20),t:0,life:.9+i/R.n*R.dur,src:b,r:R.r,vol:'rain'+(i%3)});}
+    log('<em class="gold">The Ancient Lion</em> looks up, and the sky answers. Stars come down all over the sanctum.');
+  } else {
+    const M=ANC_SUM.meteor,f=G.lions[0].dead?foes[0]:G.lions[0];
+    G.gfx.push({k:'star',x:f.x,y:f.y,t:0,life:M.warn,src:b,r:M.r,m:M.m,big:1});
+    banner('THE SKY FALLS',1.6,true);SFX.warn();
+    log('<em class="blood">Something huge is coming down on '+esc(f.name)+'.</em> Get out from under it.');
+  }
+}
+function drawSanctumFloor(g,W,t){
+  const S=ARENA-W*2,mid=ARENA/2,O=G.orb||{x:mid,y:mid,gone:1,lift:0,glow:0};
+  g.save();g.beginPath();g.rect(W,W,S,S);g.clip();
+  const bg=g.createRadialGradient(mid,mid,20,mid,mid,S*.75);bg.addColorStop(0,'#16204a');bg.addColorStop(1,'#060a1a');
+  g.fillStyle=bg;g.fillRect(W,W,S,S);
+  /* the stars in the stone */
+  for(let i=0;i<90;i++){const x=W+((i*137.5)%S),y=W+((i*71.3+i*i*.7)%S),tw=.4+.6*(.5+.5*Math.sin(t*1.5+i));
+    g.globalAlpha=.25*tw+.1;g.fillStyle=i%7?'#cfe0ff':'#ffe9a8';g.fillRect(x,y,i%11?1.2:2,i%11?1.2:2);}
+  g.globalAlpha=1;
+  /* constellations picked out in gold */
+  const CON=[[[110,120],[160,95],[210,130],[190,180],[130,170]],[[440,100],[500,140],[530,90],[560,150]],[[100,470],[150,520],[210,500],[240,550]],[[430,520],[480,480],[540,510],[520,560],[470,560]]];
+  CON.forEach(function(c){g.strokeStyle='rgba(255,210,74,.16)';g.lineWidth=1;g.beginPath();g.moveTo(c[0][0],c[0][1]);c.forEach(function(p){g.lineTo(p[0],p[1]);});g.stroke();
+    c.forEach(function(p,i){g.fillStyle='rgba(255,233,168,'+(.4+.3*Math.sin(t*2+i)).toFixed(2)+')';g.beginPath();g.arc(p[0],p[1],2,0,7);g.fill();});});
+  /* the astrolabe: three engraved rings round the orb, lit one by one when he is summoned */
+  const lit=G.ringLit||0,rot=t*.08;
+  [70,112,150].forEach(function(rr,i){
+    const on=clamp(lit*3-i,0,1),base=O.gone?.5:.22;
+    g.save();g.translate(mid,mid);g.rotate(i%2?-rot:rot);
+    g.strokeStyle='rgba(255,210,74,'+(base+on*.6).toFixed(2)+')';g.lineWidth=i===2?2:1.4;
+    if(on>.05){g.shadowColor='#ffd24a';g.shadowBlur=RM?0:14*on;}
+    g.beginPath();g.arc(0,0,rr,0,7);g.stroke();g.shadowBlur=0;
+    const n=[12,24,36][i];
+    for(let q=0;q<n;q++){const a=q*Math.PI*2/n,l=q%3?5:10;g.beginPath();g.moveTo(Math.cos(a)*(rr-l),Math.sin(a)*(rr-l));g.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);g.stroke();}
+    if(i===1)for(let q=0;q<8;q++){const a=q*Math.PI/4;g.save();g.translate(Math.cos(a)*(rr+12),Math.sin(a)*(rr+12));g.rotate(a);
+      g.fillStyle='rgba(255,210,74,'+(base+on*.5).toFixed(2)+')';drawStar(g,0,0,4,0);g.restore();}
+    g.restore();
+  });
+  /* the dais the orb hangs over, cracked once it has broken */
+  g.fillStyle='rgba(8,12,30,.85)';g.beginPath();g.arc(mid,mid,34,0,7);g.fill();
+  g.strokeStyle='rgba(255,210,74,.55)';g.lineWidth=2;g.stroke();
+  if(O.gone){g.strokeStyle='rgba(255,233,168,.35)';g.lineWidth=1.2;
+    for(let q=0;q<6;q++){const a=q*1.047+.3;g.beginPath();g.moveTo(mid,mid);g.lineTo(mid+Math.cos(a)*34,mid+Math.sin(a)*34);g.stroke();}}
+  /* where the stars have landed */
+  (G.scorch||[]).forEach(function(c){const a=clamp(1-c.t/7,0,1);
+    g.globalAlpha=a*.7;g.fillStyle='#04060e';g.beginPath();g.arc(c.x,c.y,c.r,0,7);g.fill();
+    g.globalAlpha=a*.6;g.strokeStyle='#ffb86a';g.lineWidth=1.5;g.beginPath();g.arc(c.x,c.y,c.r*.9,0,7);g.stroke();});
+  g.globalAlpha=1;
+  /* the dark, and the sky getting darker when he calls the stars */
+  const vg=g.createRadialGradient(mid,mid,S*.25,mid,mid,S*.72);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,8,.55)');
+  g.fillStyle=vg;g.fillRect(W,W,S,S);
+  if(G.dim>0){g.fillStyle='rgba(2,4,16,'+(G.dim*.55).toFixed(3)+')';g.fillRect(W,W,S,S);}
+  g.restore();
+}
+function drawObelisk(g,o,t){
+  const r=o.r;
+  g.fillStyle='rgba(0,0,0,.55)';g.beginPath();g.arc(o.x+3,o.y+4,r*1.1,0,7);g.fill();
+  g.save();g.translate(o.x,o.y);g.rotate(Math.PI/4);
+  const pg=g.createLinearGradient(-r,-r,r,r);pg.addColorStop(0,'#2a3566');pg.addColorStop(1,'#0b1028');
+  g.fillStyle=pg;g.fillRect(-r*.8,-r*.8,r*1.6,r*1.6);
+  g.strokeStyle='#c9a227';g.lineWidth=1.5;g.strokeRect(-r*.8,-r*.8,r*1.6,r*1.6);
+  g.strokeStyle='rgba(201,162,39,.45)';g.lineWidth=1;g.strokeRect(-r*.45,-r*.45,r*.9,r*.9);
+  g.restore();
+  /* a star crystal floating over it */
+  const bob=Math.sin(t*1.8+o.x)*3,cy=o.y-6+bob;
+  const gl=g.createRadialGradient(o.x,cy,2,o.x,cy,r*1.8);gl.addColorStop(0,'rgba(159,180,255,.45)');gl.addColorStop(1,'rgba(159,180,255,0)');
+  g.fillStyle=gl;g.beginPath();g.arc(o.x,cy,r*1.8,0,7);g.fill();
+  g.save();g.shadowColor='#9fb4ff';g.shadowBlur=RM?0:12;g.fillStyle='#e8eeff';
+  g.beginPath();g.moveTo(o.x,cy-r*.6);g.lineTo(o.x+r*.3,cy);g.lineTo(o.x,cy+r*.6);g.lineTo(o.x-r*.3,cy);g.closePath();g.fill();g.restore();
+}
+function drawSanctumStands(g,t){
+  const mid=ARENA/2;
+  [[-STANDS*.5,200],[-STANDS*.5,440],[ARENA+STANDS*.5,200],[ARENA+STANDS*.5,440]].forEach(function(b,i){
+    const w=24,h=76,x=b[0]-w/2,y=b[1]-h/2,sw=Math.sin(t*.9+i)*1.2;
+    g.fillStyle='rgba(0,0,0,.5)';g.fillRect(x+3,y+3,w,h);
+    g.fillStyle='#16204a';g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.lineTo(x+w+sw,y+h);g.lineTo(x+w/2+sw,y+h-12);g.lineTo(x+sw,y+h);g.closePath();g.fill();
+    g.strokeStyle='#c9a227';g.lineWidth=1.3;g.stroke();g.fillStyle='#8a6a14';g.fillRect(x-3,y-3,w+6,4);
+    g.fillStyle='#ffd24a';drawStar(g,x+w/2+sw*.4,y+28,6,t*.3);
+    g.fillStyle='rgba(255,233,168,.7)';g.beginPath();g.arc(x+w/2+sw*.6,y+46,1.6,0,7);g.fill();
+  });
+}
+function drawAncFx(g,t){
+  const O=G.orb;
+  /* the orb, rising and burning brighter until it breaks */
+  if(!O.gone){
+    const lift=O.lift||0,y=O.y-6-lift*26,R=12+lift*8,gw=O.glow||.4;
+    g.fillStyle='rgba(0,0,0,'+(.35-lift*.2).toFixed(2)+')';g.beginPath();g.ellipse(O.x,O.y+4,R*.9,R*.4,0,0,7);g.fill();
+    const hal=g.createRadialGradient(O.x,y,R*.4,O.x,y,R*(3+gw*2.5));hal.addColorStop(0,'rgba(200,215,255,'+Math.min(.9,.35+gw*.35).toFixed(2)+')');hal.addColorStop(1,'rgba(111,143,255,0)');
+    g.fillStyle=hal;g.beginPath();g.arc(O.x,y,R*(3+gw*2.5),0,7);g.fill();
+    const og=g.createRadialGradient(O.x-R*.3,y-R*.3,1,O.x,y,R);og.addColorStop(0,'#ffffff');og.addColorStop(.45,'#cfe0ff');og.addColorStop(1,'#4a5ec8');
+    g.fillStyle=og;g.beginPath();g.arc(O.x,y,R,0,7);g.fill();
+    g.strokeStyle='rgba(255,233,168,.8)';g.lineWidth=1.2;
+    g.save();g.translate(O.x,y);g.rotate(O.t*1.2);g.beginPath();g.ellipse(0,0,R*1.6,R*.5,0,0,7);g.stroke();g.rotate(1.1);g.beginPath();g.ellipse(0,0,R*1.45,R*.42,0,0,7);g.stroke();g.restore();
+    /* a pillar of light once the summoning is under way */
+    if(G.ancPh==='summon'){const k=clamp((G.sumT-1)/2.4,0,1),pw=8+k*24;
+      const pl=g.createLinearGradient(O.x-pw,0,O.x+pw,0);pl.addColorStop(0,'rgba(159,180,255,0)');pl.addColorStop(.5,'rgba(235,240,255,'+(.15+k*.55).toFixed(2)+')');pl.addColorStop(1,'rgba(159,180,255,0)');
+      g.fillStyle=pl;g.fillRect(O.x-pw,G.wall-80,pw*2,y-(G.wall-80));}
+  } else if(G.ancPh==='summon'){
+    const k=clamp((G.sumT-ANC_SUM.burst)/1.6,0,1),pw=40*(1-k)+4;
+    const pl=g.createLinearGradient(O.x-pw,0,O.x+pw,0);pl.addColorStop(0,'rgba(255,233,168,0)');pl.addColorStop(.5,'rgba(255,250,230,'+(.8*(1-k)).toFixed(2)+')');pl.addColorStop(1,'rgba(255,233,168,0)');
+    g.fillStyle=pl;g.fillRect(O.x-pw,-120,pw*2,O.y+120);
+  }
+  /* stars pulled in, and the burst going out */
+  G.ancFx.forEach(function(p){const k=p.t/p.life;
+    if(p.k==='in'){const ty=O.y-6-(O.lift||0)*26,x=p.x+(O.x-p.x)*ease(k),y=p.y+(ty-p.y)*ease(k),px=p.x+(O.x-p.x)*ease(Math.max(0,k-.15)),py=p.y+(ty-p.y)*ease(Math.max(0,k-.15));
+      g.globalAlpha=.9*Math.min(1,k*3);g.strokeStyle=Math.random()<.5?'#fff3b0':'#cfe0ff';g.lineWidth=2;g.lineCap='round';
+      g.beginPath();g.moveTo(px,py);g.lineTo(x,y);g.stroke();g.fillStyle='#ffffff';g.beginPath();g.arc(x,y,1.8,0,7);g.fill();}
+    else{g.globalAlpha=1-k;g.fillStyle=k<.3?'#ffffff':'#ffd24a';g.beginPath();g.arc(p.x,p.y,2.2*(1-k)+.6,0,7);g.fill();}
+  });
+  g.globalAlpha=1;
+}
+
+/* ---------- the Fallen Hall: the Lion King's ruin. Black basalt split by cracks that still glow, broken columns, old bones ---------- */
+const HALL_CRACKS=(function(){const out=[];let sd=7;const r=function(){sd=(sd*9301+49297)%233280;return sd/233280;};
+  for(let k=0;k<9;k++){let a=k*Math.PI*2/9+r()*.4,x=320+Math.cos(a)*92,y=320+Math.sin(a)*92;const pts=[[x,y]];
+    for(let j=0;j<7;j++){a+=(r()-.5)*.8;const d=24+r()*26;x+=Math.cos(a)*d;y+=Math.sin(a)*d;pts.push([x,y]);
+      if(r()<.3){const b=a+(r()<.5?.9:-.9);out.push({w:1,p:[[x,y],[x+Math.cos(b)*30,y+Math.sin(b)*30],[x+Math.cos(b+.3)*52,y+Math.sin(b+.3)*52]]});}}
+    out.push({w:2,p:pts});}
+  const bones=[];for(let i=0;i<14;i++)bones.push([60+r()*520,60+r()*520,r()*6.3,6+r()*6]);
+  return {cracks:out,bones:bones};})();
+function drawHallFloor(g,W,t){
+  const S=ARENA-W*2;
+  g.save();g.beginPath();g.rect(W,W,S,S);g.clip();
+  const bg=g.createRadialGradient(320,320,30,320,320,S*.75);bg.addColorStop(0,'#1a1110');bg.addColorStop(1,'#0a0808');
+  g.fillStyle=bg;g.fillRect(W,W,S,S);
+  /* broken flagstones */
+  g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=2;
+  for(let y=0,r=0;y<ARENA;y+=72,r++)for(let x=(r%2?-36:0);x<ARENA;x+=72){g.strokeRect(x+.5,y+.5,72,72);}
+  g.strokeStyle='rgba(255,255,255,.025)';g.lineWidth=1;
+  for(let y=0,r=0;y<ARENA;y+=72,r++)for(let x=(r%2?-36:0);x<ARENA;x+=72){g.strokeRect(x+2.5,y+2.5,68,68);}
+  /* the cracks, glowing like a forge underneath */
+  const pu=.6+.4*Math.sin(t*1.6);
+  [[9,'rgba(255,60,20,'+(.10*pu).toFixed(3)+')'],[3.5,'rgba(255,90,30,'+(.35+.2*pu).toFixed(2)+')'],[1.2,'rgba(255,200,120,'+(.55+.3*pu).toFixed(2)+')']].forEach(function(L){
+    g.strokeStyle=L[1];g.lineCap='round';g.lineJoin='round';
+    HALL_CRACKS.cracks.forEach(function(c){g.lineWidth=L[0]*(c.w===2?1:.6);g.beginPath();g.moveTo(c.p[0][0],c.p[0][1]);for(let i=1;i<c.p.length;i++)g.lineTo(c.p[i][0],c.p[i][1]);g.stroke();});
+  });
+  /* the old bones of everything he has killed */
+  g.strokeStyle='rgba(210,198,170,.28)';g.lineCap='round';
+  HALL_CRACKS.bones.forEach(function(b){g.lineWidth=2.2;g.beginPath();g.moveTo(b[0]-Math.cos(b[2])*b[3],b[1]-Math.sin(b[2])*b[3]);g.lineTo(b[0]+Math.cos(b[2])*b[3],b[1]+Math.sin(b[2])*b[3]);g.stroke();
+    g.fillStyle='rgba(210,198,170,.28)';[-1,1].forEach(function(sd){g.beginPath();g.arc(b[0]+sd*Math.cos(b[2])*b[3],b[1]+sd*Math.sin(b[2])*b[3],2.2,0,7);g.fill();});});
+  /* a fallen black crown set into the floor, cracked through */
+  const cx=320,cy=322;
+  g.strokeStyle='rgba(226,56,44,.35)';g.lineWidth=2;g.beginPath();g.arc(cx,cy,88,0,7);g.stroke();
+  g.strokeStyle='rgba(226,56,44,.14)';g.lineWidth=1;g.beginPath();g.arc(cx,cy,96,0,7);g.stroke();
+  g.save();g.translate(cx,cy);g.rotate(-.22);
+  g.beginPath();g.moveTo(-50,22);g.lineTo(-50,-12);g.lineTo(-30,4);g.lineTo(-16,-32);g.lineTo(0,-4);g.lineTo(16,-32);g.lineTo(30,4);g.lineTo(50,-12);g.lineTo(50,22);g.closePath();
+  g.fillStyle='rgba(0,0,0,.55)';g.fill();g.strokeStyle='rgba(92,92,102,.7)';g.lineWidth=2;g.stroke();
+  g.strokeStyle='rgba(255,110,40,'+(.5+.3*pu).toFixed(2)+')';g.lineWidth=1.4;g.beginPath();g.moveTo(-6,-26);g.lineTo(4,-4);g.lineTo(-4,8);g.lineTo(6,22);g.stroke();
+  g.restore();
+  /* red light from the braziers, and the dark closing in at the edges */
+  const vg=g.createRadialGradient(320,320,S*.25,320,320,S*.72);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.6)');
+  g.fillStyle=vg;g.fillRect(W,W,S,S);
+  g.restore();
+  /* embers drifting up out of the cracks */
+  if(!RM)for(let i=0;i<16;i++){const c=HALL_CRACKS.cracks[i%HALL_CRACKS.cracks.length].p,q=c[(i*3)%c.length],ph=(t*.35+i*.173)%1;
+    g.globalAlpha=(1-ph)*.8;g.fillStyle=i%3?'#ff6a1f':'#ffb347';g.beginPath();g.arc(q[0]+Math.sin(t+i)*6,q[1]-ph*40,1.2,0,7);g.fill();}
+  g.globalAlpha=1;
+}
+function drawRuin(g,o,t){
+  const r=o.r,sd=o.x*7+o.y*3;
+  g.fillStyle='rgba(0,0,0,.55)';g.beginPath();g.arc(o.x+3,o.y+4,r*1.05,0,7);g.fill();
+  /* a broken column, seen from above: a jagged top and a chunk lying next to it */
+  g.beginPath();
+  for(let i=0;i<14;i++){const a=i*Math.PI/7,j=.82+.18*Math.abs(Math.sin(sd+i*2.3));g.lineTo(o.x+Math.cos(a)*r*j,o.y+Math.sin(a)*r*j);}
+  g.closePath();
+  const pg=g.createRadialGradient(o.x-r*.3,o.y-r*.3,r*.1,o.x,o.y,r);pg.addColorStop(0,'#3a3236');pg.addColorStop(1,'#141113');
+  g.fillStyle=pg;g.fill();g.strokeStyle='#4a4a52';g.lineWidth=1.4;g.stroke();
+  /* a red-hot crack through it */
+  const pu=.6+.4*Math.sin(t*2+sd);
+  g.strokeStyle='rgba(255,90,30,'+(.55*pu+.2).toFixed(2)+')';g.lineWidth=1.6;
+  g.beginPath();g.moveTo(o.x-r*.6,o.y-r*.2);g.lineTo(o.x-r*.1,o.y+r*.05);g.lineTo(o.x+r*.2,o.y-r*.3);g.lineTo(o.x+r*.6,o.y+r*.1);g.stroke();
+  g.strokeStyle='rgba(0,0,0,.5)';g.lineWidth=1;g.beginPath();g.arc(o.x,o.y,r*.55,0,7);g.stroke();
+  const fa=sd%6.28,fx=o.x+Math.cos(fa)*r*1.25,fy=o.y+Math.sin(fa)*r*1.25;
+  g.fillStyle='#211b1d';g.strokeStyle='#3a3a42';g.lineWidth=1;
+  g.beginPath();g.moveTo(fx-7,fy-4);g.lineTo(fx+5,fy-6);g.lineTo(fx+8,fy+3);g.lineTo(fx-3,fy+6);g.closePath();g.fill();g.stroke();
+}
+function drawHallStands(g,t){
+  const mid=ARENA/2;
+  /* torn crimson banners down the side terraces */
+  [[-STANDS*.5,200],[-STANDS*.5,440],[ARENA+STANDS*.5,200],[ARENA+STANDS*.5,440]].forEach(function(b,i){
+    const w=24,h=78,x=b[0]-w/2,y=b[1]-h/2,sw=Math.sin(t*1.1+i)*1.4;
+    g.fillStyle='rgba(0,0,0,.5)';g.fillRect(x+3,y+3,w,h);
+    g.fillStyle='#5e0d12';
+    g.beginPath();g.moveTo(x,y);g.lineTo(x+w,y);g.lineTo(x+w+sw,y+h-6);g.lineTo(x+w*.78+sw,y+h-16);g.lineTo(x+w*.6+sw,y+h);g.lineTo(x+w*.38+sw,y+h-20);g.lineTo(x+w*.18+sw,y+h-4);g.lineTo(x+sw,y+h-12);g.closePath();g.fill();
+    g.strokeStyle='#2a0608';g.lineWidth=1.2;g.stroke();
+    g.fillStyle='#1a1a1e';g.fillRect(x-3,y-3,w+6,4);
+    const cx=x+w/2+sw*.3,cy=y+28;g.fillStyle='#0b0b0e';
+    g.beginPath();g.moveTo(cx-8,cy+6);g.lineTo(cx-8,cy-3);g.lineTo(cx-4,cy+1);g.lineTo(cx,cy-7);g.lineTo(cx+4,cy+1);g.lineTo(cx+8,cy-3);g.lineTo(cx+8,cy+6);g.closePath();g.fill();
+    g.strokeStyle='rgba(226,56,44,.7)';g.lineWidth=1;g.stroke();
+  });
+  /* the black throne, with a brazier either side; empty while his sons fight */
+  const x=mid,y=-STANDS*.5,w=58,h=48;
+  [-1,1].forEach(function(sd){const bx=x+sd*58,by=y+6,fl=.8+.2*Math.sin(t*8+sd*2);
+    g.fillStyle='#1a1416';g.beginPath();g.arc(bx,by,9,0,7);g.fill();g.strokeStyle='#4a4a52';g.lineWidth=1;g.stroke();
+    g.save();g.shadowColor='#ff3a1a';g.shadowBlur=RM?0:12;g.fillStyle='rgba(255,70,30,.9)';g.beginPath();g.arc(bx,by,6.5*fl,0,7);g.fill();
+    g.fillStyle='rgba(255,190,90,.95)';g.beginPath();g.arc(bx,by,3.2*fl,0,7);g.fill();g.restore();});
+  g.fillStyle='rgba(0,0,0,.6)';g.fillRect(x-w/2+3,y-h/2+4,w,h);
+  g.fillStyle='#101013';g.fillRect(x-w/2,y-h/2,w,h);
+  g.strokeStyle='#5c5c66';g.lineWidth=1.6;g.strokeRect(x-w/2,y-h/2,w,h);
+  g.fillStyle='#0a0a0c';g.fillRect(x-w/2+6,y-h/2+6,w-12,h-18);
+  g.fillStyle='#6e0f16';g.fillRect(x-w/2+8,y-1,w-16,h/2-7);
+  g.fillStyle='#5c5c66';
+  for(let i=0;i<5;i++){const px=x-w/2+5+i*(w-10)/4;g.beginPath();g.moveTo(px-4,y-h/2);g.lineTo(px,y-h/2-(i%2?7:11));g.lineTo(px+4,y-h/2);g.closePath();g.fill();}
+  /* skulls on the arms */
+  [-1,1].forEach(function(sd){const sx=x+sd*(w/2-4),sy=y+h/2-10;g.fillStyle='#d8ccb0';g.beginPath();g.arc(sx,sy,4,0,7);g.fill();
+    g.fillStyle='#101013';g.fillRect(sx-2.2,sy-1,1.6,1.6);g.fillRect(sx+.6,sy-1,1.6,1.6);});
+  if(G.guardPh){g.fillStyle='rgba(226,56,44,'+(.35+.25*Math.sin(t*2.4)).toFixed(2)+')';
+    [-1,1].forEach(function(sd){g.beginPath();g.arc(x+sd*7,y-4,1.8,0,7);g.fill();});}
+  g.strokeStyle='rgba(226,56,44,.45)';g.lineWidth=1;g.beginPath();g.moveTo(mid-80,-6);g.lineTo(mid+80,-6);g.stroke();
+}
+
 /* ---------- the Twin Throne: Kaldur's white stone on one side, Sevrin's black on the other, split by a seam of gold ---------- */
 function drawThroneFloor(g,W,t){
   const S=ARENA-W*2,mid=ARENA/2;
@@ -7138,7 +7531,7 @@ function drawThroneStands(g,t){
     g.beginPath();g.moveTo(cx-7,cy+5);g.lineTo(cx-7,cy-3);g.lineTo(cx-3.5,cy+1);g.lineTo(cx,cy-6);g.lineTo(cx+3.5,cy+1);g.lineTo(cx+7,cy-3);g.lineTo(cx+7,cy+5);g.closePath();g.fill();
   });
   /* the twin thrones, on the north terrace; empty until the guard falls */
-  const empty=!!G.twinGuard;
+  const empty=!!G.guardPh;
   [[mid-44,1],[mid+44,0]].forEach(function(q){
     const x=q[0],y=-STANDS*.5,w=40,h=44;
     g.fillStyle='rgba(0,0,0,.55)';g.fillRect(x-w/2+3,y-h/2+4,w,h);
@@ -7196,7 +7589,8 @@ function step(dt){
     if(!G.warned){G.warned=true;banner('THE WALLS CLOSE',1.3);SFX.warn();log(gw?'The Gatekeeper drops the bars. The square closes fast.':'The square begins to close.');}
     G.wall=Math.min(WALL0+168,WALL0+(G.t-wAt)*wRate);
   }
-  if(G.ctx==='king'&&!G.over&&G.twinGuard){if(G.twinDue&&G.t>=G.twinDue)twinsArrive();else if(G.t>=TGUARD.allIn&&G.lions.some(l=>l.guardHold))guardStep(false,true);}
+  if(G.ctx==='king'&&BOSSKIND==='ancient'&&G.orb)ancStep(dt);
+  if(G.ctx==='king'&&!G.over&&G.guardPh){if(G.twinDue&&G.t>=G.twinDue)bossArrive();else if(G.t>=TGUARD.allIn&&G.lions.some(l=>l.guardHold))guardStep(false,true);}
   if(G.ctx==='king'&&!G.over){
     const bs=G.lions.filter(l=>l.boss),b=bs.filter(l=>!l.dead)[0]||bs[0];
     if(b&&!b.dead){const f=bs.reduce((a,l)=>a+Math.max(0,l.hp),0)/bs.reduce((a,l)=>a+l.maxHp,0);
@@ -7246,10 +7640,11 @@ function step(dt){
       const np=(e.side==='P')?nearestAlly(e):nearestPrey(e);
       if(np)e.foe=np;
     }
-    if(frozen||!e.foe||e.guardHold){e.moveX=0;e.moveY=0;if(e.guardHold&&e.foe)e.ang=Math.atan2(e.foe.y-e.y,e.foe.x-e.x);}
+    if(G.ancPh){ancMove(e);}
+    else if(frozen||!e.foe||e.guardHold){e.moveX=0;e.moveY=0;if(e.guardHold&&e.foe)e.ang=Math.atan2(e.foe.y-e.y,e.foe.x-e.x);}
     else if(e.stun<=0)think(e,dt);
     else{e.moveX=0;e.moveY=0;}
-    if(e.gab&&!frozen&&!G.over&&e.stun<=0)gabStep(e,dt);
+    if(e.gab&&!frozen&&!G.over&&!G.ancPh&&e.stun<=0)gabStep(e,dt);
 
     if(e.charge>0&&!frozen){
       e.charge-=dt;
@@ -7446,6 +7841,7 @@ function camUpdate(dt){
     :(G.ctx==='survival')?(a.foe&&!a.foe.dead?a.foe:a):(G.lions[1]||a);
   let fx,fy,tz;
   if(G.intro&&G.intro.ph!=='ready'){const f=introFocus();fx=f.x;fy=f.y;tz=1.28;}
+  else if(G.camFocus&&!G.kill){fx=G.camFocus.x;fy=G.camFocus.y;tz=G.camFocus.z;}
   else if(G.kill){fx=G.kill.x;fy=G.kill.y;tz=1.62;}
   else if(G.ctx==='duo'){
     const up=G.lions.filter(l=>!l.dead);const L=up.length?up:G.lions;
@@ -7991,7 +8387,9 @@ function draw(){
     ctx.beginPath();ctx.moveTo(W,i);ctx.lineTo(ARENA-W,i);ctx.stroke();
   }
   if(G.arenaK==='throne')drawThroneFloor(ctx,W,clk());
-  else{ctx.strokeStyle='#1e1e26';ctx.beginPath();ctx.arc(320,320,88,0,7);ctx.stroke();}
+  else if(G.arenaK==='hall')drawHallFloor(ctx,W,clk());
+  else if(G.arenaK==='sanctum')drawSanctumFloor(ctx,W,clk());
+  if(G.arenaK!=='throne'&&G.arenaK!=='hall'&&G.arenaK!=='sanctum'){ctx.strokeStyle='#1e1e26';ctx.beginPath();ctx.arc(320,320,88,0,7);ctx.stroke();}
 
   ctx.fillStyle='rgba(226,56,44,.16)';
   for(let i=0;i<G.decals.length;i++){const d=G.decals[i];
@@ -8008,12 +8406,16 @@ function draw(){
   if(G.thorns)drawThornWalls(ctx,W);
   drawCrowd(ctx,clk());
   if(G.arenaK==='throne')drawThroneStands(ctx,clk());
+  else if(G.arenaK==='hall')drawHallStands(ctx,clk());
+  else if(G.arenaK==='sanctum')drawSanctumStands(ctx,clk());
   drawGates(ctx,clk());
 
   for(let i=0;i<G.obstacles.length;i++){
     const o=G.obstacles[i];
     if(o.kind==='bramble'){drawBramble(ctx,o);continue;}
     if(o.kind==='pillarW'||o.kind==='pillarB'){drawThronePillar(ctx,o,clk());continue;}
+    if(o.kind==='ruin'){drawRuin(ctx,o,clk());continue;}
+    if(o.kind==='obelisk'){drawObelisk(ctx,o,clk());continue;}
     ctx.fillStyle='#08080a';ctx.beginPath();ctx.arc(o.x+2,o.y+3,o.r,0,7);ctx.fill();
     ctx.fillStyle='#1d1d23';ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,7);ctx.fill();
     ctx.strokeStyle='#3a3a44';ctx.lineWidth=1.5;ctx.stroke();
@@ -8042,6 +8444,7 @@ function draw(){
 
   for(let i=0;i<G.pets.length;i++)drawCub(G.pets[i]);
   for(let i=0;i<G.lions.length;i++)drawLion(G.lions[i]);
+  if(G.orb)drawAncFx(ctx,clk());
   drawVfx(ctx,false);
   if(G.rocks)drawRocksFalling(ctx);
   if(G.night&&ctx.getTransform&&typeof document!=='undefined')drawNight();
@@ -8063,6 +8466,7 @@ function draw(){
     ctx.fillStyle='rgba(255,255,255,'+(G.flash*.42).toFixed(3)+')';
     ctx.fillRect(0,0,ARENA,ARENA);
   }
+  if(G.cine>.01&&!(G.slow>0)){const bar=ARENA*.085*G.cine;ctx.fillStyle='#000';ctx.fillRect(0,0,ARENA,bar);ctx.fillRect(0,ARENA-bar,ARENA,bar);}
   if(G.slow>0){
     const k=Math.min(1,G.slow*1.5);
     const vg=ctx.createRadialGradient(ARENA/2,ARENA/2,ARENA*.22,ARENA/2,ARENA/2,ARENA*.72);
@@ -8661,7 +9065,7 @@ function buildHud(){
       ' \u00b7 '+me.W.name+(wlvOf(me.cfg)?' Lv'+wlvOf(me.cfg):'')+' \u00b7 IV '+(me.cfg.iv||5)+(beltsOf(me.cfg)?' \u00b7 '+beltsOf(me.cfg)+' belt'+(beltsOf(me.cfg)>1?'s':''):'');
     hudPips(h,me);
     const BH=BOSSES[BOSSKIND],bc=G.ctx==='king'?BH.col:'#ff5a4d';
-    hb.querySelector('.fname').textContent=(G.ctx==='king')?(G.twinGuard?'THE KINGS\u2019 GUARD':BH.hud):(SURV.ambush?'HYENAS':'THE PACK');
+    hb.querySelector('.fname').textContent=(G.ctx==='king')?(G.ancPh?'THE ORB':G.guardPh?(BOSSKIND==='king'?'THE BLACK PRINCES':'THE KINGS\u2019 GUARD'):BH.hud):(SURV.ambush?'HYENAS':'THE PACK');
     hb.querySelector('.fname').style.color=bc;
     hb.querySelector('.hpFill').style.background=bc;
     hb.querySelector('.pips').innerHTML='';
@@ -8721,14 +9125,14 @@ function updateHud(){
       pp.classList.toggle('ready',me.cd[k]<=0);
     });
     if(G.ctx==='king'){
-      const ks=G.lions.filter(x=>G.twinGuard?x.guard:x.boss),k=ks[0];
-      const tot=ks.reduce((a,x)=>a+x.maxHp,0)||1,kr=ks.reduce((a,x)=>a+Math.max(0,x.hp),0)/tot;
+      const ks=G.lions.filter(x=>G.guardPh?x.guard:x.boss),k=ks[0];
+      const tot=ks.reduce((a,x)=>a+x.maxHp,0)||1,kr=G.ancPh?1:ks.reduce((a,x)=>a+Math.max(0,x.hp),0)/tot;
       hb.querySelector('.hpFill').style.transform='scaleX('+kr+')';
       hb.querySelector('.hpGhost').style.transform='scaleX('+kr+')';
       const shield=k&&k.shell>0?k.shell/k.maxHp:(k?ks.reduce((a,x)=>a+(x.barrier||0),0)/tot:0);
       hb.querySelector('.shieldFill').style.transform='scaleX('+Math.min(1,shield)+')';
       hb.querySelector('.fmeta').textContent=BOSSKIND==='gate'&&k?(k.shell>0?'Plates '+Math.ceil(k.shell/k.shellMax*100)+'% \u00b7 hit hard to crack them':'Plates broken \u00b7 he bleeds')
-        :(BOSSKIND==='twins'?(G.twinGuard?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' guards standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):BOSSES[BOSSKIND].meta);
+        :(BOSSKIND==='twins'?(G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' guards standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):(G.ancPh?(G.ancPh==='summon'?'Waking\u2026':'Something sleeps inside it'):G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||3)+' princes standing \u00b7 the Lion King waits':BOSSES[BOSSKIND].meta));
       $('roundLbl').textContent=alliesUp()>1?(alliesUp()+' of you'):'';
     } else {
       const alive=packAlive();
@@ -9142,6 +9546,12 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="home">Pay respects</button>'+
       '<button data-act="again">Again (he\u2019s fine)</button>';
   }
+  else if(kind==='ancAfraid'){
+    V.textContent='YOU WERE AFRAID';V.className='verdict blood';
+    M.textContent='You were afraid of summoning him. The orb is still humming.';
+    P.innerHTML='<div class="perkCard neutral"><h5>Nothing happened</h5><p>'+esc((G.lions[0]&&G.lions[0].name)||'Your lion')+' backed away from the orb and walked out of the sanctum. Nobody saw. Probably.</p></div>';
+    B.innerHTML='<button class="primary" data-act="again">Go back in</button><button data-act="home">Back to the den</button>';
+  }
   else if(kind==='kingLoss'&&BOSSKIND==='old'){
     const k=G.lions.filter(x=>x.boss)[0];
     V.textContent='THE OLD LION STILL HAS IT';V.className='verdict gold';
@@ -9168,10 +9578,11 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   else if(kind==='kingLoss'){
     const k=G.lions.filter(x=>x.boss)[0];
     const BX=BOSSES[BOSSKIND],left=G.lions.filter(x=>x.boss&&!x.dead).reduce((a,x)=>a+x.hp,0);
-    V.textContent=(BOSSKIND==='twins'&&G.twinGuard)?'THE GUARD HOLDS':(BX.lossV||(BOSSKIND==='ancient'?'THE ANCIENT LION STANDS':'THE KING STANDS'));V.className='verdict blood';
+    V.textContent=(BOSSKIND==='twins'&&G.guardPh)?'THE GUARD HOLDS':(BOSSKIND==='king'&&G.guardPh)?'THE PRINCES STAND':(BX.lossV||(BOSSKIND==='ancient'?'THE ANCIENT LION STANDS':'THE KING STANDS'));V.className='verdict blood';
     const gl=G.lions.filter(x=>x.guard&&!x.dead).length;
     M.textContent='beaten in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
-      (BOSSKIND==='twins'&&G.twinGuard?' \u00b7 the Kings\u2019 Guard held, '+gl+' of '+(G.guardN||6)+' still standing. The Twin Kings never left their thrones':
+      (BOSSKIND==='king'&&G.guardPh?' \u00b7 the Black Princes held, '+gl+' of '+(G.guardN||3)+' still standing. The Lion King never left his throne':
+      BOSSKIND==='twins'&&G.guardPh?' \u00b7 the Kings\u2019 Guard held, '+gl+' of '+(G.guardN||6)+' still standing. The Twin Kings never left their thrones':
       ' \u00b7 '+(BOSSKIND==='twins'?'they':'he')+' finished on '+Math.round(left)+' health'+(BOSSKIND==='gate'&&k&&k.shell>0?' and '+Math.ceil(k.shell/k.shellMax*100)+'% of his plates':''));
     P.innerHTML='<div class="perkCard neutral"><h5>Back on its feet</h5>'+
       '<p>A challenge costs nothing. Bring a second lion with you and try him again.</p></div>';
@@ -9366,6 +9777,8 @@ if(typeof window!=='undefined'){
 const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and event update',top:'QUESTLINES &',bottom:'NEW BOSSES',tag:'QUESTS · BOSSES · EVENTS',
   items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
     ['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],
+    ['moon','Wake the Ancient Lion','He sleeps in an orb in his own arena, the Star Sanctum. Your lion walks up to it and you choose: summon him, or walk away (and be remembered as afraid). Say yes and the stars fall into the orb until it breaks. In the fight, hurt him and the sky joins in: a rain of stars, then a meteor right on top of you.'],
+    ['crown','The Lion King\u2019s sons','The Lion King now fights in his own arena, the Fallen Hall: black stone split by glowing cracks, broken columns and old bones. First you face his three sons, the Black Princes, smaller copies of him in plate. Then him, with whatever health you have left.'],
     ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds, and watch the walls close in. The Twin Kings, Kaldur and Sevrin, in their own arena, the Twin Throne: beat their six guards first, then take whatever health you have left to the kings. Kill one and the other goes mad with grief. Each boss drops its own sash.'],
     ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic’s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
     ['pack','Balance: the pack pays nothing','Hyena and dog waves in the Pack challenge no longer give gold. It is for your best wave and kill count now. Gold comes from championship bouts.'],
