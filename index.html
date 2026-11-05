@@ -104,6 +104,10 @@ button{cursor:pointer}
 .newsList{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px}
 .newsRow{display:flex;gap:12px;align-items:flex-start}
 .newsRow .rico{color:var(--amber);flex:none;margin-top:1px}
+.newsPastHd{margin:8px 20px 12px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.newsPast{margin:0 20px 16px;padding:14px 0 2px;border-radius:var(--rs);background:var(--s2)}.newsPast .newsList{padding:0 16px 14px}
+.newsPastT{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:0 16px 12px}.newsPastT b{font-size:15px;color:var(--t1)}.newsPastT small{font-size:12.5px;color:var(--t3);white-space:nowrap}
+.newsPast .newsRow .rico{color:var(--t2)}
 .newsRow b{display:block;font-size:15px;color:var(--t1)}.newsRow small{display:block;font-size:13.5px;color:var(--t2);line-height:1.45;margin-top:2px}
 .hdrBtns button{min-width:38px;height:38px;padding:0 14px;border-radius:19px;background:var(--s1);
   color:var(--t2);font-size:15px;font-weight:500;display:grid;place-items:center;transition:.2s}
@@ -1358,7 +1362,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. a <b>Bloodlust Tonic</b> (30 gold, drink it from the bag) makes the next championship bout +20% damage but −15% health; <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
       <h6>Gold and the Lion Store</h6>
       <p><b>Online.</b> Tap <b>Online</b> in the bar at the bottom and make a free account. Your championship save is then kept on your account, so it follows you to any device. Put your lion on the leaderboard, tap any other player’s lion to see its card, and fight it. Win and your rating goes up (more for beating a higher-rated lion), and you earn a little gold. Other players can fight your lion too, and the Online tab shows you who did. Pit fights are off the record, and nobody dies.</p>
-      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). Once the weapon is Gilded he offers a quest: defeat 100 lions (championship bouts, grudges, bosses and online fights count from the day you start), then pay 25 skulls and 1,000 gold for <b>Lionsteel</b>, Lv4, +12% damage in all. The Mystic Lion has a quest too: win 10 championships after starting it, then pay 100 skulls to bind the <b>Void Soul</b>, +15% to every stat. Neither can be bought or gifted. The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
+      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins. The pack pays nothing: it is for the record. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). Once the weapon is Gilded he offers a quest: defeat 100 lions (championship bouts, grudges, bosses and online fights count from the day you start), then pay 25 skulls and 1,000 gold for <b>Lionsteel</b>, Lv4, +12% damage in all. The Mystic Lion has a quest too: win 10 championships after starting it, then pay 100 skulls to bind the <b>Void Soul</b>, +15% to every stat. Neither can be bought or gifted. The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
       <h6>Losing a bout</h6>
@@ -3953,7 +3957,7 @@ const CHAL={
   pack:{name:'The Pack',act:'startPack',go:'Face the pack',diff:0,diffName:'Endless',col:'#d9a25a',
     blurb:'Wave after wave of dogs and hyenas.',
     desc:'Every wave is bigger than the last: dogs first, hyenas once it gets serious. Clear a wave and your lion gets a breather and a little health back. Last as long as you can.',
-    reward:'1 to 3 gold for every wave cleared',tip:'Wide swings, Quake Slam and Roar thin a crowd fast.'},
+    reward:'Bragging rights. Your best wave and kill count go on the record',tip:'Wide swings, Quake Slam and Roar thin a crowd fast.'},
   king:{name:'The Lion King',act:'startKing',go:'Challenge the Lion King',diff:3,diffName:'Hard',col:'#ff5a4d',
     blurb:'One fight. A giant in black plate.',
     desc:'Three times the size of your lion, in plate armour, with a maul that stuns and a roar that throws you across the sand.',
@@ -4234,7 +4238,7 @@ function shopHTML(L){
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
       '<span class="v">Open the bag<small>Bought items go in the bag. Use them from there whenever you like.</small></span>'+
       (have?'<span class="goldPill">'+have+'</span>':'')+'<span class="go">\u203a</span></button></div>'+
-    '<p class="muted" style="padding:0 2px 8px">Gold comes from winning championship bouts (5 to 15 a win) and clearing waves of the pack (1 to 3 a wave). '+
+    '<p class="muted" style="padding:0 2px 8px">Gold comes from winning championship bouts (5 to 15 a win). '+
     'When this lion is gone, so is its gold.</p>';
 }
 function shopSay(list){SHOP.quip=pickOne(list);}
@@ -6684,8 +6688,6 @@ function stepSurvival(dt){
       const h=Math.min(me.maxHp*.18,me.maxHp-me.hp);
       if(h>0){me.hp+=h;num(me.x,me.y-me.r-8,'+'+Math.round(h),FX.heal);}
       banner('WAVE '+SURV.wave+' CLEARED',1.2);SFX.win();crowdReact(1.1);
-      if(CAREER.lion){const gg=1+((Math.random()*3)|0);CAREER.lion.gold=(CAREER.lion.gold||0)+gg;SURV.gold=(SURV.gold||0)+gg;
-        num(me.x,me.y-me.r-24,'+'+gg+' gold',FX.gold,15);}
     }
     SURV.gap-=dt;
     if(SURV.gap<=0){SURV.pending=false;spawnWave(SURV.wave+1);}
@@ -9003,7 +9005,7 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     const L=CAREER.lion,best=L&&L.record?(L.record.bestWave||0):0;
     V.textContent='WAVE '+SURV.wave;V.className='verdict';
     M.textContent=SURV.kills+' of the pack put down \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+
-      ' on its feet'+(best>SURV.wave?(' \u00b7 best so far wave '+best):' \u00b7 a new best')+' \u00b7 +'+(SURV.gold||0)+' gold';
+      ' on its feet'+(best>SURV.wave?(' \u00b7 best so far wave '+best):' \u00b7 a new best');
     P.innerHTML='<div class="perkCard neutral"><h5>Back on its feet</h5>'+
       '<p>The pack is an exhibition. However badly that went, your lion walks out of it \u2014 '+
       'nothing here touches its record in the championships.</p></div>';
@@ -9096,8 +9098,8 @@ const TUT=[
      chip('','Ironheart','+9% health','gold',medalHTML('hp'))+chip('','Keen Fang','+9% damage','gold',medalHTML('dmg'))+'</div>'+
      '<div class="stat" style="margin-top:12px"><span>'+ico('heart')+'Health</span><div class="bar"><i style="width:48%"></i><i class="ext" style="width:12%"></i></div><b class="trained">132</b></div>'},
   {t:'Gold and the store',
-   say:"Each win pays your lion 5 to 15 gold. The pack pays a little too. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
-   vis:()=>'<div class="tutChips">'+chip('coin','5-15 per win','plus 1-3 a pack wave','gold')+chip('drop','Colour Change','20 gold')+
+   say:"Each win pays your lion 5 to 15 gold. The pack pays nothing, that one is for pride. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
+   vis:()=>'<div class="tutChips">'+chip('coin','5-15 per win','championship bouts','gold')+chip('drop','Colour Change','20 gold')+
      chip('flask','Personality Potion','30 gold: reroll one trait')+chip('sword','New weapon','60 gold')+'</div>'},
   {t:'Challenges',
    say:"Nothing here touches your record, so go wild. Bring up to two friends. No shame in it. I had friends once.",
@@ -9184,15 +9186,26 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-questlines-lionsteel-void',title:'Questline update',top:'LIONSTEEL &',bottom:'THE VOID SOUL',tag:'TWO NEW QUESTLINES',
-  items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is.'],['gift','Earlier: Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
-    ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds. The Twin Kings, Kaldur and Sevrin: kill one and the other goes mad with grief. Each drops its own sash.'],
-    ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
-    ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
-    ['laurel','Laurels and a party hat','Victor\u2019s Laurel (belt holders only) and the Leaf Laurel now sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
-    ['paint','The Cosmetic Lion','A war tent at the den. Paint, bone and steel for your lion. Looks only, none of it changes a fight. War paint and bone gear cost 3 skulls.'],
-    ['shears','Cosmetic Shears','Snip anything off. It is gone for good.'],
-    ['trophy','Earlier: tougher championships','Opponents train alongside you, carry forged weapons and medallions, wear war gear from your second belt, and now and then carry a soul.']]};
+const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and event update',top:'QUESTLINES &',bottom:'NEW BOSSES',tag:'QUESTS · BOSSES · EVENTS',
+  items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
+    ['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],
+    ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds, and watch the walls close in. The Twin Kings, Kaldur and Sevrin: kill one and the other goes mad with grief. Each drops its own sash.'],
+    ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic’s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
+    ['pack','Balance: the pack pays nothing','Hyena and dog waves in the Pack challenge no longer give gold. It is for your best wave and kill count now. Gold comes from championship bouts.'],
+    ['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is. Skulls also stack past 99 now, so 100 skulls for the Void can be saved up.']],
+  past:[
+    {title:'Gift Parcel and Cosmetic update',when:'November 2026',items:[
+      ['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in.'],
+      ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King’s Sash, and the Ancient Lion for the Starfall Sash.'],
+      ['laurel','Laurels and a party hat','Victor’s Laurel (belt holders only) and the Leaf Laurel sit right round the head, leaf by leaf. The Party Hat sits on the back of the head.'],
+      ['phone','Lion Sim on your phone','A guide on the first tutorial page shows how to add Lion Sim to your home screen on iPhone and Android. It keeps you signed in.'],
+      ['help','Forgot password','Reset your password from the sign-in screen. A link comes by email.']]},
+    {title:'Cosmetic and Championship balance update',when:'October 2026',items:[
+      ['paint','The Cosmetic Lion','A war tent at the den. Paint, bone and steel for your lion. Looks only, none of it changes a fight. War paint and bone gear cost 3 skulls.'],
+      ['shears','Cosmetic Shears','Snip anything off. It is gone for good.'],
+      ['trophy','Tougher championships','Opponents train alongside you, carry forged weapons and medallions, wear war gear from your second belt, and now and then carry a soul.'],
+      ['trash','A bigger bag','Four more slots, and a bin to throw away what you no longer need.']]}
+  ]};
 function newsSeen(){try{return window.localStorage&&window.localStorage.getItem('lionsim:news')===NEWS.id;}catch(e){return false;}}
 function newsDot(){const b=$('newsBtn');if(b)b.classList.toggle('fresh',!newsSeen());}
 function newsBanner(cv){
@@ -9217,7 +9230,7 @@ function newsBanner(cv){
   g.shadowColor='rgba(255,150,40,.55)';g.shadowBlur=14;g.fillStyle=gold;
   g.fillText(NEWS.top,w/2,ty+big*1.2);g.fillText(NEWS.bottom,w/2,ty+big*2.25);
   g.shadowBlur=0;g.font='700 '+Math.round(big*.5)+'px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='#f5e6cc';
-  if(g.letterSpacing!==undefined)g.letterSpacing='4px';g.fillText(NEWS.tag,w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
+  if(g.letterSpacing!==undefined)g.letterSpacing='2px';g.fillText(NEWS.tag,w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
   /* a Lionsteel blade between them, point down, dripping */
   const px=w/2,py=h*.8,bs=Math.min(34,h*.18);
   g.save();g.translate(px,py);g.rotate(.18);
@@ -9230,11 +9243,15 @@ function newsBanner(cv){
   g.restore();
   g.textAlign='start';
 }
+function newsRows(list){return list.map(function(q){return '<div class="newsRow"><span class="rico">'+ico(q[0])+'</span><div><b>'+q[1]+'</b><small>'+q[2]+'</small></div></div>';}).join('');}
 function openNews(){
   UI.sheet={kind:'news',field:'news'};
   $('sheetPanel').innerHTML='<div class="sheetHd"><h3>What\u2019s new</h3><button data-act="closeSheet">'+ico('check')+'Done</button></div>'+
     '<div class="sheetBody"><canvas class="newsCv" id="newsCv" role="img" aria-label="'+NEWS.title+'"></canvas>'+
-    '<div class="newsList">'+NEWS.items.map(function(q){return '<div class="newsRow"><span class="rico">'+ico(q[0])+'</span><div><b>'+q[1]+'</b><small>'+q[2]+'</small></div></div>';}).join('')+'</div></div>';
+    '<div class="newsList">'+newsRows(NEWS.items)+'</div>'+
+    (NEWS.past&&NEWS.past.length?'<div class="newsPastHd">Past updates</div>'+NEWS.past.map(function(u){
+      return '<div class="newsPast"><div class="newsPastT"><b>'+u.title+'</b><small>'+u.when+'</small></div><div class="newsList">'+newsRows(u.items)+'</div></div>';}).join(''):'')+
+    '</div>';
   $('sheetWrap').classList.remove('hidden');
   const cv=$('newsCv');if(cv&&cv.getContext)try{newsBanner(cv);}catch(e){}
   try{window.localStorage&&window.localStorage.setItem('lionsim:news',NEWS.id);}catch(e){}
