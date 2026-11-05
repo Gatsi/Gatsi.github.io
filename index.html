@@ -598,7 +598,8 @@ button{cursor:pointer}
 .finTop{display:flex;align-items:center;gap:12px}
 .finTop .rico .ico{width:24px;height:24px}
 .finTop b{display:block;font-size:17px;font-weight:600}.finTop small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
-.finTrack{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 6px}
+.finTrack{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 6px}
+.finPip.lock{opacity:.55}.finPip.lock i{border-style:dashed}
 .finPip{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:14px;background:var(--s2);font-size:13px;font-weight:600;color:var(--t3)}
 .finPip i{width:14px;height:14px;border-radius:50%;border:2px solid var(--fc);opacity:.45}
 .finPip small{font-size:11px;font-weight:500}
@@ -630,6 +631,20 @@ button{cursor:pointer}
 .goldPill.skullPill,.price.skullPrice{color:#e8dcc4;background:rgba(232,220,196,.12)}
 .price.skullPrice.poor{opacity:.5}
 .badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
+.badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
+.invSlot.void,.rico.void{color:#c9a2ff}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
+.qCard{padding:16px 18px 14px;border-top:1px solid rgba(255,255,255,.06)}.qCard:first-child{border-top:0}
+.qHead{display:flex;align-items:center;gap:12px}.qHead .rico .ico{width:24px;height:24px}
+.qHead b{display:block;font-size:17px;font-weight:600}.qHead small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
+.qSay{margin:12px 0 4px;padding:10px 12px;border-radius:12px;background:var(--s2);font-size:14px;line-height:1.5;color:var(--t2);font-style:italic}
+.qBar{position:relative;height:12px;border-radius:7px;background:var(--s2);overflow:hidden;margin:14px 0 6px;box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
+.qBar i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:linear-gradient(90deg,var(--qa),var(--qb));box-shadow:0 0 12px var(--qb)}
+.qNum{display:flex;justify-content:space-between;font-size:13px;color:var(--t2)}.qNum b{color:var(--t1);font-weight:600}
+.qCard .row{margin:10px -18px -4px;padding-left:18px;padding-right:18px}
+.qCard .price.both{display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;white-space:nowrap}.qCard .price.both>span{display:inline-flex;align-items:center;gap:4px}
+.qDone{display:flex;align-items:center;gap:8px;padding:12px 0 0;font-size:14px;font-weight:600}.qDone .ico{width:18px;height:18px}
+.voidCv{height:150px;margin-top:12px;border-radius:14px}
+.qLock{font-size:13px;color:var(--t3);padding-top:10px;line-height:1.45}
 .badge.holy,.badge.blood{display:inline-flex;align-items:center;gap:5px}
 .badge.holy .ico,.badge.blood .ico{width:14px;height:14px}
 .invSlot.bone.on{background:rgba(232,220,196,.1);border-color:#e8dcc4;box-shadow:0 0 0 1px #e8dcc4 inset}
@@ -1343,7 +1358,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Bouts are not all fought in the same place. Each one has an <b>arena</b>, shown next to the opponent in the den: the classic <b>Colonnade</b>, <b>Monolith</b> and <b>Gates</b>, or one of five with a twist. The <b>Mud Flats</b> have deep mud that slows anything that wades in. The <b>Fire Pit</b> has a fire in the middle that burns whoever walks, or gets knocked, into it. The <b>Thorn Ring</b> is lined with brambles: touch the wall and it cuts. In <b>The Quarry</b> rocks fall: a shadow and a red ring show where, and they hurt when they land. The <b>Moonlit Pit</b> is fought in the dark, and long shots go wide. Hazards hit both lions the same, and the lions know about them: they dodge the shadows, steer round the mud and the fire, and keep off thorny walls. Normally you only see the next bout; a <b>Scout’s Map</b> (13 gold in the Lion Store) shows every lion left in the run and where each bout is. a <b>Bloodlust Tonic</b> (30 gold, drink it from the bag) makes the next championship bout +20% damage but −15% health; <b>Smelling Salts</b> (60 gold) get your lion back up once if it goes down in a championship bout, on a quarter of its health. You can pick any arena in Duel too.</p>
       <h6>Gold and the Lion Store</h6>
       <p><b>Online.</b> Tap <b>Online</b> in the bar at the bottom and make a free account. Your championship save is then kept on your account, so it follows you to any device. Put your lion on the leaderboard, tap any other player’s lion to see its card, and fight it. Win and your rating goes up (more for beating a higher-rated lion), and you earn a little gold. Other players can fight your lion too, and the Online tab shows you who did. Pit fights are off the record, and nobody dies.</p>
-      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
+      <p>Every career lion carries its own gold. It earns 5 to 15 for each championship bout it wins, and 1 to 3 for each wave of the pack it clears. Spend it in the <b>Lion Store</b> in the den, where a red lion in a gold monocle sells a Colour Change (20), a Personality Potion that rerolls one trait of your choosing (30) and a new Weapon (60). Whatever you buy goes into the lion’s own <b>Inventory</b>, and you use it from there when you like. Beat a lion in a championship and about one time in three you take its <b>skull</b> home; skulls stack in the bag. The <b>Mystic Lion</b> takes 7 skulls for a soul: Divine (eyes white as an angel’s, a holy light) or Demonic (red eyes, hellfire). Either gives +10% to every stat, and a lion carries one soul at a time. For 3 skulls it also sells <b>Heavenly Protection</b>: if your lion would die in a championship, the blessing burns away instead and it lives. The Lion Store sells an <b>Upgrade Token</b> (100 gold) too: a guaranteed training session, stat of your choice. The <b>Blacksmith</b> finishes your lion’s weapon in Bronze, Obsidian and Gilded (50, 150, 250 gold), +2% damage a level, lost if the weapon changes, and sells <b>Reforge Armour</b> (50). Once the weapon is Gilded he offers a quest: defeat 100 lions (championship bouts, grudges, bosses and online fights count from the day you start), then pay 25 skulls and 1,000 gold for <b>Lionsteel</b>, Lv4, +12% damage in all. The Mystic Lion has a quest too: win 10 championships after starting it, then pay 100 skulls to bind the <b>Void Soul</b>, +15% to every stat. Neither can be bought or gifted. The Mystic Lion also has a <b>Soul Cleanse</b> (2 skulls) and a <b>Blood Pact</b> (5 skulls, rerolls IV), and the Lion Store a <b>Name Plaque</b> (60 gold). Lions remember you. One that beats you and lets you live becomes a <b>rival</b>, and so might one you only just beat; rivals come back in later championships, a little harder each time, and keep score. A lion that <b>kills</b> yours becomes your <b>nemesis</b>: it comes back for your next lion, as the final, with red eyes and a kill for every lion it took. Beat it and it is avenged, for 40 gold and 3 skulls. Under the stands, the <b>Hyena Fence</b> buys skulls for 25 gold each, sells <b>Mystery Crates</b> (45 gold) and keeps three deals, 5 to 10 gold off, that change after every bout. When the lion dies, its gold goes with it.</p>
       <h6>Scars</h6>
       <p>Every loss your lion survives leaves a mark, half the time across the face and half the time down the body. Scars are permanent, they show on the lion wherever you see it, and they travel in its code. They cost nothing but they are a record you cannot edit.</p>
       <h6>Losing a bout</h6>
@@ -2043,15 +2058,19 @@ function isGabName(c){
 }
 function isGab(c){return !!(c&&(c.ancient||isGabName(c)));}
 /* ---------- weapon finishes from the Blacksmith: +2% damage a level, three levels, tied to the weapon ---------- */
-const FINISH=[null,{name:'Bronze',col:'#e0954f',price:50},{name:'Obsidian',col:'#b48cff',price:150},{name:'Gilded',col:'#ffd24a',price:250}];
-function wlvOf(c){return c?clamp(c.wlv|0,0,3):0;}
+const FINISH=[null,{name:'Bronze',col:'#e0954f',price:50},{name:'Obsidian',col:'#b48cff',price:150},{name:'Gilded',col:'#ffd24a',price:250},{name:'Lionsteel',col:'#ff2e4a',price:1000,skulls:25}];
+function wlvOf(c){return c?clamp(c.wlv|0,0,4):0;}
+/* the damage a finish adds, in percent. Lionsteel doubles what Gilded gives */
+const FIN_PCT=[0,2,4,6,12];function finPct(l){return FIN_PCT[clamp(l|0,0,4)];}
 function finCol(c){const l=wlvOf(c);return l?FINISH[l].col:null;}
 function wName(c){const l=wlvOf(c);return WEAPONS[c.weapon].name+(l?' Lv'+l:'');}
-function finText(c){const l=wlvOf(c);return l?('Lv'+l+' '+FINISH[l].name+' finish (+'+(l*2)+'% damage)'):'';}
+function finText(c){const l=wlvOf(c);return l?('Lv'+l+' '+FINISH[l].name+' finish (+'+finPct(l)+'% damage)'):'';}
 /* ---------- souls, from the Mystic Lion ---------- */
 const SOULS={
   divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
-  demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'}};
+  demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'},
+  void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
+function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct||10):0;}
 function soulOf(c){return c&&SOULS[c.soul]?c.soul:null;}
 /* the eye colour any lion should be drawn with */
 function lionEyes(c){
@@ -2118,6 +2137,68 @@ function soulAura(g,x,y,R,ang,t,soul,under){
         g.globalAlpha=.45+.45*Math.sin(t*3+i*2);g.fillStyle='#fff6dc';
         g.beginPath();g.arc(x+Math.cos(a)*rr,y+Math.sin(a)*rr,Math.max(.9,R*.06),0,7);g.fill();
       }
+    }
+  } else if(soul==='void'){
+    /* the Void Soul: an eclipse. A black sun behind the lion with a cold corona, shadowfire, a broken
+       sigil of crescent moons, and ash being pulled in instead of drifting off */
+    const pu=.5+.5*Math.sin(t*1.7);
+    if(under){
+      /* the light round it dies: a deep pool of shadow */
+      const sh=g.createRadialGradient(x,y,R*.6,x,y,R*2.6);
+      sh.addColorStop(0,'rgba(0,0,0,.72)');sh.addColorStop(.6,'rgba(8,2,18,.4)');sh.addColorStop(1,'rgba(0,0,0,0)');
+      g.fillStyle=sh;g.beginPath();g.arc(x,y,R*2.6,0,7);g.fill();
+      /* the corona: thin cold rays round the black sun, flickering */
+      g.save();g.translate(x,y);g.rotate(t*.08);
+      for(let i=0;i<22;i++){
+        const a=i*Math.PI*2/22+((i*7)%5)*.05,fl=.5+.5*Math.sin(t*2.3+i*2.7),L=R*(1.55+.55*fl+((i*13)%7)*.06),w=.035+.02*((i*3)%3);
+        g.fillStyle='rgba(196,168,255,'+(.08+.12*fl).toFixed(2)+')';
+        g.beginPath();g.moveTo(Math.cos(a-w)*R*1.05,Math.sin(a-w)*R*1.05);g.lineTo(Math.cos(a)*L,Math.sin(a)*L);
+        g.lineTo(Math.cos(a+w)*R*1.05,Math.sin(a+w)*R*1.05);g.closePath();g.fill();
+      }
+      g.restore();
+      /* the black sun itself, with a bright rim like an eclipse */
+      const bs=g.createRadialGradient(x,y,R*.9,x,y,R*1.3);
+      bs.addColorStop(0,'rgba(0,0,0,.95)');bs.addColorStop(.75,'rgba(10,4,22,.85)');bs.addColorStop(1,'rgba(10,4,22,0)');
+      g.fillStyle=bs;g.beginPath();g.arc(x,y,R*1.3,0,7);g.fill();
+      g.save();g.shadowColor='#a878ff';g.shadowBlur=Math.max(5,R*.6);
+      g.strokeStyle='rgba(225,208,255,'+(.7+pu*.25).toFixed(2)+')';g.lineWidth=Math.max(1,R*.055);
+      g.beginPath();g.arc(x,y,R*1.12,0,7);g.stroke();g.restore();
+      /* shadowfire: black tongues licking off the rim, edged in violet */
+      for(let k=0;k<2;k++){
+        const n=12;
+        for(let i=0;i<n;i++){
+          const a=i*Math.PI*2/n+t*.3*(k?-1:1)+(k?.26:0),fl=.5+.5*Math.sin(t*7+i*2.1+k*1.7);
+          const h=R*(k?.3:.5)*(.5+fl*.8),b=R*1.1,hw=k?.07:.11,bend=Math.sin(t*3.5+i)*.09;
+          const tx=x+Math.cos(a+bend)*(b+h),ty=y+Math.sin(a+bend)*(b+h),mx=x+Math.cos(a)*(b+h*.5),my=y+Math.sin(a)*(b+h*.5);
+          g.beginPath();g.moveTo(x+Math.cos(a-hw)*b,y+Math.sin(a-hw)*b);
+          g.quadraticCurveTo(mx+Math.cos(a-1.57)*R*.07,my+Math.sin(a-1.57)*R*.07,tx,ty);
+          g.quadraticCurveTo(mx+Math.cos(a+1.57)*R*.07,my+Math.sin(a+1.57)*R*.07,x+Math.cos(a+hw)*b,y+Math.sin(a+hw)*b);
+          g.closePath();
+          g.fillStyle=k?'rgba(70,30,140,.55)':'rgba(6,2,12,.92)';g.fill();
+          if(!k){g.strokeStyle='rgba(160,110,255,.55)';g.lineWidth=Math.max(.6,R*.025);g.stroke();}
+        }
+      }
+      /* the sigil: a broken ring and six crescent moons, turning the slow way round */
+      g.save();g.translate(x,y);g.rotate(-t*.25);
+      g.strokeStyle='rgba(180,140,255,'+(.45+pu*.25).toFixed(2)+')';g.lineWidth=Math.max(.8,R*.045);
+      for(let i=0;i<6;i++){const a=i*Math.PI/3;g.beginPath();g.arc(0,0,R*1.78,a+.2,a+Math.PI/3-.2);g.stroke();}
+      g.setLineDash([R*.05,R*.13]);g.beginPath();g.arc(0,0,R*1.6,0,7);g.stroke();g.setLineDash([]);
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3,rx=Math.cos(a)*R*1.78,ry=Math.sin(a)*R*1.78,s2=R*.17;
+        g.save();g.translate(rx,ry);g.rotate(a);
+        g.fillStyle='rgba(228,214,255,'+(.7+pu*.3).toFixed(2)+')';
+        g.beginPath();g.arc(0,0,s2,Math.PI*.5,Math.PI*1.5);g.arc(-s2*.42,0,s2*.82,Math.PI*1.5,Math.PI*.5,true);g.closePath();g.fill();
+        g.restore();
+      }
+      g.restore();
+    } else {
+      /* ash and dust being dragged in towards it, and gone */
+      for(let i=0;i<8;i++){
+        const ph=(t*.55+i*.137)%1,a=i*2.3+Math.floor(t*.55+i*.137)*1.9+ph*.9,d=R*(2.1-ph*1.05);
+        g.globalAlpha=Math.sin(ph*Math.PI)*.85;g.fillStyle=i%3===0?'#0a0410':(i%2?'#e6d8ff':'#9a6cff');
+        g.beginPath();g.arc(x+Math.cos(a)*d,y+Math.sin(a)*d,Math.max(.8,R*(i%3===0?.07:.045)),0,7);g.fill();
+      }
+      g.globalAlpha=1;
     }
   } else {
     /* the demonic soul: a pool of shadow, a turning blood sigil, dark hellfire, smoke, and horns */
@@ -2198,11 +2279,11 @@ function derive(c,scale){
   const TRn=trainOf(c);
   const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp);
   const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
-  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+.02*wlvOf(c));
+  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+finPct(wlvOf(c))/100);
   const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
   const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk);
   /* a bound soul, divine or demonic: +10% to everything */
-  const SB=soulOf(c)?1.1:1;
+  const SB=1+soulPct(soulOf(c))/100;
   if(SB>1){return derive2(c,B,A,W,P,tm,maxHp*SB,speed*SB,dmgMult*SB,clamp(dr*SB,0,.62),atk/SB);}
   return derive2(c,B,A,W,P,tm,maxHp,speed,dmgMult,dr,atk);
 }
@@ -2237,7 +2318,7 @@ function encodeLion(c,rec){
     c.gold|0,
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
-    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':''),
+    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':'')),
     wlvOf(c)||'',
     (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
@@ -2262,8 +2343,8 @@ function decodeLion(str){
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
-    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';
-    if(a[19]){const wl=clamp(+a[19]|0,0,3);if(wl)c.wlv=wl;}
+    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';else if(a[18]==='v')c.soul='void';
+    if(a[19]){const wl=clamp(+a[19]|0,0,4);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
       if(M[v]&&i<3)o[k]=M[v];else{const x=COS_VALS[k][(+v|0)-1];if(x)o[k]=x;}});if(Object.keys(o).length)c.cos=o;}
     return c;
@@ -2368,6 +2449,7 @@ const ICONS={
   rock:'<path d="M3.2 13.4 2.5 9.6 5 6.8h4.6l3.2 2.6.6 4z"/><path d="M7.4 6.8 8.2 9.2l-1.4 1.6"/><path d="M5.4 2.2v2.2M8.6 1.4v2.6M11.6 2.6v2.2"/>',
   skull:'<path d="M8 2.6c-3 0-5.1 2.1-5.1 4.8 0 1.6.8 2.9 2 3.7v1.9h6.2v-1.9c1.2-.8 2-2.1 2-3.7 0-2.7-2.1-4.8-5.1-4.8z"/><path d="M3.9 4.3 3.3 2.4l2 .9M12.1 4.3l.6-1.9-2 .9"/><circle cx="6.1" cy="7.6" r="1.15"/><circle cx="9.9" cy="7.6" r="1.15"/><path d="M7.4 10.4 8 9.5l.6.9M7 13v-1.3M9 13v-1.3"/>',
   soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
+  soulV:'<circle cx="8" cy="8" r="1.7"/><path d="M8 2.4c3.3 0 5.7 2.5 5.4 5.5"/><path d="M13.3 10c-1.3 2.9-4.6 4.1-7.4 2.7"/><path d="M3.5 11.4C1.8 8.7 2.8 4.6 6 3"/>',
   soulX:'<path d="M4.6 2.2c-.7 1.8-.2 3.2 1.3 4.1M11.4 2.2c.7 1.8.2 3.2-1.3 4.1"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M6.6 10.4l1 .6M9.4 10.4l-1 .6"/>',
   token:'<circle cx="8" cy="8" r="5.8"/><path d="M8 11V5.3M5.7 7.5 8 5.2l2.3 2.3"/>',
   halo:'<ellipse cx="8" cy="2.9" rx="3.4" ry="1.15"/><path d="M8 5.5l4.2 1.6v2.6c0 2.4-1.8 4-4.2 4.8-2.4-.8-4.2-2.4-4.2-4.8V7.1z"/><path d="M8 7.8v3.6M6.4 9.4h3.2"/>',
@@ -2434,7 +2516,7 @@ function lionSummaryText(c){
     ' in '+r.fights+' bout'+(r.fights===1?'':'s')+' \u00b7 '+(r.losses||0)+' loss'+((r.losses||0)===1?'':'es')+
     (r.bestWave?(' \u00b7 best pack wave '+r.bestWave):''));
   else L.push('  none \u2014 this one has never entered a championship');
-  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+SOULS[soulOf(c)].name+' \u2014 +10% to health, damage, speed, swing and armour');}
+  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+SOULS[soulOf(c)].name+' \u2014 +'+soulPct(soulOf(c))+'% to health, damage, speed, swing and armour');}
   const bag=(Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0);
   if(bag.length){L.push('');L.push('BAG');
     L.push('  '+bag.map(it=>ITEMS[it.k].name+(it.n>1?' \u00d7'+it.n:'')).join(' \u00b7 '));}
@@ -2550,6 +2632,7 @@ function drawLionCard(c){
   if(wlvOf(c))badge(FINISH[wlvOf(c)].name+' Lv'+wlvOf(c),finCol(c),'rgba(255,255,255,.08)',ICONS.hammer);
   if(soulOf(c)==='divine')badge('Divine soul','#fff1cc','rgba(255,241,204,.14)',ICONS.soulD);
   if(soulOf(c)==='demon')badge('Demonic soul','#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
+  if(soulOf(c)==='void')badge('Void soul','#c9a2ff','rgba(150,100,255,.18)',ICONS.soulV);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
   if((c.iv||5)>=9)badge('Rare blood','#ffb340','rgba(255,179,64,.14)');
   if((c.iv||5)<=2)badge('Runt','#a1a1a6','rgba(255,255,255,.08)');
@@ -3229,7 +3312,7 @@ function optionsFor(field,c){
       return '<button class="opt" data-val="'+k+'"><span class="tick tickIco">'+ico(TRAIN[k].ico)+'</span>'+
         '<span class="txt"><b>'+TRAIN[k].name+'</b><small>'+TRAIN[k].desc+(n?' \u00b7 trained '+n+'\u00d7 so far':'')+'</small></span></button>';}).join('');
   if(field==='shopWeapon')return (wlvOf(c)?'<div class="warnBox">'+ico('hammer')+'<div><b>'+esc(c.name)+'\u2019s '+WEAPONS[c.weapon].name+' has a Lv'+wlvOf(c)+' '+FINISH[wlvOf(c)].name+' finish</b>'+
-      '<small>Whatever upgrades are on this weapon will be lost if you decide to change it. The +'+(wlvOf(c)*2)+'% damage goes with it.</small></div></div>':'')+
+      '<small>Whatever upgrades are on this weapon will be lost if you decide to change it. The +'+finPct(wlvOf(c))+'% damage goes with it.</small></div></div>':'')+
     WCLASS.map(cl=>'<div class="grp">'+cl+'</div>'+
     Object.keys(WEAPONS).filter(k=>WEAPONS[k].cls===cl&&!WEAPONS[k].hidden)
       .map(k=>mk(k,WEAPONS[k].name,WEAPONS[k].desc)).join('')).join('');
@@ -3437,6 +3520,7 @@ function badgesFor(L,rec){
   if(wlvOf(L))out.push('<span class="badge fin" style="color:'+finCol(L)+'">'+ico('hammer')+FINISH[wlvOf(L)].name+' Lv'+wlvOf(L)+'</span>');
   if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul</span>');
   if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul</span>');
+  if(soulOf(L)==='void')out.push('<span class="badge void">'+ico('soulV')+'Void soul</span>');
   if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
@@ -3481,8 +3565,8 @@ function renderCareer(){
     runStripHTML(L,ch)+(ch&&CAREER.event?evDoorHTML():'')+evPillsHTML()+
     '<div class="doors">'+
       '<button class="door" data-act="openShop">'+shopIconHTML()+'<span><b>Lion Store</b><small class="g">'+ico('coin')+(L.gold||0)+' gold</small></span></button>'+
-      '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s')+'</small></span></button>'+
-      '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel')+'</small></span></button>'+
+      '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+(questOf(L,'void')!==null?ico('soulV')+questOf(L,'void')+'/'+QUEST.void.need+' belts':ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s'))+'</small></span></button>'+
+      '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(questOf(L,'smith')!==null?questOf(L,'smith')+'/'+QUEST.smith.need+' lions':(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel'))+'</small></span></button>'+
       '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
       '<button class="door" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span></button>'+
       '<button class="door" data-act="openCosmo">'+cosmoIconHTML()+'<span><b>Cosmetic Lion</b><small class="cz">'+ico('paint')+'War gear</small></span></button>'+
@@ -3603,17 +3687,18 @@ function invOf(L){
   L.inv=L.inv.filter(function(it){return it&&ITEMS[it.k]&&it.n>0;});
   return L.inv;
 }
-function invCount(L,k){const it=invOf(L).filter(x=>x.k===k)[0];return it?it.n:0;}
+function invCount(L,k){return invOf(L).reduce(function(t,x){return t+(x.k===k?(x.n|0):0);},0);}
 /* returns false when there is no room */
 function invAdd(L,k,n){
   const inv=invOf(L);n=n||1;
-  const it=inv.filter(x=>x.k===k&&x.n<INV_STACK)[0];
-  if(it){it.n=Math.min(INV_STACK,it.n+n);return true;}
-  if(inv.length>=INV_SLOTS)return false;
-  inv.push({k:k,n:n});return true;
+  /* top up the stacks it already has, then start new ones; a full stack never eats the rest */
+  if(!inv.some(x=>x.k===k&&x.n<INV_STACK)&&inv.length>=INV_SLOTS)return false;
+  inv.forEach(function(x){if(n>0&&x.k===k&&x.n<INV_STACK){const t=Math.min(n,INV_STACK-x.n);x.n+=t;n-=t;}});
+  while(n>0&&inv.length<INV_SLOTS){const t=Math.min(n,INV_STACK);inv.push({k:k,n:t});n-=t;}
+  return true;
 }
 function invTake(L,k){
-  const inv=invOf(L),it=inv.filter(x=>x.k===k)[0];if(!it)return false;
+  const inv=invOf(L),its=inv.filter(x=>x.k===k),it=its[its.length-1];if(!it)return false;
   it.n--;if(it.n<=0)inv.splice(inv.indexOf(it),1);return true;
 }
 function openInventory(sel){
@@ -3638,6 +3723,7 @@ function openInventory(sel){
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
       ((I.use==='cos'||I.use==='shears')&&cosOf(L)?'<div class="grp">'+esc(L.name)+' is wearing: '+esc(cosText(L))+'</div>':'')+
       (I.soul&&soulOf(L)?'<div class="grp">'+esc(L.name)+' already carries a '+SOULS[soulOf(L)].name.toLowerCase()+'. '+(soulOf(L)===I.soul?'It cannot hold two of the same.':'This one would drive it out.')+'</div>':'')+
+      ((I.soul||it.k==='cleanse')&&soulOf(L)==='void'?'<div class="grp warnTxt">the Void Soul took ten championships and 100 skulls. Lose it and the Mystic Lion\u2019s quest starts again from nothing</div>':'')+
       (UI.invTrash===sel
         ?'<div class="invBinAsk"><p>'+(it.n>1?'Throw away <b>'+I.name+'</b>? You have '+it.n+'. Whatever you throw is gone for good.':'Throw away the <b>'+I.name+'</b>? It\u2019s gone for good.')+'</p>'+
           '<div class="act"><button data-act="invTrashNo">Keep it</button>'+
@@ -4488,7 +4574,7 @@ const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
   thanks:['Done. Do not drop it.','That will bite deeper now.','Good steel. Better now.'],
   broke:['Gold first. The coal is not free.','Come back when your purse is heavier.'],
-  max:['Cannot get it any finer than that. Not even me.']};
+  max:['Fire will not take it further. Blood might.']};
 const SMITHCOLS={mane:'#6b6b74',body:'#4a4a52',edge:'#9a9aa6',muz:'#c8c8d0',plate:'#9a9aa6'};
 function smithSay(list){SMITH.quip=pickOne(list);}
 let SMITHICON=null;
@@ -4516,7 +4602,7 @@ function drawSmithHammer(g,x,y,R,ang,swing){
 }
 function smithHTML(L){
   const gold=L.gold||0,lv=wlvOf(L),nx=lv<3?FINISH[lv+1]:null;
-  let track='';for(let i=1;i<=3;i++)track+='<span class="finPip'+(i<=lv?' on':'')+'" style="--fc:'+FINISH[i].col+'"><i></i>'+FINISH[i].name+'<small>+'+(i*2)+'%</small></span>';
+  let track='';for(let i=1;i<=4;i++)track+='<span class="finPip'+(i<=lv?' on':(i===4?' lock':''))+'" style="--fc:'+FINISH[i].col+'"><i></i>'+FINISH[i].name+'<small>+'+finPct(i)+'%</small></span>';
   return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
     '<div class="hd"><h2>The Blacksmith</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b>. The forge is hot.</span></div>'+
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="smith"></canvas></div>'+
@@ -4524,13 +4610,14 @@ function smithHTML(L){
     '<div class="card">'+
       '<div class="finCard"><div class="finTop"><span class="rico" style="color:'+(lv?FINISH[lv].col:'var(--t3)')+'">'+ico('sword')+'</span>'+
         '<div class="v"><b>'+WEAPONS[L.weapon].name+(lv?' <span style="color:'+FINISH[lv].col+'">Lv'+lv+'</span>':'')+'</b><small>'+
-        (lv?FINISH[lv].name+' finish \u00b7 +'+(lv*2)+'% damage':'No finish yet \u00b7 plain steel')+'</small></div></div>'+
+        (lv?FINISH[lv].name+' finish \u00b7 +'+finPct(lv)+'% damage':'No finish yet \u00b7 plain steel')+'</small></div></div>'+
         '<div class="finTrack">'+track+'</div>'+
         (nx?'<button class="row" data-act="smithFinish"><span class="rico" style="color:'+nx.col+'">'+ico('hammer')+'</span><span class="v">'+nx.name+' finish \u00b7 Lv'+(lv+1)+
           '<small>+2% damage, and its swings and shots catch the light in '+nx.name.toLowerCase()+'.</small></span>'+
           '<span class="price'+(gold>=nx.price?'':' poor')+'">'+ico('coin')+nx.price+'</span></button>'
-          :'<div class="finMax">'+ico('check')+'Fully finished. It does not get finer than Gilded.</div>')+
+          :(lv>=4?'<div class="finMax" style="color:'+FINISH[4].col+'">'+ico('check')+'Lionsteel. Quenched in the blood of a hundred lions. Nothing finer comes off this anvil.</div>':''))+
         '<div class="warnTxt finWarn">Finishes belong to the weapon. If '+esc(L.name)+' changes weapon, the finish is lost.</div></div>'+
+      smithQuestHTML(L)+
       '<button class="row" data-act="smithBuy" data-k="reforge"><span class="rico">'+ico('shield')+'</span><span class="v">Reforge Armour'+
         '<small>A ticket for the bag. Use it to swap to any armour. Wearing '+ARMORS[L.armor].name.toLowerCase()+' now.</small></span>'+
         '<span class="price'+(gold>=SMITH.reforge?'':' poor')+'">'+ico('coin')+SMITH.reforge+'</span></button>'+
@@ -4538,6 +4625,95 @@ function smithHTML(L){
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
       '<span class="v">Open the bag<small>Reforge tickets wait in the bag until you use them.</small></span><span class="go">\u203a</span></button></div>';
 }
+/* ---------- questlines: Lionsteel at the forge, the Void Soul at the altar ---------- */
+const QUEST={smith:{need:100,gold:1000,skulls:25},void:{need:10,skulls:100}};
+function questOf(L,k){return L&&L.quest&&L.quest[k]!=null?(L.quest[k]|0):null;}
+/* a lion beaten anywhere: championship bouts, grudges, bosses and the online pit */
+function questLion(L,n){
+  if(!L||questOf(L,'smith')===null)return;const was=L.quest.smith|0,Q=QUEST.smith;
+  L.quest.smith=Math.min(Q.need,was+(n||1));
+  if(was<Q.need&&L.quest.smith>=Q.need)setTimeout(function(){toast('A hundred lions. The Blacksmith is ready to forge Lionsteel.');},400);
+}
+/* a championship won */
+function questBelt(L){
+  if(!L||questOf(L,'void')===null)return;const was=L.quest.void|0,Q=QUEST.void;
+  L.quest.void=Math.min(Q.need,was+1);
+  if(was<Q.need&&L.quest.void>=Q.need)setTimeout(function(){toast('Ten belts. The Mystic Lion is waiting with the Void.');},400);
+}
+function qBar(n,need,a,b,label){
+  return '<div class="qBar" style="--qa:'+a+';--qb:'+b+'"><i style="width:'+(100*Math.min(n,need)/need).toFixed(1)+'%"></i></div>'+
+    '<div class="qNum"><span>'+label+'</span><b>'+Math.min(n,need)+' / '+need+'</b></div>';
+}
+function questStart(k){
+  const L=CAREER.lion;if(!L||!CAREER.locked||!QUEST[k]||questOf(L,k)!==null)return;
+  if(k==='smith'&&wlvOf(L)<3)return;
+  if(k==='void'&&soulOf(L)==='void')return;
+  L.quest=L.quest||{};L.quest[k]=0;
+  if(k==='smith'){SFX.clang();SMITH.quip='A hundred lions. I will be counting.';toast('Quest started · defeat 100 lions');}
+  else {SFX.cast();MYSTIC.quip='Ten belts. A hundred skulls. The void can wait.';toast('Quest started · win 10 championships');}
+  Store.save();refresh();
+}
+function questForge(k){
+  const L=CAREER.lion;if(!L||!CAREER.locked||!QUEST[k])return;
+  const Q=QUEST[k],q=questOf(L,k);if(q===null||q<Q.need)return;
+  const sk=invCount(L,'skull');L.gold=L.gold||0;
+  if(k==='smith'){
+    if(wlvOf(L)!==3){toast('The weapon has to be Gilded first');return;}
+    if(L.gold<Q.gold||sk<Q.skulls){smithSay(SMITH.broke);toast('You need '+[L.gold<Q.gold?(Q.gold-L.gold)+' more gold':'',sk<Q.skulls?(Q.skulls-sk)+' more skull'+(Q.skulls-sk===1?'':'s'):''].filter(Boolean).join(' and '));refresh();return;}
+    L.gold-=Q.gold;for(let i=0;i<Q.skulls;i++)invTake(L,'skull');
+    L.wlv=4;delete L.quest.smith;SMITH.hit=1;
+    SFX.clang();SMITH.quip='Lionsteel. Quenched in the blood of a hundred. Wear it proud.';
+    toast(WEAPONS[L.weapon].name+' · Lv4 Lionsteel');
+  } else {
+    if(sk<Q.skulls){mysticSay(MYSTIC.broke);toast('You need '+(Q.skulls-sk)+' more skull'+(Q.skulls-sk===1?'':'s'));refresh();return;}
+    const prev=soulOf(L);
+    for(let i=0;i<Q.skulls;i++)invTake(L,'skull');
+    L.soul='void';delete L.quest.void;
+    SFX.cast();SFX.roar();MYSTIC.quip='It is open. Do not stare into its eyes too long.';
+    toast(prev?'The Void swallows the '+SOULS[prev].name.toLowerCase():L.name+' takes the Void Soul');
+    delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
+  }
+  if(L.quest&&!Object.keys(L.quest).length)delete L.quest;
+  Store.save();refresh();
+}
+function smithQuestHTML(L){
+  const lv=wlvOf(L),q=questOf(L,'smith'),Q=QUEST.smith,F=FINISH[4];
+  if(lv>=4)return '';
+  if(q===null&&lv<3)return '';
+  const head='<div class="qHead"><span class="rico" style="color:'+F.col+'">'+ico('sword')+'</span><div class="v"><b>Lionsteel <span style="color:'+F.col+'">Lv4</span></b>'+
+    '<small>A quest · +'+finPct(4)+'% damage, and an edge that runs blood red</small></div></div>';
+  if(q===null)return '<div class="qCard">'+head+
+    '<div class="qSay">“Gilded is as far as fire will take it. Lionsteel is not forged, it is quenched, and only the blood of slain lions will do. Bring me the blood of a hundred. Then 25 skulls and 1,000 gold, and I will make you a blade that remembers every one of them.”</div>'+
+    '<button class="row" data-act="questStart" data-k="smith"><span class="rico" style="color:'+F.col+'">'+ico('flame')+'</span><span class="v">Start the quest'+
+      '<small>Defeat 100 lions. Championship bouts, grudges, bosses and online fights all count, from today.</small></span><span class="go">›</span></button></div>';
+  const done=q>=Q.need,gold=L.gold||0,sk=invCount(L,'skull'),can=gold>=Q.gold&&sk>=Q.skulls;
+  return '<div class="qCard">'+head+qBar(q,Q.need,'#5a0a14',F.col,'Lions slain for the blade')+
+    (done?(lv<3?'<div class="qLock">The blood is ready, but the weapon is not. Get it back to Gilded and the Blacksmith will forge it.</div>':
+      '<button class="row" data-act="questForge" data-k="smith"><span class="rico" style="color:'+F.col+'">'+ico('hammer')+'</span><span class="v">Forge Lionsteel'+
+        '<small>The blood is enough. Pay the Blacksmith and it is done.</small></span>'+
+        '<span class="price both'+(can?'':' poor')+'"><span>'+ico('coin')+Q.gold+'</span><span class="skullPrice">'+ico('skull')+Q.skulls+'</span></span></button>')
+      :'<div class="qLock">'+(Q.need-q)+' to go. Every lion '+esc(L.name)+' beats counts, wherever it fights. When the bar is full: 1,000 gold and 25 skulls.</div>')+
+    '</div>';
+}
+function voidQuestHTML(L){
+  const q=questOf(L,'void'),Q=QUEST.void,so=soulOf(L);
+  const head='<div class="qHead"><span class="rico void">'+ico('soulV')+'</span><div class="v"><b>The Void Soul</b>'+
+    '<small>A quest · +15% to every stat. Stronger than light or dark</small></div></div>';
+  const prev='<canvas class="lionCv prevCv voidCv" data-prev="voidPrev"></canvas>';
+  if(so==='void')return '<div class="qCard">'+head+prev+'<div class="qDone" style="color:#c9a2ff">'+ico('check')+'The void is in '+esc(L.name)+'. Something looks back out of its eyes.</div></div>';
+  if(q===null)return '<div class="qCard">'+head+prev+
+    '<div class="qSay">“Light and dark are only colours. Past them both is the void, and the void is not for sale. Win ten championships and bring me a hundred skulls, and I will open the door. What comes through will look out of your lion’s eyes for the rest of its life.”</div>'+
+    '<button class="row" data-act="questStart" data-k="void"><span class="rico void">'+ico('spark')+'</span><span class="v">Start the quest'+
+      '<small>Win 10 championships. Only belts won from today count.</small></span><span class="go">›</span></button></div>';
+  const done=q>=Q.need,sk=invCount(L,'skull');
+  return '<div class="qCard">'+head+prev+qBar(q,Q.need,'#2a0d5e','#b48cff','Championships won for the void')+
+    (done?'<button class="row" data-act="questForge" data-k="void"><span class="rico void">'+ico('soulV')+'</span><span class="v">Bind the Void Soul'+
+        '<small>'+(so?'It will swallow the '+SOULS[so].name.toLowerCase()+'. ':'')+'Ten belts are enough. Now the skulls.</small></span>'+
+        '<span class="price skullPrice'+(sk>=Q.skulls?'':' poor')+'">'+ico('skull')+Q.skulls+'</span></button>'
+      :'<div class="qLock">'+(Q.need-q)+' to go. When the bar is full, bring 100 skulls.</div>')+
+    '</div>';
+}
+function voidPrevCfg(){const L=CAREER.lion;if(!L)return null;const c=JSON.parse(JSON.stringify(L));c.soul='void';return c;}
 function smithFinish(){
   const L=CAREER.lion;if(!L||!CAREER.locked)return;
   const lv=wlvOf(L);if(lv>=3){smithSay(SMITH.max);refresh();return;}
@@ -4636,6 +4812,8 @@ function mysticHTML(L){
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="mystic"></canvas></div>'+
     '<div class="hd sub2"><h2>On the altar</h2><span>Two souls and a blessing. Paid in skulls.</span></div>'+
     '<div class="card">'+item('divine')+item('demon')+item('halo')+item('cleanse')+item('pact')+'</div>'+
+    '<div class="hd sub2"><h2>Beyond the altar</h2><span>One soul the Mystic Lion will not sell.</span></div>'+
+    '<div class="card">'+voidQuestHTML(L)+'</div>'+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
       '<span class="v">Open the bag<small>Souls and blessings go in the bag. Bind a soul from there; a blessing works on its own.</small></span><span class="go">›</span></button></div>'+
     '<p class="muted" style="padding:0 2px 8px">A lion can carry one soul at a time. Binding a new one drives the old one out. '+
@@ -4985,6 +5163,10 @@ function openDev(){
     '<div class="grp">The lion</div><div class="devGrid">'+
       btn('train','token','Train everything','+1 in all five stats')+btn('belt','belt','+1 belt','With a medallion')+
       btn('wlv','hammer','Gilded weapon','Finish to Lv3')+btn('scars','scar','Clear scars','Fresh face')+'</div>'+
+    '<div class="grp">Questlines</div><div class="devGrid">'+
+      btn('qLions','sword','+25 lions slain',questOf(L,'smith')!==null?'Lionsteel '+questOf(L,'smith')+'/100':'Starts the quest, Lv3 first')+
+      btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
+      btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
       btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
@@ -5022,6 +5204,10 @@ function devDo(k){
   else if(k==='belt'){L.record.champs=(L.record.champs|0)+1;L.perks=L.perks||[];const P=pickOne(PERKS);L.perks.push(P.k);msg='+1 belt · '+P.name;}
   else if(k==='wlv'){L.wlv=3;msg=WEAPONS[L.weapon].name+' is now Gilded (Lv3)';}
   else if(k==='scars'){L.scars=[];msg='Scars cleared';}
+  else if(k==='qLions'){L.wlv=3;L.quest=L.quest||{};if(L.quest.smith==null)L.quest.smith=0;questLion(L,25);msg='Lionsteel quest: '+L.quest.smith+'/100';}
+  else if(k==='qBelts'){if(soulOf(L)==='void')delete L.soul;L.quest=L.quest||{};if(L.quest.void==null)L.quest.void=0;questBelt(L);msg='Void quest: '+L.quest.void+'/10';}
+  else if(k==='qFill'){if(wlvOf(L)<3)L.wlv=3;if(wlvOf(L)>3)L.wlv=3;if(soulOf(L)==='void')delete L.soul;L.quest={smith:100,void:10};msg='Both quests ready to pay for';}
+  else if(k==='qReset'){delete L.quest;if(wlvOf(L)>3)L.wlv=3;if(soulOf(L)==='void')delete L.soul;msg='Quests reset';}
   else if(k==='final'){if(!CAREER.champ)startChampionship();CAREER.champ.i=4;CAREER.event=null;msg='Next up: the final';}
   else if(k==='bookie'){bookieCard().left=BOOKIE.fights;CAREER.bookie.bet=null;msg='The Bookie has 3 fights on';}
   else if(k==='arena'){if(!CAREER.champ)startChampionship();const ch=CAREER.champ,f=ch.foes[Math.min(ch.i,4)],ks=CH_ARENAS.map(a=>a[0]);
@@ -5181,6 +5367,7 @@ function foeUpChips(f){
   return out.join('');
 }
 function soulBadge(f){const s=soulOf(f);if(!s)return '';
+  if(s==='void')return '<span class="badge void">'+ico('soulV')+'Void soul</span>';
   return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul</span>';}
 function rivalBadge(f){
   const R=rivalOf(f);if(!R)return '';
@@ -5401,6 +5588,8 @@ function handleAct(a,el){
   if(a==='openSmith'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='smith';smithSay(SMITH.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='smithFinish'){smithFinish();return;}
+  if(a==='questStart'){questStart(el&&el.dataset.k);return;}
+  if(a==='questForge'){questForge(el&&el.dataset.k);return;}
   if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='openFence'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='fence';fenceSay(FENCE.hello);refresh();
@@ -5676,7 +5865,7 @@ function introKick(i,grp){
   if(c==='career'&&CAREER.champ&&i===1){
     const ch=CAREER.champ,b=grp.lions[0],R=rivalOf(b.cfg);
     k=R&&R.nem?'Your nemesis \u00b7 killed '+R.kills.join(', '):(R?'Your rival \u00b7 '+h2hText(R):(beltsOf(b.cfg)?'The belt holder':k)+' \u00b7 Bout '+(ch.i+1)+' of '+ch.foes.length);
-    const so=soulOf(b.cfg);if(so)k+=so==='divine'?' \u00b7 Divine soul':' \u00b7 Demonic soul';
+    const so=soulOf(b.cfg);if(so)k+=' \u00b7 '+SOULS[so].name;
   }
   return k;
 }
@@ -8412,7 +8601,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='voidPrev')?voidPrevCfg():(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -8533,7 +8722,7 @@ function kingOver(won){
   const L=CAREER.lion;UI.bossDrop=null;
   if(L&&L.record){
     const kk=BOSSES[BOSSKIND].kk,kt=BOSSES[BOSSKIND].kt;
-    if(won){L.record[kk]=(L.record[kk]||0)+1;UI.bossDrop=bossDrop(L);}
+    if(won){L.record[kk]=(L.record[kk]||0)+1;UI.bossDrop=bossDrop(L);questLion(L,BOSSKIND==='twins'?2:1);}
     else L.record[kt]=(L.record[kt]||0)+1;
     Store.save();
   }
@@ -8566,7 +8755,7 @@ function roundOver(){
       else if(C.wait>0)C.wait--;}
     if(G.winner===you){
       rivalAfterBout(foeCfg,true,false,you,L.name);
-      L.record.wins++;ch.i++;
+      L.record.wins++;ch.i++;questLion(L,1);
       CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
       evSettle(L,true);
       CAREER.trainChance=Math.random()<.35;
@@ -8576,7 +8765,7 @@ function roundOver(){
       if(ch.i<5)evRollAfterWin();else CAREER.event=null;
       if(ch.i>=5){
         const perk=pickOne(PERKS.filter(p=>true)).k;
-        L.perks.push(perk);L.record.champs++;
+        L.perks.push(perk);L.record.champs++;questBelt(L);
         CAREER.champ=null;Store.save();
         showResult('champion',perk);
       } else {Store.save();showResult('bout');}
@@ -8995,8 +9184,8 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-gift-cosmetic-bosses-statue',title:'Gift Parcel and Cosmetic update',top:'GIFT PARCEL &',bottom:'COSMETIC UPDATE',
-  items:[['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
+const NEWS={id:'2026-11-questlines-lionsteel-void',title:'Questline update',top:'LIONSTEEL &',bottom:'THE VOID SOUL',tag:'TWO NEW QUESTLINES',
+  items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is.'],['gift','Earlier: Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in. You can also send one from a player\u2019s lion card.'],
     ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds. The Twin Kings, Kaldur and Sevrin: kill one and the other goes mad with grief. Each drops its own sash.'],
     ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic\u2019s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
     ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King\u2019s Sash, and the Ancient Lion for the Starfall Sash.'],
@@ -9015,7 +9204,9 @@ function newsBanner(cv){
   for(let i=0;i<14;i++){const x=(i*61)%w,y=h*.2+((i*37)%(h*.6));g.fillStyle='rgba(255,'+(140+(i*13)%90)+',60,'+(.25+(i%3)*.15)+')';g.beginPath();g.arc(x,y,1.1,0,7);g.fill();}
   const R=Math.min(24,h*.12);
   const A={pelt:8,mane:3,tail:0,build:'prime'},cA={crown:'laurel',teeth:'gold',earL:'gold',sash:'ancient'};
-  paintLion(g,{x:w*.24,y:h*.8,R:R,ang:-.12,t:1,pelt:0,mane:3,tail:0,seed:4,scars:[1284],armor:'none',cos:cA,eyes:'#ffd24a',eyeGlow:true});
+  soulAura(g,w*.24,h*.8,R,-.12,1.7,'void',true);
+  paintLion(g,{x:w*.24,y:h*.8,R:R,ang:-.12,t:1,pelt:0,mane:3,tail:0,seed:4,scars:[1284],armor:'none',cos:cA,eyes:SOULS.void.eyes,eyeGlow:true});
+  soulAura(g,w*.24,h*.8,R,-.12,1.7,'void',false);
   paintLion(g,{x:w*.76,y:h*.8,R:R,ang:Math.PI+.12,t:2,pelt:8,mane:0,tail:2,seed:9,scars:[617,1450],armor:'none',cos:{sash:'king',paint:'blood',patch:'L',nose:'gold',earR:'fang'},eyes:'#ff3a2a',eyeGlow:true});
   g.textAlign='center';
   g.font='700 10px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,190,110,.85)';
@@ -9026,14 +9217,17 @@ function newsBanner(cv){
   g.shadowColor='rgba(255,150,40,.55)';g.shadowBlur=14;g.fillStyle=gold;
   g.fillText(NEWS.top,w/2,ty+big*1.2);g.fillText(NEWS.bottom,w/2,ty+big*2.25);
   g.shadowBlur=0;g.font='700 '+Math.round(big*.5)+'px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='#f5e6cc';
-  if(g.letterSpacing!==undefined)g.letterSpacing='4px';g.fillText('SEND ONE TO A RIVAL',w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
-  /* the parcel between them */
-  const px=w/2,py=h*.82,ps=Math.min(30,h*.15);
-  g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(px+3,py+ps*.55,ps*.7,ps*.18,0,0,7);g.fill();
-  g.fillStyle='#b9895a';g.fillRect(px-ps*.6,py-ps*.35,ps*1.2,ps*.85);
-  g.fillStyle='#d4a574';g.fillRect(px-ps*.66,py-ps*.55,ps*1.32,ps*.25);
-  g.fillStyle='#c4161c';g.fillRect(px-ps*.08,py-ps*.55,ps*.16,ps*1.05);g.fillRect(px-ps*.6,py-ps*.08,ps*1.2,ps*.14);
-  [-1,1].forEach(function(sd){g.beginPath();g.moveTo(px,py-ps*.55);g.quadraticCurveTo(px+sd*ps*.55,py-ps*1.15,px+sd*ps*.2,py-ps*.5);g.fill();});
+  if(g.letterSpacing!==undefined)g.letterSpacing='4px';g.fillText(NEWS.tag,w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
+  /* a Lionsteel blade between them, point down, dripping */
+  const px=w/2,py=h*.8,bs=Math.min(34,h*.18);
+  g.save();g.translate(px,py);g.rotate(.18);
+  g.shadowColor='#ff2e4a';g.shadowBlur=12;
+  const bl=g.createLinearGradient(-bs*.12,0,bs*.12,0);bl.addColorStop(0,'#7a0c1c');bl.addColorStop(.5,'#ff5a6e');bl.addColorStop(1,'#8a0f22');
+  g.fillStyle=bl;g.beginPath();g.moveTo(-bs*.11,-bs*.7);g.lineTo(bs*.11,-bs*.7);g.lineTo(bs*.08,bs*.55);g.lineTo(0,bs*.8);g.lineTo(-bs*.08,bs*.55);g.closePath();g.fill();
+  g.shadowBlur=0;g.fillStyle='#2a1a12';g.fillRect(-bs*.36,-bs*.78,bs*.72,bs*.1);g.fillRect(-bs*.06,-bs*1.08,bs*.12,bs*.3);
+  g.fillStyle='#ffd24a';g.beginPath();g.arc(0,-bs*1.12,bs*.07,0,7);g.fill();
+  g.fillStyle='#d8263a';g.beginPath();g.arc(0,bs*.93,bs*.05,0,7);g.fill();
+  g.restore();
   g.textAlign='start';
 }
 function openNews(){
@@ -10246,7 +10440,7 @@ function merchantDeal(L,E){
   if(E.offer==='salts')return {k:'salts',n:3,cost:'skull',
     pitch:'Smelling Salts. Three bottles. One sniff and a lion that is down gets straight back up.',
     price:'Every skull in your bag. All '+sk+' of '+(sk===1?'it':'them')+'.',chip:'All your skulls ('+sk+')',
-    pay:function(L){const it=invOf(L).filter(x=>x.k==='skull')[0];if(it)L.inv.splice(L.inv.indexOf(it),1);},
+    pay:function(L){L.inv=invOf(L).filter(x=>x.k!=='skull');},
     after:[['n','He counts the skulls into a sack one by one, humming. Three little bottles go in the bag.'],['Merchant','A pleasure. Do not sniff them for fun.']]};
   return {k:'pact',n:2,cost:'coin',
     pitch:'Two Blood Pacts. Roll the dice on your own blood. Twice!',
@@ -10356,6 +10550,7 @@ EVENTS.rival={title:'A Grudge on the Road',sub:'Someone is waiting by the torch'
   }};
 function grudgeOver(){
   const L=CAREER.lion,E=CAREER.event,won=!!(G.winner&&G.winner===G.lions[0]);
+  if(won&&L)questLion(L,1);
   if(E&&E.k!=='rival'&&EVENTS[E.k]&&EVENTS[E.k].over){
     const r=EVENTS[E.k].over(won,L,E);CAREER.event=null;CAREER.evRes=r;Store.save();showResult('evFight');return;
   }
@@ -11052,6 +11247,7 @@ function pitOver(){
   const L=CAREER.lion,P=CAREER.pit,won=!!(G.winner&&G.winner===G.lions[0]);
   if(!P){showHome();return;}
   P.res={won:won,state:'saving',delta:0,rating:0,gold:0};
+  if(won&&L)questLion(L,1);
   if(won&&L){const day=pitToday();if(!L.pitGold||L.pitGold.d!==day)L.pitGold={d:day,n:0};
     if(L.pitGold.n<PIT.goldWins){L.pitGold.n++;L.gold=(L.gold||0)+PIT.winGold;P.res.gold=PIT.winGold;}}
   const rec=L&&(L.record||(L.record={champs:0,wins:0,fights:0}));if(rec){rec.pitF=(rec.pitF|0)+1;if(won)rec.pitW=(rec.pitW|0)+1;}
