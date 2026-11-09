@@ -807,6 +807,17 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .intro.top .skip{bottom:auto;top:8px}
 .intro.hidden{display:none}
 .crBody{padding-bottom:24px}
+.daily{display:flex;align-items:center;gap:14px;width:calc(100% - 40px);margin:0 20px 14px;padding:12px 14px;border-radius:18px;border:0;text-align:left;cursor:pointer;
+  background:var(--s1,#1c1c1e);color:var(--t2);box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
+.daily.ready{background:linear-gradient(135deg,rgba(201,164,106,.22),rgba(201,164,106,.06));color:var(--t1);box-shadow:0 0 0 1.5px rgba(201,164,106,.55) inset,0 0 22px rgba(201,164,106,.15)}
+.daily .dIco{position:relative;width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;background:rgba(201,164,106,.16);color:#c9a46a}
+.daily .dIco .ico{width:26px;height:26px}
+.daily.ready .dIco{animation:dBob 1.6s ease-in-out infinite}
+.daily .dIco i{position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:#ff5a4d;box-shadow:0 0 0 2px var(--bg,#000)}
+@keyframes dBob{50%{transform:translateY(-3px) rotate(-4deg)}}
+.daily .dTxt{flex:1;min-width:0}.daily .dTxt b{display:block;font-size:15px;color:var(--t1)}.daily .dTxt small{display:block;font-size:12.5px;color:var(--t2);margin-top:2px}
+.daily .dGo{flex:0 0 auto;padding:8px 14px;border-radius:999px;background:#c9a46a;color:#1a1208;font-weight:700;font-size:13px}
+.daily:not(.ready) .dGo{background:none;color:#5ee6a8;padding:0}.daily:not(.ready) .dGo .ico{width:20px;height:20px}
 .crLid{display:flex;align-items:center;gap:10px;margin:4px 20px 14px;color:var(--t2);font-size:14px}.crLid .ico{width:22px;height:22px;color:#c9a46a}
 .crReel{position:relative;margin:0 0 18px;height:150px;overflow:hidden;background:linear-gradient(180deg,#1d1610,#120d09);border-top:2px solid #3a2c1e;border-bottom:2px solid #3a2c1e;cursor:pointer}
 .crReel::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 2px,transparent 2px 22px);pointer-events:none}
@@ -1805,13 +1816,14 @@ let G={speed:1};
 let LOCAL_AT=0,LOCAL_OWNER='';
 function saveObj(){
   return {hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,tonic:CAREER.tonic|0,boon:CAREER.boon||null,feud:CAREER.feud||null,bookie:CAREER.bookie||null,
-    tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null,savedAt:Date.now(),owner:(typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||LOCAL_OWNER||''};
+    daily:CAREER.daily||null,tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null,savedAt:Date.now(),owner:(typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||LOCAL_OWNER||''};
 }
 /* put a whole save in place (from this device, or from your account) */
 function applySave(d){
   d=d||{};
   CAREER.hall=d.hall||[];
   if(d.tourn&&d.tourn.lions&&d.tourn.lions.length===8){TOURN.lions=d.tourn.lions;TOURN.br=d.tourn.br||null;}else{TOURN.lions=[];TOURN.br=null;}
+  CAREER.daily=d.daily||null;
   CAREER.lion=d.lion||null;CAREER.locked=d.lion?(d.locked!==false):false;CAREER.champ=d.lion?(d.champ||null):null;
   CAREER.fence=(d.fence&&d.fence.deals)?d.fence:null;
   CAREER.rivals=Array.isArray(d.rivals)?d.rivals:[];
@@ -3738,7 +3750,7 @@ function renderCareer(){
       '<button data-act="openInv">'+ico('bag')+'Inventory</button>'+
       '<button data-act="retire">'+ico('retire')+'Retire</button>'+
       '</div>'})+
-    runStripHTML(L,ch)+(ch&&CAREER.event?evDoorHTML():'')+evPillsHTML()+
+    runStripHTML(L,ch)+(ch&&CAREER.event?evDoorHTML():'')+evPillsHTML()+dailyHTML(L)+
     '<div class="doors">'+
       '<button class="door" data-act="openShop">'+shopIconHTML()+'<span><b>Lion Store</b><small class="g">'+ico('coin')+(L.gold||0)+' gold</small></span></button>'+
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+(questOf(L,'void')!==null?ico('soulV')+questOf(L,'void')+'/'+QUEST.void.need+' belts':ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s'))+'</small></span></button>'+
@@ -3859,6 +3871,7 @@ const ITEMS={
   sashTwins:{name:'Twin Crown Sash', ico:'sash',use:'cos',cs:'sash',val:'twins',boss:'twins',desc:'Half black silk, half white, with a split crown where they meet. Taken from the Twin Kings. Only won by beating both.'},
   sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
+  lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
   partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
 const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic',shopGift:'gift'};
@@ -4557,6 +4570,26 @@ function crateFake(){
   let roll=Math.random()*100,pick='gold';
   for(let i=0;i<CRATE.length;i++){roll-=CRATE[i][0];if(roll<0){pick=CRATE[i][1];break;}}
   return [pick,pick==='gold'?20+((Math.random()*61)|0):(pick==='skull'?1+((Math.random()*3)|0):1)];
+}
+/* a free crate once a day, from the den. The day turns over at local midnight */
+function dayKey(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function dailyReady(){return CAREER.daily!==dayKey();}
+function dailyLeft(){const n=new Date(),m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1);const s=Math.max(0,Math.floor((m-n)/1000));
+  return Math.floor(s/3600)+'h '+String(Math.floor(s%3600/60)).padStart(2,'0')+'m';}
+function dailyHTML(L){
+  if(!L||!CAREER.locked)return '';
+  const ok=dailyReady();
+  return '<button class="daily'+(ok?' ready':'')+'" data-act="dailyCrate">'+
+    '<span class="dIco">'+ico('crate')+(ok?'<i></i>':'')+'</span>'+
+    '<span class="dTxt"><b>'+(ok?'Daily crate ready':'Daily crate claimed')+'</b><small>'+(ok?'A hyena left it at the den door. Free, once a day.':'Next one in '+dailyLeft())+'</small></span>'+
+    '<span class="dGo">'+(ok?'Claim':ico('check'))+'</span></button>';
+}
+function claimDaily(){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;
+  if(!dailyReady()){toast('Already claimed today. Next crate in '+dailyLeft());return;}
+  if(!invAdd(L,'crate',1)){toast('Your bag is full. Make room, then claim it');return;}
+  CAREER.daily=dayKey();Store.save();refresh();
+  openCrate();
 }
 function openCrate(){
   const L=CAREER.lion;if(!L||!invCount(L,'crate'))return;
@@ -5456,7 +5489,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('lionsword','sword','LionSword','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5502,6 +5535,7 @@ function devDo(k){
     f.arena=ks[(ks.indexOf(arenaOf(f))+1)%ks.length];msg='Next bout: '+ARENAS[f.arena].name;}
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
   else if(k==='pirate'){if(!invAdd(L,'pirate',1)){msg='Bag is full';}else msg='Pirate Soul is in the bag. Use it from there to bind it';}
+  else if(k==='lionsword'){if(!invAdd(L,'lionSword',1)){msg='Bag is full';}else msg='LionSword is in the bag. Use it from there';}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
   else if(k==='ancSteel'){L.wlv=4;const r=L.record;r.ancientKills=Math.max(10,r.ancientKills|0);r.twinsKills=Math.max(5,r.twinsKills|0);r.kingKills=Math.max(10,r.kingKills|0);r.gateKills=Math.max(5,r.gateKills|0);L.gold=(L.gold||0)+1000;invAdd(L,'skull',20);msg='Lionsteel weapon, boss wins, 1,000 gold and 20 skulls. Go see the Blacksmith';}
   else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
@@ -5948,6 +5982,7 @@ function handleAct(a,el){
   if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
   if(a==='invUse'){invUse(el.dataset.k);return;}
   if(a==='crateSkip'){crateSkip();return;}
+  if(a==='dailyCrate'){claimDaily();return;}
   if(a==='crateDone'){UI.crate=null;closeSheet();openInventory();return;}
   if(a==='crateAgain'){UI.crate=null;openCrate();return;}
   if(a==='cosBuy'){cosBuy(el.dataset.k);return;}
@@ -6464,6 +6499,7 @@ function log(m){G.log.push(m);if(G.log.length>4)G.log.shift();
 
 /* ---- damage ---- */
 function hurt(t,amt,src,o){
+  {const sw=swordRule(src,t);if(sw==='none')return;if(sw==='kill'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}}
   if(t.guardHold&&src&&src.side!=='P'){t.guardHold=0;if(G&&G.lions)log('<em class="gold">'+t.name+'</em> is struck and joins the fight.');}
   o=o||{};
   if(t.dead||amt<=0)return 0;
@@ -9239,7 +9275,7 @@ function paintLion(g,o){
 const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9306,8 +9342,62 @@ function cosSash(g,R,lunge,v,t){
   g.fillStyle=S.band;g.beginPath();g.ellipse(kx,ky,R*.08,R*.065,a,0,7);g.fill();g.stroke();
   g.fillStyle=S.trim;g.beginPath();g.arc(kx,ky,Math.max(.6,R*.028),0,7);g.fill();
 }
+/* the LionSword: a long blade in a split sheath (bone white one side, black the other, a gold seam between), slung across the back */
+function drawLionSword(g,R,lunge,t){
+  g.save();
+  g.translate(-R*.38,R*.02);g.rotate(-.72);
+  const L=R*1.55,W=R*.15;
+  /* the strap round the body */
+  [[-L*.32,1],[L*.12,1]].forEach(function(q){g.strokeStyle='rgba(42,30,18,.9)';g.lineWidth=Math.max(1,R*.07);
+    g.beginPath();g.moveTo(q[0]-R*.06,-R*.5);g.quadraticCurveTo(q[0]+R*.02,0,q[0]-R*.06,R*.5);g.stroke();
+    g.fillStyle='#c9a227';g.fillRect(q[0]-R*.035,-R*.09,R*.07,R*.18);});
+  /* shadow */
+  g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(-L*.12+R*.04,R*.05,L*.62,W*.9,0,0,7);g.fill();
+  /* sheath: two halves */
+  const sh=function(){g.beginPath();g.moveTo(-L*.7,0);g.quadraticCurveTo(-L*.66,-W*.6,-L*.58,-W*.62);g.lineTo(L*.32,-W*.55);g.lineTo(L*.32,W*.55);g.lineTo(-L*.58,W*.62);g.quadraticCurveTo(-L*.66,W*.6,-L*.7,0);g.closePath();};
+  g.save();sh();g.clip();
+  g.fillStyle='#ece7dc';g.fillRect(-L,-W,L*1.5,W);
+  g.fillStyle='#141416';g.fillRect(-L,0,L*1.5,W);
+  g.fillStyle='rgba(255,255,255,.25)';g.fillRect(-L,-W*.5,L*1.5,W*.12);
+  g.restore();
+  sh();g.strokeStyle='#7a5a08';g.lineWidth=Math.max(.7,R*.025);g.stroke();
+  g.strokeStyle='#ffd24a';g.lineWidth=Math.max(.6,R*.022);g.beginPath();g.moveTo(-L*.66,0);g.lineTo(L*.32,0);g.stroke();
+  /* gold fittings: the chape at the tip, two bands, the throat */
+  g.fillStyle='#c9a227';
+  g.beginPath();g.moveTo(-L*.7,0);g.quadraticCurveTo(-L*.68,-W*.55,-L*.6,-W*.6);g.lineTo(-L*.54,-W*.6);g.lineTo(-L*.54,W*.6);g.lineTo(-L*.6,W*.6);g.quadraticCurveTo(-L*.68,W*.55,-L*.7,0);g.fill();
+  [-L*.25,L*.05].forEach(function(x){g.fillRect(x,-W*.6,L*.035,W*1.2);});
+  g.fillRect(L*.27,-W*.62,L*.06,W*1.24);
+  /* half a crown on each half of the sheath */
+  [[-1,'#141416'],[1,'#ece7dc']].forEach(function(q){const cx=-L*.1,cy=q[0]*W*.28,s=W*.32;
+    g.fillStyle='#ffd24a';g.beginPath();g.moveTo(cx-s,cy+s*.35*q[0]*-1);g.lineTo(cx-s,cy-s*.25*q[0]*-1);g.lineTo(cx-s*.5,cy);g.lineTo(cx,cy-s*.5*q[0]*-1);g.lineTo(cx+s*.5,cy);g.lineTo(cx+s,cy-s*.25*q[0]*-1);g.lineTo(cx+s,cy+s*.35*q[0]*-1);g.closePath();g.fill();});
+  /* the hilt: crossguard, wrapped grip, pommel with a red stone */
+  const gx=L*.33;
+  g.fillStyle='#ffd24a';g.strokeStyle='#7a5a08';g.lineWidth=Math.max(.6,R*.02);
+  g.beginPath();g.moveTo(gx,-W*1.35);g.quadraticCurveTo(gx+W*.5,-W*.6,gx+W*.25,0);g.quadraticCurveTo(gx+W*.5,W*.6,gx,W*1.35);g.lineTo(gx+W*.35,W*1.2);g.quadraticCurveTo(gx+W*.75,0,gx+W*.35,-W*1.2);g.closePath();g.fill();g.stroke();
+  const gl=L*.3;
+  for(let i=0;i<6;i++){g.fillStyle=i%2?'#141416':'#ece7dc';g.fillRect(gx+W*.4+i*gl/6,-W*.3,gl/6+.5,W*.6);}
+  g.strokeStyle='rgba(201,162,39,.8)';g.lineWidth=Math.max(.5,R*.015);g.strokeRect(gx+W*.4,-W*.3,gl,W*.6);
+  const px=gx+W*.4+gl+W*.25;
+  g.fillStyle='#ffd24a';g.beginPath();g.arc(px,0,W*.42,0,7);g.fill();g.stroke();
+  g.save();g.shadowColor='#ff3a2a';g.shadowBlur=RM?0:Math.max(3,R*.15)*(.7+.3*Math.sin(t*3));
+  g.fillStyle='#e2382c';g.beginPath();g.arc(px,0,W*.2,0,7);g.fill();g.restore();
+  /* a glint running down the gold */
+  const gp=((t*.5)%1);if(gp<.3){g.fillStyle='rgba(255,255,255,'+(.6*(1-gp/.3)).toFixed(2)+')';g.beginPath();g.arc(-L*.6+gp/.3*L*.95,-W*.3,W*.15,0,7);g.fill();}
+  g.restore();
+}
+/* in the online pit the LionSword settles one grudge: it one-shots Adamullah's lion and takes nothing from it, and every other player's lion one-shots it */
+const SWORD_GRUDGE='adamullah';
+function wearsSword(e){return !!(e&&e.cfg&&e.cfg.cos&&e.cfg.cos.hat==='lionsword');}
+function pitOwner(e){if(!e||!G||G.ctx!=='pit')return '';return String(e.side==='A'?(typeof onlineName==='function'?onlineName():''):((CAREER.pit&&CAREER.pit.player)||'')).toLowerCase();}
+function swordRule(src,t){
+  if(!G||G.ctx!=='pit'||!src||!t||src===t)return '';
+  if(wearsSword(t))return pitOwner(src)===SWORD_GRUDGE?'none':'kill';
+  if(wearsSword(src)&&pitOwner(t)===SWORD_GRUDGE)return 'kill';
+  return '';
+}
 function cosBack(g,R,lunge,o,t,C){
   const hx=R*.42+lunge;
+  if(o.hat==='lionsword')drawLionSword(g,R,lunge,t);
 
   if(o.mane==='bones')[1.7,2.35,3.14,3.93,4.58].forEach(function(a,i){
     const rr=R*(.7+(i%2)*.06);boneAt(g,hx+Math.cos(a)*rr,Math.sin(a)*rr,R*.3,Math.max(1,R*.06),a+Math.PI/2+(i%2?.3:-.3));});
