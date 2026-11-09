@@ -640,6 +640,7 @@ button{cursor:pointer}
 .goldPill.skullPill,.price.skullPrice{color:#e8dcc4;background:rgba(232,220,196,.12)}
 .price.skullPrice.poor{opacity:.5}
 .badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
+.badge.sea{color:#7dffd6;background:rgba(40,180,150,.16);display:inline-flex;align-items:center;gap:5px}.badge.sea .ico{width:14px;height:14px}
 .badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
 .invSlot.void,.rico.void{color:#c9a2ff}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
 .qCard{padding:16px 18px 14px;border-top:1px solid rgba(255,255,255,.06)}.qCard:first-child{border-top:0}
@@ -2098,6 +2099,7 @@ function finText(c){const l=wlvOf(c);return l?('Lv'+l+' '+FINISH[l].name+' finis
 const SOULS={
   divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
   demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'},
+  pirate:{name:'Pirate Soul', item:null,    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
   void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
 function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct||10):0;}
 function soulOf(c){return c&&SOULS[c.soul]?c.soul:null;}
@@ -2166,6 +2168,56 @@ function soulAura(g,x,y,R,ang,t,soul,under){
         g.globalAlpha=.45+.45*Math.sin(t*3+i*2);g.fillStyle='#fff6dc';
         g.beginPath();g.arc(x+Math.cos(a)*rr,y+Math.sin(a)*rr,Math.max(.9,R*.06),0,7);g.fill();
       }
+    }
+  } else if(soul==='pirate'){
+    /* the Pirate Soul: a drowned captain. A whirlpool turns under it, a ghost ship's wheel behind it,
+       sea-green ghost light, and gold coins circling like they are being pulled down with it */
+    const pu=.5+.5*Math.sin(t*1.5);
+    if(under){
+      /* dark water, deepest in the middle */
+      const wg=g.createRadialGradient(x,y,R*.4,x,y,R*2.7);
+      wg.addColorStop(0,'rgba(2,18,24,.78)');wg.addColorStop(.55,'rgba(6,48,58,.45)');wg.addColorStop(1,'rgba(6,48,58,0)');
+      g.fillStyle=wg;g.beginPath();g.arc(x,y,R*2.7,0,7);g.fill();
+      /* the whirlpool: curling bands of foam turning inwards */
+      g.lineCap='round';
+      for(let k=0;k<5;k++){
+        const base=t*.9+k*1.2566;
+        g.beginPath();
+        for(let st=0;st<=22;st++){const u=st/22,a=base+u*3.4,r=R*(2.35-1.25*u);const px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;st?g.lineTo(px,py):g.moveTo(px,py);}
+        g.strokeStyle='rgba(120,230,210,'+(.18+.1*pu).toFixed(2)+')';g.lineWidth=Math.max(1.2,R*.12);g.stroke();
+        g.strokeStyle='rgba(230,255,250,'+(.35+.15*pu).toFixed(2)+')';g.lineWidth=Math.max(.6,R*.035);g.stroke();
+      }
+      /* the ghost ship's wheel, turning slowly behind it */
+      g.save();g.translate(x,y);g.rotate(t*.35);
+      g.shadowColor='#5effc8';g.shadowBlur=RM?0:Math.max(4,R*.5);
+      const wr=R*1.5;
+      g.strokeStyle='rgba(205,170,92,.85)';g.lineWidth=Math.max(1.4,R*.1);g.beginPath();g.arc(0,0,wr,0,7);g.stroke();
+      g.strokeStyle='rgba(120,90,40,.9)';g.lineWidth=Math.max(.8,R*.04);g.beginPath();g.arc(0,0,wr*.86,0,7);g.stroke();
+      for(let k=0;k<8;k++){const a=k*Math.PI/4;
+        g.strokeStyle='rgba(205,170,92,.85)';g.lineWidth=Math.max(1,R*.07);
+        g.beginPath();g.moveTo(Math.cos(a)*R*.95,Math.sin(a)*R*.95);g.lineTo(Math.cos(a)*wr*1.32,Math.sin(a)*wr*1.32);g.stroke();
+        g.fillStyle='rgba(225,192,110,.95)';g.beginPath();g.ellipse(Math.cos(a)*wr*1.36,Math.sin(a)*wr*1.36,R*.09,R*.06,a,0,7);g.fill();}
+      g.restore();
+      /* ghost light rising off the water */
+      for(let k=0;k<7;k++){const ph=(t*.35+k*.143)%1,a=k*.9+t*.2,d=R*(1.3+ph*.9);
+        g.globalAlpha=Math.sin(ph*Math.PI)*.45;g.fillStyle='#5effc8';g.beginPath();g.arc(x+Math.cos(a)*d,y+Math.sin(a)*d-ph*R*.6,R*(.18-ph*.1),0,7);g.fill();}
+      g.globalAlpha=1;
+    } else {
+      /* gold doubloons circling, flipping as they go round */
+      for(let k=0;k<6;k++){
+        const a=t*1.1+k*Math.PI/3,ox=Math.cos(a)*R*1.55,oy=Math.sin(a)*R*.7,c=Math.cos(.4),sn=Math.sin(.4);
+        const px=x+ox*c-oy*sn,py=y+ox*sn+oy*c,flip=Math.abs(Math.cos(t*4+k)),cr=R*.14;
+        g.save();g.translate(px,py);
+        g.shadowColor='#ffd24a';g.shadowBlur=RM?0:6;
+        g.fillStyle='#e8b830';g.beginPath();g.ellipse(0,0,cr*Math.max(.2,flip),cr,0,0,7);g.fill();
+        g.strokeStyle='#8a6a14';g.lineWidth=Math.max(.5,R*.02);g.stroke();
+        if(flip>.5){g.fillStyle='#fff0a8';g.beginPath();g.arc(-cr*.25*flip,-cr*.25,cr*.25,0,7);g.fill();}
+        g.restore();
+      }
+      /* a little sea spray off the top */
+      for(let k=0;k<4;k++){const ph=(t*.9+k*.25)%1,a=-1.4+k*.9;g.globalAlpha=(1-ph)*.7;g.fillStyle='#e6fffa';
+        g.beginPath();g.arc(x+Math.cos(a)*R*(.9+ph*.5),y+Math.sin(a)*R*(.9+ph*.5),Math.max(.6,R*.04),0,7);g.fill();}
+      g.globalAlpha=1;
     }
   } else if(soul==='void'){
     /* the Void Soul: an eclipse. A black sun behind the lion with a cold corona, shadowfire, a broken
@@ -2347,7 +2399,7 @@ function encodeLion(c,rec){
     c.gold|0,
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
-    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':'')),
+    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':''))),
     wlvOf(c)||'',
     (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
@@ -2372,7 +2424,7 @@ function decodeLion(str){
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
-    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';else if(a[18]==='v')c.soul='void';
+    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';else if(a[18]==='v')c.soul='void';else if(a[18]==='p')c.soul='pirate';
     if(a[19]){const wl=clamp(+a[19]|0,0,4);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
       if(M[v]&&i<3)o[k]=M[v];else{const x=COS_VALS[k][(+v|0)-1];if(x)o[k]=x;}});if(Object.keys(o).length)c.cos=o;}
@@ -2481,6 +2533,7 @@ const ICONS={
   lock:'<rect x="3.5" y="7.2" width="9" height="6.6" rx="1.6"/><path d="M5.6 7.2V5.3a2.4 2.4 0 0 1 4.8 0v1.9"/><path d="M8 9.8v1.4"/>',
   dandelion:'<path d="M8 9v5"/><path d="M8 12.2c-1-.9-2.2-1-3-.6"/><circle cx="8" cy="5.6" r="1"/><path d="M8 2.2v1.4M8 7.6V9M4.6 5.6H6M10 5.6h1.4M5.6 3.2l1 1M10.4 3.2l-1 1M5.6 8l1-1M10.4 8l-1-1"/>',
   straw:'<ellipse cx="8" cy="9.6" rx="6.4" ry="2.6"/><path d="M4.8 9.2c0-2.6 1.4-4.6 3.2-4.6s3.2 2 3.2 4.6"/><path d="M4.9 8.2h6.2"/>',
+  soulP:'<circle cx="8" cy="8" r="3.2"/><circle cx="8" cy="8" r="1"/><path d="M8 1.8v3M8 11.2v3M1.8 8h3M11.2 8h3M3.6 3.6l2.1 2.1M10.3 10.3l2.1 2.1M3.6 12.4l2.1-2.1M10.3 5.7l2.1-2.1"/>',
   soulV:'<circle cx="8" cy="8" r="1.7"/><path d="M8 2.4c3.3 0 5.7 2.5 5.4 5.5"/><path d="M13.3 10c-1.3 2.9-4.6 4.1-7.4 2.7"/><path d="M3.5 11.4C1.8 8.7 2.8 4.6 6 3"/>',
   soulX:'<path d="M4.6 2.2c-.7 1.8-.2 3.2 1.3 4.1M11.4 2.2c.7 1.8.2 3.2-1.3 4.1"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M6.6 10.4l1 .6M9.4 10.4l-1 .6"/>',
   token:'<circle cx="8" cy="8" r="5.8"/><path d="M8 11V5.3M5.7 7.5 8 5.2l2.3 2.3"/>',
@@ -2665,6 +2718,7 @@ function drawLionCard(c){
   if(soulOf(c)==='divine')badge('Divine soul','#fff1cc','rgba(255,241,204,.14)',ICONS.soulD);
   if(soulOf(c)==='demon')badge('Demonic soul','#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
   if(soulOf(c)==='void')badge('Void soul','#c9a2ff','rgba(150,100,255,.18)',ICONS.soulV);
+  if(soulOf(c)==='pirate')badge('Pirate soul','#5effc8','rgba(63,217,176,.16)',ICONS.soulP);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
   if((c.iv||5)>=9)badge('Rare blood','#ffb340','rgba(255,179,64,.14)');
   if((c.iv||5)<=2)badge('Runt','#a1a1a6','rgba(255,255,255,.08)');
@@ -3553,6 +3607,7 @@ function badgesFor(L,rec){
   if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul</span>');
   if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul</span>');
   if(soulOf(L)==='void')out.push('<span class="badge void">'+ico('soulV')+'Void soul</span>');
+  if(soulOf(L)==='pirate')out.push('<span class="badge sea">'+ico('soulP')+'Pirate soul</span>');
   if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
@@ -5219,7 +5274,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul',L&&soulOf(L)==='pirate'?'Bound \u00b7 tap to take it off':'Dev only \u00b7 binds it now, +15%',L&&soulOf(L)==='pirate')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5264,6 +5319,8 @@ function devDo(k){
   else if(k==='arena'){if(!CAREER.champ)startChampionship();const ch=CAREER.champ,f=ch.foes[Math.min(ch.i,4)],ks=CH_ARENAS.map(a=>a[0]);
     f.arena=ks[(ks.indexOf(arenaOf(f))+1)%ks.length];msg='Next bout: '+ARENAS[f.arena].name;}
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
+  else if(k==='pirate'){if(soulOf(L)==='pirate'){delete L.soul;msg='Pirate Soul taken off';}else{const was=soulOf(L);L.soul='pirate';SFX.cast();msg=was?'The Pirate Soul drowns the '+SOULS[was].name.toLowerCase():'Pirate Soul bound';}
+    delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
   else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
   else if(k==='allBosses'){DEV.allBosses=!DEV.allBosses;msg=DEV.allBosses?'Every boss is open':'Bosses come in order again';}
@@ -5442,6 +5499,7 @@ function foeUpChips(f){
 }
 function soulBadge(f){const s=soulOf(f);if(!s)return '';
   if(s==='void')return '<span class="badge void">'+ico('soulV')+'Void soul</span>';
+  if(s==='pirate')return '<span class="badge sea">'+ico('soulP')+'Pirate soul</span>';
   return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul</span>';}
 function rivalBadge(f){
   const R=rivalOf(f);if(!R)return '';
@@ -9314,7 +9372,7 @@ function drawLionBody(e){
     if(!RM&&Math.random()<.3&&G.parts.length<240){
       const a=Math.random()*7,rr=R*(1+Math.random()*.6);
       G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,life:.6,max:.6,
-        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
+        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):so==='pirate'?(Math.random()<.5?'#5effc8':(Math.random()<.5?'#ffd24a':'#cffff0')):so==='void'?(Math.random()<.5?'#c9a2ff':'#0a0410'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
     }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
     cols:e.cfg.bossCols||(e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null))),eyes:e.cfg.twin?(e.grief?'#ff3a2a':'#ffd24a'):e.cfg.gate?'#ffd24a':e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
