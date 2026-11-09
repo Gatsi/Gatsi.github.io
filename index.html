@@ -2480,6 +2480,7 @@ const ICONS={
   soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
   lock:'<rect x="3.5" y="7.2" width="9" height="6.6" rx="1.6"/><path d="M5.6 7.2V5.3a2.4 2.4 0 0 1 4.8 0v1.9"/><path d="M8 9.8v1.4"/>',
   dandelion:'<path d="M8 9v5"/><path d="M8 12.2c-1-.9-2.2-1-3-.6"/><circle cx="8" cy="5.6" r="1"/><path d="M8 2.2v1.4M8 7.6V9M4.6 5.6H6M10 5.6h1.4M5.6 3.2l1 1M10.4 3.2l-1 1M5.6 8l1-1M10.4 8l-1-1"/>',
+  straw:'<ellipse cx="8" cy="9.6" rx="6.4" ry="2.6"/><path d="M4.8 9.2c0-2.6 1.4-4.6 3.2-4.6s3.2 2 3.2 4.6"/><path d="M4.9 8.2h6.2"/>',
   soulV:'<circle cx="8" cy="8" r="1.7"/><path d="M8 2.4c3.3 0 5.7 2.5 5.4 5.5"/><path d="M13.3 10c-1.3 2.9-4.6 4.1-7.4 2.7"/><path d="M3.5 11.4C1.8 8.7 2.8 4.6 6 3"/>',
   soulX:'<path d="M4.6 2.2c-.7 1.8-.2 3.2 1.3 4.1M11.4 2.2c.7 1.8.2 3.2-1.3 4.1"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M6.6 10.4l1 .6M9.4 10.4l-1 .6"/>',
   token:'<circle cx="8" cy="8" r="5.8"/><path d="M8 11V5.3M5.7 7.5 8 5.2l2.3 2.3"/>',
@@ -3692,6 +3693,7 @@ const ITEMS={
   noseGold: {name:'Gold Nose Ring',  ico:'nosering',use:'cos',cs:'nose',val:'gold',  desc:'A thick gold ring through the nose.'},
   noseSilver:{name:'Silver Nose Ring',ico:'nosering',use:'cos',cs:'nose',val:'silver',desc:'A silver ring through the nose.'},
   shears:   {name:'Cosmetic Shears',          ico:'shears',use:'shears',desc:'Snips one cosmetic off your lion, for good. Whatever you cut off is lost, not put back in the bag.'},
+  devGlitch:{name:'Glitch',ico:'spark',use:'cos',cs:'fx',val:'glitch',dev:1,desc:'Developer only. Your lion stops rendering properly: colour split, flickering pixels and broken scanlines. Not for sale anywhere.'},
   earDandelion:{name:'DandeLion',     ico:'dandelion',use:'cos',cs:'ear',val:'dandelion',desc:'A single dandelion, tucked behind one ear. Nobody will be scared of it. That is the joke. Pick an ear, left or right.'},
   earFang:  {name:'Fang Earring',    ico:'fang',use:'cos',cs:'ear',val:'fang',desc:'A rival\u2019s fang on a leather cord. Pick an ear, left or right.'},
   noseBone: {name:'Bone Nose Ring',  ico:'bone',use:'cos',cs:'nose',val:'bone',desc:'A sharpened bone pushed clean through the nose.'},
@@ -3712,6 +3714,7 @@ const ITEMS={
   sashTwins:{name:'Twin Crown Sash', ico:'sash',use:'cos',cs:'sash',val:'twins',boss:'twins',desc:'Half black silk, half white, with a split crown where they meet. Taken from the Twin Kings. Only won by beating both.'},
   sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
+  hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
   partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
 const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic',shopGift:'gift'};
 function invOf(L){
@@ -5148,6 +5151,7 @@ document.addEventListener('keydown',function(e){
   const t=e.target;
   if(t&&t.id==='codeIn'){e.preventDefault();loadPastedCode();return;}
   if(t&&(t.id==='rsPass'||t.id==='rsPass2')){e.preventDefault();acctResetSave();return;}
+  if(t&&t.id==='devPass'){e.preventDefault();devUnlock();return;}
   if(t&&t.id==='acEmail'&&ONLINE.tab==='forgot'){e.preventDefault();acctResetSend();return;}
   if(t&&t.id==='allyCode'){e.preventDefault();handleAct('allyPasteKey');return;}
   if(t&&t.id==='careerCode'){e.preventDefault();careerLoadCode(t.value);return;}
@@ -5196,6 +5200,7 @@ function devTap(){
 }
 function devMenuRow(){const b=$('devBtn');if(b)b.classList.toggle('hidden',!DEV.on);}
 function openDev(){
+  if(!DEV.unlocked){openDevLock();return;}
   const old=document.querySelector?document.querySelector('.devBody'):null,keep=old&&!$('sheetWrap').classList.contains('hidden')?old.scrollTop:0;
   UI.sheet={kind:'dev',field:'dev'};
   const L=CAREER.lion,ok=!!(L&&CAREER.locked);
@@ -5214,7 +5219,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5259,6 +5264,8 @@ function devDo(k){
   else if(k==='arena'){if(!CAREER.champ)startChampionship();const ch=CAREER.champ,f=ch.foes[Math.min(ch.i,4)],ks=CH_ARENAS.map(a=>a[0]);
     f.arena=ks[(ks.indexOf(arenaOf(f))+1)%ks.length];msg='Next bout: '+ARENAS[f.arena].name;}
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
+  else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
+  else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
   else if(k==='allBosses'){DEV.allBosses=!DEV.allBosses;msg=DEV.allBosses?'Every boss is open':'Bosses come in order again';}
   else if(k==='beatOld'){L.record.oldKills=Math.max(1,L.record.oldKills|0);msg='Old Lion counts as beaten';}
   else if(k==='immortal'){DEV.immortal=!DEV.immortal;msg=DEV.immortal?'Your lion can’t die':'Your lion can die again';}
@@ -5280,7 +5287,26 @@ function devDo(k){
   SFX.coin();toast(msg);Store.save();refresh();openDev();
 }
 $('devIco').innerHTML=ico('spark');devMenuRow();
-$('devBtn').onclick=function(){SFX.ui();moreMenu(false);openDev();};
+/* the developer tools ask for a password once per visit. Only a hash of it is kept in the code */
+const DEV_LOCK='a9361fc6';
+function devHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(16);}
+function openDevLock(){
+  UI.sheet={kind:'devlock',field:'devlock'};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Developer tools</h3><button data-act="closeSheet">Cancel</button></div>'+
+    '<div class="sheetBody acBody"><div class="acHero">'+ico('lock')+'<b>Password needed</b><small>The developer tools are locked</small></div>'+
+    '<div class="acctForm"><label>Password<input id="devPass" type="password" autocomplete="off" autocapitalize="off" spellcheck="false"></label>'+
+      '<button class="key" data-act="devUnlock">'+ico('check')+'Unlock</button></div>'+
+    '<p class="acMsg" id="devMsg"></p></div>';
+  $('sheetWrap').classList.remove('hidden');
+  setTimeout(function(){const i=$('devPass');if(i)i.focus();},60);
+}
+function devUnlock(){
+  const i=$('devPass'),m=$('devMsg');if(!i)return;
+  if(devHash(i.value)===DEV_LOCK){DEV.unlocked=true;SFX.unlock();openDev();return;}
+  SFX.ui();i.value='';i.focus();if(m){m.textContent='Wrong password.';m.className='acMsg bad';}
+  const p=$('sheetPanel');if(p&&p.animate)p.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:240});
+}
+$('devBtn').onclick=function(){SFX.ui();moreMenu(false);if(DEV.unlocked)openDev();else openDevLock();};
 $('acctIco').innerHTML=ico('globe');
 $('acctBtn').onclick=function(){SFX.ui();moreMenu(false);openAccount();};
 $('moreFoot').onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();devTap();};
@@ -5709,7 +5735,8 @@ function handleAct(a,el){
   if(a==='bdice'){bdice();return;}
   if(a==='bscar'){bscar(el.dataset.v);return;}
   if(a==='bdetails'){SFX.ui();UI.bdet=!UI.bdet;bKeepScroll(refresh);return;}
-  if(a==='dev'){devDo(el.dataset.k);return;}
+  if(a==='devUnlock'){devUnlock();return;}
+  if(a==='dev'){if(!DEV.unlocked){openDevLock();return;}devDo(el.dataset.k);return;}
   if(a==='chalSealed'){SFX.ui();toast('Beat '+CHAL[chalPrev(UI.chal)].name+' first');return;}
   if(a==='visitOld'){if(!CAREER.lion||!CAREER.locked||!oldBeaten(CAREER.lion))return;SFX.unlock();enterEvent('oldVisit');return;}
   if(a==='pickChal'){if(!CAREER.lion||!CAREER.locked){toast('Create a lion under Championship first');return;}SFX.ui();UI.chal=el.dataset.k;refresh();return;}
@@ -8960,10 +8987,10 @@ function paintLion(g,o){
   g.restore();
 }
 /* cosmetics: looks only. One thing per slot; ears and eyes pick a side */
-const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash'];
+const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party'],sash:['redgold','navy','bone','king','ancient','gate','twins']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9070,6 +9097,35 @@ function cosFace(g,R,lunge,o){
     if(!leaf){g.fillStyle='#b8221a';[-1,1].forEach(function(sd){g.beginPath();g.moveTo(hx-r,0);g.lineTo(hx-r-R*.16,sd*R*.1);g.lineTo(hx-r-R*.12,sd*R*.02);g.closePath();g.fill();});}
     g.fillStyle=leaf?'#4a3220':'#ffe58a';g.beginPath();g.arc(hx-r,0,Math.max(.8,R*.04),0,7);g.fill();
   }
+  if(o.hat==='straw'){
+    /* flat, side-on, pushed back off the head like the party hat: a wide brim across, a domed crown, a twine band */
+    const bx=hx-R*.26,by=-R*.02,ax=Math.PI+.45;
+    g.save();g.translate(bx,by);g.rotate(ax);
+    const BW=R*.6,BT=R*.085,CW=R*.31,CH=R*.36;
+    /* shadow */
+    g.fillStyle='rgba(0,0,0,.3)';g.beginPath();g.ellipse(R*.1,R*.04,BT*1.3,BW*1.02,0,0,7);g.fill();
+    /* brim */
+    const bg=g.createLinearGradient(0,-BW,0,BW);bg.addColorStop(0,'#e9cd7c');bg.addColorStop(.5,'#f4dc94');bg.addColorStop(1,'#c9a453');
+    g.fillStyle=bg;g.beginPath();g.ellipse(R*.05,0,BT,BW,0,0,7);g.fill();
+    g.strokeStyle='#a07c34';g.lineWidth=Math.max(.6,R*.025);g.stroke();
+    g.strokeStyle='rgba(120,86,30,.4)';g.lineWidth=Math.max(.4,R*.014);
+    for(let k=-5;k<=5;k++){const y=k*BW/6;g.beginPath();g.moveTo(R*.05-BT*.8,y);g.lineTo(R*.05+BT*.8,y);g.stroke();}
+    /* frayed ends at the tips of the brim */
+    g.strokeStyle='#e8cc78';g.lineWidth=Math.max(.5,R*.018);
+    [[-1,.2],[-1,-.3],[1,.25],[1,-.2]].forEach(function(f){g.beginPath();g.moveTo(R*.05+f[1]*BT,f[0]*BW*.96);g.lineTo(R*.05+f[1]*BT*2.2,f[0]*BW*1.12);g.stroke();});
+    /* crown, a dome standing up off the brim */
+    const cg=g.createLinearGradient(0,-CW,0,CW);cg.addColorStop(0,'#e4c672');cg.addColorStop(.45,'#f6e09c');cg.addColorStop(1,'#c29c4c');
+    g.fillStyle=cg;g.beginPath();g.moveTo(R*.08,-CW);g.bezierCurveTo(R*.08+CH*.9,-CW*1.02,R*.08+CH*1.05,CW*1.02,R*.08,CW);g.closePath();g.fill();
+    g.strokeStyle='#a07c34';g.lineWidth=Math.max(.6,R*.025);g.stroke();
+    g.save();g.clip();g.strokeStyle='rgba(120,86,30,.35)';g.lineWidth=Math.max(.4,R*.014);
+    for(let k=1;k<5;k++){const x=R*.08+CH*k/5;g.beginPath();g.moveTo(x,-CW);g.lineTo(x,CW);g.stroke();}
+    g.restore();
+    /* the band: plaited twine round the bottom of the crown */
+    g.fillStyle='#6e4f24';g.fillRect(R*.08,-CW*.98,R*.08,CW*1.96);
+    g.strokeStyle='#a8834a';g.lineWidth=Math.max(.5,R*.02);
+    for(let k=-3;k<=3;k++){const y=k*CW/3.6;g.beginPath();g.moveTo(R*.08,y-CW*.1);g.lineTo(R*.16,y+CW*.1);g.stroke();}
+    g.restore();
+  }
   if(o.hat==='party'){
     /* a flat paper cone sat on the back of the head, tipped back and to one side, with a pom-pom on the point */
     const bx=hx-R*.24,by=-R*.04,ax=Math.PI+.5,hh=R*.62,hw=R*.2;
@@ -9117,8 +9173,33 @@ function cosPatch(g,R,lunge,side){
   g.fillStyle='#a07a50';g.beginPath();g.arc(ex+R*.04,ey-s*R*.04,Math.max(.5,R*.025),0,7);g.fill();
 }
 /* last: ear and nose pieces */
+
+/* the dev-only Glitch: colour-split outlines, pixels that jump about, and broken scanlines */
+function glitchRnd(n){const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+function drawGlitch(g,R,lunge){
+  const t=(typeof performance!=='undefined'?performance.now():Date.now())/1000,f=Math.floor(t*9),burst=glitchRnd(Math.floor(t*2.2))>.72;
+  g.save();g.globalCompositeOperation='lighter';
+  const off=R*(burst?.12:.055),lw=Math.max(.8,R*.055);
+  [['rgba(0,240,255,.55)',-1],['rgba(255,0,200,.55)',1]].forEach(function(c){
+    g.strokeStyle=c[0];g.lineWidth=lw;
+    g.beginPath();g.ellipse(c[1]*off*.6,-c[1]*off,R*1.02,R*.62,0,0,7);g.stroke();
+    g.beginPath();g.arc(R*.72+lunge+c[1]*off*.6,-c[1]*off,R*.44,0,7);g.stroke();
+  });
+  /* horizontal slices that tear across it */
+  const nb=burst?4:2;
+  for(let k=0;k<nb;k++){const r1=glitchRnd(f*3+k),r2=glitchRnd(f*7+k*13),y=(r1-.5)*R*1.3,h=R*(.05+r2*.08),dx=(glitchRnd(f*11+k)-.5)*R*(burst?.7:.35);
+    g.fillStyle=k%2?'rgba(0,240,255,.35)':'rgba(255,0,200,.35)';g.fillRect(-R*1.1+dx,y,R*2.3,h);}
+  /* pixels jumping about round it */
+  for(let k=0;k<7;k++){const a=glitchRnd(f*5+k*3)*6.283,d=R*(1+glitchRnd(f*2+k*7)*.6),sz=R*(.07+glitchRnd(k+f)*.07);
+    g.fillStyle=['#00f0ff','#ff00c8','#ffffff','#7dff6a'][k%4];g.globalAlpha=.85;
+    g.fillRect(Math.cos(a)*d-sz/2,Math.sin(a)*d-sz/2,sz,sz);}
+  g.globalAlpha=1;g.restore();
+  /* now and then the whole lion drops out for a frame */
+  if(burst&&glitchRnd(f)>.6){g.save();g.fillStyle='rgba(10,12,20,.35)';for(let y=-R*.7;y<R*.7;y+=R*.12)g.fillRect(-R*1.1,y,R*2.4,R*.04);g.restore();}
+}
 function drawCos(g,R,lunge,o){
   const lw=Math.max(.9,R*.05);
+  if(o.fx==='glitch')drawGlitch(g,R,lunge);
   /* an open hoop: (ex,ey) is the centre of the ear or nose it pierces, rr its radius. The gap faces in, so the hoop looks like it goes through */
   const hoop=function(ex,ey,rr,d,m){const M=COS_MET[m],r=Math.max(1.3,R*.085),D=rr+r*.12,x=ex+Math.cos(d)*D,y=ey+Math.sin(d)*D,a0=d+Math.PI-2.05,a1=d+Math.PI+2.05;
     g.lineCap='round';
