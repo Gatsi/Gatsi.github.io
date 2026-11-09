@@ -618,7 +618,8 @@ button{cursor:pointer}
 .finTop{display:flex;align-items:center;gap:12px}
 .finTop .rico .ico{width:24px;height:24px}
 .finTop b{display:block;font-size:17px;font-weight:600}.finTop small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
-.finTrack{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 6px}
+.finTrack{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:14px 0 6px}
+.finTrack .finPip{font-size:11.5px;padding:10px 2px;text-align:center;line-height:1.15}
 .finPip.lock{opacity:.55}.finPip.lock i{border-style:dashed}
 .finPip{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:14px;background:var(--s2);font-size:13px;font-weight:600;color:var(--t3)}
 .finPip i{width:14px;height:14px;border-radius:50%;border:2px solid var(--fc);opacity:.45}
@@ -666,6 +667,11 @@ button{cursor:pointer}
 .qCard .price.both{display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;white-space:nowrap}.qCard .price.both>span{display:inline-flex;align-items:center;gap:4px}
 .qDone{display:flex;align-items:center;gap:8px;padding:12px 0 0;font-size:14px;font-weight:600}.qDone .ico{width:18px;height:18px}
 .voidCv{height:150px;margin-top:12px;border-radius:14px}
+.asList{display:flex;flex-direction:column;gap:8px;margin:12px 0 2px}
+.asRow{display:grid;grid-template-columns:118px 1fr auto;align-items:center;gap:10px;font-size:13px;color:var(--t2)}
+.asRow .qBar{margin:0;height:9px}.asRow b{color:var(--t1);font-weight:600;font-size:12.5px;min-width:44px;text-align:right}
+.asRow .asName{display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.asRow .asName .ico{width:13px;height:13px;color:#5ee6a8}
+.asRow.done{color:var(--t1)}
 .qLock{font-size:13px;color:var(--t3);padding-top:10px;line-height:1.45}
 .badge.holy,.badge.blood{display:inline-flex;align-items:center;gap:5px}
 .badge.holy .ico,.badge.blood .ico{width:14px;height:14px}
@@ -800,6 +806,33 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,.6) 62%,rgba(0,0,0,0))}
 .intro.top .skip{bottom:auto;top:8px}
 .intro.hidden{display:none}
+.crBody{padding-bottom:24px}
+.crLid{display:flex;align-items:center;gap:10px;margin:4px 20px 14px;color:var(--t2);font-size:14px}.crLid .ico{width:22px;height:22px;color:#c9a46a}
+.crReel{position:relative;margin:0 0 18px;height:150px;overflow:hidden;background:linear-gradient(180deg,#1d1610,#120d09);border-top:2px solid #3a2c1e;border-bottom:2px solid #3a2c1e;cursor:pointer}
+.crReel::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 2px,transparent 2px 22px);pointer-events:none}
+.crStrip{position:absolute;left:0;top:18px;display:flex;gap:8px;padding:0 8px;will-change:transform}
+.crTile{flex:0 0 104px;height:110px;border-radius:12px;background:linear-gradient(180deg,#2a2018,#1a140e);box-shadow:0 0 0 1px rgba(255,255,255,.06) inset;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;padding:0 6px;text-align:center}
+.crTile .crIco{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 16%,transparent);color:var(--tc)}
+.crTile .crIco .ico{width:24px;height:24px}
+.crTile b{font-size:12px;line-height:1.2;color:var(--t1);font-weight:600}
+.crTile i{position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--tc);box-shadow:0 0 10px var(--tc)}
+.crTile.win{box-shadow:0 0 0 2px var(--tc) inset,0 0 26px color-mix(in srgb,var(--tc) 60%,transparent);animation:crPulse 1s ease-in-out infinite}
+@keyframes crPulse{50%{transform:scale(1.05)}}
+.crShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#0c0907 0,transparent 22%,transparent 78%,#0c0907 100%)}
+.crNeedle{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:#f2e6c8;box-shadow:0 0 10px rgba(255,220,150,.8);pointer-events:none}
+.crNeedle::before,.crNeedle::after{content:'';position:absolute;left:50%;width:0;height:0;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent}
+.crNeedle::before{top:0;border-top:12px solid #f2e6c8}.crNeedle::after{bottom:0;border-bottom:12px solid #f2e6c8}
+.crReel.tk .crNeedle{animation:crTick .09s ease-out}
+@keyframes crTick{50%{transform:translateX(2px) rotate(2deg)}}
+.crOut{min-height:120px;padding:0 20px}
+.crWin{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--tc) 12%,var(--s2));box-shadow:0 0 0 1.5px color-mix(in srgb,var(--tc) 60%,transparent) inset,0 0 28px color-mix(in srgb,var(--tc) 25%,transparent);animation:ancIn .45s ease-out}
+.crWin .crWinIco{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 22%,transparent);color:var(--tc)}.crWin .crWinIco .ico{width:28px;height:28px}
+.crWin small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tc)}
+.crWin b{display:block;font-size:19px;margin-top:2px}
+.crBtns{display:flex;gap:10px;margin-top:14px}
+.crBtns button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:14px;border:0;background:var(--s2);color:var(--t1);font:600 15px/1 inherit;cursor:pointer}
+.crBtns button .ico{width:18px;height:18px}
+.crBtns button.key{background:#c9a46a;color:#1a1208}
 .intro .iboost{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 12px;border-radius:999px;background:rgba(226,56,44,.18);color:#ff8a7a;font-size:13px;font-weight:700;letter-spacing:.04em}.intro .iboost .ico{width:14px;height:14px}
 .ancAsk{position:absolute;left:0;right:0;bottom:0;padding:54px 16px 18px;line-height:1.3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;
   border-radius:0 0 var(--r) var(--r);background:linear-gradient(to top,rgba(4,8,24,.96),rgba(4,8,24,.75) 60%,rgba(4,8,24,0));animation:ancIn .5s ease-out}
@@ -2101,10 +2134,10 @@ function isGabName(c){
 }
 function isGab(c){return !!(c&&(c.ancient||isGabName(c)));}
 /* ---------- weapon finishes from the Blacksmith: +2% damage a level, three levels, tied to the weapon ---------- */
-const FINISH=[null,{name:'Bronze',col:'#e0954f',price:50},{name:'Obsidian',col:'#b48cff',price:150},{name:'Gilded',col:'#ffd24a',price:250},{name:'Lionsteel',col:'#ff2e4a',price:1000,skulls:25}];
-function wlvOf(c){return c?clamp(c.wlv|0,0,4):0;}
+const FINISH=[null,{name:'Bronze',col:'#e0954f',price:50},{name:'Obsidian',col:'#b48cff',price:150},{name:'Gilded',col:'#ffd24a',price:250},{name:'Lionsteel',col:'#ff2e4a',price:1000,skulls:25},{name:'Ancient Steel',col:'#8fb4ff',price:1000,skulls:20}];
+function wlvOf(c){return c?clamp(c.wlv|0,0,5):0;}
 /* the damage a finish adds, in percent. Lionsteel doubles what Gilded gives */
-const FIN_PCT=[0,2,4,6,12];function finPct(l){return FIN_PCT[clamp(l|0,0,4)];}
+const FIN_PCT=[0,2,4,6,12,20];function finPct(l){return FIN_PCT[clamp(l|0,0,5)];}
 function finCol(c){const l=wlvOf(c);return l?FINISH[l].col:null;}
 function wName(c){const l=wlvOf(c);return WEAPONS[c.weapon].name+(l?' Lv'+l:'');}
 function finText(c){const l=wlvOf(c);return l?('Lv'+l+' '+FINISH[l].name+' finish (+'+finPct(l)+'% damage)'):'';}
@@ -2438,7 +2471,7 @@ function decodeLion(str){
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
     if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';else if(a[18]==='v')c.soul='void';else if(a[18]==='p')c.soul='pirate';
-    if(a[19]){const wl=clamp(+a[19]|0,0,4);if(wl)c.wlv=wl;}
+    if(a[19]){const wl=clamp(+a[19]|0,0,5);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
       if(M[v]&&i<3)o[k]=M[v];else{const x=COS_VALS[k][(+v|0)-1];if(x)o[k]=x;}});if(Object.keys(o).length)c.cos=o;}
     return c;
@@ -4513,14 +4546,68 @@ function crateUndo(L,r){
   const t=Math.min(L.gold||0,30*(r.n-took));L.gold=(L.gold||0)-t;
   return (took?(took+' of the '+r.msg+' and '):'')+t+' gold instead';
 }
+/* ---------- opening a crate: a reel of loot spins past a tooth, slows, and stops on what you got ---------- */
+const CRATE_TIER={gold:0,skull:0,coat:1,potion:1,reforge:1,train:1,weapon:2,plaque:2,scout:2,salts:2,cleanse:3,pact:3,halo:4};
+const TIERS=[{n:'Common',c:'#b8a184'},{n:'Uncommon',c:'#5ee6a8'},{n:'Rare',c:'#5aa8ff'},{n:'Epic',c:'#c084ff'},{n:'Legendary',c:'#ffd24a'}];
+function crateTile(k,n){
+  const T=TIERS[CRATE_TIER[k]|0],I=ITEMS[k],name=k==='gold'?n+' gold':(k==='skull'?n+' Skull'+(n>1?'s':''):(I?I.name:k)),ic=k==='gold'?'coin':(I?I.ico:'crate');
+  return '<div class="crTile" style="--tc:'+T.c+'"><span class="crIco">'+ico(ic)+'</span><b>'+esc(name)+'</b><i></i></div>';
+}
+function crateFake(){
+  let roll=Math.random()*100,pick='gold';
+  for(let i=0;i<CRATE.length;i++){roll-=CRATE[i][0];if(roll<0){pick=CRATE[i][1];break;}}
+  return [pick,pick==='gold'?20+((Math.random()*61)|0):(pick==='skull'?1+((Math.random()*3)|0):1)];
+}
 function openCrate(){
   const L=CAREER.lion;if(!L||!invCount(L,'crate'))return;
   invTake(L,'crate');
-  const c=crateRoll(L);
-  if(c.rare)SFX.champ();else SFX.coin();
-  UI.crateMsg={txt:c.msg,rare:c.rare,ico:c.ico};
-  toast((c.rare?'Jackpot! ':'')+'The crate held '+c.msg);
-  Store.save();refresh();openInventory();
+  const c=crateRoll(L);Store.save();         /* what you won is yours already, whatever happens to the animation */
+  const N=44,WIN=36,tiles=[];
+  for(let i=0;i<N;i++){if(i===WIN){tiles.push(crateTile(c.k,c.n));continue;}
+    let f=crateFake();if(i>=WIN-3&&i<=WIN+3&&Math.random()<.45)f=['halo',1];   /* a near miss or two for the drama */
+    tiles.push(crateTile(f[0],f[1]));}
+  UI.sheet={kind:'crate',field:'crate'};UI.crate={c:c,done:false};
+  $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Mystery Crate</h3><button data-act="crateSkip">Skip</button></div>'+
+    '<div class="sheetBody crBody"><div class="crLid">'+ico('crate')+'<span>The nails come out. Something rattles inside.</span></div>'+
+    '<div class="crReel" id="crReel" data-act="crateSkip"><div class="crStrip" id="crStrip">'+tiles.join('')+'</div><div class="crShade"></div><div class="crNeedle"></div></div>'+
+    '<div class="crOut" id="crOut"></div></div>';
+  $('sheetWrap').classList.remove('hidden');
+  SFX.clang();
+  const strip=$('crStrip'),reel=$('crReel');
+  requestAnimationFrame(function(){
+    const t0=strip.children[0],tw=t0.offsetWidth+parseFloat(getComputedStyle(strip).columnGap||getComputedStyle(strip).gap||0);
+    const vw=reel.clientWidth,jit=(Math.random()-.5)*t0.offsetWidth*.7,target=WIN*tw+t0.offsetWidth/2-vw/2+jit;
+    const dur=RM?1.2:6.2;
+    UI.crate.tw=tw;UI.crate.vw=vw;UI.crate.target=target;
+    strip.style.transition='transform '+dur+'s cubic-bezier(.06,.62,.1,1)';
+    strip.style.transform='translateX('+(-target)+'px)';
+    let last=-1;const tick=function(){
+      if(!UI.crate||UI.crate.done||!document.body.contains(strip))return;
+      const m=new DOMMatrixReadOnly(getComputedStyle(strip).transform),x=-m.m41,idx=Math.floor((x+vw/2)/tw);
+      if(idx!==last){last=idx;try{SFX.ui();}catch(e){}reel.classList.remove('tk');void reel.offsetWidth;reel.classList.add('tk');}
+      requestAnimationFrame(tick);};
+    requestAnimationFrame(tick);
+    strip.addEventListener('transitionend',function(){crateReveal();},{once:true});
+    UI.crate.timer=setTimeout(crateReveal,dur*1000+400);
+  });
+}
+function crateSkip(){
+  if(!UI.crate)return;
+  if(UI.crate.done){closeSheet();openInventory();return;}
+  const strip=$('crStrip');if(strip&&UI.crate.target!=null){strip.style.transition='transform .35s cubic-bezier(.2,.8,.2,1)';strip.style.transform='translateX('+(-UI.crate.target)+'px)';}
+  setTimeout(crateReveal,380);
+}
+function crateReveal(){
+  const C=UI.crate;if(!C||C.done)return;C.done=true;clearTimeout(C.timer);
+  const L=CAREER.lion,c=C.c,T=TIERS[CRATE_TIER[c.k]|0],tier=CRATE_TIER[c.k]|0;
+  const win=$('crStrip')&&$('crStrip').children[36];if(win)win.classList.add('win');
+  if(tier>=3)SFX.champ();else if(tier>=1)SFX.unlock();else SFX.coin();
+  const left=L?invCount(L,'crate'):0,o=$('crOut');
+  if(o)o.innerHTML='<div class="crWin" style="--tc:'+T.c+'"><span class="crWinIco">'+ico(c.ico)+'</span><div><small>'+T.n+'</small><b>'+esc(c.msg)+'</b></div></div>'+
+    '<div class="crBtns">'+(left?'<button class="key" data-act="crateAgain">'+ico('crate')+'Open another ('+left+' left)</button>':'')+
+    '<button data-act="crateDone">'+ico('check')+'Done</button></div>';
+  const hd=document.querySelector('#sheetPanel .sheetHd button[data-act="crateSkip"]');if(hd){hd.textContent='Done';hd.dataset.act='crateDone';}
+  refresh();
 }
 function drawFenceScene(g,p){
   const w=p.w,h=p.h,t=p.t;
@@ -4767,7 +4854,7 @@ function drawSmithHammer(g,x,y,R,ang,swing){
 }
 function smithHTML(L){
   const gold=L.gold||0,lv=wlvOf(L),nx=lv<3?FINISH[lv+1]:null;
-  let track='';for(let i=1;i<=4;i++)track+='<span class="finPip'+(i<=lv?' on':(i===4?' lock':''))+'" style="--fc:'+FINISH[i].col+'"><i></i>'+FINISH[i].name+'<small>+'+finPct(i)+'%</small></span>';
+  let track='';for(let i=1;i<=5;i++)track+='<span class="finPip'+(i<=lv?' on':(i>=4?' lock':''))+'" style="--fc:'+FINISH[i].col+'"><i></i>'+FINISH[i].name+'<small>+'+finPct(i)+'%</small></span>';
   return '<button class="back" data-act="back">\u2039 Back to the den</button>'+
     '<div class="hd"><h2>The Blacksmith</h2><span>'+esc(L.name)+' has <b style="color:var(--amber)">'+gold+' gold</b>. The forge is hot.</span></div>'+
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="smith"></canvas></div>'+
@@ -4780,9 +4867,10 @@ function smithHTML(L){
         (nx?'<button class="row" data-act="smithFinish"><span class="rico" style="color:'+nx.col+'">'+ico('hammer')+'</span><span class="v">'+nx.name+' finish \u00b7 Lv'+(lv+1)+
           '<small>+2% damage, and its swings and shots catch the light in '+nx.name.toLowerCase()+'.</small></span>'+
           '<span class="price'+(gold>=nx.price?'':' poor')+'">'+ico('coin')+nx.price+'</span></button>'
-          :(lv>=4?'<div class="finMax" style="color:'+FINISH[4].col+'">'+ico('check')+'Lionsteel. Quenched in the blood of a hundred lions. Nothing finer comes off this anvil.</div>':''))+
+          :(lv>=5?'<div class="finMax" style="color:'+FINISH[5].col+'">'+ico('check')+'Ancient Steel. Forged from the bones of the old kings. There is nothing past this.</div>'
+            :lv===4?'<div class="finMax" style="color:'+FINISH[4].col+'">'+ico('check')+'Lionsteel. Quenched in the blood of a hundred lions.</div>':''))+
         '<div class="warnTxt finWarn">Finishes belong to the weapon. If '+esc(L.name)+' changes weapon, the finish is lost.</div></div>'+
-      smithQuestHTML(L)+
+      smithQuestHTML(L)+ancientSteelHTML(L)+
       '<button class="row" data-act="smithBuy" data-k="reforge"><span class="rico">'+ico('shield')+'</span><span class="v">Reforge Armour'+
         '<small>A ticket for the bag. Use it to swap to any armour. Wearing '+ARMORS[L.armor].name.toLowerCase()+' now.</small></span>'+
         '<span class="price'+(gold>=SMITH.reforge?'':' poor')+'">'+ico('coin')+SMITH.reforge+'</span></button>'+
@@ -4839,6 +4927,37 @@ function questForge(k){
     delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
   }
   if(L.quest&&!Object.keys(L.quest).length)delete L.quest;
+  Store.save();refresh();
+}
+/* ---------- Lv5 Ancient Steel: for a lion that has beaten the big four many times over ---------- */
+const ANCSTEEL={gold:1000,skulls:20,need:[['ancient',10],['twins',5],['king',10],['gate',5]]};
+function ancSteelProgress(L){const rec=(L&&L.record)||{};return ANCSTEEL.need.map(function(q){return {k:q[0],need:q[1],have:Math.min(q[1],rec[BOSSES[q[0]].kk]|0)};});}
+function ancSteelReady(L){return ancSteelProgress(L).every(function(p){return p.have>=p.need;});}
+function ancientSteelHTML(L){
+  const lv=wlvOf(L),F=FINISH[5];if(lv!==4)return '';
+  const P=ancSteelProgress(L),ready=P.every(p=>p.have>=p.need),gold=L.gold||0,sk=invCount(L,'skull'),can=gold>=ANCSTEEL.gold&&sk>=ANCSTEEL.skulls;
+  const rows=P.map(function(p){const B=BOSSES[p.k],done=p.have>=p.need;
+    return '<div class="asRow'+(done?' done':'')+'"><span class="asName">'+(done?ico('check'):'')+esc(B.name)+'</span>'+
+      '<div class="qBar" style="--qa:#1c2f66;--qb:'+F.col+'"><i style="width:'+(100*p.have/p.need).toFixed(1)+'%"></i></div>'+
+      '<b>'+p.have+' / '+p.need+'</b></div>';}).join('');
+  return '<div class="qCard"><div class="qHead"><span class="rico" style="color:'+F.col+'">'+ico('sword')+'</span><div class="v"><b>Ancient Steel <span style="color:'+F.col+'">Lv5</span></b>'+
+      '<small>+'+finPct(5)+'% damage, and an edge that glows like starlight</small></div></div>'+
+    '<div class="qSay">“Lionsteel is the best I can make from blood. Ancient Steel is older than me. The old kings carried it, and it only answers to the lion that has beaten them all, over and over. Show me that, and bring 1,000 gold and 20 skulls.”</div>'+
+    '<div class="asList">'+rows+'</div>'+
+    (ready?'<button class="row" data-act="ancSteelForge"><span class="rico" style="color:'+F.col+'">'+ico('hammer')+'</span><span class="v">Forge Ancient Steel'+
+        '<small>You have beaten them all. Pay the Blacksmith and it is done.</small></span>'+
+        '<span class="price both'+(can?'':' poor')+'"><span>'+ico('coin')+ANCSTEEL.gold+'</span><span class="skullPrice">'+ico('skull')+ANCSTEEL.skulls+'</span></span></button>'
+      :'<div class="qLock">Beat each of them enough times with '+esc(L.name)+' and the forge is yours. 1,000 gold and 20 skulls when you are ready.</div>')+
+    '</div>';
+}
+function ancSteelForge(){
+  const L=CAREER.lion;if(!L||!CAREER.locked||wlvOf(L)!==4||!ancSteelReady(L))return;
+  const sk=invCount(L,'skull');L.gold=L.gold||0;
+  if(L.gold<ANCSTEEL.gold||sk<ANCSTEEL.skulls){smithSay(SMITH.broke);toast('You need '+[L.gold<ANCSTEEL.gold?(ANCSTEEL.gold-L.gold)+' more gold':'',sk<ANCSTEEL.skulls?(ANCSTEEL.skulls-sk)+' more skull'+(ANCSTEEL.skulls-sk===1?'':'s'):''].filter(Boolean).join(' and '));refresh();return;}
+  L.gold-=ANCSTEEL.gold;for(let i=0;i<ANCSTEEL.skulls;i++)invTake(L,'skull');
+  L.wlv=5;SMITH.hit=1;SFX.clang();SFX.herald();
+  SMITH.quip='Ancient Steel. I never thought I would hold it. Go on, take it.';
+  toast(WEAPONS[L.weapon].name+' · Lv5 Ancient Steel');
   Store.save();refresh();
 }
 function smithQuestHTML(L){
@@ -5337,7 +5456,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5384,6 +5503,7 @@ function devDo(k){
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
   else if(k==='pirate'){if(!invAdd(L,'pirate',1)){msg='Bag is full';}else msg='Pirate Soul is in the bag. Use it from there to bind it';}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
+  else if(k==='ancSteel'){L.wlv=4;const r=L.record;r.ancientKills=Math.max(10,r.ancientKills|0);r.twinsKills=Math.max(5,r.twinsKills|0);r.kingKills=Math.max(10,r.kingKills|0);r.gateKills=Math.max(5,r.gateKills|0);L.gold=(L.gold||0)+1000;invAdd(L,'skull',20);msg='Lionsteel weapon, boss wins, 1,000 gold and 20 skulls. Go see the Blacksmith';}
   else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
   else if(k==='allBosses'){DEV.allBosses=!DEV.allBosses;msg=DEV.allBosses?'Every boss is open':'Bosses come in order again';}
   else if(k==='beatOld'){L.record.oldKills=Math.max(1,L.record.oldKills|0);msg='Old Lion counts as beaten';}
@@ -5786,6 +5906,7 @@ function handleAct(a,el){
   if(a==='ancYes'){ancAnswer(true);return;}
   if(a==='ancNo'){ancAnswer(false);return;}
   if(a==='questForge'){questForge(el&&el.dataset.k);return;}
+  if(a==='ancSteelForge'){ancSteelForge();return;}
   if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
     if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='openFence'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='fence';fenceSay(FENCE.hello);refresh();
@@ -5826,6 +5947,9 @@ function handleAct(a,el){
   if(a==='shopItem'){const k=el&&el.dataset.item;if(!SHOP.price[k])return;shopBuy(k);return;}
   if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
   if(a==='invUse'){invUse(el.dataset.k);return;}
+  if(a==='crateSkip'){crateSkip();return;}
+  if(a==='crateDone'){UI.crate=null;closeSheet();openInventory();return;}
+  if(a==='crateAgain'){UI.crate=null;openCrate();return;}
   if(a==='cosBuy'){cosBuy(el.dataset.k);return;}
   if(a==='cosPut'){cosPut(el.dataset.k,el.dataset.s);return;}
   if(a==='cosCut'){SFX.ui();UI.cosCut=el.dataset.s;openCosSheet('shears');return;}
@@ -10332,6 +10456,7 @@ if(typeof window!=='undefined'){
 const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and event update',top:'QUESTLINES &',bottom:'NEW BOSSES',tag:'QUESTS · BOSSES · EVENTS',
   items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
     ['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],
+    ['sword','Lv5 Ancient Steel','Past Lionsteel, the Blacksmith can forge Ancient Steel: +20% damage and a starlight-blue edge. Your lion has to have beaten the Ancient Lion 10 times, the Twin Kings 5, the Lion King 10 and the Gatekeeper 5, then pay 1,000 gold and 20 skulls.'],
     ['paw','New arenas','The Gatekeeper now fights in front of his Iron Gate, and his closing walls come in as spiked iron. The Pack comes out of the Hyena Den: dry savannah grass, bones, and a cave full of eyes. The walls still close in.'],
     ['crown','The Twin Kings\u2019 children','Lore accurate: the Twin Kings are guarded by their four children now. Brann swings, Ysra shoots, Morwen casts and Vex tricks. Beat all four, then their fathers.'],
     ['earring','DandeLion','A gag gift at the Cosmetic Lion: a dandelion behind one ear, five gold. Nobody will be scared of it.'],
