@@ -807,6 +807,12 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .intro.top .skip{bottom:auto;top:8px}
 .intro.hidden{display:none}
 .crBody{padding-bottom:24px}
+.invWorn{margin:0 20px 14px;padding:10px 12px;border-radius:16px;background:var(--s2)}
+.invWorn .iwHd{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:2px 2px 8px}
+.iwRow{display:flex;align-items:center;gap:10px;padding:6px 2px}
+.iwRow+.iwRow{border-top:1px solid rgba(255,255,255,.06)}
+.iwRow .rico{width:34px;height:34px}.iwRow b{flex:1;font-size:15px;font-weight:600}
+.iwRow button{padding:8px 14px;border-radius:999px;border:0;background:rgba(255,255,255,.08);color:var(--t1);font:600 13px/1 inherit;cursor:pointer}
 .daily{display:flex;align-items:center;gap:14px;width:calc(100% - 40px);margin:0 20px 14px;padding:12px 14px;border-radius:18px;border:0;text-align:left;cursor:pointer;
   background:var(--s1,#1c1c1e);color:var(--t2);box-shadow:0 0 0 1px rgba(255,255,255,.06) inset}
 .daily.ready{background:linear-gradient(135deg,rgba(201,164,106,.22),rgba(201,164,106,.06));color:var(--t1);box-shadow:0 0 0 1.5px rgba(201,164,106,.55) inset,0 0 22px rgba(201,164,106,.15)}
@@ -3894,6 +3900,12 @@ function invTake(L,k){
   const inv=invOf(L),its=inv.filter(x=>x.k===k),it=its[its.length-1];if(!it)return false;
   it.n--;if(it.n<=0)inv.splice(inv.indexOf(it),1);return true;
 }
+function wornHTML(L){
+  const w=devWorn(L);if(!w.length)return '';
+  return '<div class="invWorn"><div class="iwHd">Equipped</div>'+w.map(function(x){const I=ITEMS[x.k];
+    return '<div class="iwRow"><span class="rico'+(x.k==='pirate'?' sea':'')+'">'+ico(I.ico)+'</span><b>'+esc(I.name)+'</b>'+
+      '<button data-act="devUnequip" data-k="'+x.k+'">Unequip</button></div>';}).join('')+'</div>';
+}
 function openInventory(sel){
   const L=CAREER.lion;if(!L)return;
   const items=invOf(L);
@@ -3922,7 +3934,7 @@ function openInventory(sel){
           '<div class="act"><button data-act="invTrashNo">Keep it</button>'+
           '<button class="bin" data-act="invTrashGo" data-n="1">'+ico('trash')+(it.n>1?'Throw 1':'Throw away')+'</button>'+
           (it.n>1?'<button class="bin" data-act="invTrashGo" data-n="all">'+ico('trash')+'All '+it.n+'</button>':'')+'</div></div>'
-        :'<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':(I.use==='cos'?(I.cs==='paint'?'Paint it on':'Put it on'):(I.use==='shears'?'Snip something off':(I.use==='gift'?'Wrap a gift':'Use')))))))))+'</button>'
+        :'<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.dev?'Equip':I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':(I.use==='cos'?(I.cs==='paint'?'Paint it on':'Put it on'):(I.use==='shears'?'Snip something off':(I.use==='gift'?'Wrap a gift':'Use')))))))))+'</button>'
         :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+
         '<button class="invBin" data-act="invTrash" aria-label="Throw away" title="Throw away">'+ico('trash')+'</button></div>');
   } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
@@ -3935,7 +3947,7 @@ function openInventory(sel){
     '<button data-act="closeSheet">'+ico('check')+'Done</button></div><div class="sheetBody">'+
     '<div class="invHead"><div><b>'+esc(L.name)+'’s bag</b><small>'+items.length+' of '+INV_SLOTS+' slots used</small></div>'+
     '<span class="goldPill">'+ico('coin')+(L.gold||0)+'</span></div>'+
-    crateMsg+'<div class="invTop">'+det+'</div><div class="invGrid">'+grid+'</div>'+
+    crateMsg+'<div class="invTop">'+det+'</div>'+wornHTML(L)+'<div class="invGrid">'+grid+'</div>'+
     '<div class="grp">The bag belongs to '+esc(L.name)+'. When it retires or dies, the bag goes with it.</div>'+
     '</div>';
   $('sheetWrap').classList.remove('hidden');
@@ -4833,17 +4845,35 @@ function openCosSheet(k){
       g.fillText('LEFT',w/2-R*1.75,h/2+R*.2);g.fillText('RIGHT',w/2+R*1.75,h/2+R*.2);g.textAlign='start';}
   }catch(e){}
 }
+/* dev items can come off again and go back into the bag: the cosmetics and the Pirate Soul */
+function devWorn(L){
+  const out=[],o=cosOf(L)||{};
+  Object.keys(ITEMS).forEach(function(k){const I=ITEMS[k];if(!I.dev)return;
+    if(I.use==='cos'&&o[I.cs]===I.val)out.push({k:k,slot:I.cs});
+    if(I.use==='soul'&&soulOf(L)===I.soul)out.push({k:k,soul:1});});
+  return out;
+}
+function devUnequip(k,quiet){
+  const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!I.dev)return false;
+  const w=devWorn(L).filter(x=>x.k===k)[0];if(!w)return false;
+  if(!invAdd(L,k,1)){toast('The bag is full. Make room first');return false;}
+  if(w.soul)delete L.soul;else{if(L.cos)delete L.cos[w.slot];if(!cosOf(L))delete L.cos;}
+  delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
+  if(!quiet){SFX.ui();toast(I.name+' is back in the bag');Store.save();refresh();openInventory();}
+  return true;
+}
 function cosPut(k,side){
   const L=CAREER.lion,I=ITEMS[k];if(!L||!I||I.use!=='cos'||!invCount(L,k))return;
   L.cos=cosOf(L)||{};
   let slot=I.cs,val=I.val;
   if(I.cs==='ear'){if(side!=='earL'&&side!=='earR')return;slot=side;}
   if(I.cs==='patch'){if(side!=='L'&&side!=='R')return;val=side;}
+  if(L.cos[slot]){const old=cosItemFor(slot,L.cos[slot]);if(old&&ITEMS[old].dev&&I.dev){invTake(L,k);if(!devUnequip(old,true)){invAdd(L,k,1);return;}invAdd(L,k,1);L.cos=cosOf(L)||{};}}
   if(L.cos[slot]){const was=ITEMS[cosItemFor(slot,L.cos[slot])].name.toLowerCase();
     toast(I.cs==='ear'?'That ear is taken':L.name+' already wears the '+was+'. Snip it off with Cosmetic Shears first');if(!Object.keys(L.cos).length)delete L.cos;return;}
   invTake(L,k);L.cos[slot]=val;SFX.roar();
   const where=I.cs==='ear'?' in its '+COS_WHERE[slot]:(I.cs==='patch'?' over its '+COS_WHERE[val]:'');
-  toast(L.name+(I.cs==='paint'?' is painted for war':' wears the '+I.name.toLowerCase()+where));
+  toast(L.name+(I.cs==='paint'?' is painted for war':(I.dev?' equips the '+I.name:' wears the '+I.name.toLowerCase())+where));
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 function cosCutGo(){
@@ -5149,7 +5179,8 @@ function bindSoul(kind){
   const L=CAREER.lion,S=SOULS[kind];if(!L||!S||!invCount(L,S.item))return;
   const prev=soulOf(L);
   if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
-  invTake(L,S.item);L.soul=kind;
+  if(prev&&SOULS[prev].dev&&SOULS[prev].item){invTake(L,S.item);invAdd(L,SOULS[prev].item,1);}else invTake(L,S.item);
+  L.soul=kind;
   if(kind==='divine')SFX.heal();else if(kind==='pirate'){SFX.cast();SFX.roar();}else SFX.roar();
   toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
   delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
@@ -5982,6 +6013,7 @@ function handleAct(a,el){
   if(a==='invPick'){SFX.ui();openInventory(+el.dataset.i);return;}
   if(a==='invUse'){invUse(el.dataset.k);return;}
   if(a==='crateSkip'){crateSkip();return;}
+  if(a==='devUnequip'){devUnequip(el.dataset.k);return;}
   if(a==='dailyCrate'){claimDaily();return;}
   if(a==='crateDone'){UI.crate=null;closeSheet();openInventory();return;}
   if(a==='crateAgain'){UI.crate=null;openCrate();return;}
