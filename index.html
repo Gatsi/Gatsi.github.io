@@ -642,7 +642,8 @@ button{cursor:pointer}
 .badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
 .badge.sea{color:#7dffd6;background:rgba(40,180,150,.16);display:inline-flex;align-items:center;gap:5px}.badge.sea .ico{width:14px;height:14px}
 .badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
-.invSlot.void,.rico.void{color:#c9a2ff}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
+.invSlot.void,.rico.void{color:#c9a2ff}
+.invSlot.sea,.rico.sea{color:#5effc8}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
 .qCard{padding:16px 18px 14px;border-top:1px solid rgba(255,255,255,.06)}.qCard:first-child{border-top:0}
 .qHead{display:flex;align-items:center;gap:12px}.qHead .rico .ico{width:24px;height:24px}
 .qHead b{display:block;font-size:17px;font-weight:600}.qHead small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
@@ -2099,7 +2100,7 @@ function finText(c){const l=wlvOf(c);return l?('Lv'+l+' '+FINISH[l].name+' finis
 const SOULS={
   divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
   demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'},
-  pirate:{name:'Pirate Soul', item:null,    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
+  pirate:{name:'Pirate Soul', item:'pirate',    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
   void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
 function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct||10):0;}
 function soulOf(c){return c&&SOULS[c.soul]?c.soul:null;}
@@ -3731,6 +3732,7 @@ const ITEMS={
   potion:{name:'Personality Potion',ico:'flask',use:'shopPotion',desc:'Rerolls one of its two traits. You choose which one goes.'},
   weapon:{name:'Weapon',            ico:'sword',use:'shopWeapon',desc:'A voucher for the rack. Use it to swap to any weapon.'},
   skull: {name:'Lion Skull',        ico:'skull',use:null,        desc:'Taken from a lion it beat in a championship. The Mystic Lion takes them as payment.'},
+  pirate:{name:'Pirate Soul',       ico:'soulP',use:'soul',soul:'pirate',dev:1,desc:'Developer only. The soul of a drowned sea captain: a whirlpool under your lion, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to every stat.'},
   divine:{name:'Divine Soul',       ico:'soulD',use:'soul',soul:'divine',desc:'Bind it and your lion\u2019s eyes glow white as an angel\u2019s, with a holy light around it. +10% to every stat.'},
   demon: {name:'Demonic Soul',      ico:'soulX',use:'soul',soul:'demon', desc:'Bind it and your lion\u2019s eyes burn red, wreathed in hellfire. +10% to every stat.'},
   train: {name:'Upgrade Token',     ico:'token',use:'shopTrain',desc:'A guaranteed training session. Use it and pick the stat: the same gain a lucky win gives, and it stays for good.'},
@@ -3800,14 +3802,14 @@ function openInventory(sel){
   let grid='';
   for(let i=0;i<INV_SLOTS;i++){
     const it=items[i],I=it&&ITEMS[it.k];
-    grid+=it?('<button class="invSlot full'+(i===sel?' on':'')+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='crate'?' fence':'')+'" data-act="invPick" data-i="'+i+'" title="'+I.name+'">'+
+    grid+=it?('<button class="invSlot full'+(i===sel?' on':'')+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='pirate'?' sea':'')+(it.k==='crate'?' fence':'')+'" data-act="invPick" data-i="'+i+'" title="'+I.name+'">'+
       ico(I.ico)+'<small>'+I.name+'</small>'+(it.n>1?'<i>×'+it.n+'</i>':'')+'</button>')
       :'<div class="invSlot"></div>';
   }
   let det='';
   if(sel>=0){
     const it=items[sel],I=ITEMS[it.k];
-    det='<div class="invDet"><span class="rico'+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+'">'+ico(I.ico)+'</span><div class="v"><b>'+I.name+
+    det='<div class="invDet"><span class="rico'+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='pirate'?' sea':'')+'">'+ico(I.ico)+'</span><div class="v"><b>'+I.name+
       (it.n>1?' <em>×'+it.n+'</em>':'')+'</b><small>'+I.desc+'</small></div></div>'+
       (I.use==='pact'?'<div class="grp">a gamble: the new IV is rolled fresh, from 1 to 10. '+esc(L.name)+' is IV '+(L.iv||5)+' now</div>':'')+
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
@@ -4935,7 +4937,7 @@ function bindSoul(kind){
   const prev=soulOf(L);
   if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
   invTake(L,S.item);L.soul=kind;
-  if(kind==='divine')SFX.heal();else SFX.roar();
+  if(kind==='divine')SFX.heal();else if(kind==='pirate'){SFX.cast();SFX.roar();}else SFX.roar();
   toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
   delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
   Store.save();refresh();openInventory();
@@ -5274,7 +5276,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul',L&&soulOf(L)==='pirate'?'Bound \u00b7 tap to take it off':'Dev only \u00b7 binds it now, +15%',L&&soulOf(L)==='pirate')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5319,8 +5321,7 @@ function devDo(k){
   else if(k==='arena'){if(!CAREER.champ)startChampionship();const ch=CAREER.champ,f=ch.foes[Math.min(ch.i,4)],ks=CH_ARENAS.map(a=>a[0]);
     f.arena=ks[(ks.indexOf(arenaOf(f))+1)%ks.length];msg='Next bout: '+ARENAS[f.arena].name;}
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
-  else if(k==='pirate'){if(soulOf(L)==='pirate'){delete L.soul;msg='Pirate Soul taken off';}else{const was=soulOf(L);L.soul='pirate';SFX.cast();msg=was?'The Pirate Soul drowns the '+SOULS[was].name.toLowerCase():'Pirate Soul bound';}
-    delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;}
+  else if(k==='pirate'){if(!invAdd(L,'pirate',1)){msg='Bag is full';}else msg='Pirate Soul is in the bag. Use it from there to bind it';}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
   else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
   else if(k==='allBosses'){DEV.allBosses=!DEV.allBosses;msg=DEV.allBosses?'Every boss is open':'Bosses come in order again';}
