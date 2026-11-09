@@ -667,6 +667,7 @@ button{cursor:pointer}
 .qCard .price.both{display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;white-space:nowrap}.qCard .price.both>span{display:inline-flex;align-items:center;gap:4px}
 .qDone{display:flex;align-items:center;gap:8px;padding:12px 0 0;font-size:14px;font-weight:600}.qDone .ico{width:18px;height:18px}
 .voidCv{height:150px;margin-top:12px;border-radius:14px}
+.swordCv{width:88px;height:56px;flex:0 0 88px;border-radius:12px;background:#151210}
 .asList{display:flex;flex-direction:column;gap:8px;margin:12px 0 2px}
 .asRow{display:grid;grid-template-columns:118px 1fr auto;align-items:center;gap:10px;font-size:13px;color:var(--t2)}
 .asRow .qBar{margin:0;height:9px}.asRow b{color:var(--t1);font-weight:600;font-size:12.5px;min-width:44px;text-align:right}
@@ -2424,7 +2425,7 @@ function derive(c,scale){
   const TRn=trainOf(c);
   const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp);
   const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
-  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+finPct(wlvOf(c))/100);
+  const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+finPct(wlvOf(c))/100)*(1+(SWORD_DMG[(cosOf(c)||{}).hat]||0));
   const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
   const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk);
   /* a bound soul, divine or demonic: +10% to everything */
@@ -3722,6 +3723,7 @@ function badgesFor(L,rec){
   return out;
 }
 function renderCareer(){
+  setTimeout(paintSwordRows,0);
   const host=$('career'),L=CAREER.lion;
   if(!L){
     host.innerHTML='<div class="hd"><h2>The den</h2><span>No lion yet.</span></div>'+
@@ -3877,6 +3879,8 @@ const ITEMS={
   sashTwins:{name:'Twin Crown Sash', ico:'sash',use:'cos',cs:'sash',val:'twins',boss:'twins',desc:'Half black silk, half white, with a split crown where they meet. Taken from the Twin Kings. Only won by beating both.'},
   sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
+  swordSteel:{name:'Steel Sword',     ico:'sword',use:'cos',cs:'hat',val:'swsteel',swap:1,desc:'A plain, honest blade in a leather scabbard, slung across the back. +5% damage while it is worn. Takes the hat slot.'},
+  swordGold:{name:'Gold Sword',       ico:'sword',use:'cos',cs:'hat',val:'swgold',swap:1,desc:'A gilded blade in a gold scabbard with a ruby in the pommel, slung across the back. +10% damage while it is worn. Takes the hat slot.'},
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
   partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
@@ -3934,7 +3938,7 @@ function openInventory(sel){
           '<div class="act"><button data-act="invTrashNo">Keep it</button>'+
           '<button class="bin" data-act="invTrashGo" data-n="1">'+ico('trash')+(it.n>1?'Throw 1':'Throw away')+'</button>'+
           (it.n>1?'<button class="bin" data-act="invTrashGo" data-n="all">'+ico('trash')+'All '+it.n+'</button>':'')+'</div></div>'
-        :'<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+(I.dev?'Equip':I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':(I.use==='cos'?(I.cs==='paint'?'Paint it on':'Put it on'):(I.use==='shears'?'Snip something off':(I.use==='gift'?'Wrap a gift':'Use')))))))))+'</button>'
+        :'<div class="act">'+(I.use?'<button class="key" data-act="invUse" data-k="'+it.k+'">'+ico('check')+((I.dev||I.swap)?'Equip':I.soul?'Bind the soul':(I.use==='pact'?'Make the pact':(I.use==='cleanse'?'Cleanse the soul':(I.use==='crate'?'Crack it open':(I.use==='scout'?'Read the map':(I.use==='tonic'?'Drink it':(I.use==='cos'?(I.cs==='paint'?'Paint it on':'Put it on'):(I.use==='shears'?'Snip something off':(I.use==='gift'?'Wrap a gift':'Use')))))))))+'</button>'
         :(I.passive?'<button disabled>'+ico(I.ico)+'Works on its own</button>':'<button disabled>'+ico('lion')+'A trophy. Keep it.</button>'))+
         '<button class="invBin" data-act="invTrash" aria-label="Throw away" title="Throw away">'+ico('trash')+'</button></div>');
   } else det='<div class="invNote">'+ico('bag')+'<div><b>Empty</b><small>Buy something in the Lion Store and it lands here. '+
@@ -4848,13 +4852,13 @@ function openCosSheet(k){
 /* dev items can come off again and go back into the bag: the cosmetics and the Pirate Soul */
 function devWorn(L){
   const out=[],o=cosOf(L)||{};
-  Object.keys(ITEMS).forEach(function(k){const I=ITEMS[k];if(!I.dev)return;
+  Object.keys(ITEMS).forEach(function(k){const I=ITEMS[k];if(!I.dev&&!I.swap)return;
     if(I.use==='cos'&&o[I.cs]===I.val)out.push({k:k,slot:I.cs});
     if(I.use==='soul'&&soulOf(L)===I.soul)out.push({k:k,soul:1});});
   return out;
 }
 function devUnequip(k,quiet){
-  const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!I.dev)return false;
+  const L=CAREER.lion,I=ITEMS[k];if(!L||!I||!(I.dev||I.swap))return false;
   const w=devWorn(L).filter(x=>x.k===k)[0];if(!w)return false;
   if(!invAdd(L,k,1)){toast('The bag is full. Make room first');return false;}
   if(w.soul)delete L.soul;else{if(L.cos)delete L.cos[w.slot];if(!cosOf(L))delete L.cos;}
@@ -4868,12 +4872,12 @@ function cosPut(k,side){
   let slot=I.cs,val=I.val;
   if(I.cs==='ear'){if(side!=='earL'&&side!=='earR')return;slot=side;}
   if(I.cs==='patch'){if(side!=='L'&&side!=='R')return;val=side;}
-  if(L.cos[slot]){const old=cosItemFor(slot,L.cos[slot]);if(old&&ITEMS[old].dev&&I.dev){invTake(L,k);if(!devUnequip(old,true)){invAdd(L,k,1);return;}invAdd(L,k,1);L.cos=cosOf(L)||{};}}
+  if(L.cos[slot]){const old=cosItemFor(slot,L.cos[slot]);if(old&&(ITEMS[old].dev||ITEMS[old].swap)&&(I.dev||I.swap)){invTake(L,k);if(!devUnequip(old,true)){invAdd(L,k,1);return;}invAdd(L,k,1);L.cos=cosOf(L)||{};}}
   if(L.cos[slot]){const was=ITEMS[cosItemFor(slot,L.cos[slot])].name.toLowerCase();
     toast(I.cs==='ear'?'That ear is taken':L.name+' already wears the '+was+'. Snip it off with Cosmetic Shears first');if(!Object.keys(L.cos).length)delete L.cos;return;}
   invTake(L,k);L.cos[slot]=val;SFX.roar();
   const where=I.cs==='ear'?' in its '+COS_WHERE[slot]:(I.cs==='patch'?' over its '+COS_WHERE[val]:'');
-  toast(L.name+(I.cs==='paint'?' is painted for war':(I.dev?' equips the '+I.name:' wears the '+I.name.toLowerCase())+where));
+  toast(L.name+(I.cs==='paint'?' is painted for war':((I.dev||I.swap)?' equips the '+I.name:' wears the '+I.name.toLowerCase())+where));
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 function cosCutGo(){
@@ -4885,6 +4889,8 @@ function cosCutGo(){
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
+const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1}};
+const SWORD_DMG={swsteel:.05,swgold:.1};
 const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
   thanks:['Done. Do not drop it.','That will bite deeper now.','Good steel. Better now.'],
@@ -4915,6 +4921,12 @@ function drawSmithHammer(g,x,y,R,ang,swing){
   g.beginPath();g.rect(R*1.2,R*.3-R*.32,R*.42,R*.64);g.fill();g.stroke();
   g.restore();
 }
+function paintSwordRows(){
+  document.querySelectorAll('canvas.swordCv').forEach(function(cv){const g=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1);
+    if(cv.width!==88*dpr){cv.width=88*dpr;cv.height=56*dpr;}g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,88,56);
+    g.fillStyle='#151210';g.fillRect(0,0,88,56);
+    g.save();g.translate(44,28);g.rotate(.72);drawSheathedSword(g,30,0,1.2,cv.dataset.sword);g.restore();});
+}
 function smithHTML(L){
   const gold=L.gold||0,lv=wlvOf(L),nx=lv<3?FINISH[lv+1]:null;
   let track='';for(let i=1;i<=5;i++)track+='<span class="finPip'+(i<=lv?' on':(i>=4?' lock':''))+'" style="--fc:'+FINISH[i].col+'"><i></i>'+FINISH[i].name+'<small>+'+finPct(i)+'%</small></span>';
@@ -4934,6 +4946,15 @@ function smithHTML(L){
             :lv===4?'<div class="finMax" style="color:'+FINISH[4].col+'">'+ico('check')+'Lionsteel. Quenched in the blood of a hundred lions.</div>':''))+
         '<div class="warnTxt finWarn">Finishes belong to the weapon. If '+esc(L.name)+' changes weapon, the finish is lost.</div></div>'+
       smithQuestHTML(L)+ancientSteelHTML(L)+
+    '</div>'+
+    '<div class="hd sub2"><h2>Swords for the back</h2><span>Worn across the back in the hat slot. Equip and unequip them from the bag.</span></div>'+
+    '<div class="card">'+
+      ['swordSteel','swordGold'].map(function(k){const S=SWORDS[k],I=ITEMS[k],own=invCount(L,k)+((cosOf(L)||{}).hat===I.val?1:0);
+        return '<button class="row" data-act="smithBuy" data-k="'+k+'"><canvas class="swordCv" data-sword="'+I.val+'" width="88" height="56"></canvas><span class="v">'+I.name+
+          '<small><b style="color:#5ee6a8">+'+Math.round(S.dmg*100)+'% damage</b> \u00b7 '+(own?'You have '+own+(((cosOf(L)||{}).hat===I.val)?' (worn)':'')+'. ':'')+(k==='swordGold'?'Gilded scabbard, ruby pommel.':'Leather scabbard, steel fittings.')+'</small></span>'+
+          '<span class="price'+(gold>=S.price?'':' poor')+'">'+ico('coin')+S.price+'</span></button>';}).join('')+
+    '</div>'+
+    '<div class="card">'+
       '<button class="row" data-act="smithBuy" data-k="reforge"><span class="rico">'+ico('shield')+'</span><span class="v">Reforge Armour'+
         '<small>A ticket for the bag. Use it to swap to any armour. Wearing '+ARMORS[L.armor].name.toLowerCase()+' now.</small></span>'+
         '<span class="price'+(gold>=SMITH.reforge?'':' poor')+'">'+ico('coin')+SMITH.reforge+'</span></button>'+
@@ -5071,6 +5092,12 @@ function smithFinish(){
   Store.save();refresh();
 }
 function smithBuy(k){
+  const L0=CAREER.lion;
+  if(L0&&CAREER.locked&&SWORDS[k]){const S=SWORDS[k],I=ITEMS[k];L0.gold=L0.gold||0;
+    if(L0.gold<S.price){smithSay(SMITH.broke);toast('You need '+(S.price-L0.gold)+' more gold');refresh();return;}
+    if(!invAdd(L0,k,1)){toast('The bag is full');return;}
+    L0.gold-=S.price;SFX.clang();SMITH.quip=k==='swordGold'?'Gold over good steel. Try not to get it dirty.':'Good steel. It will not let you down.';
+    toast(I.name+' is in the bag. Equip it from there');Store.save();refresh();return;}
   const L=CAREER.lion;if(!L||!CAREER.locked||k!=='reforge')return;
   L.gold=L.gold||0;
   if(L.gold<SMITH.reforge){smithSay(SMITH.broke);toast('You need '+(SMITH.reforge-L.gold)+' more gold');refresh();return;}
@@ -5532,7 +5559,7 @@ function openDev(){
       btn('ev_carrion','skull','Carrion Feast','Claws or respects')+btn('ev_fix','coin','The Fix','Throw it, or the heavy')+
       btn('ev_exile','crown','Exiled King','Free him or turn him in')+btn('ev_clan','paw','Clan War','Bone or Ash')+
       btn('ev_feud','paw','The Clan Remembers',CAREER.feud?'The '+CLANS[CAREER.feud.by].name+' clan':'The payback ambush')+btn('ev_mirror','flame','Mystic\u2019s Mirror','Fight your shadow')+
-      btn('ev_scavenge','shield','Scavenger Night','Search the sand')+btn('ev_statue','crown','The Twin Statue','Pray, offer, or steal')+btn('ev_rand','dice','Random event','Any of the sixteen')+'</div>'+
+      btn('ev_scavenge','shield','Scavenger Night','Search the sand')+btn('ev_statue','crown','The Twin Statue','Pray, offer, or steal')+btn('ev_princes','maul','The Princes\u2019 Yard','Peek at their training')+btn('ev_princesC','maul','Princes: caught','Skip the roll, get caught')+btn('ev_princesS','scout','Princes: not caught','Skip the roll, learn')+btn('ev_rand','dice','Random event','Any of the seventeen')+'</div>'+
     '<div class="grp">Arenas and the cub</div><div class="devGrid">'+
       btn('arena','map','Next bout’s arena',CAREER.champ?ARENAS[arenaOf(CAREER.champ.foes[CAREER.champ.i])].name+' · tap to change':'Starts a championship')+
       btn('cubNow','paw','Cub joins next bout',CAREER.cub?(CAREER.cub.wait>0?'Waiting '+CAREER.cub.wait:'Ready'):'No cub yet')+'</div>';
@@ -5584,7 +5611,8 @@ function devDo(k){
     if(e==='clan')CAREER.feud=null;
     if(e==='carrion'||e==='statue')CAREER.boon=null;
     if(!CAREER.champ)startChampionship();
-    CAREER.event={k:e};closeSheet();MATCH.mode='career';UI.view='home';
+    let force=null;if(e==='princesC'){e='princes';force=1;}else if(e==='princesS'){e='princes';force=0;}
+    CAREER.event={k:e};if(force!==null)CAREER.event.force=force;closeSheet();MATCH.mode='career';UI.view='home';
     Store.save();refresh();enterEvent();return;
   }
   delete PREVMEM.career;
@@ -6093,7 +6121,7 @@ function makeLion(c,x,y,ang,light){
     barrier:0,barrierT:0,burn:0,burnDps:0,poison:0,poisonStacks:0,slow:0,slowMult:1,stun:0,invuln:0,
     frenzy:0,hidden:0,ambush:0,abil:c.abil.slice(),cd:{},brain:BRAINS[c.brain],
     strafe:Math.random()<.5?1:-1,strafeT:0,thinkT:0,aimErr:0,lastSeen:{x:x,y:y},
-    dark:isHog(c)?1:0,gab:isGab(c)?1:0,novaCd:2.2,starCd:3,
+    dark:(isHog(c)||c.prince)?1:0,gab:isGab(c)?1:0,novaCd:2.2,starCd:3,
     dead:false,anim:0,hitFlash:0,trail:0,moveX:0,moveY:0,ghosts:[],ghostT:0,
     stats:{dealt:0,taken:0,hits:0,shots:0,big:0,healed:0,abil:0,dist:0}};
 }
@@ -6454,6 +6482,7 @@ function newRound(){
       k.boss=1;k.dark=(anc||old)?0:1;k.foe=G.lions[0];G.lions.push(k);
       if(!anc&&!old&&CAREER.lion&&CAREER.lion.freedExile){k.maxHp*=1.12;k.hp=k.maxHp;log('<em class="blood">The Lion King knows who freed his brother.</em> He came angry.');}
       if(anc){k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;}
+      if(!anc&&!old){k.r*=KING_SIZE;k.mass*=1.5;}
       if(old){k.r*=OLD.size;k.mass*=1.4;}
       const T=BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king;
       k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;
@@ -6512,7 +6541,8 @@ function newRound(){
   if(AR.hazard)log('<em class="gold">'+AR.name+'.</em> '+AR.note);
   if(G.cubDue)log('Something small is watching from behind the gate.');
   G.lions.forEach(function(e){
-    if(e.dark&&!e.boss)log('<em class="blood">'+e.name+'</em> should not be here.');
+    if(e.dark&&!e.boss&&e.cfg.prince)log('<em class="blood">'+e.name+'</em> caught you watching. His brothers lean on the wall to see.');
+    else if(e.dark&&!e.boss)log('<em class="blood">'+e.name+'</em> should not be here.');
     if(e.gab&&!e.boss)log('<em class="gold">'+e.name+'</em> has arrived. The crowd goes quiet.');
   });
   if(introOn())startIntro([[a],[b]]);
@@ -6951,7 +6981,7 @@ function kingCfg(){
     abil:['roar','frenzy'],brain:'adaptive',perks:[],pelt:3,mane:5,iv:10,scars:[1284,617,1401,220],
     traits:['bold','thicknecked'],scale:KING_SCALE,dmgScale:KING_DMG,boss:1};
 }
-const KING_SCALE=3.2, KING_DMG=.75;
+const KING_SCALE=3.2, KING_DMG=.68, KING_SIZE=1.32;   /* KING_SIZE: drawn and hit-box size only, on top of what the scale gives */
 /* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
 const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330}};
 function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):0)):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
@@ -6974,7 +7004,7 @@ function bossPhase(b,n){
     :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.'))));
 }
 /* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
-const ANC={scale:1.8,dmg:.36,spd:.80,size:1.5,nova:.5,star:.4};
+const ANC={scale:1.8,dmg:.36,spd:.80,size:1.95,nova:.5,star:.4};
 let BOSSKIND='king';
 function ancientCfg(){
   return {side:'P',name:'Ancient Lion',build:'titan',armor:'scale',weapon:'claws',
@@ -7070,7 +7100,7 @@ function kingArrive(){
   G.guardPh=0;
   const top=Math.max(G.wall+90,170);
   const k=makeLion(kingCfg(),ARENA/2,top,Math.PI/2);
-  k.boss=1;k.dark=1;k.foe=nearestPrey(k)||G.lions[0];k.invuln=1.2;
+  k.boss=1;k.dark=1;k.r*=KING_SIZE;k.mass*=1.5;k.foe=nearestPrey(k)||G.lions[0];k.invuln=1.2;
   const T=BOSS_TUNE.king;k.maxHp*=T.hp;k.hp=k.maxHp;k.dmgMult*=T.dmg;
   if(CAREER.lion&&CAREER.lion.freedExile){k.maxHp*=1.12;k.hp=k.maxHp;log('<em class="blood">The Lion King knows who freed his brother.</em> He came angry.');}
   G.lions.push(k);KING.maxHp=k.maxHp;
@@ -9307,7 +9337,7 @@ function paintLion(g,o){
 const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9375,47 +9405,49 @@ function cosSash(g,R,lunge,v,t){
   g.fillStyle=S.trim;g.beginPath();g.arc(kx,ky,Math.max(.6,R*.028),0,7);g.fill();
 }
 /* the LionSword: a long blade in a split sheath (bone white one side, black the other, a gold seam between), slung across the back */
-function drawLionSword(g,R,lunge,t){
-  g.save();
-  g.translate(-R*.38,R*.02);g.rotate(-.72);
+const SWORD_STYLE={
+  lionsword:{halves:['#ece7dc','#141416'],seam:'#ffd24a',fit:'#c9a227',fitDk:'#7a5a08',grip:['#ece7dc','#141416'],guard:'#ffd24a',pom:'#ffd24a',gem:'#e2382c',crowns:1,strap:'rgba(42,30,18,.9)'},
+  swsteel:  {halves:['#5a3e26','#3a2818'],seam:'#2a1c10',fit:'#b8c0cc',fitDk:'#5a606a',grip:['#6a4a2c','#3a2a1a'],guard:'#c8d0da',pom:'#b8c0cc',gem:'#5aa8ff',stitch:1,strap:'rgba(42,30,18,.9)'},
+  swgold:   {halves:['#f0c850','#b8861a'],seam:'#7a5a08',fit:'#2a1e0a',fitDk:'#120c04',grip:['#141416','#3a2a0a'],guard:'#ffd24a',pom:'#ffd24a',gem:'#e2382c',filigree:1,strap:'rgba(60,40,10,.9)'}
+};
+function drawLionSword(g,R,lunge,t,style){
+  g.save();g.translate(-R*.38,R*.02);g.rotate(-.72);drawSheathedSword(g,R,lunge,t,style||'lionsword',true);g.restore();
+}
+/* a sword in its scabbard, lying along x with the hilt at +x. R sets the size. strap: draw the straps that hold it on a lion */
+function drawSheathedSword(g,R,lunge,t,style,strap){
+  const S=SWORD_STYLE[style]||SWORD_STYLE.lionsword;
   const L=R*1.55,W=R*.15;
-  /* the strap round the body */
-  [[-L*.32,1],[L*.12,1]].forEach(function(q){g.strokeStyle='rgba(42,30,18,.9)';g.lineWidth=Math.max(1,R*.07);
+  if(strap)[[-L*.32,1],[L*.12,1]].forEach(function(q){g.strokeStyle=S.strap;g.lineWidth=Math.max(1,R*.07);
     g.beginPath();g.moveTo(q[0]-R*.06,-R*.5);g.quadraticCurveTo(q[0]+R*.02,0,q[0]-R*.06,R*.5);g.stroke();
-    g.fillStyle='#c9a227';g.fillRect(q[0]-R*.035,-R*.09,R*.07,R*.18);});
-  /* shadow */
+    g.fillStyle=S.fit;g.fillRect(q[0]-R*.035,-R*.09,R*.07,R*.18);});
   g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(-L*.12+R*.04,R*.05,L*.62,W*.9,0,0,7);g.fill();
-  /* sheath: two halves */
   const sh=function(){g.beginPath();g.moveTo(-L*.7,0);g.quadraticCurveTo(-L*.66,-W*.6,-L*.58,-W*.62);g.lineTo(L*.32,-W*.55);g.lineTo(L*.32,W*.55);g.lineTo(-L*.58,W*.62);g.quadraticCurveTo(-L*.66,W*.6,-L*.7,0);g.closePath();};
   g.save();sh();g.clip();
-  g.fillStyle='#ece7dc';g.fillRect(-L,-W,L*1.5,W);
-  g.fillStyle='#141416';g.fillRect(-L,0,L*1.5,W);
+  g.fillStyle=S.halves[0];g.fillRect(-L,-W,L*1.5,W);g.fillStyle=S.halves[1];g.fillRect(-L,0,L*1.5,W);
   g.fillStyle='rgba(255,255,255,.25)';g.fillRect(-L,-W*.5,L*1.5,W*.12);
+  if(S.stitch){g.strokeStyle='rgba(230,210,170,.55)';g.lineWidth=Math.max(.4,R*.012);g.setLineDash([R*.04,R*.035]);g.beginPath();g.moveTo(-L*.62,-W*.35);g.lineTo(L*.3,-W*.35);g.moveTo(-L*.62,W*.35);g.lineTo(L*.3,W*.35);g.stroke();g.setLineDash([]);}
+  if(S.filigree){g.strokeStyle='rgba(120,80,10,.7)';g.lineWidth=Math.max(.4,R*.014);
+    for(let k=0;k<5;k++){const x=-L*.5+k*L*.16;g.beginPath();g.arc(x,-W*.1,W*.28,Math.PI*.2,Math.PI*1.3);g.stroke();g.beginPath();g.arc(x+L*.08,W*.1,W*.28,Math.PI*1.2,Math.PI*2.3);g.stroke();}}
   g.restore();
-  sh();g.strokeStyle='#7a5a08';g.lineWidth=Math.max(.7,R*.025);g.stroke();
-  g.strokeStyle='#ffd24a';g.lineWidth=Math.max(.6,R*.022);g.beginPath();g.moveTo(-L*.66,0);g.lineTo(L*.32,0);g.stroke();
-  /* gold fittings: the chape at the tip, two bands, the throat */
-  g.fillStyle='#c9a227';
+  sh();g.strokeStyle=S.fitDk;g.lineWidth=Math.max(.7,R*.025);g.stroke();
+  g.strokeStyle=S.seam;g.lineWidth=Math.max(.6,R*.022);g.beginPath();g.moveTo(-L*.66,0);g.lineTo(L*.32,0);g.stroke();
+  g.fillStyle=S.fit;
   g.beginPath();g.moveTo(-L*.7,0);g.quadraticCurveTo(-L*.68,-W*.55,-L*.6,-W*.6);g.lineTo(-L*.54,-W*.6);g.lineTo(-L*.54,W*.6);g.lineTo(-L*.6,W*.6);g.quadraticCurveTo(-L*.68,W*.55,-L*.7,0);g.fill();
   [-L*.25,L*.05].forEach(function(x){g.fillRect(x,-W*.6,L*.035,W*1.2);});
   g.fillRect(L*.27,-W*.62,L*.06,W*1.24);
-  /* half a crown on each half of the sheath */
-  [[-1,'#141416'],[1,'#ece7dc']].forEach(function(q){const cx=-L*.1,cy=q[0]*W*.28,s=W*.32;
-    g.fillStyle='#ffd24a';g.beginPath();g.moveTo(cx-s,cy+s*.35*q[0]*-1);g.lineTo(cx-s,cy-s*.25*q[0]*-1);g.lineTo(cx-s*.5,cy);g.lineTo(cx,cy-s*.5*q[0]*-1);g.lineTo(cx+s*.5,cy);g.lineTo(cx+s,cy-s*.25*q[0]*-1);g.lineTo(cx+s,cy+s*.35*q[0]*-1);g.closePath();g.fill();});
-  /* the hilt: crossguard, wrapped grip, pommel with a red stone */
+  if(S.crowns)[[-1],[1]].forEach(function(q){const cx=-L*.1,cy=q[0]*W*.28,s2=W*.32;
+    g.fillStyle='#ffd24a';g.beginPath();g.moveTo(cx-s2,cy+s2*.35*q[0]*-1);g.lineTo(cx-s2,cy-s2*.25*q[0]*-1);g.lineTo(cx-s2*.5,cy);g.lineTo(cx,cy-s2*.5*q[0]*-1);g.lineTo(cx+s2*.5,cy);g.lineTo(cx+s2,cy-s2*.25*q[0]*-1);g.lineTo(cx+s2,cy+s2*.35*q[0]*-1);g.closePath();g.fill();});
   const gx=L*.33;
-  g.fillStyle='#ffd24a';g.strokeStyle='#7a5a08';g.lineWidth=Math.max(.6,R*.02);
+  g.fillStyle=S.guard;g.strokeStyle=S.fitDk;g.lineWidth=Math.max(.6,R*.02);
   g.beginPath();g.moveTo(gx,-W*1.35);g.quadraticCurveTo(gx+W*.5,-W*.6,gx+W*.25,0);g.quadraticCurveTo(gx+W*.5,W*.6,gx,W*1.35);g.lineTo(gx+W*.35,W*1.2);g.quadraticCurveTo(gx+W*.75,0,gx+W*.35,-W*1.2);g.closePath();g.fill();g.stroke();
   const gl=L*.3;
-  for(let i=0;i<6;i++){g.fillStyle=i%2?'#141416':'#ece7dc';g.fillRect(gx+W*.4+i*gl/6,-W*.3,gl/6+.5,W*.6);}
-  g.strokeStyle='rgba(201,162,39,.8)';g.lineWidth=Math.max(.5,R*.015);g.strokeRect(gx+W*.4,-W*.3,gl,W*.6);
+  for(let i=0;i<6;i++){g.fillStyle=S.grip[i%2];g.fillRect(gx+W*.4+i*gl/6,-W*.3,gl/6+.5,W*.6);}
+  g.strokeStyle=S.fit;g.lineWidth=Math.max(.5,R*.015);g.strokeRect(gx+W*.4,-W*.3,gl,W*.6);
   const px=gx+W*.4+gl+W*.25;
-  g.fillStyle='#ffd24a';g.beginPath();g.arc(px,0,W*.42,0,7);g.fill();g.stroke();
-  g.save();g.shadowColor='#ff3a2a';g.shadowBlur=RM?0:Math.max(3,R*.15)*(.7+.3*Math.sin(t*3));
-  g.fillStyle='#e2382c';g.beginPath();g.arc(px,0,W*.2,0,7);g.fill();g.restore();
-  /* a glint running down the gold */
+  g.fillStyle=S.pom;g.beginPath();g.arc(px,0,W*.42,0,7);g.fill();g.stroke();
+  g.save();g.shadowColor=S.gem;g.shadowBlur=RM?0:Math.max(3,R*.15)*(.7+.3*Math.sin(t*3));
+  g.fillStyle=S.gem;g.beginPath();g.arc(px,0,W*.2,0,7);g.fill();g.restore();
   const gp=((t*.5)%1);if(gp<.3){g.fillStyle='rgba(255,255,255,'+(.6*(1-gp/.3)).toFixed(2)+')';g.beginPath();g.arc(-L*.6+gp/.3*L*.95,-W*.3,W*.15,0,7);g.fill();}
-  g.restore();
 }
 /* in the online pit the LionSword settles one grudge: it one-shots Adamullah's lion and takes nothing from it, and every other player's lion one-shots it */
 const SWORD_GRUDGE='adamullah';
@@ -9429,7 +9461,7 @@ function swordRule(src,t){
 }
 function cosBack(g,R,lunge,o,t,C){
   const hx=R*.42+lunge;
-  if(o.hat==='lionsword')drawLionSword(g,R,lunge,t);
+  if(o.hat==='lionsword'||o.hat==='swsteel'||o.hat==='swgold')drawLionSword(g,R,lunge,t,o.hat);
 
   if(o.mane==='bones')[1.7,2.35,3.14,3.93,4.58].forEach(function(a,i){
     const rr=R*(.7+(i%2)*.06);boneAt(g,hx+Math.cos(a)*rr,Math.sin(a)*rr,R*.3,Math.max(1,R*.06),a+Math.PI/2+(i%2?.3:-.3));});
@@ -10576,8 +10608,11 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and event update',top:'QUESTLINES &',bottom:'NEW BOSSES',tag:'QUESTS · BOSSES · EVENTS',
-  items:[['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
+  items:[['maul','Event: the Princes\u2019 Yard','The Black Princes train behind the Fallen Hall. Skip it, or take a peek through the crack in the wall and learn one stat for free. But there is a 40% chance a prince catches you watching, and then it is one on one in his yard. Beat him for a point in what he is best at, and a skull.'],
+    ['crown','Bigger kings','The Lion King and the Ancient Lion are both a lot bigger now. Harder to get round, and they hit across more of the arena.'],
+    ['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
     ['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],
+    ['sword','Swords for the back','The Blacksmith sells two swords worn across the back: the Steel Sword (200 gold, +5% damage) and the Gold Sword (1,000 gold, +10% damage). Equip and unequip them from the bag.'],
     ['sword','Lv5 Ancient Steel','Past Lionsteel, the Blacksmith can forge Ancient Steel: +20% damage and a starlight-blue edge. Your lion has to have beaten the Ancient Lion 10 times, the Twin Kings 5, the Lion King 10 and the Gatekeeper 5, then pay 1,000 gold and 20 skulls.'],
     ['paw','New arenas','The Gatekeeper now fights in front of his Iron Gate, and his closing walls come in as spiked iron. The Pack comes out of the Hyena Den: dry savannah grass, bones, and a cave full of eyes. The walls still close in.'],
     ['crown','The Twin Kings\u2019 children','Lore accurate: the Twin Kings are guarded by their four children now. Brann swings, Ysra shoots, Morwen casts and Vex tricks. Beat all four, then their fathers.'],
@@ -10587,7 +10622,7 @@ const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and ev
     ['moon','Wake the Ancient Lion','He sleeps in an orb in his own arena, the Star Sanctum. Your lion walks up to it and you choose: summon him, or walk away (and be remembered as afraid). Say yes and the stars fall into the orb until it breaks. In the fight, hurt him and the sky joins in: a rain of stars, then a meteor right on top of you.'],
     ['crown','The Lion King\u2019s sons','The Lion King now fights in his own arena, the Fallen Hall: black stone split by glowing cracks, broken columns and old bones. First you face his three sons, the Black Princes, smaller copies of him in plate. Then him, with whatever health you have left.'],
     ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds, and watch the walls close in. The Twin Kings, Kaldur and Sevrin, in their own arena, the Twin Throne: beat their four children first (Brann, Ysra, Morwen and Vex), then take whatever health you have left to the kings. Kill one and the other goes mad with grief. Each boss drops its own sash.'],
-    ['spark','Seven new events','The Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic’s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
+    ['spark','Eight new events','The Princes\u2019 Yard, the Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic’s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
     ['pack','Balance: the pack pays nothing','Hyena and dog waves in the Pack challenge no longer give gold. It is for your best wave and kill count now. Gold comes from championship bouts.'],
     ['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is. Skulls also stack past 99 now, so 100 skulls for the Void can be saved up.']],
   past:[
@@ -10809,7 +10844,7 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge','statue'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge','statue','princes'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
@@ -12562,6 +12597,134 @@ function drawFixScene(g,w,h,t,ph,tt){
   const P=evWalkIn(ph,tt,h);evYou(g,cx-10,P.y+(P.walk?Math.sin(t*10):0),17,ph==='throw'&&tt>1?Math.PI*.15:-Math.PI/2,t,false);
   evVignette(g,w,h);
 }
+/* ---------- The Princes' Yard: the Black Princes train behind the Fallen Hall. Peek, and maybe learn. Or get caught ---------- */
+const PRINCES={catch:.4,stat:['hp','dmg','spd'],
+  drill:['Morrow takes every blow on his plate and does not move. He is not dodging. He is letting them land, and counting.',
+         'Vorn hits from the hip, never from the shoulder. Short, ugly swings. Every one of them lands.',
+         'Kael never stands still. Two steps in, one step out, always moving, always just out of reach.'],
+  taunt:['A spy. Father would want you dead. I only want you on the floor.',
+         'You watched me for a whole minute. Did you learn anything? Come here and show me.',
+         'Run home and tell them what you saw. Oh, wait. You cannot run home. You are in our yard.']};
+function princeFoe(L,i){
+  const c=JSON.parse(JSON.stringify(kingPrinceCfgs()[i]));
+  delete c.guard;delete c.dmgScale;c.side='B';c.prince=1;
+  const nx=evNextFoe();c.scale=Math.max(1.2,((nx&&nx.scale)||1)+.18);
+  c.epithet=['the wall','the hammer','the quick'][i];
+  return c;
+}
+function princesLearn(L,E){
+  const t=trainOf(L);
+  return {scene:'peek',lines:[
+    ['n','Nobody looks up. '+L.name+' presses closer to the crack and watches the three of them work.'],
+    ['n',PRINCES.drill[0]+' '+PRINCES.drill[1]+' '+PRINCES.drill[2]],
+    ['n','One thing sticks. What does '+L.name+' take home?']],
+    stake:evChip('up','token','One stat, free, for good'),
+    grid:1,
+    choices:TRAIN_K.map(function(k){return {t:TRAIN[k].name,sub:TRAIN[k].desc+(t[k]?' · '+t[k]+'× so far':''),ico:TRAIN[k].ico,go:'learn',k:k};})};
+}
+function princesCaught(L,E){
+  const i=E.who|0,n=KGUARD.names[i];
+  return {scene:'caught',lines:[
+    ['n','A loose stone shifts under '+L.name+'’s paw and clacks down the wall.'],
+    ['n','All three of them stop. Then '+n+' turns round, slowly, and his eyes go red.'],
+    [n,PRINCES.taunt[i]],
+    ['n','He steps over the wall. His brothers lean on their mauls to watch. One on one, then.']],
+    stake:evChip('up','token','Win: +1 '+TRAIN[PRINCES.stat[i]].name+' training, for good')+evChip('up','skull','+1 skull')+evChip('','duel','Lose: thrown out, nothing lost'),
+    choices:[{t:'Fight '+n,go:'grudge',yes:1}]};
+}
+EVENTS.princes={title:'The Princes’ Yard',sub:'Mauls ringing behind a wall',col:'#ff5a4d',bg:'rgba(255,90,77,.13)',draw:drawPrinceYardScene,
+  nodes:{
+    start:function(L){return {scene:'arrive',lines:[
+        ['n','Behind the Fallen Hall there is a yard with a high stone wall, and from behind the wall comes the sound of iron on iron.'],
+        ['n','The Black Princes are training. Morrow, Vorn and Kael, the Lion King’s sons, in plate, with their mauls.'],
+        ['n','There is a crack in the wall just big enough for one eye. Nobody is guarding it.']],
+      stake:evChip('up','token','Peek: learn one stat, free')+evChip('dn','maul','40% chance they catch you')+evChip('','duel','Caught: fight a prince'),
+      choices:[{t:'Take a peek',go:'peek',yes:1},{t:'Skip it',go:'skip'}]};},
+    peek:function(L){const E=CAREER.event;
+      if(E.caught==null){E.caught=(E.force!=null?E.force:(Math.random()<PRINCES.catch?1:0));E.who=(Math.random()*3)|0;}
+      if(E.caught){if(!E.foe){E.foe=princeFoe(L,E.who|0);E.arena='hall';}E.resume='caught';Store.save();SFX.warn();return princesCaught(L,E);}
+      E.resume='watch';Store.save();return princesLearn(L,E);},
+    watch:function(L){return princesLearn(L,CAREER.event);},
+    caught:function(L){return princesCaught(L,CAREER.event);},
+    learn:function(L,c){const k=c&&TRAIN[c.k]?c.k:'hp';
+      L.train=trainOf(L);L.train[k]++;Object.keys(L.train).forEach(x=>{if(!L.train[x])delete L.train[x];});
+      CAREER.event=null;EV.learnt=k;Store.save();SFX.heal();delete PREVMEM.career;
+      return {scene:'learnt',lines:[
+        ['n','By the time the princes put their mauls down, '+L.name+' has it. '+TRAIN[k].desc+', for good, and it did not cost a coin.'],
+        ['n','That’s '+trainCount(L)+' training session'+(trainCount(L)>1?'s':'')+' now. Time to go, before anyone looks at the wall.']],
+        choices:[{t:'Slip away',go:'done',yes:1}]};},
+    skip:function(L){CAREER.event=null;Store.save();
+      return {scene:'skip',lines:[['n',L.name+' leaves them to it. Some doors are better left shut, and some walls better left unpeeked.'],
+        ['n','The ringing of the mauls follows all the way back to the den.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  },
+  over:function(won,L,E){
+    const i=(E&&E.who)|0,n=KGUARD.names[i],k=PRINCES.stat[i];
+    if(won){L.train=trainOf(L);L.train[k]++;const ok=invAdd(L,'skull',1);delete PREVMEM.career;
+      return {good:1,v:'PRINCE BEATEN',ico:'crown',h:'+1 '+TRAIN[k].name+(ok?' · +1 skull':''),
+        p:esc(n)+' goes down in the dust of his own yard. His brothers stop laughing. '+esc(L.name)+' learned more from that fight than from any crack in a wall: '+TRAIN[k].desc+', for good.'+(ok?' And a skull for the road.':' The skull stays in the yard: the bag is full.')};}
+    return {v:'THROWN OUT',h:'Nothing lost',p:esc(n)+' drags '+esc(L?L.name:'your lion')+' to the gate by the scruff and throws it out into the road. His brothers are still laughing. Nothing goes on the record.'};}};
+function princeMaul(g,x,y,R,ang,sw){
+  const a=ang+sw,hx=x+Math.cos(a)*R*1.55,hy=y+Math.sin(a)*R*1.55;
+  g.strokeStyle='#2a2a30';g.lineWidth=Math.max(2,R*.16);g.lineCap='round';g.beginPath();g.moveTo(x+Math.cos(a)*R*.4,y+Math.sin(a)*R*.4);g.lineTo(hx,hy);g.stroke();
+  g.save();g.translate(hx,hy);g.rotate(a);g.fillStyle='#4a4a54';g.fillRect(-R*.22,-R*.42,R*.44,R*.84);g.fillStyle='#6a6a76';g.fillRect(-R*.22,-R*.42,R*.44,R*.14);g.restore();
+}
+function drawPrinceYardScene(g,w,h,t,ph,tt){
+  const cx=w/2,E=CAREER.event,who=(E&&E.who!=null)?E.who:(EV.pWho!=null?EV.pWho:1);if(E&&E.who!=null)EV.pWho=E.who;
+  /* the yard: black flagstones with red light coming up through the cracks */
+  g.fillStyle='#0d0b0b';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(255,255,255,.04)';g.lineWidth=1;
+  for(let y=0;y<h*.6;y+=26){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();for(let x=((y/26)%2)*24;x<w;x+=48){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+26);g.stroke();}}
+  g.save();g.globalCompositeOperation='lighter';g.strokeStyle='rgba(226,56,44,'+(.35+.12*Math.sin(t*1.7))+')';g.lineWidth=1.3;
+  [[.12,.1,.3,.24,.22,.4],[.7,.06,.62,.22,.8,.38],[.42,.44,.5,.3,.58,.5]].forEach(function(c){g.beginPath();g.moveTo(w*c[0],h*c[1]);g.lineTo(w*c[2],h*c[3]);g.lineTo(w*c[4],h*c[5]);g.stroke();});g.restore();
+  /* torches on the back wall */
+  [w*.08,w*.92].forEach(function(x,i){const fl=.85+.1*Math.sin(t*9+i*2)+.05*Math.sin(t*21+i);
+    const tg=g.createRadialGradient(x,h*.08,2,x,h*.08,90*fl);tg.addColorStop(0,'rgba(255,120,50,.32)');tg.addColorStop(1,'rgba(255,120,50,0)');g.fillStyle=tg;g.fillRect(0,0,w,h);
+    g.fillStyle='#2a2420';g.fillRect(x-3,h*.06,6,20);g.fillStyle='#ffb347';g.beginPath();g.ellipse(x,h*.05,4*fl,7*fl,0,0,7);g.fill();g.fillStyle='#fff0c0';g.beginPath();g.ellipse(x,h*.06,1.8,3.4,0,0,7);g.fill();});
+  /* a weapon rack and a battered training post */
+  g.fillStyle='#231c16';g.fillRect(w*.78,h*.18,4,h*.3);g.fillRect(w*.86,h*.18,4,h*.3);g.fillRect(w*.77,h*.24,w*.1,3);
+  [0,1,2].forEach(function(i){g.strokeStyle='#3a3a42';g.lineWidth=2.4;g.beginPath();g.moveTo(w*.795+i*w*.024,h*.2);g.lineTo(w*.795+i*w*.024,h*.46);g.stroke();g.fillStyle='#55555e';g.fillRect(w*.785+i*w*.024,h*.18,9,8);});
+  const caught=ph==='caught',qc=caught?ease(Math.min(1,tt/1.4)):0;
+  /* the three princes: Morrow and Vorn spar in the middle, Kael circles */
+  const RR=15,sp=(t*1.15)%2,lunge=sp<.35?Math.sin(sp/.35*Math.PI):0,lunge2=sp>1&&sp<1.35?Math.sin((sp-1)/.35*Math.PI):0;
+  const kh=(t*1.6)%1.4,khit=kh<.25?Math.sin(kh/.25*Math.PI):0,postX=w*.09,postY=h*.24;
+  const pos=[{x:cx+8-46-lunge2*8+lunge*16,y:h*.3,a:0},{x:cx+8+46-lunge*16+lunge2*8,y:h*.3,a:Math.PI},{x:postX+28-khit*6,y:postY+16,a:Math.atan2(-16,-28)}];
+  /* Kael's target: a battered wooden post */
+  g.fillStyle='#3a2a1c';g.beginPath();g.arc(postX+(khit>.8?1.5:0),postY,7,0,7);g.fill();g.strokeStyle='#22180f';g.lineWidth=1.4;g.stroke();
+  g.strokeStyle='rgba(0,0,0,.35)';g.beginPath();g.arc(postX,postY,3.5,0,7);g.stroke();
+  /* red light pooling under each of them so the black plate reads */
+  pos.forEach(function(p){const rg=g.createRadialGradient(p.x,p.y,2,p.x,p.y,34);rg.addColorStop(0,'rgba(226,56,44,.22)');rg.addColorStop(1,'rgba(226,56,44,0)');g.fillStyle=rg;g.fillRect(p.x-34,p.y-34,68,68);});
+  pos.forEach(function(p,i){
+    let x=p.x,y=p.y,a=p.a+(i<2?Math.sin(t*2+i)*.08:0),sw=i===0?-.9+lunge*1.9:(i===1?.9-lunge2*1.9:-.8+khit*1.4);
+    if(caught){if(i===who){const ty=h*.52;x=x+(cx-x)*qc;y=y+(ty-y)*qc;a=a+(Math.PI/2-a)*Math.min(1,tt/.5);sw=.5;}else{a=a+(Math.atan2(h*.8-y,cx-x)-a)*Math.min(1,tt/.9);sw=.3;}}
+    princeMaul(g,x,y,RR,a,sw);
+    paintLion(g,{x:x,y:y,R:RR,ang:a,t:t,pelt:0,cols:KINGCOLS,mane:5,tail:0,seed:60+i,scars:[[1284],[617,220],[1401]][i],armor:'plate',eyes:'#ff3a2a',eyeGlow:caught&&i===who});
+    if(!caught&&(i===0&&lunge>.7||i===1&&lunge2>.7)){g.fillStyle='rgba(255,230,180,.8)';const sx=(pos[0].x+pos[1].x)/2,sy=h*.28;for(let k=0;k<5;k++){g.beginPath();g.arc(sx+Math.cos(k*1.3+t*7)*6,sy+Math.sin(k*1.3+t*7)*6,1.2,0,7);g.fill();}}
+    if(caught&&i===who&&tt>.3&&tt<2.6){const al=Math.min(1,(tt-.3)*4)*(tt>2.2?(2.6-tt)/.4:1);g.globalAlpha=al;g.fillStyle='#ff3a2a';g.font='800 18px -apple-system,sans-serif';g.textAlign='center';g.fillText('!',x,y-RR-10);g.globalAlpha=1;}
+  });
+  /* you, behind the wall */
+  const wt=h*.6,wb=h*.7,gap=13,rest=h*.9,peekY=wb+11;
+  let yy=rest,ya=-Math.PI/2,walk=false;
+  if(ph==='arrive'){const q=ease(tt/2);yy=h+28-q*(h+28-rest);walk=q<1;}
+  else if(ph==='peek'||ph==='learnt'){const q=ease(Math.min(1,tt/1.1));yy=rest-(rest-peekY)*q;walk=q<1;}
+  else if(caught){const q=ease(Math.min(1,tt/.5));yy=peekY+(rest-peekY)*q;}
+  else if(ph==='skip'){const q=ease(Math.min(1,tt/.6));ya=-Math.PI/2+Math.PI*q;if(tt>.6){const r=ease((tt-.6)/1.6);yy=rest+r*(h*.4);walk=r<1;}}
+  evYou(g,cx,yy+(walk?Math.sin(t*10):0),16,ya,t,caught&&tt<.3);
+  /* the wall goes on top of you, all but the crack */
+  const wg=g.createLinearGradient(0,wt,0,wb);wg.addColorStop(0,'#3a322c');wg.addColorStop(1,'#241e1a');g.fillStyle=wg;
+  g.fillRect(0,wt,cx-gap,wb-wt);g.fillRect(cx+gap,wt,w-cx-gap,wb-wt);
+  g.strokeStyle='rgba(0,0,0,.45)';g.lineWidth=1;
+  for(let r=0;r<2;r++){const y=wt+(wb-wt)*r/2;g.beginPath();g.moveTo(0,y);g.lineTo(cx-gap,y);g.moveTo(cx+gap,y);g.lineTo(w,y);g.stroke();
+    for(let x=(r?0:18);x<w;x+=36){if(Math.abs(x-cx)<gap+2)continue;g.beginPath();g.moveTo(x,y);g.lineTo(x,y+(wb-wt)/2);g.stroke();}}
+  g.fillStyle='rgba(255,220,170,.06)';g.fillRect(0,wt,w,2);
+  /* the crack: jagged edges */
+  g.fillStyle='#2e2722';g.beginPath();g.moveTo(cx-gap,wt);g.lineTo(cx-gap+4,wt+5);g.lineTo(cx-gap+1,wt+11);g.lineTo(cx-gap+5,wb);g.lineTo(cx-gap,wb);g.closePath();g.fill();
+  g.beginPath();g.moveTo(cx+gap,wt);g.lineTo(cx+gap-5,wt+7);g.lineTo(cx+gap-2,wt+13);g.lineTo(cx+gap-4,wb);g.lineTo(cx+gap,wb);g.closePath();g.fill();
+  if(caught&&tt<.6){g.fillStyle='#3a322c';const q=tt/.6;g.fillRect(cx-gap-6+q*4,wb+q*20,5,4);}
+  if(ph==='learnt'){const k=EV.learnt&&TRAIN[EV.learnt]?EV.learnt:'hp',q=Math.min(1,tt/.8);g.globalAlpha=q*(tt>3?Math.max(0,1-(tt-3)/.8):1);
+    evIcon(g,TRAIN[k].ico,cx+30,yy-26-q*8,16,'#ffd24a');g.globalAlpha=1;}
+  evVignette(g,w,h);
+}
 function drawExileScene(g,w,h,t,ph,tt){
   const cx=w/2;g.fillStyle='#0c0b0c';g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(255,255,255,.035)';g.lineWidth=1;for(let y=10;y<h;y+=22){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();for(let x=((y/22)%2)*20;x<w;x+=40){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+22);g.stroke();}}
@@ -12917,7 +13080,7 @@ function timeAgo(iso){const s=Math.max(0,(Date.now()-Date.parse(iso))/1000);
   if(s<90)return 'just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+' h ago';return Math.round(s/86400)+' days ago';}
 
 /* ---------- the Online tab: sign up right there, your spot on the board, everyone else's lions ---------- */
-function eloOdds(mine,theirs){const ea=1/(1+Math.pow(10,(theirs-mine)/400));return {win:Math.round(24*(1-ea)),lose:Math.round(24*(0-ea))};}
+function eloOdds(mine,theirs){const ea=1/(1+Math.pow(10,(theirs-mine)/400));return {win:Math.max(1,Math.round(24*(1-ea))),lose:Math.min(-1,Math.round(24*(0-ea)))};}
 function olMyRating(){const m=pitMine();return m?m.rating:1000;}
 function olRank(){if(!ONLINE.board||!signedIn())return 0;const i=ONLINE.board.findIndex(r=>r.user_id===ONLINE.user.id);return i<0?0:i+1;}
 function olEnsure(force){

@@ -18,7 +18,7 @@ Lion Sim is an arena fighting game where the lions fight on their own. You pick 
 
 You're the owner, not the player.
 
-**Download `lion-simulator.html` and open it in any browser.** That's it. It works on your phone too, and you can add it to your home screen.
+**Play it at [gatsi.github.io](https://gatsi.github.io).** That's it. It works on your phone too, and you can add it to your home screen. It's one HTML file, so you can also download `index.html` and open it in any browser.
 
 ---
 
@@ -61,29 +61,60 @@ Lions **remember you**. One that beats you and lets you live becomes a **rival**
 
 Every win also has a **35% chance of a training opportunity**: pick health, damage, speed, swing or armour and your lion gets a little better at it, for good. Belts bring **medallions**, bigger boosts with their own emblems. You can also **load any lion code** straight into the den.
 
-Your lion's gold and skulls sit at the top of the screen (tap them to go straight to the shops), and the den shows who's next at a glance. Every win earns your lion **gold**, and so does every wave of the pack it survives. Spend it in the **Lion Store**, run by a red lion in a gold monocle: a new coat, a potion that rerolls one personality trait, a whole new weapon, an **Upgrade Token** (100 gold) for a guaranteed training session, or a **Name Plaque** (60 gold) to rename it.
+Your lion's gold and skulls sit at the top of the screen (tap them to go straight to the shops), and the den shows who's next at a glance. Every championship win earns your lion **gold**. Spend it in the **Lion Store**, run by a red lion in a gold monocle: a new coat, a potion that rerolls one personality trait, a whole new weapon, an **Upgrade Token** (100 gold) for a guaranteed training session, or a **Name Plaque** (60 gold) to rename it.
 
-Next door, the **Blacksmith** (an old grey lion covered in soot) puts a finish on your lion's weapon: **Bronze, Obsidian, then Gilded** (50, 150 and 250 gold), each worth +2% damage and a glint of its colour on every swing and shot. The finish belongs to the weapon, so swap weapons and it's gone (you'll get a warning first). He also sells **Reforge Armour** (50 gold) to change armour.
+Next door, the **Blacksmith** (an old grey lion covered in soot) puts a finish on your lion's weapon: **Bronze, Obsidian, then Gilded** (50, 150 and 250 gold), each worth +2% damage and a glint of its colour on every swing and shot. The finish belongs to the weapon, so swap weapons and it's gone (you'll get a warning first). He also sells **Reforge Armour** (50 gold) to change armour, and two swords your lion wears across its back: the **Steel Sword** (200 gold, +5% damage) and the **Gold Sword** (1,000 gold, +10% damage).
+
+**The Cosmetic Lion** keeps a war tent at the den: paint, bone, steel, sashes, laurels, earrings, a party hat, even a **DandeLion** (5 gold, a dandelion behind one ear). Looks only, none of it changes a fight. **Cosmetic Shears** snip anything off for good. **Gift Parcels** (15 gold) let you wrap an item, gold or skulls with a note and send it to any player on the leaderboard.
+
+**Crates.** Mystery Crates open on a spinning reel that slows down and stops on what you got, with rarity colours from Common to Legendary. Your lion also gets a **free daily crate**: claim it from the den once a day.
 
 Under the stands, the **Hyena Fence** buys skulls (1 skull → 25 gold), sells **Mystery Crates** (45 gold: gold, skulls, anything from any shop, and once in a while a soul), and keeps three under-the-counter **deals**, 5 to 10 gold off, that change after every bout. Whatever you buy goes into the lion's own **inventory**, and you use it from there whenever you like. Beat a lion in a championship and there's a 30% chance your lion takes its **skull** home. Skulls stack, and they're the only thing the **Mystic Lion** next door will take: 7 skulls buys a **Divine Soul** (eyes that glow white like an angel's and a holy light around it) or a **Demonic Soul** (red eyes and hellfire). Either one gives +10% to every stat. A lion can only carry one soul at a time. **Soul Cleanse** (2 skulls) washes a soul away, and a **Blood Pact** (5 skulls) rerolls your lion's IV, for better or worse. For 3 skulls it also sells **Heavenly Protection**: if your lion would die in a championship, the blessing burns away instead and it walks out alive. The gold and the bag belong to that lion. When it's gone, so are they.
 
+**Questlines.** Two things in the den can't be bought outright:
+- **Lionsteel (Lv4).** Get your weapon to Gilded and the Blacksmith has a job for you: beat **100 lions** (championship bouts, grudges, bosses and online fights all count), then bring **25 skulls and 1,000 gold**. +12% damage and a blood-red edge.
+- **Ancient Steel (Lv5).** Past Lionsteel: beat the Ancient Lion 10 times, the Twin Kings 5, the Lion King 10 and the Gatekeeper 5, then pay **1,000 gold and 20 skulls**. +20% damage and a starlight-blue edge.
+- **The Void Soul.** The one soul the Mystic Lion won't sell. Win **10 championships**, then bring **100 skulls**. A black sun rises behind your lion and it gets **+15%** to every stat.
+
+The Blacksmith and Mystic Lion doors in the den show how far along each one is.
+
 **The Bookie.** A green lion in a flat cap and a pencil behind his ear runs fights between two other lions. You get a look at both (record, frame, weapon, mind and how big they are) and his odds on the chalkboard, back one, and watch it play out. Win and you get your stake times the odds; lose and he keeps it. Bigger lions are usually the favourites, and the odds lean very slightly your way, so it's a way to make money, slowly: he only runs **three fights between each of your championship bouts**, and stakes are capped at 25 gold (+15 per belt, up to 100). You can also watch for free. Your lion keeps a tally of how its betting is going.
 
-**Events.** After a win, with another bout still to come, there's a **20% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice:
-- **The Royal Lion.** A big grey lion with a curly mane, a crown and a red sash walks in with two guards in plate. He liked your last fight and wants a bet on the next one: win and he **doubles your gold**, lose and he **takes all of it**.
-- **The Mystic Lion**, by a campfire in the dark, offers **two skulls** now if your lion starts its next bout on **75% health**.
-- **The Lion Store owner** comes round the counter himself: he wants your lion as the face of his shop. Sign, and everything in the Lion Store is **30% off for your next 5 bouts** (prices show the discount, and the den counts the bouts down).
-- **The crate in the trees.** A crate in a forest clearing, nobody around. Open it and you get a **free random item**, then **five hyenas** come out of the bushes. Beat them and it's yours; lose and they take it back (they never kill your lion, and it's not on its record). Walk away and nothing happens.
+**Events.** After a win, with another bout still to come, there's a **20% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice. There are seventeen:
+- **The Royal Lion** wants a bet on your next fight: win and he **doubles your gold**, lose and he **takes all of it**.
+- **The Mystic Lion** offers **two skulls** if your lion starts its next bout on **75% health**.
+- **The Lion Store owner** wants your lion as the face of his shop: **30% off for 5 bouts**.
+- **The crate in the trees.** A free item... then **five hyenas** come out of the bushes for it.
+- **Old Lion's Hut.** 50 gold and he'll teach you one stat, your pick.
+- **Robbed!** Pay them 10% of your gold, or fight, with a 40% chance of a cut eye.
+- **A Cub by the Road.** Pay the healer, and it may not forget you.
+- **The Wandering Merchant.** One odd deal, take it or leave it.
+- **A Grudge on the Road.** A rival waiting by a torch. Win gold, lose gold, nobody dies.
+- **The Carrion Feast.** Take a dead champion's claws (+1 skull, +10% damage, maybe a curse) or pay your respects (+10% health).
+- **The Fix.** Throw your next fight for gold, or refuse and fight the Bookie's heavy.
+- **The Exiled King.** Free the Lion King's chained brother for training, or turn him in for gold. The King remembers.
+- **The Clan War.** Side with the Bone clan or the Ash clan. The other one will want revenge.
+- **The Mystic's Mirror.** Fight your own shadow for a skull.
+- **Scavenger Night.** Search the arena floor for armour, an edge or gold. Hyenas may come for it.
+- **The Twin Statue.** Pray to Kaldur or Sevrin, leave them a skull, or steal their gold eyes.
+- **The Princes' Yard.** The Black Princes are training. Peek through the wall and learn a stat for free, but there's a **40% chance one catches you**, and then it's one on one in his yard.
 
-Say no to any of them and nothing changes. The wager, the Mystic's price and the mascot deal show in the den until they're settled.
+Say no to any of them and nothing changes. Anything still waiting to be settled shows in the den.
 
 ### 🐾 Challenges
-**The pack.** Survive wave after wave of dogs and hyenas.
-**The Lion King.** One fight against a giant in black armour with red eyes.
-**The Ancient Lion.** A navy-and-gold colossus, half as big again as a titan. Get close and it blasts you with a gold nova. Stay back and it drops stars on you.
-**Old Lion.** Your tutor, out of retirement for one last fight. Beat him if you can... and if you can live with it.
+Six of them, and each boss only opens once your lion has beaten the one before.
 
-Boss fights are long, grand affairs: the bosses carry huge health bars and hit softer, so a win over the King or the Ancient Lion takes two minutes or more (Old Lion is still the easy one, about a minute), and at two-thirds and one-third health each one has a moment ("THE KING IS BLEEDING"). Bring up to two friends to any of them.
+1. **The Pack.** Survive wave after wave of dogs and hyenas in the Hyena Den, with the walls closing in. It's for your best wave and kill count, not gold.
+2. **Old Lion.** Your tutor, out of retirement for one last fight. Beat him and you can visit him at home instead: fight him again, or ask him things (how upgrades work, who the Twin Kings are, who the Mystic Lion is).
+3. **The Lion King.** In his own arena, the Fallen Hall. First his three sons, the **Black Princes**, in plate like their father. Then him, huge and in black armour, with whatever health you have left.
+4. **The Ancient Lion.** He sleeps in an orb in the Star Sanctum. Your lion walks up to it and you choose: summon him, or walk away (and be remembered as afraid). Say yes and the stars fall into the orb until it breaks. In the fight, get close and he blasts you with a gold nova; stay back and the sky rains stars and meteors.
+5. **The Gatekeeper.** Plated head to tail in front of his Iron Gate. Crack his iron with heavy hits before he bleeds, while the spiked walls close in.
+6. **The Twin Kings.** Kaldur and Sevrin, on the Twin Throne. First their four children: Brann swings, Ysra shoots, Morwen casts and Vex tricks. Then their fathers.
+
+Boss fights are long, grand affairs with huge health bars and big moments along the way. Every time you beat a boss it comes back **10% stronger**, and it shows you by how much before the fight. Beaten bosses show as trophies on your lion's card. Bring up to two friends to any of them.
+
+### 🌐 Online
+Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**.
 
 ### 🥇 Tournament
 Eight lions, one bracket. Quarter-finals, semis, final, and every match is best of three. Edit any lion, roll them all, shuffle the draw and watch one come out on top.
@@ -114,7 +145,8 @@ Belts can only be won. The Editor always loads lions without them.
 - Open any lion's **Summary** to get its **lion card**: a trading-card picture with the lion, its badges, traits, stats, loadout and record. Copy it, save it or share it straight to your friends.
 - Every mode lives in the bar along the bottom, with a free **Editor** at the end for building anything you want, just for fun.
 - New here? Tap **?** and Old Lion will walk you through everything. He's been around a while.
-- Your progress saves in the browser, so your lion, gold and tournament are still there next time.
+- The **What's New** tab lists every update, with older ones further down.
+- Your progress saves in the browser (and to your account if you sign in), so your lion, gold and tournament are still there next time.
 
 ---
 
