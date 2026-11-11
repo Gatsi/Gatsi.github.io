@@ -5835,8 +5835,33 @@ function devDo(k){
 }
 $('devIco').innerHTML=ico('spark');devMenuRow();
 /* the developer tools ask for a password once per visit. Only a hash of it is kept in the code */
-const DEV_LOCK='a9361fc6';
-function devHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(16);}
+const DEV_LOCK='1ef419605386303d4f8b9b63a055e268d7ba8643ed7b5adf4745a57ccb513317';
+/* SHA-256, so the dev password is kept as a real one-way hash: 256 bits, salted and stretched. No two passwords share one */
+function sha256(bytes){
+  const K=sha256.K||(sha256.K=(function(){const k=[];let n=2;while(k.length<64){let p=true;for(let i=2;i*i<=n;i++)if(n%i===0){p=false;break;}if(p)k.push((Math.pow(n,1/3)%1*4294967296)>>>0);n++;}return k;})());
+  const H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const l=bytes.length,n=((l+9+63)>>6)<<6,m=new Uint8Array(n);m.set(bytes);m[l]=0x80;
+  const dv=new DataView(m.buffer);dv.setUint32(n-8,Math.floor(l/536870912));dv.setUint32(n-4,(l<<3)>>>0);
+  const w=new Uint32Array(64),r=function(x,s){return (x>>>s)|(x<<(32-s));};
+  for(let o=0;o<n;o+=64){
+    for(let i=0;i<16;i++)w[i]=dv.getUint32(o+i*4);
+    for(let i=16;i<64;i++){const a=w[i-15],b=w[i-2];w[i]=(w[i-16]+(r(a,7)^r(a,18)^(a>>>3))+w[i-7]+(r(b,17)^r(b,19)^(b>>>10)))>>>0;}
+    let a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(let i=0;i<64;i++){const t1=(h+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+K[i]+w[i])>>>0,t2=((r(a,2)^r(a,13)^r(a,22))+((a&b)^(a&c)^(b&c)))>>>0;
+      h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;}
+    H[0]=(H[0]+a)>>>0;H[1]=(H[1]+b)>>>0;H[2]=(H[2]+c)>>>0;H[3]=(H[3]+d)>>>0;H[4]=(H[4]+e)>>>0;H[5]=(H[5]+f)>>>0;H[6]=(H[6]+g)>>>0;H[7]=(H[7]+h)>>>0;
+  }
+  const out=new Uint8Array(32);for(let i=0;i<8;i++){out[i*4]=H[i]>>>24;out[i*4+1]=(H[i]>>>16)&255;out[i*4+2]=(H[i]>>>8)&255;out[i*4+3]=H[i]&255;}
+  return out;
+}
+const DEV_SALT='lionsim.dev.v2:6f1c0b9e2a74d385',DEV_ROUNDS=20000;
+function devHash(s){
+  const enc=function(t){const u=unescape(encodeURIComponent(t)),b=new Uint8Array(u.length);for(let i=0;i<u.length;i++)b[i]=u.charCodeAt(i);return b;};
+  const salt=enc(DEV_SALT);let h=sha256(enc(DEV_SALT+String(s)));
+  const buf=new Uint8Array(32+salt.length);buf.set(salt,32);
+  for(let i=0;i<DEV_ROUNDS;i++){buf.set(h,0);h=sha256(buf);}
+  let x='';for(let i=0;i<32;i++)x+=(h[i]<16?'0':'')+h[i].toString(16);return x;
+}
 function openDevLock(){
   UI.sheet={kind:'devlock',field:'devlock'};
   $('sheetPanel').innerHTML='<div class="sheetHd"><h3>Developer tools</h3><button data-act="closeSheet">Cancel</button></div>'+
@@ -5849,8 +5874,11 @@ function openDevLock(){
 }
 function devUnlock(){
   const i=$('devPass'),m=$('devMsg');if(!i)return;
-  if(devHash(i.value)===DEV_LOCK){DEV.unlocked=true;SFX.unlock();openDev();return;}
-  SFX.ui();i.value='';i.focus();if(m){m.textContent='Wrong password.';m.className='acMsg bad';}
+  /* a few wrong tries and it makes you wait, longer each time */
+  const now=Date.now();if(DEV.lockUntil&&now<DEV.lockUntil){if(m){m.textContent='Too many tries. Wait '+Math.ceil((DEV.lockUntil-now)/1000)+' seconds.';m.className='acMsg bad';}i.value='';return;}
+  if(devHash(i.value)===DEV_LOCK){DEV.unlocked=true;DEV.tries=0;SFX.unlock();openDev();return;}
+  DEV.tries=(DEV.tries|0)+1;if(DEV.tries>=3)DEV.lockUntil=now+Math.min(600,15*Math.pow(2,DEV.tries-3))*1000;
+  SFX.ui();i.value='';i.focus();if(m){m.textContent=DEV.tries>=3?'Wrong password. Wait '+Math.ceil((DEV.lockUntil-now)/1000)+' seconds before trying again.':'Wrong password.';m.className='acMsg bad';}
   const p=$('sheetPanel');if(p&&p.animate)p.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:240});
 }
 $('devBtn').onclick=function(){SFX.ui();moreMenu(false);if(DEV.unlocked)openDev();else openDevLock();};
