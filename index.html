@@ -14192,8 +14192,7 @@ function pitOver(){
   showResult(won?'pitWin':'pitLoss');
   if(signedIn())ONLINE.sb.rpc('report_pit_fight',{p_defender:P.uid,p_won:won,p_secs:Math.floor(G.t)}).then(function(r){
     if(r.error){const m=String(r.error.message||'');
-      P.res.state='err';P.res.err=/too_soon/.test(m)?'You fought this lion a moment ago, so this one doesn’t count. Try someone else.'
-        :/daily_limit/.test(m)?'That’s the daily limit of rated fights. It still counts for gold.'
+      P.res.state='err';P.res.err=/daily_limit/.test(m)?'That’s the daily limit of rated fights. It still counts for gold.'
         :'The result couldn’t be saved ('+errText(r.error)+').';}
     else{P.res.state='done';P.res.delta=(r.data&&r.data.delta)|0;P.res.rating=(r.data&&r.data.rating)|0;
       const bo=(r.data&&r.data.bounty)|0;if(bo>0&&CAREER.lion){P.res.bounty=bo;CAREER.lion.gold=(CAREER.lion.gold||0)+bo;Store.save();SFX.coin();toast('Bounty collected \u00b7 +'+bo.toLocaleString('en-GB')+' gold');refresh();}}
