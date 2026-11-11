@@ -102,7 +102,7 @@ The Blacksmith and Mystic Lion doors in the den show how far along each one is.
 Say no to any of them and nothing changes. Anything still waiting to be settled shows in the den.
 
 ### 🐾 Challenges
-Six of them, and each boss only opens once your lion has beaten the one before.
+Seven of them, and each boss only opens once your lion has beaten the one before.
 
 1. **The Pack.** Survive wave after wave of dogs and hyenas in the Hyena Den, with the walls closing in. It's for your best wave and kill count, not gold.
 2. **Old Lion.** Your tutor, out of retirement for one last fight. Beat him and you can visit him at home instead: fight him again, or ask him things (how upgrades work, who the Twin Kings are, who the Mystic Lion is).
@@ -110,6 +110,7 @@ Six of them, and each boss only opens once your lion has beaten the one before.
 4. **The Ancient Lion.** He sleeps in an orb in the Star Sanctum. Your lion walks up to it and you choose: summon him, or walk away (and be remembered as afraid). Say yes and the stars fall into the orb until it breaks. In the fight, get close and he blasts you with a gold nova; stay back and the sky rains stars and meteors.
 5. **The Gatekeeper.** Plated head to tail in front of his Iron Gate. Crack his iron with heavy hits before he bleeds, while the spiked walls close in.
 6. **The Twin Kings.** Kaldur and Sevrin, on the Twin Throne. First their four children: Brann swings, Ysra shoots, Morwen casts and Vex tricks. Then their fathers.
+7. **Cal the Shagon.** A god lion walked into the world, and he was blessed with a sword and killed it. Old Lion waits on the stone bridge to the Godfall and tells you not to go: cross, or stand down. On the other side his faithful kneel around him: interrupt the ceremony and he turns round and tells you who he is. Then it's a fight with a Sunbeam, a golden cut across the floor, and hyenas he whistles up (mostly for show). Beat him for the **Godslayer's Sash**.
 
 Boss fights are long, grand affairs with huge health bars and big moments along the way. Every time you beat a boss it comes back **10% stronger**, and it shows you by how much before the fight. Beaten bosses show as trophies on your lion's card. Bring up to two friends to any of them.
 

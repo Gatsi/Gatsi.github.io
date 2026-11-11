@@ -551,6 +551,7 @@ button{cursor:pointer}
 .lockedNote .ico{width:24px;height:24px;flex:none}
 .lockedNote b{display:block;color:var(--t1);font-size:16px}.lockedNote small{display:block;color:var(--t2);font-size:14px;margin-top:3px}
 .chalGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chalCard.final{grid-column:1/-1}.chalCard.final .chalCv{height:150px}
 .chalCard{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--s1);text-align:left;transition:transform .15s,box-shadow .2s}
 .chalCard canvas{width:100%;height:108px;display:block}
 .chalCard:active{transform:scale(.98)}
@@ -855,6 +856,13 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .ancAsk{position:absolute;left:0;right:0;bottom:0;padding:54px 16px 18px;line-height:1.3;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;
   border-radius:0 0 var(--r) var(--r);background:linear-gradient(to top,rgba(4,8,24,.96),rgba(4,8,24,.75) 60%,rgba(4,8,24,0));animation:ancIn .5s ease-out}
 .ancAsk.hidden{display:none}
+.ancAsk.sh .aaK{color:#ffe08a}.ancAsk.sh p{color:#efe4cc}.ancAsk.sh .aaBtns{flex-wrap:wrap;justify-content:center}
+.ancAsk.sh button{border-color:rgba(255,224,138,.35);background:rgba(40,30,12,.85);color:#f4ead2}
+.shSay{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 12px;text-align:center;cursor:pointer;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.82) 45%);animation:ancIn .3s ease-out}
+.shSay.hidden{display:none}
+.shSay b{display:block;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#ffe08a;font-weight:800;margin-bottom:6px;text-shadow:0 0 14px rgba(255,210,74,.6)}
+.shSay p{margin:0 auto;max-width:380px;font-family:var(--disp);font-size:clamp(15px,4.2vw,21px);line-height:1.25;font-weight:700;color:#fff7e6;min-height:2.5em}
+.shSay small{display:block;margin-top:4px;font-size:11px;color:rgba(255,255,255,.4)}
 .ancAsk .aaK{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#9fb4ff;font-weight:700}
 .ancAsk h4{margin:0;font-family:var(--disp);font-size:clamp(26px,7vw,40px);font-weight:800;letter-spacing:.02em;color:#ffe9a8;text-shadow:0 0 22px rgba(255,210,74,.55)}
 .ancAsk p{margin:0;font-size:14px;color:#c9d3f2;max-width:300px}
@@ -1491,7 +1499,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
         <div class="fmeta"></div><div class="pips"></div>
       </div>
     </div>
-    <div class="arenaBox" id="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div><div class="intro hidden" id="intro"></div><div class="ancAsk hidden" id="ancAsk"></div></div>
+    <div class="arenaBox" id="arenaBox"><canvas id="arena"></canvas><div class="banner hidden" id="banner"><b></b></div><div class="intro hidden" id="intro"></div><div class="ancAsk hidden" id="ancAsk"></div><div class="shSay hidden" id="shSay" data-act="shSkip"></div></div>
     <div class="ticker" id="ticker"></div>
     <div class="controls">
       <button class="ctl" data-speed="0.5">0.5×</button>
@@ -1729,6 +1737,8 @@ const ARENAS={
     make:()=>[[168,168,20,'obelisk'],[472,168,20,'obelisk'],[168,472,20,'obelisk'],[472,472,20,'obelisk']]},
   hall:{name:'The Fallen Hall',ico:'crown',boss:1,floor:'#0e0b0b',grid:'rgba(0,0,0,0)',note:'The Lion King\u2019s ruined hall.',
     make:()=>[[186,206,27,'ruin'],[458,182,24,'ruin'],[204,452,23,'ruin'],[438,440,29,'ruin']]},
+  godfall:{name:'The Godfall',ico:'sword',boss:1,floor:'#15120d',grid:'rgba(0,0,0,0)',note:'Where the god fell.',
+    make:()=>[[176,200,22,'godbone'],[464,200,22,'godbone'],[178,468,20,'godbone'],[462,468,20,'godbone']]},
   throne:{name:'The Twin Throne',ico:'crown',boss:1,floor:'#141210',grid:'rgba(0,0,0,0)',note:'Where the Twin Kings hold court.',
     make:()=>[[190,190,26,'pillarW'],[190,450,26,'pillarW'],[450,190,26,'pillarB'],[450,450,26,'pillarB']]},
   night:{name:'Moonlit Pit',ico:'moon',hazard:1,night:1,floor:'#0c0e14',grid:'#151a26',note:'Fought in the dark. Long shots go wide.',
@@ -3694,7 +3704,7 @@ function chooseOption(val){
   if(UI.sheet)$('sheetPanel').querySelector('.sheetBody').innerHTML=optionsFor(f,c);
 }
 /* ---------- career ---------- */
-const SLAIN=[['old','lantern'],['king','crown'],['ancient','moon'],['gate','shield'],['twins','twins']];
+const SLAIN=[['old','lantern'],['king','crown'],['ancient','moon'],['gate','shield'],['twins','twins'],['shagon','sword']];
 function slainHTML(L){
   const rec=(L&&L.record)||null;if(!rec)return '';
   const boss=SLAIN.map(function(q){const B=BOSSES[q[0]],n=rec[B.kk]|0;
@@ -3877,6 +3887,7 @@ const ITEMS={
   sashKing: {name:'Fallen King\u2019s Sash',ico:'sash',use:'cos',cs:'sash',val:'king',boss:'king',desc:'Black silk edged in blood red, with his broken crown stitched in. Torn from the Lion King. Only won by beating him.'},
   sashGate: {name:'Iron Gate Sash',  ico:'sash',use:'cos',cs:'sash',val:'gate',boss:'gate',desc:'Grey steel links with a rivet trim, cut from the Gatekeeper\u2019s chain. Only won by beating him.'},
   sashTwins:{name:'Twin Crown Sash', ico:'sash',use:'cos',cs:'sash',val:'twins',boss:'twins',desc:'Half black silk, half white, with a split crown where they meet. Taken from the Twin Kings. Only won by beating both.'},
+  sashShagon:{name:'Godslayer\u2019s Sash',ico:'sash',use:'cos',cs:'sash',val:'shagon',boss:'shagon',desc:'White silk spattered with gold, the blood of a god, with a sword stitched down its length. Taken from Cal the Shagon. Only won by beating him.'},
   sashAncient:{name:'Starfall Sash', ico:'sash',use:'cos',cs:'sash',val:'ancient',boss:'ancient',desc:'Night-blue silk sewn with gold stars that still glimmer. Taken from the Ancient Lion. Only won by beating it.'},
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
   swordSteel:{name:'Steel Sword',     ico:'sword',use:'cos',cs:'hat',val:'swsteel',swap:1,desc:'A plain, honest blade in a leather scabbard, slung across the back. +5% damage while it is worn. Takes the hat slot.'},
@@ -4182,10 +4193,14 @@ const CHAL={
   twins:{name:'The Twin Kings',act:'startTwins',go:'Face the Twin Kings',diff:5,diffName:'Brutal',col:'#e8e4da',
     blurb:'Two kings. One crown.',
     desc:'Fought in the Twin Throne. First their four children: Brann swings, Ysra shoots, Morwen casts and Vex tricks. Whatever health you have left, you take to the kings. Kaldur, huge and slow in white, and Sevrin, black and quick, fight together. Kill one and the other goes mad with grief: stronger, faster, and healed.',
-    reward:'The Twin Crown Sash, the first time you beat both',tip:'Nothing heals between the children and the kings. Take Ysra and Morwen out early, and bring allies.'}};
-const CHAL_K=['pack','old','king','ancient','gate','twins'];
+    reward:'The Twin Crown Sash, the first time you beat both',tip:'Nothing heals between the children and the kings. Take Ysra and Morwen out early, and bring allies.'},
+  shagon:{name:'Cal the Shagon',act:'startShagon',go:'Cross the bridge',diff:5,diffName:'Godslayer',col:'#ffe08a',final:1,
+    blurb:'He slew a god.',
+    desc:'A god lion walked into the world. Cal the Shagon was blessed with a sword, and he killed it. Now he holds court in the Godfall, at the far end of a stone bridge, with his faithful kneeling round him. Small, pink and impossibly fast, with a Sunbeam that can end you from across the arena, a golden cut that splits the floor, and hyenas that come when he calls.',
+    reward:'The Godslayer’s Sash, the first time you beat him',tip:'The hyenas are just for show: keep your eyes on him. When a gold line cuts across the floor, get off it.'}};
+const CHAL_K=['pack','old','king','ancient','gate','twins','shagon'];
 /* the bosses come in order: each one opens when the one before it is beaten (or if you have beaten it already) */
-const BOSS_LADDER=['old','king','ancient','gate','twins'];
+const BOSS_LADDER=['old','king','ancient','gate','twins','shagon'];
 function chalPrev(k){const i=BOSS_LADDER.indexOf(k);return i>0?BOSS_LADDER[i-1]:null;}
 function chalOpen(k,rec){
   rec=rec||{};const p=chalPrev(k);if(!p)return true;
@@ -4231,7 +4246,7 @@ function renderPack(){
   }
   const card=function(k){
     const X=CHAL[k],on=k===sel,open=!L||chalOpen(k,rec),p=chalPrev(k);
-    return '<button class="chalCard'+(on?' on':'')+(L?'':' locked')+(open?'':' sealed')+'" data-act="pickChal" data-k="'+k+'" style="--cc:'+X.col+'">'+
+    return '<button class="chalCard'+(X.final?' final':'')+(on?' on':'')+(L?'':' locked')+(open?'':' sealed')+'" data-act="pickChal" data-k="'+k+'" style="--cc:'+X.col+'">'+
       '<canvas class="chalCv" data-chal="'+k+'"></canvas>'+
       (open?'':'<span class="chalLock">'+ico('lock')+'</span>')+
       (on?'<span class="chalOn">'+ico('check')+'</span>':'')+
@@ -4257,7 +4272,7 @@ function paintChalCanvases(){
   const sz=function(cv){const w=cv.clientWidth||160,h=cv.clientHeight||110,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.scale(d,d);return [g,w,h];};
   document.querySelectorAll('canvas.chalCv').forEach(function(cv){
     const k=cv.dataset.chal,q=sz(cv),g=q[0],w=q[1],h=q[2];
-    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16'],gate:['#232830','#0b0d10'],twins:['#2a2622','#0b0a09']}[k];
+    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16'],gate:['#232830','#0b0d10'],twins:['#2a2622','#0b0a09'],shagon:['#2c2412','#0a0806']}[k];
     const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,bg[0]);gr.addColorStop(1,bg[1]);g.fillStyle=gr;g.fillRect(0,0,w,h);
     g.fillStyle='rgba(255,255,255,.035)';for(let x=8;x<w;x+=16)for(let y=8;y<h;y+=16)g.fillRect(x,y,1.2,1.2);
     const cx=w/2,cy=h/2+6;
@@ -4284,6 +4299,12 @@ function paintChalCanvases(){
       twinCfgs().forEach(function(c,i){const R=h*(i?.17:.22),x=cx+(i?w*.2:-w*.16),y=cy+(i?6:-2),a=Math.PI/2+(i?-.5:.5);
         paintLion(g,{x:x,y:y,R:R,ang:a,t:1+i,pelt:c.pelt,mane:c.mane,tail:c.tail,seed:8+i,scars:c.scars,armor:c.armor,cols:c.bossCols,eyes:'#ffd24a',eyeGlow:true});
         drawHalfCrown(g,{x:x,y:y,ang:a,cfg:c},R);});
+    } else if(k==='shagon'){
+      /* the god's skull behind him, light coming down, and Cal in front with his sword on his back */
+      const sk=g.createRadialGradient(cx,cy-h*.1,4,cx,cy,w*.6);sk.addColorStop(0,'rgba(255,224,138,.4)');sk.addColorStop(1,'rgba(255,224,138,0)');g.fillStyle=sk;g.fillRect(0,0,w,h);
+      drawGodSkull(g,w*.78,h*.32,h*.3,1,.55);
+      const pl=g.createLinearGradient(cx-26,0,cx+26,0);pl.addColorStop(0,'rgba(255,240,200,0)');pl.addColorStop(.5,'rgba(255,240,200,.22)');pl.addColorStop(1,'rgba(255,240,200,0)');g.fillStyle=pl;g.fillRect(cx-26,0,52,h);
+      shagonPaint(g,cx-w*.08,cy+4,h*.25,Math.PI/2+.4,1);
     } else {
       const R=h*.25;paintLion(g,{x:cx,y:cy,R:R,ang:Math.PI/2+.4,t:1,pelt:0,mane:0,tail:0,seed:7,scars:[1284,617],armor:'hide',cols:OLDCOLS});
       drawOldBits(g,cx,cy,R,Math.PI/2+.4,1,false,0);
@@ -5998,6 +6019,9 @@ function handleAct(a,el){
   if(a==='questStart'){questStart(el&&el.dataset.k);return;}
   if(a==='ancYes'){ancAnswer(true);return;}
   if(a==='ancNo'){ancAnswer(false);return;}
+  if(a==='shYes'){shAnswer(true);return;}
+  if(a==='shNo'){shAnswer(false);return;}
+  if(a==='shSkip'){shSkip();return;}
   if(a==='questForge'){questForge(el&&el.dataset.k);return;}
   if(a==='ancSteelForge'){ancSteelForge();return;}
   if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
@@ -6080,7 +6104,8 @@ function handleAct(a,el){
   if(a==='visitOld'){if(!CAREER.lion||!CAREER.locked||!oldBeaten(CAREER.lion))return;SFX.unlock();enterEvent('oldVisit');return;}
   if(a==='pickChal'){if(!CAREER.lion||!CAREER.locked){toast('Create a lion under Championship first');return;}SFX.ui();UI.chal=el.dataset.k;refresh();return;}
   if(a==='startPack'){SFX.unlock();startFight('survival');return;}
-  {const SK={startKing:'king',startAncient:'ancient',startGate:'gate'}[a];if(SK&&CAREER.lion&&!chalOpen(SK,CAREER.lion.record)){toast('Beat '+CHAL[chalPrev(SK)].name+' first');return;}}
+  {const SK={startKing:'king',startAncient:'ancient',startGate:'gate',startShagon:'shagon'}[a];if(SK&&CAREER.lion&&!chalOpen(SK,CAREER.lion.record)){toast('Beat '+CHAL[chalPrev(SK)].name+' first');return;}}
+  if(a==='startShagon'){SFX.unlock();enterEvent('bridge');return;}
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
   if(a==='startAncient'){SFX.unlock();startFight('ancient');return;}
   if(a==='startOld'){SFX.unlock();startFight('old');return;}
@@ -6128,7 +6153,7 @@ function makeLion(c,x,y,ang,light){
 function startFight(ctxName){
   if(ctxName==='ambush'){SURV.ambush=true;ctxName='survival';}
   else if(ctxName==='survival')SURV.ambush=false;
-  if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'){BOSSKIND=ctxName;ctxName='king';}
+  if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'||ctxName==='shagon'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
   ['duel','career','pack','editor','tourn','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
@@ -6170,11 +6195,12 @@ function fightArena(){
   if(G.ctx==='king'&&BOSSKIND==='king')return 'hall';
   if(G.ctx==='king'&&BOSSKIND==='ancient')return 'sanctum';
   if(G.ctx==='king'&&BOSSKIND==='gate')return 'bastion';
+  if(G.ctx==='king'&&BOSSKIND==='shagon')return 'godfall';
   if(G.ctx==='survival')return SURV.ambush?'thicket':'savannah';
   return 'colonnade';
 }
 /* the walls close in every fight but the Twin Throne, where the kings hold their ground */
-function fightClosing(){if(G&&G.ctx==='king'&&(BOSSKIND==='twins'||BOSSKIND==='king'||BOSSKIND==='ancient'))return false;return duelLike()?MATCH.closing:true;}
+function fightClosing(){if(G&&G.ctx==='king'&&(BOSSKIND==='twins'||BOSSKIND==='king'||BOSSKIND==='ancient'||BOSSKIND==='shagon'))return false;return duelLike()?MATCH.closing:true;}
 /* ========== 11b. THE GATES ==========
    Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
    corners (south-west and north-east) and stop on their marks. The other two stay shut. */
@@ -6415,7 +6441,7 @@ function newRound(){
     cam:{x:ARENA/2,y:ARENA/2,z:1},kill:null,freeze:0,flash:0,gates:makeGates(G.gates),intro:null,ic:0,
     arenaK:AK,hz:AR.hz?AR.hz():[],thorns:!!AR.thorns,rocks:!!AR.rocks,night:!!AR.night,floor:AR.floor||'',gridCol:AR.grid||'',
     rockT:HZ.rock.every[0],rubble:[],salted:0,cubDue:0,cubIn:0},keep);
-  $('intro').classList.add('hidden');{const aa=$('ancAsk');if(aa)aa.classList.add('hidden');}
+  $('intro').classList.add('hidden');{const aa=$('ancAsk');if(aa)aa.classList.add('hidden');const ss=$('shSay');if(ss)ss.classList.add('hidden');}
   G.rageSaid=0;
   if(G.ctx==='survival'||G.ctx==='king'){
     const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),ARENA/2,ARENA-170,-Math.PI/2,true);
@@ -6464,6 +6490,7 @@ function newRound(){
       buildHud();
       return;
     }
+    if(G.ctx==='king'&&BOSSKIND==='shagon'){shagonSetup();buildHud();return;}
     if(G.ctx==='king'&&BOSSKIND==='king'){
       CROWD.list=CROWD.list.filter(function(c){return !(c.y<0&&Math.abs(c.x-ARENA/2)<90);});
       const PP=[[ARENA/2-130,200],[ARENA/2,170],[ARENA/2+130,200]];
@@ -6627,6 +6654,7 @@ function kill(t,by){
   }
   t.dead=true;t.hp=0;t.deadT=0;
   for(let i=0;i<(t.side==='P'?18:44);i++)spark(t.x,t.y,FX.blood,1);
+  if(t.minion){crowdReact(.3,t.x,t.y);if(Math.random()<.3)log(t.name+' yelps and goes down.');return;}
   if((G.ctx==='survival'||G.ctx==='king')&&t.side!=='P'&&alliesUp()>0){
     log(t.name+' is down, but the fight goes on.');
     return;
@@ -6671,6 +6699,7 @@ function kill(t,by){
     if(tookTheCrown){
       G.winner=G.lions[0];G.method='the crown';
       G.slow=RM?0:1.7;G.flash=.7;
+      if(BOSSKIND==='shagon'){shFall(t);}
       if(BOSSKIND==='old'){
         log('<em>Old Lion goes down slowly. The crowd goes quiet.</em>');
         G.slow=RM?0:2.4;crowdReact(0);
@@ -6757,6 +6786,7 @@ function stepGab(dt){
         }
       });
     }
+    if(g.k==='gcut'){gcutStep(g,dt);if(g.t>=g.warn+.45){G.gfx.splice(i,1);continue;}}
     if(g.k==='star'&&g.done){g.boom+=dt;if(g.boom>.35)G.gfx.splice(i,1);}
     else if(g.k==='nova'&&g.t>=g.life)G.gfx.splice(i,1);
   }
@@ -6777,6 +6807,7 @@ function drawGabFx(){
         for(let q=0;q<16;q++){const a=q*Math.PI/8+g.t*.6;ctx.beginPath();ctx.moveTo(g.x+Math.cos(a)*r*.3,g.y+Math.sin(a)*r*.3);ctx.lineTo(g.x+Math.cos(a)*r*1.05,g.y+Math.sin(a)*r*1.05);ctx.stroke();}
       }
       ctx.restore();
+    } else if(g.k==='gcut'){gcutDraw(ctx,g);
     } else if(g.k==='star'){
       ctx.save();
       const gr=g.r||GAB.star.r,anc=g.src&&g.src.cfg&&g.src.cfg.ancient;
@@ -6983,14 +7014,15 @@ function kingCfg(){
 }
 const KING_SCALE=3.2, KING_DMG=.68, KING_SIZE=1.32;   /* KING_SIZE: drawn and hit-box size only, on top of what the scale gives */
 /* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
-const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330}};
-function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):0)):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
+const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330},shagon:{hp:2.4,dmg:.11,clock:300}};
+function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):(BOSSKIND==='shagon'?(G.shPh?1e6:(G.shT0||0)):0))):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
 const BOSS_PHASE={
   king:   ['THE KING IS BLEEDING','THE KING WILL NOT KNEEL'],
   ancient:['THE STARS STIR','THE ANCIENT ONE ROARS'],
   old:    ['\u201cNOT BAD, KID.\u201d','\u201cNOW I\u2019M AWAKE.\u201d'],
   gate:   ['NEW PLATES, BOLTED ON','THE GATES WILL NOT OPEN'],
-  twins:  ['THE BROTHERS CLOSE IN','ONE CROWN. TWO KINGS.']};
+  twins:  ['THE BROTHERS CLOSE IN','ONE CROWN. TWO KINGS.'],
+  shagon: ['THE GODSLAYER BLEEDS','\u201cI KILLED A GOD.\u201d']};
 function bossPhase(b,n){
   const lines=BOSS_PHASE[BOSSKIND]||BOSS_PHASE.king;
   if(BOSSKIND==='gate'&&n===1&&!b.dead){b.shell=b.shellMax*GATE.replate;}
@@ -6999,9 +7031,11 @@ function bossPhase(b,n){
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*4.5,life:.6,max:.6,col:BOSSES[BOSSKIND].col});
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*3,life:.45,max:.45,col:'#ffffff'});
   if(BOSSKIND==='ancient'&&!b.dead)ancShower(b,n);
+  if(BOSSKIND==='shagon'&&!b.dead){shCall(b,n===1?3:4);G.shCutT=Math.min(G.shCutT||9,1.4);}
   log(BOSSKIND==='gate'?(n===1?'<em class="gold">The Gatekeeper</em> bolts fresh iron over the cracks. Break it again.':'<em class="gold">The Gatekeeper</em> plants his halberd. The walls grind closer.')
+    :(BOSSKIND==='shagon'?(n===1?'<em class="gold">Cal the Shagon</em> touches the blood on his face and laughs. He whistles for more hyenas.':'<em class="gold">Cal the Shagon</em> stops laughing.')
     :(BOSSKIND==='twins'?'<em class="blood">The Twin Kings</em> circle wider, one each side.'
-    :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.'))));
+    :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.')))));
 }
 /* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
 const ANC={scale:1.8,dmg:.36,spd:.80,size:1.95,nova:.5,star:.4};
@@ -7018,7 +7052,9 @@ const BOSSES={
   gate:   {name:'The Gatekeeper',  hud:'THE GATEKEEPER',col:'#aeb6c2',meta:'Titan \u00b7 Iron plates \u00b7 Halberd',kk:'gateKills',kt:'gateTries',
     winV:'THE GATES ARE OPEN',lossV:'THE GATES HOLD',who:'him',from:'the Gatekeeper',kick:'Guarding the gates',rec:'Nothing gets past'},
   twins:  {name:'The Twin Kings',  hud:'THE TWIN KINGS',col:'#e8e4da',meta:'Two kings, one crown',kk:'twinsKills',kt:'twinsTries',
-    winV:'BOTH KINGS FALL',lossV:'THE TWIN KINGS STAND',who:'them',from:'the Twin Kings',kick:'One crown, two kings',rec:'Never beaten apart'}};
+    winV:'BOTH KINGS FALL',lossV:'THE TWIN KINGS STAND',who:'them',from:'the Twin Kings',kick:'One crown, two kings',rec:'Never beaten apart'},
+  shagon: {name:'Cal the Shagon',  hud:'CAL THE SHAGON',col:'#ffe08a',meta:'Cub · Sunbeam · slew a god',kk:'shagonKills',kt:'shagonTries',
+    winV:'THE GODSLAYER FALLS',lossV:'NO ONE CAN DEFEAT HIM',who:'him',from:'Cal the Shagon',kick:'The Godslayer',rec:'Slew a god'}};
 /* ---------- the Gatekeeper: plated head to tail. The plates soak every hit until heavy blows crack them ---------- */
 const GATE={scale:2.9,dmg:.72,shell:.36,replate:.5,heavy:30,chip:.25,aoe:1.6,wall:{at:16,rate:9},
   cols:{mane:'#5c6370',body:'#363b44',edge:'#aeb6c2',muz:'#7d848f',plate:'#d0d6de'}};
@@ -7721,6 +7757,291 @@ function drawSavannahStands(g,t){
   g.fillStyle='#4a5a2a';g.beginPath();g.ellipse(ax-4,ay-10,30,10,0,0,7);g.fill();g.fillStyle='#5a6a32';g.beginPath();g.ellipse(ax+6,ay-14,20,7,0,0,7);g.fill();
 }
 
+/* ---------- Cal the Shagon: the lion who slew a god. Built straight from a real lion's code ---------- */
+const SHAGON_CODE='LION1-Q2FsIFRoZSBTaGFnb258MHwxfDE1fDUuMHwyfDYuMy4xLjQuMC4wLjAuMi40LjAuMC4xLjQuMy4xLjMuNi4zLjYuNC4zLjEuNS4yLjYuNi4zLjUuMy41LjUuNS4xLjYuMC4xLjB8MzcuMjU4LjMxNHw5fDEwfDR8MjAwMC4xMDcyLjE3NzkuMTIyOS44NDkuMTExMS4xODAwLjg0Mi4xMzM0LjMyMy4xNzk5LjE1MTMuMTkxMy4xNjU1LjgwNi4xOTk3LjI5MS42MjYuNDA5LjEzNjkuNzI5LjE5MDIuMTUyNi4xMDY0LjY4LjQ4LjE2Ny42NjYuMTM1Ny45MjguNjMwLjE5MTQuNDU4LjMzNi4yODQuMTk0NS4xNDgyLjEwNTguNjc0LjEwMzEuMTQxNS4zNS4xNTQ1Ljc4Ny43NDEuMjc3LjE2OTIuMTc1Mi42OTIuNjMxLjgzOS4xMTU4LjUxMy40NDIuMTUxOS4xNjIuMTk3OXw4LjE0fDR8MTYuMzIuMjYuMzAuMzB8MHx8fGR8M3wxLi4uLi4uLi4uLi4uLi4uMy41';
+const SHAGON={size:2.7,spd:.62,n:7,ring:84,stop:150,walk:.26,
+  cut:{every:[9,12],warn:.95,len:560,w:30,dmg:30},call:{every:[16,21],n:3,max:5,hp:.3,dmg:.02},
+  lines:[[2.6,'You are here to challenge me?'],[5.2,'Do you know who you are facing?'],
+         [8.0,'A God Lion entered our world. I was blessed with a sword, and I slayed it.'],[12.6,'No one can defeat me.']],end:15.4};
+function shagonCfg(){const c=decodeLion(SHAGON_CODE)||randomLion('P');return Object.assign(c,{side:'P',name:'Cal the Shagon',boss:1,shagon:1});}
+/* Cal drawn anywhere outside a fight: his own colours, his divine soul, his sword and sash */
+function shagonPaint(g,x,y,R,ang,t){
+  const c=shagonCfg();
+  soulAura(g,x,y,R,ang,t,'divine',true);
+  paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:c.pelt,cols:colsOf(c),mane:c.mane,tail:c.tail,seed:11,scars:c.scars||[],armor:c.armor,eyes:lionEyes(c),eyeGlow:true,cos:cosOf(c)});
+  soulAura(g,x,y,R,ang,t,'divine',false);
+}
+function shagonSetup(){
+  const me=G.lions[0],D={x:ARENA/2,y:ARENA/2-34};
+  CROWD.list=CROWD.list.filter(function(c){return !(c.y<0&&Math.abs(c.x-ARENA/2)<170);});
+  G.lions.forEach(function(l,i){l.y=ARENA-56;l.x=ARENA/2+(i?(i%2?1:-1)*(58+i*10):0);l.ang=l.aim=-Math.PI/2;});
+  const k=makeLion(shagonCfg(),D.x,D.y,-Math.PI/2);
+  k.boss=1;k.foe=me;k.r*=SHAGON.size;k.mass*=1.6;k.kbRes*=.6;k.invuln=99;k.speed*=SHAGON.spd;
+  const TU=BOSS_TUNE.shagon;k.maxHp*=TU.hp;k.hp=k.maxHp;k.dmgMult*=TU.dmg;
+  G.lions.push(k);KING.maxHp=k.maxHp;
+  G.shDais=D;G.shPh='walk';G.shT=0;G.shSaid={};G.shFx=[];G.cine=0;G.shLight=1;G.shSword=0;G.shCutT=6;G.shCallT=7;
+  const pelts=[0,1,2,3,4,5,6,7,8,10,11];
+  G.shWor=[];for(let i=0;i<SHAGON.n;i++){const a=Math.PI/2+Math.PI/SHAGON.n+i/SHAGON.n*Math.PI*2;
+    G.shWor.push({x:D.x+Math.cos(a)*SHAGON.ring,y:D.y+Math.sin(a)*SHAGON.ring*.9,ang:a+Math.PI,pelt:pelts[(i*5)%pelts.length],mane:(i*3)%8,seed:40+i,ph:i*.9,run:0,vx:0,vy:0,al:1});}
+  banner('THE GODFALL',1.7,true);SFX.herald();crowdReact(.2);
+  log('<em class="gold">The Godfall.</em> At the end of the bridge the floor is cracked and gold runs in the cracks. In the middle, lions kneel in a ring around one small pink lion, chanting his name.');
+}
+function shMove(e){
+  e.moveX=0;e.moveY=0;const D=G.shDais;if(!D)return;
+  if(e.boss){return;}
+  if(e.side==='P')return;
+  const idx=G.lions.filter(l=>l.side!=='P').indexOf(e);
+  const tx=D.x+(idx?(idx%2?1:-1)*(60+idx*8):0),ty=D.y+SHAGON.stop+(idx?40:0);
+  if(G.shPh==='walk'){const dx=tx-e.x,dy=ty-e.y,d=Math.hypot(dx,dy);if(d>5){e.moveX=dx/d*SHAGON.walk;e.moveY=dy/d*SHAGON.walk;}}
+  const k=G.lions.find(l=>l.boss);e.ang=e.aim=Math.atan2((k?k.y:D.y)-e.y,(k?k.x:D.x)-e.x);
+}
+function shAskShow(){
+  const el=$('ancAsk');if(!el)return;el.classList.add('sh');
+  el.innerHTML='<div class="aaK">The Godfall</div><h4>Interrupt the ceremony?</h4><p>'+SHAGON.n+' lions kneel around Cal the Shagon, chanting his name. He has his back to you.</p>'+
+    '<div class="aaBtns"><button class="aaY" data-act="shYes">Interrupt the ceremony</button><button data-act="shNo">Walk out</button></div>';
+  el.classList.remove('hidden');SFX.herald();
+  log('<em class="gold">'+esc(G.lions[0].name)+'</em> stops at the edge of the ring. Nobody has noticed it yet.');
+}
+function shAnswer(yes){
+  if(!G||G.shPh!=='ask')return;
+  const el=$('ancAsk');if(el)el.classList.add('hidden');
+  if(!yes){
+    G.shPh=null;G.over=true;G.winner=null;G.camFocus=null;
+    log('<em>'+esc(G.lions[0].name)+' backs away, and walks out of the Godfall.</em>');
+    const tk=++ROUND_TOKEN;G.token=tk;
+    setTimeout(function(){if(G.token===tk)showResult('shWalk');},RM?100:700);
+    return;
+  }
+  const me=G.lions[0];
+  G.shPh='cere';G.shT=0;G.shSaid={};
+  me.anim=.3;num(me.x,me.y-me.r-18,'ROAR',FX.gold,17);SFX.roar();G.shake=Math.max(G.shake,7);crowdReact(1.6,me.x,me.y);
+  G.parts.push({ring:1,x:me.x,y:me.y,rad:me.r,maxRad:220,life:.6,max:.6,col:'#ffe08a'});
+  log('<em class="gold">'+esc(me.name)+'</em> roars into the middle of the chanting.');
+  const D=G.shDais;
+  G.shWor.forEach(function(w,i){const a=Math.atan2(w.y-me.y,w.x-me.x)+rnd(-.5,.5);w.run=.05+i*.06;w.vx=Math.cos(a)*rnd(170,230);w.vy=Math.sin(a)*rnd(150,210)-60;});
+}
+function shSkip(){
+  if(!G||G.shPh!=='cere')return;
+  const nx=SHAGON.lines.map(l=>l[0]).filter(t=>t>G.shT+.05)[0];
+  G.shT=nx!=null?nx:Math.max(G.shT,SHAGON.end-.4);SFX.ui();
+}
+function shSayShow(txt,n){
+  const el=$('shSay');if(!el)return;
+  if(txt==null){el.classList.add('hidden');G.shShown=null;return;}
+  const key=txt+'|'+n;if(G.shShown===key)return;G.shShown=key;
+  el.innerHTML='<b>Cal the Shagon</b><p>'+esc(txt.slice(0,n))+'</p><small>Tap to skip</small>';
+  el.classList.remove('hidden');
+}
+function shSay(k,f){if(!G.shSaid[k]){G.shSaid[k]=1;f();}}
+function shStep(dt){
+  const me=G.lions[0],k=G.lions.find(l=>l.boss),D=G.shDais;if(!k)return;
+  for(let i=G.shFx.length-1;i>=0;i--){const p=G.shFx[i];p.t+=dt;p.x+=(p.vx||0)*dt;p.y+=(p.vy||0)*dt;if(p.t>=p.life)G.shFx.splice(i,1);}
+  G.shWor.forEach(function(w){if(w.run>0&&G.shPh!=='walk'&&G.shPh!=='ask'){w.run+=dt;if(w.run>.12){w.x+=w.vx*dt;w.y+=w.vy*dt;w.ang=Math.atan2(w.vy,w.vx);w.al=Math.max(0,1-(w.run-.5)/1.1);}}});
+  if(!G.shPh){
+    G.cine=Math.max(0,(G.cine||0)-dt*1.2);G.shLight=Math.max(0,G.shLight-dt*.5);G.shSword=Math.max(0,G.shSword-dt*1.5);
+    if(G.over||k.dead||G.starting>0)return;
+    G.shCutT-=dt;G.shCallT-=dt;
+    if(G.shCutT<=0&&k.stun<=0){const C=SHAGON.cut;G.shCutT=rnd(C.every[0],C.every[1])*(G.ph2?.7:(G.ph1?.85:1));shCut(k);}
+    if(G.shCallT<=0){const C=SHAGON.call;G.shCallT=rnd(C.every[0],C.every[1]);shCall(k,C.n);}
+    return;
+  }
+  G.shT+=dt;const T=G.shT;
+  k.invuln=99;k.ang=k.aim;
+  if(G.shPh==='walk'){
+    k.aim=-Math.PI/2;G.cine=Math.min(.6,(G.cine||0)+dt*.5);
+    G.camFocus={x:D.x,y:(me.y+D.y)/2+30,z:1.05};
+    if(Math.hypot(me.x-D.x,me.y-(D.y+SHAGON.stop))<12||T>13){G.shPh='ask';G.shT=0;shAskShow();}
+    return;
+  }
+  if(G.shPh==='ask'){G.camFocus={x:D.x,y:D.y+118,z:1.12};return;}
+  /* the ceremony is broken: the faithful scatter, he turns, he talks */
+  G.cine=Math.min(1,(G.cine||0)+dt*1.6);
+  const face=Math.atan2(me.y-k.y,me.x-k.x);
+  if(T>1.1&&T<2.6){const q=ease((T-1.1)/1.3);let d=face-(-Math.PI/2);while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;k.aim=-Math.PI/2+d*q;}
+  if(T>=2.6)k.aim=face;
+  shSay('scatter',function(){log('His faithful scatter, out through the gates.');SFX.warn();});
+  if(T>1.1)shSay('turn',function(){log('<em class="gold">Cal the Shagon</em> turns round, slowly.');});
+  G.camFocus=T<2.4?{x:D.x,y:D.y+70,z:1.12}:{x:(k.x*2+me.x)/3,y:(k.y*2+me.y)/3,z:1.24+Math.min(.12,(T-2.4)*.012)};
+  /* the speech */
+  let cur=null,ci=-1;SHAGON.lines.forEach(function(l,i){if(T>=l[0])ci=i;});
+  if(ci>=0&&T<SHAGON.end-.8){cur=SHAGON.lines[ci];shSayShow(cur[1],Math.min(cur[1].length,Math.floor((T-cur[0])*42)));
+    shSay('l'+ci,function(){SFX.ui();log('<em class="gold">Cal the Shagon:</em> “'+esc(cur[1])+'”');if(ci===2)SFX.cast();if(ci===3){SFX.roar();G.shake=Math.max(G.shake,8);}});}
+  else shSayShow(null);
+  if(ci>=2)G.shSword=Math.min(1,G.shSword+dt*.8);
+  if(ci>=3&&!RM&&Math.random()<dt*20)G.shFx.push({k:'mote',x:k.x+rnd(-60,60),y:k.y+rnd(-30,40),vy:-rnd(30,70),t:0,life:rnd(.6,1.1)});
+  if(T>=SHAGON.end-.8)shSay('burst',function(){
+    G.flash=1;G.shake=14;if(!RM)G.slow=Math.max(G.slow||0,.7);SFX.boom();crowdReact(2.2,k.x,k.y);
+    G.parts.push({ring:1,x:k.x,y:k.y,rad:k.r,maxRad:380,life:1,max:1,col:'#ffe08a'});
+    G.parts.push({ring:1,x:k.x,y:k.y,rad:k.r,maxRad:260,life:.7,max:.7,col:'#ffffff'});
+    G.lions.forEach(function(l){if(l.side!=='P'){knock(l,Math.atan2(l.y-k.y,l.x-k.x),260);}});
+    banner('CAL THE SHAGON',1.8,true);SFX.herald();
+  });
+  if(T>=SHAGON.end){
+    G.shPh=null;G.camFocus=null;G.shT0=G.t;k.invuln=.5;shSayShow(null);
+    G.shCutT=5;G.shCallT=4;
+    banner('FIGHT',.9,true);SFX.bell();crowdReact(1.6);buildHud();
+  }
+}
+/* he whistles, and hyenas come: weak as anything, just there for the show */
+function shCall(k,n){
+  const C=SHAGON.call,live=G.lions.filter(l=>l.minion&&!l.dead).length;n=Math.min(n,C.max-live);if(n<=0)return;
+  for(let i=0;i<n;i++){const h=makeBeast('hyena',1),a=Math.random()*6.283,d=rnd(k.r+34,k.r+80);
+    h.x=clamp(k.x+Math.cos(a)*d,G.wall+30,ARENA-G.wall-30);h.y=clamp(k.y+Math.sin(a)*d,G.wall+30,ARENA-G.wall-30);
+    h.minion=1;h.maxHp*=C.hp;h.hp=h.maxHp;h.dmgMult*=C.dmg;h.invuln=.4;h.foe=nearestAlly(h)||G.lions[0];
+    G.lions.push(h);G.parts.push({ring:1,x:h.x,y:h.y,rad:4,maxRad:38,life:.4,max:.4,col:'#ffe08a'});spark(h.x,h.y,'#ffe08a',8);}
+  k.anim=.25;num(k.x,k.y-k.r-20,'HYENAS!','#ffe08a',15);SFX.roar();crowdReact(.9,k.x,k.y);
+  log('<em class="gold">Cal the Shagon</em> whistles. '+n+' hyena'+(n>1?'s':'')+' come running.');
+}
+/* the god-cut: a gold line across the floor, then the blade comes down along it */
+function shCut(k){
+  const f=(k.foe&&!k.foe.dead)?k.foe:G.lions.filter(l=>l.side!=='P'&&!l.dead)[0];if(!f)return;
+  const C=SHAGON.cut,base=Math.atan2(f.y-k.y,f.x-k.x),n=G.ph2?3:(G.ph1?2:1),spread=.42;
+  for(let i=0;i<n;i++){const a=base+(n===1?0:(i-(n-1)/2)*spread);
+    G.gfx.push({k:'gcut',x:k.x,y:k.y,ang:a,len:C.len,w:C.w,t:0,warn:C.warn+i*.12,src:k,hit:{},done:0});}
+  num(k.x,k.y-k.r-20,'GODSLAYER',FX.gold,16);SFX.warn();G.shSword=1;k.anim=.3;
+}
+function gcutStep(g,dt){
+  if(g.done||g.t<g.warn)return;
+  g.done=1;const k=g.src,C=SHAGON.cut,ca=Math.cos(g.ang),sa=Math.sin(g.ang);
+  SFX.beam();G.shake=Math.min(12,G.shake+6);G.flash=Math.max(G.flash||0,.25);crowdReact(1,g.x+ca*g.len*.4,g.y+sa*g.len*.4);
+  for(let q=0;q<10;q++){const d=q/10*g.len;spark(g.x+ca*d,g.y+sa*d,'#ffe08a',2,g.ang+Math.PI/2);}
+  G.lions.forEach(function(l){if(l.dead||l.side===k.side||g.hit[l.uid])return;
+    const dx=l.x-g.x,dy=l.y-g.y,along=dx*ca+dy*sa,off=Math.abs(-dx*sa+dy*ca);
+    if(along>-l.r&&along<g.len&&off<g.w/2+l.r*.6){g.hit[l.uid]=1;
+      hurt(l,C.dmg*k.dmgMult,k,{col:FX.gold,by:'the Godslayer’s cut'});knock(l,g.ang+(off>0?Math.PI/2:-Math.PI/2),140);
+      if(l.hp<=0&&!l.dead)kill(l,'the Godslayer’s cut');}});
+}
+function gcutDraw(g,c){
+  const ca=Math.cos(c.ang),sa=Math.sin(c.ang),x1=c.x+ca*c.len,y1=c.y+sa*c.len;
+  g.save();g.lineCap='round';
+  if(!c.done){const k=c.t/c.warn;
+    g.globalAlpha=.12+.25*k;g.strokeStyle='#ffd24a';g.lineWidth=c.w*k;g.beginPath();g.moveTo(c.x,c.y);g.lineTo(x1,y1);g.stroke();
+    g.globalAlpha=.5+.4*k;g.lineWidth=2;g.setLineDash([10,8]);g.lineDashOffset=-c.t*60;g.strokeStyle='#fff3c4';g.beginPath();g.moveTo(c.x,c.y);g.lineTo(x1,y1);g.stroke();g.setLineDash([]);
+  } else {const k=Math.min(1,(c.t-c.warn)/.45);
+    g.globalAlpha=1-k;if(!RM){g.shadowColor='#ffe9a8';g.shadowBlur=24;}
+    g.strokeStyle='#ffd24a';g.lineWidth=c.w*(1.1-k*.6);g.beginPath();g.moveTo(c.x,c.y);g.lineTo(x1,y1);g.stroke();
+    g.strokeStyle='#ffffff';g.lineWidth=c.w*.35*(1-k);g.beginPath();g.moveTo(c.x,c.y);g.lineTo(x1,y1);g.stroke();}
+  g.restore();
+}
+function shFall(t){
+  G.lions.forEach(function(l){if(l.minion&&!l.dead){l.dead=true;l.hp=0;l.deadT=0;spark(l.x,l.y,'#ffe08a',6);}});
+  G.shSword=0;
+  log('The hyenas take one look and run for the bridge.');
+}
+/* the ceremony on the floor: the ring of light, the faithful, and the light coming down on him */
+function drawShUnder(g,t){
+  const D=G.shDais,cere=G.shPh==='walk'||G.shPh==='ask',fade=cere?1:Math.max(0,1-(G.shT||0)/2);
+  if(fade>0&&G.shPh){
+    g.save();g.globalAlpha=fade;
+    g.strokeStyle='rgba(255,224,138,.55)';g.lineWidth=2;g.beginPath();g.ellipse(D.x,D.y,SHAGON.ring+22,SHAGON.ring*.9+20,0,0,7);g.stroke();
+    g.strokeStyle='rgba(255,224,138,.25)';g.lineWidth=1;g.beginPath();g.ellipse(D.x,D.y,SHAGON.ring-22,SHAGON.ring*.9-22,0,0,7);g.stroke();
+    for(let i=0;i<18;i++){const a=i/18*Math.PI*2+t*.25,r1=SHAGON.ring+14,r2=SHAGON.ring+22;g.strokeStyle='rgba(255,224,138,'+(.3+.3*Math.sin(t*3+i)).toFixed(2)+')';g.lineWidth=2;
+      g.beginPath();g.moveTo(D.x+Math.cos(a)*r1,D.y+Math.sin(a)*r1*.9);g.lineTo(D.x+Math.cos(a)*r2,D.y+Math.sin(a)*r2*.9);g.stroke();}
+    g.restore();}
+  if(G.shWor)G.shWor.forEach(function(w){if(w.al<=0)return;
+    const bow=(w.run>0)?0:(.5+.5*Math.sin(t*2.2+w.ph)),bx=Math.cos(w.ang)*bow*3,by=Math.sin(w.ang)*bow*3;
+    g.save();g.globalAlpha=w.al;
+    paintLion(g,{x:w.x+bx,y:w.y+by,R:14,ang:w.ang,t:t*(w.run>0?2.4:.3)+w.ph,pelt:w.pelt,mane:w.mane,tail:w.seed%8,seed:w.seed,scars:[],armor:'none',anim:w.run>0&&Math.sin(t*16+w.ph)>0,cos:{sash:'shagon'}});
+    g.restore();});
+}
+function drawShOver(g,t){
+  const D=G.shDais,k=G.lions.find(l=>l.boss);if(!k)return;
+  /* the light on him while they worship */
+  if(G.shLight>0){const a=G.shLight*(G.shPh?1:.6),pw=k.r*1.6;
+    const pl=g.createLinearGradient(k.x-pw,0,k.x+pw,0);pl.addColorStop(0,'rgba(255,240,200,0)');pl.addColorStop(.5,'rgba(255,244,214,'+(.32*a).toFixed(3)+')');pl.addColorStop(1,'rgba(255,240,200,0)');
+    g.fillStyle=pl;g.fillRect(k.x-pw,-STANDS-40,pw*2,k.y+STANDS+40);}
+  /* the sword of the god he killed, hanging in the air above him */
+  if(G.shSword>.01&&!k.dead){const a=G.shSword,x=k.x,y=k.y-k.r*2.4-6*Math.sin(t*2),L=k.r*2.8;
+    g.save();g.globalAlpha=a;if(!RM){g.shadowColor='#ffe9a8';g.shadowBlur=22;}
+    g.fillStyle='#fff6da';g.beginPath();g.moveTo(x,y-L*.62);g.lineTo(x+L*.07,y-L*.5);g.lineTo(x+L*.07,y+L*.18);g.lineTo(x-L*.07,y+L*.18);g.lineTo(x-L*.07,y-L*.5);g.closePath();g.fill();
+    g.fillStyle='#ffd24a';g.fillRect(x-L*.22,y+L*.18,L*.44,L*.06);g.fillRect(x-L*.04,y+L*.24,L*.08,L*.2);
+    g.beginPath();g.arc(x,y+L*.47,L*.05,0,7);g.fill();g.fillStyle='#e2382c';g.beginPath();g.arc(x,y+L*.21,L*.025,0,7);g.fill();
+    g.restore();}
+  G.shFx.forEach(function(p){const q=p.t/p.life;g.globalAlpha=(1-q)*.9;g.fillStyle=q<.3?'#ffffff':'#ffe08a';g.beginPath();g.arc(p.x,p.y,1.8*(1-q)+.6,0,7);g.fill();});
+  g.globalAlpha=1;
+}
+/* ---------- the Godfall: where a god came down and didn't get up ---------- */
+function drawGodSkull(g,x,y,s,t,glow){
+  /* a huge lion's skull, face-on: wide cheekbones, slanted sockets, a long muzzle and two great fangs. Something still burns in the eyes */
+  g.save();g.translate(x,y);
+  g.fillStyle='rgba(0,0,0,.4)';g.beginPath();g.ellipse(4,s*.12+6,s*1.1,s*.92,0,0,7);g.fill();
+  const bg=g.createLinearGradient(0,-s,0,s);bg.addColorStop(0,'#efe6d0');bg.addColorStop(1,'#a99c80');g.fillStyle=bg;
+  g.beginPath();g.moveTo(0,-s*.95);
+  g.bezierCurveTo(s*.42,-s*.95,s*.62,-s*.62,s*.66,-s*.32);   /* the dome */
+  g.bezierCurveTo(s*1.02,-s*.24,s*1.06,s*.08,s*.82,s*.18);    /* a cheekbone flaring out */
+  g.bezierCurveTo(s*.6,s*.26,s*.46,s*.34,s*.4,s*.52);
+  g.lineTo(s*.34,s*.82);g.quadraticCurveTo(0,s*.92,-s*.34,s*.82);g.lineTo(-s*.4,s*.52);
+  g.bezierCurveTo(-s*.46,s*.34,-s*.6,s*.26,-s*.82,s*.18);
+  g.bezierCurveTo(-s*1.06,s*.08,-s*1.02,-s*.24,-s*.66,-s*.32);
+  g.bezierCurveTo(-s*.62,-s*.62,-s*.42,-s*.95,0,-s*.95);g.closePath();g.fill();
+  g.strokeStyle='rgba(60,48,30,.55)';g.lineWidth=Math.max(1,s*.03);g.stroke();
+  /* a crest down the middle of the dome, and the brow ridges */
+  g.strokeStyle='rgba(90,76,52,.45)';g.lineWidth=Math.max(1,s*.025);g.beginPath();g.moveTo(0,-s*.92);g.lineTo(0,-s*.42);g.stroke();
+  [-1,1].forEach(function(sd){g.beginPath();g.moveTo(sd*s*.08,-s*.36);g.quadraticCurveTo(sd*s*.36,-s*.48,sd*s*.66,-s*.28);g.stroke();});
+  /* the sockets, slanted like a cat's */
+  g.fillStyle='#120e08';[-1,1].forEach(function(sd){g.beginPath();g.ellipse(sd*s*.37,-s*.12,s*.23,s*.16,sd*.45,0,7);g.fill();});
+  if(glow>0){g.save();g.globalCompositeOperation='lighter';[-1,1].forEach(function(sd){const ex=sd*s*.37,ey=-s*.12,gr=g.createRadialGradient(ex,ey,1,ex,ey,s*.24);
+    gr.addColorStop(0,'rgba(255,220,120,'+(glow*(.55+.25*Math.sin(t*1.7+sd))).toFixed(2)+')');gr.addColorStop(1,'rgba(255,220,120,0)');g.fillStyle=gr;g.beginPath();g.arc(ex,ey,s*.24,0,7);g.fill();});g.restore();}
+  /* the long nose opening */
+  g.fillStyle='#1a140c';g.beginPath();g.moveTo(0,s*.06);g.quadraticCurveTo(s*.13,s*.2,s*.08,s*.42);g.lineTo(-s*.08,s*.42);g.quadraticCurveTo(-s*.13,s*.2,0,s*.06);g.fill();
+  /* little front teeth and the two great fangs */
+  g.fillStyle='#e6dcc2';for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(i*s*.05-s*.02,s*.82);g.lineTo(i*s*.05+s*.02,s*.82);g.lineTo(i*s*.05,s*.9);g.closePath();g.fill();}
+  g.strokeStyle='rgba(60,48,30,.5)';g.lineWidth=Math.max(.8,s*.015);
+  [-1,1].forEach(function(sd){g.beginPath();g.moveTo(sd*s*.15,s*.78);g.quadraticCurveTo(sd*s*.26,s*.84,sd*s*.24,s*.8);g.lineTo(sd*s*.2,s*1.18);g.closePath();g.fillStyle='#f2ead6';g.fill();g.stroke();});
+  /* a crack straight down from the brow, where the sword went in, still bleeding gold */
+  g.strokeStyle='#e0a52a';g.lineWidth=Math.max(1,s*.035);if(!RM){g.shadowColor='#ffd24a';g.shadowBlur=s*.15;}
+  g.beginPath();g.moveTo(-s*.04,-s*.93);g.lineTo(s*.05,-s*.7);g.lineTo(-s*.03,-s*.5);g.lineTo(s*.04,-s*.3);g.stroke();
+  g.restore();
+}
+function drawGodfallFloor(g,W,t){
+  const S=ARENA-W*2,mid=ARENA/2,cy=mid-34;
+  g.save();g.beginPath();g.rect(W,W,S,S);g.clip();
+  const bg=g.createRadialGradient(mid,cy,20,mid,mid,ARENA*.72);bg.addColorStop(0,'#2a2416');bg.addColorStop(1,'#0e0c08');g.fillStyle=bg;g.fillRect(W,W,S,S);
+  /* broken flagstones */
+  g.strokeStyle='rgba(255,240,210,.05)';g.lineWidth=1;
+  for(let y=0,r=0;y<ARENA;y+=64,r++)for(let x=(r%2?-32:0);x<ARENA;x+=64){g.strokeRect(x+.5+((x*7+y)%5),y+.5,64,64);}
+  /* the great sigil where he stands */
+  g.strokeStyle='rgba(255,224,138,.16)';g.lineWidth=2;[150,118,62].forEach(function(r){g.beginPath();g.arc(mid,cy,r,0,7);g.stroke();});
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;g.beginPath();g.moveTo(mid+Math.cos(a)*62,cy+Math.sin(a)*62);g.lineTo(mid+Math.cos(a)*(i%2?118:150),cy+Math.sin(a)*(i%2?118:150));g.stroke();}
+  /* gold running in the cracks: the god's blood, still warm */
+  const pu=.55+.25*Math.sin(t*1.3);
+  g.save();if(!RM){g.shadowColor='#ffcf5a';g.shadowBlur=10;}g.strokeStyle='rgba(232,176,40,'+pu.toFixed(2)+')';g.lineWidth=2;g.lineJoin='round';
+  for(let i=0;i<9;i++){const a=i/9*Math.PI*2+.3;let x=mid+Math.cos(a)*30,y=cy+Math.sin(a)*30;g.beginPath();g.moveTo(x,y);
+    for(let q=1;q<9;q++){const aa=a+Math.sin(i*3.1+q*1.7)*.35,st=26+((i*13+q*7)%14);x+=Math.cos(aa)*st;y+=Math.sin(aa)*st;g.lineTo(x,y);}g.stroke();}
+  g.restore();
+  g.fillStyle='rgba(232,176,40,.35)';for(let i=0;i<60;i++){const a=i*2.39,d=40+((i*53)%230);g.beginPath();g.arc(mid+Math.cos(a)*d,cy+Math.sin(a)*d,1+((i*7)%3)*.6,0,7);g.fill();}
+  /* the bridge comes in at the south */
+  g.fillStyle='rgba(120,110,95,.25)';g.fillRect(mid-46,ARENA-W-90,92,90);
+  g.strokeStyle='rgba(255,240,210,.08)';for(let y=ARENA-W-90;y<ARENA-W;y+=16){g.beginPath();g.moveTo(mid-46,y);g.lineTo(mid+46,y);g.stroke();}
+  g.restore();
+}
+function drawGodfallStands(g,t){
+  const mid=ARENA/2;
+  /* the god's skull on the north terrace, a broken halo behind it */
+  const s=STANDS*.95;
+  g.save();if(!RM){g.shadowColor='#ffe08a';g.shadowBlur=12;}g.strokeStyle='rgba(255,224,138,.55)';g.lineWidth=4;
+  [[-2.7,-1.9],[-1.6,-.9],[-.55,.15]].forEach(function(q){g.beginPath();g.arc(mid,-STANDS*.4,s*1.5,q[0],q[1]);g.stroke();});g.restore();
+  drawGodSkull(g,mid,-STANDS*.42,s,t,G.shPh?1:.55);
+  /* ribs coming up out of the side terraces */
+  [[-STANDS*.5,1],[ARENA+STANDS*.5,-1]].forEach(function(q){for(let i=0;i<5;i++){const y=150+i*86,x=q[0];
+    g.strokeStyle='#d8ccb0';g.lineWidth=7-i*.6;g.lineCap='round';g.beginPath();g.moveTo(x-q[1]*22,y+18);g.quadraticCurveTo(x+q[1]*26,y-6,x-q[1]*6,y-34);g.stroke();
+    g.strokeStyle='rgba(60,48,30,.5)';g.lineWidth=1.5;g.stroke();}});
+  /* the bridge going off south into the dark */
+  const by=ARENA,bw=92;g.fillStyle='#050403';g.fillRect(-STANDS,by,ARENA+STANDS*2,STANDS+10);
+  for(let i=0;i<14;i++){const x=(i*61+t*8)%(ARENA+STANDS*2)-STANDS,y=by+10+(i*17)%(STANDS-10);g.fillStyle='rgba(180,180,200,.05)';g.beginPath();g.ellipse(x,y,40,9,0,0,7);g.fill();}
+  g.fillStyle='#5a534a';g.fillRect(mid-bw/2,by,bw,STANDS+10);g.fillStyle='#3a352e';g.fillRect(mid-bw/2,by,6,STANDS+10);g.fillRect(mid+bw/2-6,by,6,STANDS+10);
+  g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=1;for(let y=by;y<by+STANDS+10;y+=13){g.beginPath();g.moveTo(mid-bw/2+6,y);g.lineTo(mid+bw/2-6,y);g.stroke();}
+}
+function drawGodBone(g,o,t){
+  /* a rib of the god, curving up out of the floor */
+  g.fillStyle='rgba(0,0,0,.45)';g.beginPath();g.ellipse(o.x+3,o.y+5,o.r*1.1,o.r*.7,0,0,7);g.fill();
+  const a=(o.x<ARENA/2?1:-1);
+  g.save();g.translate(o.x,o.y);g.lineCap='round';
+  g.strokeStyle='#bfb294';g.lineWidth=o.r*.7;g.beginPath();g.moveTo(-o.r*.9*a,o.r*.6);g.quadraticCurveTo(o.r*.4*a,-o.r*1.1,o.r*.9*a,o.r*.2);g.stroke();
+  g.strokeStyle='#ece3cc';g.lineWidth=o.r*.42;g.beginPath();g.moveTo(-o.r*.9*a,o.r*.6);g.quadraticCurveTo(o.r*.4*a,-o.r*1.1,o.r*.9*a,o.r*.2);g.stroke();
+  g.strokeStyle='rgba(232,176,40,'+(.55+.2*Math.sin(t*1.5+o.x)).toFixed(2)+')';g.lineWidth=1.4;g.beginPath();g.moveTo(-o.r*.2*a,-o.r*.2);g.lineTo(o.r*.05*a,-o.r*.4);g.lineTo(o.r*.2*a,-o.r*.25);g.stroke();
+  g.restore();
+}
 /* ---------- the Ancient Lion's summoning: walk to the orb, choose, and wake him ---------- */
 const ANC_SUM={stop:96,walk:.27,len:5.6,burst:3.4,rain:{n:12,dur:3.2,r:52},meteor:{r:96,m:2.4,warn:2.2}};
 function ancMove(e){
@@ -7738,6 +8059,7 @@ function ancMove(e){
 }
 function ancAskShow(){
   const el=$('ancAsk');if(!el)return;
+  el.classList.remove('sh');
   el.innerHTML='<div class="aaK">The orb</div><h4>Summon him?</h4><p>It is warm, and it hums. Something very old is asleep inside it.</p>'+
     '<div class="aaBtns"><button class="aaY" data-act="ancYes">Summon him</button><button data-act="ancNo">No</button></div>';
   el.classList.remove('hidden');SFX.herald();
@@ -8179,6 +8501,7 @@ function step(dt){
     if(ch){const ks=G.lions.filter(x=>G.guardPh?x.guard:x.boss);if(ks.length)KING.maxHp=ks.reduce((a,k)=>a+k.maxHp,0);}}
   if(G.ctx==='king'&&!G.rageSaid&&bossBoost(BOSSKIND)>0){G.rageSaid=1;log('<em class="blood">'+BOSSES[BOSSKIND].name+'</em> remembers losing to you '+bossWins(BOSSKIND)+' time'+(bossWins(BOSSKIND)>1?'s':'')+'. '+boostTag(BOSSKIND)+' health and damage this time.');}
   if(G.ctx==='king'&&BOSSKIND==='ancient'&&G.orb)ancStep(dt);
+  if(G.ctx==='king'&&BOSSKIND==='shagon'&&G.shDais)shStep(dt);
   if(G.ctx==='king'&&!G.over&&G.guardPh){if(G.twinDue&&G.t>=G.twinDue)bossArrive();else if(G.t>=TGUARD.allIn&&G.lions.some(l=>l.guardHold))guardStep(false,true);}
   if(G.ctx==='king'&&!G.over){
     const bs=G.lions.filter(l=>l.boss),b=bs.filter(l=>!l.dead)[0]||bs[0];
@@ -8230,10 +8553,11 @@ function step(dt){
       if(np)e.foe=np;
     }
     if(G.ancPh){ancMove(e);}
+    else if(G.shPh){shMove(e);}
     else if(frozen||!e.foe||e.guardHold){e.moveX=0;e.moveY=0;if(e.guardHold&&e.foe)e.ang=Math.atan2(e.foe.y-e.y,e.foe.x-e.x);}
     else if(e.stun<=0)think(e,dt);
     else{e.moveX=0;e.moveY=0;}
-    if(e.gab&&!frozen&&!G.over&&!G.ancPh&&e.stun<=0)gabStep(e,dt);
+    if(e.gab&&!frozen&&!G.over&&!G.ancPh&&!G.shPh&&e.stun<=0)gabStep(e,dt);
 
     if(e.charge>0&&!frozen){
       e.charge-=dt;
@@ -8980,7 +9304,8 @@ function draw(){
   else if(G.arenaK==='sanctum')drawSanctumFloor(ctx,W,clk());
   else if(G.arenaK==='bastion')drawBastionFloor(ctx,W,clk());
   else if(G.arenaK==='savannah')drawSavannahFloor(ctx,W,clk());
-  if(['throne','hall','sanctum','bastion','savannah'].indexOf(G.arenaK)<0){ctx.strokeStyle='#1e1e26';ctx.beginPath();ctx.arc(320,320,88,0,7);ctx.stroke();}
+  else if(G.arenaK==='godfall')drawGodfallFloor(ctx,W,clk());
+  if(['throne','hall','sanctum','bastion','savannah','godfall'].indexOf(G.arenaK)<0){ctx.strokeStyle='#1e1e26';ctx.beginPath();ctx.arc(320,320,88,0,7);ctx.stroke();}
 
   ctx.fillStyle='rgba(226,56,44,.16)';
   for(let i=0;i<G.decals.length;i++){const d=G.decals[i];
@@ -9002,6 +9327,7 @@ function draw(){
   else if(G.arenaK==='sanctum')drawSanctumStands(ctx,clk());
   else if(G.arenaK==='bastion')drawBastionStands(ctx,clk());
   else if(G.arenaK==='savannah')drawSavannahStands(ctx,clk());
+  else if(G.arenaK==='godfall')drawGodfallStands(ctx,clk());
   drawGates(ctx,clk());
 
   for(let i=0;i<G.obstacles.length;i++){
@@ -9010,6 +9336,7 @@ function draw(){
     if(o.kind==='pillarW'||o.kind==='pillarB'){drawThronePillar(ctx,o,clk());continue;}
     if(o.kind==='ruin'){drawRuin(ctx,o,clk());continue;}
     if(o.kind==='obelisk'){drawObelisk(ctx,o,clk());continue;}
+    if(o.kind==='godbone'){drawGodBone(ctx,o,clk());continue;}
     if(o.kind==='pylon'){drawPylon(ctx,o,clk());continue;}
     if(o.kind==='rock'||o.kind==='mound'){drawDenRock(ctx,o);continue;}
     ctx.fillStyle='#08080a';ctx.beginPath();ctx.arc(o.x+2,o.y+3,o.r,0,7);ctx.fill();
@@ -9038,9 +9365,11 @@ function draw(){
     if(e.charge>0&&!e.dead)drawCharge(ctx,e);
   }
 
+  if(G.shDais)drawShUnder(ctx,clk());
   for(let i=0;i<G.pets.length;i++)drawCub(G.pets[i]);
   for(let i=0;i<G.lions.length;i++)drawLion(G.lions[i]);
   if(G.orb)drawAncFx(ctx,clk());
+  if(G.shDais)drawShOver(ctx,clk());
   drawVfx(ctx,false);
   if(G.rocks)drawRocksFalling(ctx);
   if(G.night&&ctx.getTransform&&typeof document!=='undefined')drawNight();
@@ -9337,7 +9666,7 @@ function paintLion(g,o){
 const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold'],sash:['redgold','navy','bone','king','ancient','gate','twins'],fx:['glitch']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold'],sash:['redgold','navy','bone','king','ancient','gate','twins','shagon'],fx:['glitch']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9370,7 +9699,8 @@ function cosDark(hex,f){const m=/^#?([0-9a-f]{6})$/i.exec(hex||'');if(!m)return 
 /* under the head: bones in the mane, braids, and whatever is round the neck */
 const SASH={redgold:{band:'#b51f18',trim:'#f2c230'},navy:{band:'#1a2744',trim:'#c3c9d4',mid:'#26385e'},bone:{band:'#e8dfcc',trim:'#141414',mid:'#141414'},
   king:{band:'#111114',trim:'#c4161c',crown:1},ancient:{band:'#141d48',trim:'#ffc72c',stars:1},
-  gate:{band:'#5a616c',trim:'#c9cfd8',links:1},twins:{band:'#efeae0',trim:'#c9a227',split:1}};
+  gate:{band:'#5a616c',trim:'#c9cfd8',links:1},twins:{band:'#efeae0',trim:'#c9a227',split:1},
+  shagon:{band:'#f4efe2',trim:'#ffd24a',sword:1,ichor:1}};
 /* a sash from the front shoulder across to the back hip, knotted there with two tails */
 function cosSash(g,R,lunge,v,t){
   const S=SASH[v];if(!S)return;const bx=-lunge*.4,w=R*.27,a=-1.1,ca=Math.cos(a),sa=Math.sin(a),cx=bx-R*.5,cy=-R*.06;
@@ -9389,6 +9719,12 @@ function cosSash(g,R,lunge,v,t){
   if(S.split){g.fillStyle='#121214';g.fillRect(0,-w/2+w*.16,R*1.4,w*.68);
     g.save();g.fillStyle='#c9a227';g.beginPath();g.moveTo(-R*.08,R*.06);g.lineTo(-R*.08,-R*.05);g.lineTo(-R*.04,-R*.01);g.lineTo(0,-R*.07);g.lineTo(R*.04,-R*.01);g.lineTo(R*.08,-R*.05);g.lineTo(R*.08,R*.06);g.closePath();g.fill();
     g.strokeStyle='#efeae0';g.lineWidth=Math.max(.5,R*.02);g.beginPath();g.moveTo(0,-R*.08);g.lineTo(0,R*.07);g.stroke();g.restore();}
+  if(S.ichor){g.fillStyle='rgba(232,176,40,.85)';[[-.62,.3],[-.4,-.2],[-.18,.35],[.12,-.3],[.34,.22],[.58,-.12],[-.05,.05]].forEach(function(p,k){g.beginPath();g.arc(p[0]*R,p[1]*w,Math.max(.5,R*(k%2?.022:.032)),0,7);g.fill();});}
+  if(S.sword){/* a sword stitched in gold down the length of it, point towards the hip */
+    g.save();g.strokeStyle='#c9961c';g.fillStyle='#ffd24a';g.lineWidth=Math.max(.5,R*.02);
+    g.beginPath();g.moveTo(-R*.5,0);g.lineTo(R*.32,-w*.12);g.lineTo(R*.42,0);g.lineTo(R*.32,w*.12);g.closePath();g.fill();g.stroke();
+    g.fillRect(-R*.52,-w*.3,R*.05,w*.6);g.fillRect(-R*.66,-w*.07,R*.14,w*.14);
+    g.beginPath();g.arc(-R*.69,0,Math.max(.6,R*.03),0,7);g.fill();g.restore();}
   if(S.stars){for(let k=0;k<6;k++){const x=-R*.55+k*R*.18,y=(k%2?.04:-.04)*R,tw=.55+.45*Math.sin((t||0)*3+k*1.7);
     g.fillStyle='rgba(255,215,90,'+tw+')';g.beginPath();
     for(let q=0;q<8;q++){const rr=q%2?R*.018:R*.045,aa=q/8*Math.PI*2;g.lineTo(x+Math.cos(aa)*rr,y+Math.sin(aa)*rr);}g.closePath();g.fill();}}
@@ -9584,7 +9920,8 @@ const BOSS_FACE={
   ancient:{mane:'#ffc72c',dk:'#c8901a',face:'#1c2f66',muz:'#ffe48a',eye:'#ffe14d',glow:1},
   gate:   {mane:'#5c6370',dk:'#3a3f48',face:'#4a505a',muz:'#7d848f',eye:'#ffd24a',glow:1},
   kaldur: {mane:'#ece7dc',dk:'#bdb6a8',face:'#8a857c',muz:'#e4ddd0',eye:'#ffd24a',glow:1},
-  sevrin: {mane:'#18181c',dk:'#0b0b0e',face:'#26262c',muz:'#3e3e46',eye:'#ffd24a',glow:1}
+  sevrin: {mane:'#18181c',dk:'#0b0b0e',face:'#26262c',muz:'#3e3e46',eye:'#ffd24a',glow:1},
+  shagon: {mane:'#e58ba8',dk:'#b0607c',face:'#5e3c4a',muz:'#f3cbd8',eye:'#fff3d6',glow:1}
 };
 function faceMane(g,r,col,dk){
   g.fillStyle=col;g.beginPath();
@@ -9633,6 +9970,13 @@ function bossEmblem(g,k,cx,cy,r,lit){
       g.moveTo(-R*.42,-R*.7);g.lineTo(-R*.42,-R*.98);g.lineTo(-R*.22,-R*.82);g.lineTo(0,-R*1.08);g.lineTo(R*.22,-R*.82);g.lineTo(R*.42,-R*.98);g.lineTo(R*.42,-R*.7);g.closePath();g.fill();g.stroke();
       g.restore();});
     g.strokeStyle='#ffd24a';g.lineWidth=Math.max(1,r*.04);g.beginPath();g.moveTo(0,-R*1.05);g.lineTo(0,R*.62);g.stroke();
+  } else if(k==='shagon'){
+    /* a gold halo behind him, his face, and the hilt of the sword over his shoulder */
+    g.save();g.shadowColor='#ffe9a8';g.shadowBlur=Math.max(3,R*.35);g.strokeStyle='#ffe08a';g.lineWidth=Math.max(1.2,R*.07);g.beginPath();g.arc(0,-R*.1,R*1.02,0,7);g.stroke();g.restore();
+    g.save();g.translate(R*.62,-R*.62);g.rotate(.7);g.fillStyle='#ffd24a';g.fillRect(-R*.05,-R*.36,R*.1,R*.36);g.fillRect(-R*.2,-R*.02,R*.4,R*.08);
+    g.fillStyle='#ece7dc';g.fillRect(-R*.06,R*.06,R*.06,R*.3);g.fillStyle='#141416';g.fillRect(0,R*.06,R*.06,R*.3);g.restore();
+    faceBase(g,R,BOSS_FACE.shagon);
+    g.fillStyle='#ffd24a';g.beginPath();g.arc(-R*.46,-R*.32,R*.07,0,7);g.fill();
   } else {
     faceBase(g,R,BOSS_FACE[k],{noEyes:k==='gate'});
     if(k==='old'){
@@ -9689,6 +10033,7 @@ function bossPortrait(g,k,cx,cy,r,lit,t){
     tc.forEach(function(c,i){const x=cx+(i?r*.46:-r*.46),y=cy+(i?r*.08:-r*.02),RR=i?R2*.9:R2;
       face(c,x,y,RR,{cols:c.bossCols,eyes:'#ffd24a',eyeGlow:lit});
       drawHalfCrown(g,{x:x,y:y-RR*.58,ang:Math.PI/2,cfg:{twin:c.twin}},RR);});}
+  else if(k==='shagon'){shagonPaint(g,cx,cy-R*.58,R,Math.PI/2,t);}
   if(!lit){g.fillStyle='rgba(8,8,10,.62)';g.fillRect(cx-r,cy-r,r*2,r*2);}
   g.restore();
 }
@@ -9965,7 +10310,7 @@ function updateHud(){
       const shield=k&&k.shell>0?k.shell/k.maxHp:(k?ks.reduce((a,x)=>a+(x.barrier||0),0)/tot:0);
       hb.querySelector('.shieldFill').style.transform='scaleX('+Math.min(1,shield)+')';
       hb.querySelector('.fmeta').textContent=BOSSKIND==='gate'&&k?(k.shell>0?'Plates '+Math.ceil(k.shell/k.shellMax*100)+'% \u00b7 hit hard to crack them':'Plates broken \u00b7 he bleeds')
-        :(BOSSKIND==='twins'?(G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' children standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):(G.ancPh?(G.ancPh==='summon'?'Waking\u2026':'Something sleeps inside it'):G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||3)+' princes standing \u00b7 the Lion King waits':BOSSES[BOSSKIND].meta))+(bossBoost(BOSSKIND)>0?' \u00b7 '+boostTag(BOSSKIND):'');
+        :(BOSSKIND==='twins'?(G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' children standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):(BOSSKIND==='shagon'&&G.shPh?'The ceremony \u00b7 his faithful kneel':G.ancPh?(G.ancPh==='summon'?'Waking\u2026':'Something sleeps inside it'):G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||3)+' princes standing \u00b7 the Lion King waits':BOSSES[BOSSKIND].meta))+(bossBoost(BOSSKIND)>0?' \u00b7 '+boostTag(BOSSKIND):'');
       $('roundLbl').textContent=alliesUp()>1?(alliesUp()+' of you'):'';
     } else {
       const alive=packAlive();
@@ -10125,7 +10470,7 @@ function evSettle(L,won){
   }
 }
 /* beat the Lion King or the Ancient Lion and it drops its sash, once per lion */
-const BOSS_SASH={king:'sashKing',ancient:'sashAncient',gate:'sashGate',twins:'sashTwins'};
+const BOSS_SASH={king:'sashKing',ancient:'sashAncient',gate:'sashGate',twins:'sashTwins',shagon:'sashShagon'};
 function bossDrop(L){
   const k=BOSS_SASH[BOSSKIND];if(!L||!k)return null;
   const I=ITEMS[k],worn=cosOf(L)&&cosOf(L).sash===I.val;
@@ -10379,6 +10724,12 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
     B.innerHTML='<button class="primary" data-act="home">Pay respects</button>'+
       '<button data-act="again">Again (he\u2019s fine)</button>';
   }
+  else if(kind==='shWalk'){
+    V.textContent='YOU WALKED OUT';V.className='verdict blood';
+    M.textContent='Cal the Shagon never turned round. The chanting carried on.';
+    P.innerHTML='<div class="perkCard neutral"><h5>Nobody stopped you</h5><p>'+esc((G.lions[0]&&G.lions[0].name)||'Your lion')+' backed out of the Godfall and walked home over the bridge. Old Lion was still there. He didn’t say anything.</p></div>';
+    B.innerHTML='<button class="primary" data-act="again">Go back in</button><button data-act="home">Back to the den</button>';
+  }
   else if(kind==='ancAfraid'){
     V.textContent='YOU WERE AFRAID';V.className='verdict blood';
     M.textContent='You were afraid of summoning him. The orb is still humming.';
@@ -10607,8 +10958,12 @@ if(typeof window!=='undefined'){
   setTimeout(nudgeShow,NUDGE.wait);
 }
 /* ---------- what's new ---------- */
-const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and event update',top:'QUESTLINES &',bottom:'NEW BOSSES',tag:'QUESTS · BOSSES · EVENTS',
-  items:[['maul','Event: the Princes\u2019 Yard','The Black Princes train behind the Fallen Hall. Skip it, or take a peek through the crack in the wall and learn one stat for free. But there is a 40% chance a prince catches you watching, and then it is one on one in his yard. Beat him for a point in what he is best at, and a skull.'],
+const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
+  items:[['sword','New boss: Cal the Shagon','The last challenge, after the Twin Kings. A god lion walked into the world, and Cal the Shagon was blessed with a sword and killed it. Small, pink and very fast, with a Sunbeam, a golden cut that splits the floor, and hyenas that come when he calls (they hardly hurt, they are just for show).'],
+    ['paw','The stone bridge','Old Lion is waiting on the bridge to the Godfall, and he does not think you should go. Cross it, or stand down. On the other side his faithful kneel around him: interrupt the ceremony, or walk out.'],
+    ['sash','The Godslayer’s Sash','White silk spattered with gold, with a sword stitched down it. Beat Cal the Shagon to take it. He goes on your lion’s card with the other bosses you have slain.']],
+  past:[
+    {title:'Questline, boss and event update',when:'November 2026',items:[['maul','Event: the Princes\u2019 Yard','The Black Princes train behind the Fallen Hall. Skip it, or take a peek through the crack in the wall and learn one stat for free. But there is a 40% chance a prince catches you watching, and then it is one on one in his yard. Beat him for a point in what he is best at, and a skull.'],
     ['crown','Bigger kings','The Lion King and the Ancient Lion are both a lot bigger now. Harder to get round, and they hit across more of the arena.'],
     ['sword','Questline: Lionsteel','Get your weapon to Gilded and the Blacksmith has a job for you. He can only forge Lionsteel in the blood of slain lions. Beat 100 lions (championship bouts, grudges, bosses and online fights all count), then pay 25 skulls and 1,000 gold for a Lv4 blood-red edge: +12% damage.'],
     ['soulV','Questline: the Void Soul','The Mystic Lion has one soul it will not sell. Win 10 championships, then bring 100 skulls. A black sun rises behind your lion, ringed in shadowfire and crescent moons, and it gets +15% to every stat, where Divine and Demonic give +10%.'],
@@ -10624,8 +10979,7 @@ const NEWS={id:'2026-11-quests-bosses-events-pack',title:'Questline, boss and ev
     ['crown','Two new bosses','The Gatekeeper, plated head to tail: crack his iron with heavy hits before he bleeds, and watch the walls close in. The Twin Kings, Kaldur and Sevrin, in their own arena, the Twin Throne: beat their four children first (Brann, Ysra, Morwen and Vex), then take whatever health you have left to the kings. Kill one and the other goes mad with grief. Each boss drops its own sash.'],
     ['spark','Eight new events','The Princes\u2019 Yard, the Carrion Feast, the Fix, the Exiled King, the Clan War, the Mystic’s Mirror, Scavenger Night, and the Twin Statue: kneel to Kaldur or Sevrin, leave them a skull, or steal their gold eyes. Each one a choice with a price.'],
     ['pack','Balance: the pack pays nothing','Hyena and dog waves in the Pack challenge no longer give gold. It is for your best wave and kill count now. Gold comes from championship bouts.'],
-    ['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is. Skulls also stack past 99 now, so 100 skulls for the Void can be saved up.']],
-  past:[
+    ['bag','Quests show in the den','The Blacksmith and Mystic Lion doors show how far along each quest is. Skulls also stack past 99 now, so 100 skulls for the Void can be saved up.']]},
     {title:'Gift Parcel and Cosmetic update',when:'November 2026',items:[
       ['gift','Gift Parcels','15 gold at the Lion Store. Wrap an item, gold or skulls with a note and send it to any player on the leaderboard. They get it the next time they sign in.'],
       ['sash','Sashes','Red and Gold, Navy, and Bone and Black at the Cosmetic Lion. Beat the Lion King for the Fallen King’s Sash, and the Ancient Lion for the Starfall Sash.'],
@@ -10647,12 +11001,11 @@ function newsBanner(cv){
   const sp=g.createRadialGradient(w/2,h*.95,10,w/2,h*.95,w*.65);sp.addColorStop(0,'rgba(255,170,70,.32)');sp.addColorStop(1,'rgba(255,170,70,0)');g.fillStyle=sp;g.fillRect(0,0,w,h);
   g.strokeStyle='rgba(255,210,150,.06)';g.lineWidth=1;for(let y=h*.62;y<h;y+=12){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();}
   for(let i=0;i<14;i++){const x=(i*61)%w,y=h*.2+((i*37)%(h*.6));g.fillStyle='rgba(255,'+(140+(i*13)%90)+',60,'+(.25+(i%3)*.15)+')';g.beginPath();g.arc(x,y,1.1,0,7);g.fill();}
-  const R=Math.min(24,h*.12);
-  const A={pelt:8,mane:3,tail:0,build:'prime'},cA={crown:'laurel',teeth:'gold',earL:'gold',sash:'ancient'};
-  soulAura(g,w*.24,h*.8,R,-.12,1.7,'void',true);
-  paintLion(g,{x:w*.24,y:h*.8,R:R,ang:-.12,t:1,pelt:0,mane:3,tail:0,seed:4,scars:[1284],armor:'none',cos:cA,eyes:SOULS.void.eyes,eyeGlow:true});
-  soulAura(g,w*.24,h*.8,R,-.12,1.7,'void',false);
-  paintLion(g,{x:w*.76,y:h*.8,R:R,ang:Math.PI+.12,t:2,pelt:8,mane:0,tail:2,seed:9,scars:[617,1450],armor:'none',cos:{sash:'king',paint:'blood',patch:'L',nose:'gold',earR:'fang'},eyes:'#ff3a2a',eyeGlow:true});
+  const R=Math.min(26,h*.13);
+  /* the god's skull on the left, Cal on the right, and the god's sword between them */
+  drawGodSkull(g,w*.2,h*.8,Math.min(30,h*.15),1.3,1);
+  const pl=g.createLinearGradient(w*.8-30,0,w*.8+30,0);pl.addColorStop(0,'rgba(255,240,200,0)');pl.addColorStop(.5,'rgba(255,240,200,.16)');pl.addColorStop(1,'rgba(255,240,200,0)');g.fillStyle=pl;g.fillRect(w*.8-30,h*.45,60,h*.55);
+  shagonPaint(g,w*.8,h*.8,R,Math.PI+.25,1.4);
   g.textAlign='center';
   g.font='700 10px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,190,110,.85)';
   if(g.letterSpacing!==undefined)g.letterSpacing='3px';g.fillText('NEW UPDATE',w/2,h*.14);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
@@ -10663,15 +11016,13 @@ function newsBanner(cv){
   g.fillText(NEWS.top,w/2,ty+big*1.2);g.fillText(NEWS.bottom,w/2,ty+big*2.25);
   g.shadowBlur=0;g.font='700 '+Math.round(big*.5)+'px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='#f5e6cc';
   if(g.letterSpacing!==undefined)g.letterSpacing='2px';g.fillText(NEWS.tag,w/2,ty+big*3.1);if(g.letterSpacing!==undefined)g.letterSpacing='0px';
-  /* a Lionsteel blade between them, point down, dripping */
+  /* the god's sword, point down, burning white */
   const px=w/2,py=h*.8,bs=Math.min(34,h*.18);
-  g.save();g.translate(px,py);g.rotate(.18);
-  g.shadowColor='#ff2e4a';g.shadowBlur=12;
-  const bl=g.createLinearGradient(-bs*.12,0,bs*.12,0);bl.addColorStop(0,'#7a0c1c');bl.addColorStop(.5,'#ff5a6e');bl.addColorStop(1,'#8a0f22');
-  g.fillStyle=bl;g.beginPath();g.moveTo(-bs*.11,-bs*.7);g.lineTo(bs*.11,-bs*.7);g.lineTo(bs*.08,bs*.55);g.lineTo(0,bs*.8);g.lineTo(-bs*.08,bs*.55);g.closePath();g.fill();
-  g.shadowBlur=0;g.fillStyle='#2a1a12';g.fillRect(-bs*.36,-bs*.78,bs*.72,bs*.1);g.fillRect(-bs*.06,-bs*1.08,bs*.12,bs*.3);
-  g.fillStyle='#ffd24a';g.beginPath();g.arc(0,-bs*1.12,bs*.07,0,7);g.fill();
-  g.fillStyle='#d8263a';g.beginPath();g.arc(0,bs*.93,bs*.05,0,7);g.fill();
+  g.save();g.translate(px,py);
+  g.shadowColor='#ffe9a8';g.shadowBlur=16;
+  g.fillStyle='#fff6da';g.beginPath();g.moveTo(-bs*.1,-bs*.7);g.lineTo(bs*.1,-bs*.7);g.lineTo(bs*.08,bs*.55);g.lineTo(0,bs*.85);g.lineTo(-bs*.08,bs*.55);g.closePath();g.fill();
+  g.shadowBlur=0;g.fillStyle='#ffd24a';g.fillRect(-bs*.36,-bs*.8,bs*.72,bs*.1);g.fillRect(-bs*.06,-bs*1.1,bs*.12,bs*.32);
+  g.beginPath();g.arc(0,-bs*1.14,bs*.07,0,7);g.fill();g.fillStyle='#e2382c';g.beginPath();g.arc(0,-bs*.75,bs*.04,0,7);g.fill();
   g.restore();
   g.textAlign='start';
 }
@@ -11010,6 +11361,7 @@ function evPick(i){
   if(c.go==='grudge'){evClose();SFX.unlock();startFight('grudge');return;}
   if(c.go==='fightAmb'){evClose();SFX.unlock();startFight('ambush');return;}
   if(c.go==='oldFight'){evClose();SFX.unlock();MATCH.mode='pack';UI.chal='old';startFight('old');return;}
+  if(c.go==='shagonFight'){evClose();SFX.unlock();MATCH.mode='pack';UI.chal='shagon';startFight('shagon');return;}
   evNode(c.go,c);
 }
 function evClose(){EV.on=false;EV.node=null;$('ev').classList.add('hidden');Store.save();}
@@ -12723,6 +13075,58 @@ function drawPrinceYardScene(g,w,h,t,ph,tt){
   if(caught&&tt<.6){g.fillStyle='#3a322c';const q=tt/.6;g.fillRect(cx-gap-6+q*4,wb+q*20,5,4);}
   if(ph==='learnt'){const k=EV.learnt&&TRAIN[EV.learnt]?EV.learnt:'hp',q=Math.min(1,tt/.8);g.globalAlpha=q*(tt>3?Math.max(0,1-(tt-3)/.8):1);
     evIcon(g,TRAIN[k].ico,cx+30,yy-26-q*8,16,'#ffd24a');g.globalAlpha=1;}
+  evVignette(g,w,h);
+}
+/* ---------- the stone bridge: Old Lion is waiting on it ---------- */
+EVENTS.bridge={title:'The Stone Bridge',sub:'At the edge of the world',tag:'Challenge',tagIco:'sword',col:'#ffe08a',bg:'rgba(255,224,138,.14)',draw:drawBridgeScene,
+  nodes:{
+    start:function(L){const b=bossBoost('shagon',L);
+      return {scene:'arrive',lines:[
+        ['n','Past the Twin Throne, past the end of every map, there is a stone bridge over nothing at all. Mist comes up out of the dark on both sides.'],
+        ['n','At the far end there is gold light, and chanting. And on the bridge, standing in the way, a small grey lion in round glasses.'],
+        ['Old Lion','I wouldn’t go there…'],
+        ['Old Lion','The man you are about to face has slain a god.']],
+        stake:evChip('dn','sword','Cal the Shagon'+(b>0?' · '+boostTag('shagon',L):''))+evChip('up','sash','Win: the Godslayer’s Sash'),
+        choices:[{t:'Cross the bridge',go:'cross',yes:1},{t:'Stand down',go:'stand'}]};},
+    cross:function(L){return {scene:'cross',lines:[
+        ['Old Lion','…Of course you will. I taught you, didn’t I.'],
+        ['Old Lion','Don’t look down. And don’t let him talk for too long.'],
+        ['n','Old Lion steps aside. '+L.name+' walks out over the drop, into the mist, towards the light.']],
+        choices:[{t:'Into the Godfall',go:'shagonFight',yes:1}]};},
+    stand:function(L){return {scene:'stand',lines:[
+        ['Old Lion','Good. There’s no shame in it. Plenty of brave lions are buried on the other side.'],
+        ['n',L.name+' turns round and walks back the way it came. The chanting goes on behind it.']],
+        choices:[{t:'Back to the den',go:'done',yes:1}]};}
+  }};
+function drawBridgeScene(g,w,h,t,ph,tt){
+  const cx=w/2,bw=84;
+  /* the void, with gold light at the far end */
+  g.fillStyle='#06070b';g.fillRect(0,0,w,h);
+  const top=g.createRadialGradient(cx,-30,10,cx,-30,h*1.1);top.addColorStop(0,'rgba(255,224,138,.5)');top.addColorStop(.4,'rgba(255,200,90,.12)');top.addColorStop(1,'rgba(255,200,90,0)');g.fillStyle=top;g.fillRect(0,0,w,h);
+  for(let i=0;i<16;i++){const x=((i*83+t*(6+i%4*3))%(w+160))-80,y=(i*37)%h,sd=x<cx?1:0;
+    g.fillStyle='rgba(170,175,200,'+(.04+(i%3)*.015).toFixed(3)+')';g.beginPath();g.ellipse(x,y,60+(i%4)*18,14+(i%3)*5,0,0,7);g.fill();}
+  /* the bridge */
+  g.fillStyle='#4f4942';g.fillRect(cx-bw/2,0,bw,h);
+  const sh=g.createLinearGradient(cx-bw/2,0,cx+bw/2,0);sh.addColorStop(0,'rgba(255,255,255,.06)');sh.addColorStop(1,'rgba(0,0,0,.25)');g.fillStyle=sh;g.fillRect(cx-bw/2,0,bw,h);
+  g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=1;
+  for(let y=0,r=0;y<h;y+=16,r++){g.beginPath();g.moveTo(cx-bw/2,y);g.lineTo(cx+bw/2,y);g.stroke();for(let x=cx-bw/2+(r%2?14:0);x<cx+bw/2;x+=28){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+16);g.stroke();}}
+  g.fillStyle='#2f2b26';g.fillRect(cx-bw/2-6,0,7,h);g.fillRect(cx+bw/2-1,0,7,h);
+  g.fillStyle='#3d3832';for(let y=8;y<h;y+=44){g.fillRect(cx-bw/2-8,y,11,11);g.fillRect(cx+bw/2-3,y,11,11);}
+  /* the gold light pooling on the stones at the far end */
+  const fl=g.createLinearGradient(0,0,0,h*.4);fl.addColorStop(0,'rgba(255,224,138,.28)');fl.addColorStop(1,'rgba(255,224,138,0)');g.fillStyle=fl;g.fillRect(cx-bw/2,0,bw,h*.4);
+  /* Old Lion, in the way */
+  let ox=cx,oy=h*.36,oa=Math.PI/2;
+  if(ph==='cross'){const q=ease(Math.min(1,tt/1.1));ox=cx-q*26;oa=Math.PI/2-q*(Math.PI/2);if(tt>1.6)oa=Math.atan2(-1,.2);}
+  if(ph==='stand')oa=Math.PI/2+Math.sin(t*2)*.06;
+  const talking=EV.on&&EV.node&&EV.node.lines[EV.i][0]==='Old Lion'&&EV.shown<EV.node.lines[EV.i][1].length;
+  paintLion(g,{x:ox,y:oy,R:16,ang:oa,t:t*.45,pelt:0,cols:OLDCOLS,mane:0,tail:0,seed:7,scars:[1284,617],armor:'none',anim:talking&&Math.sin(t*14)>.3});
+  drawOldBits(g,ox,oy,16,oa,t,talking,(talking&&Math.sin(t*14)>.3)?16*.18:0);
+  /* you */
+  const rest=h*.76;let yy=rest,yx=cx,ya=-Math.PI/2,walk=false,al=1;
+  if(ph==='arrive'){const q=ease(tt/2);yy=h+26-q*(h+26-rest);walk=q<1;}
+  if(ph==='cross'&&tt>1.2){const q=Math.min(1,(tt-1.2)/4.2);yx=cx+12*Math.sin(Math.min(1,q*2)*Math.PI/2);yy=rest-q*(rest+40);walk=q<1;al=Math.max(0,1-Math.max(0,q-.7)/.3);}
+  if(ph==='stand'&&tt>.6){const q=tt-.6;ya=-Math.PI/2+Math.min(1,q/.6)*Math.PI;if(q>.6){yy=rest+(q-.6)*40;walk=true;}}
+  g.save();g.globalAlpha=al;evYou(g,yx,yy+(walk?Math.sin(t*10):0),16,ya,t,false);g.restore();
   evVignette(g,w,h);
 }
 function drawExileScene(g,w,h,t,ph,tt){
