@@ -657,6 +657,11 @@ button{cursor:pointer}
 .badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
 .invSlot.void,.rico.void{color:#c9a2ff}
 .invSlot.sea,.rico.sea{color:#5effc8}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
+.slTrack{display:flex;align-items:center;gap:6px;margin:12px 0 4px}
+.slStep{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 8px;border-radius:14px;background:var(--s2);opacity:.45;border:1.5px solid transparent}
+.slStep.on{opacity:1}.slStep.cur{border-color:var(--sc);box-shadow:0 0 16px color-mix(in srgb,var(--sc) 35%,transparent)}
+.slStep .slCv{width:100%;height:76px;border-radius:10px}.slStep b{font-size:13px;color:var(--sc)}.slStep small{font-size:12px;color:var(--t2)}
+.slArrow{font-style:normal;color:var(--t3);font-size:18px}
 .qCard{padding:16px 18px 14px;border-top:1px solid rgba(255,255,255,.06)}.qCard:first-child{border-top:0}
 .qHead{display:flex;align-items:center;gap:12px}.qHead .rico .ico{width:24px;height:24px}
 .qHead b{display:block;font-size:17px;font-weight:600}.qHead small{display:block;font-size:13px;color:var(--t2);margin-top:2px}
@@ -2178,6 +2183,11 @@ const SOULS={
   pirate:{name:'Pirate Soul', item:'pirate',    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
   void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
 function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct||10):0;}
+/* a Divine or Demonic soul grows: Lv1 +10%, Lv2 +12%, Lv3 +14%. Only a Lv3 soul can become the Void */
+const SOUL_LV={max:3,skulls:10,pct:[0,10,12,14]};
+function soulLvOf(c){const so=soulOf(c);return (so==='divine'||so==='demon')?clamp((c.slv|0)||1,1,SOUL_LV.max):(so?1:0);}
+function soulPctOf(c){const so=soulOf(c);return !so?0:((so==='divine'||so==='demon')?SOUL_LV.pct[soulLvOf(c)]:soulPct(so));}
+function soulName(c){const so=soulOf(c);return so?SOULS[so].name+((so==='divine'||so==='demon')?' Lv'+soulLvOf(c):''):'';}
 function soulOf(c){return c&&SOULS[c.soul]?c.soul:null;}
 /* the eye colour any lion should be drawn with */
 function lionEyes(c){
@@ -2187,7 +2197,60 @@ function lionEyes(c){
   const so=soulOf(c);return so?SOULS[so].eyes:null;
 }
 /* under=true: the glow behind the lion. under=false: the halo / sparks on top of it */
-function soulAura(g,x,y,R,ang,t,soul,under){
+function soulAura(g,x,y,R,ang,t,soul,under,lv){
+  if(!soul)return;
+  lv=lv|0;
+  if(lv>=2&&(soul==='divine'||soul==='demon')&&under)soulAuraUp(g,x,y,R,ang,t,soul,true,lv);
+  soulAura0(g,x,y,R,ang,t,soul,under);
+  if(lv>=2&&(soul==='divine'||soul==='demon')&&!under)soulAuraUp(g,x,y,R,ang,t,soul,false,lv);
+}
+/* Lv2: a bigger, brighter aura and a turning ring. Lv3: wings of light or a crown of fire, and things in orbit */
+function soulAuraUp(g,x,y,R,ang,t,soul,under,lv){
+  const dv=soul==='divine',c1=dv?'255,236,170':'255,70,40',c2=dv?'255,250,230':'255,170,60',top=lv>=3;
+  g.save();
+  if(under){
+    g.globalCompositeOperation='lighter';
+    const pu=.5+.5*Math.sin(t*2.6),rr=R*(top?3.9:3.1)+pu*R*.25;
+    const gr=g.createRadialGradient(x,y,R*.6,x,y,rr);gr.addColorStop(0,'rgba('+c1+','+(top?.42:.26)+')');gr.addColorStop(.5,'rgba('+c1+','+(top?.16:.09)+')');gr.addColorStop(1,'rgba('+c1+',0)');
+    g.fillStyle=gr;g.beginPath();g.arc(x,y,rr,0,7);g.fill();
+    /* a ring that turns: long rays for the divine, tongues of flame for the demonic */
+    const n=top?16:10,r0=R*1.5,r1=R*(top?3.0:2.4);
+    for(let i=0;i<n;i++){const a=(dv?t*.35:-t*.55)+i/n*Math.PI*2,fl=dv?1:(.7+.3*Math.sin(t*9+i*2.3)),w=dv?.045:.11;
+      g.fillStyle='rgba('+(i%2?c1:c2)+','+((top?.3:.2)*fl).toFixed(2)+')';
+      g.beginPath();g.moveTo(x+Math.cos(a-w)*r0,y+Math.sin(a-w)*r0);g.lineTo(x+Math.cos(a+(dv?0:.12))*r1*fl,y+Math.sin(a+(dv?0:.12))*r1*fl);g.lineTo(x+Math.cos(a+w)*r0,y+Math.sin(a+w)*r0);g.closePath();g.fill();}
+    g.strokeStyle='rgba('+c2+','+(top?.6:.4)+')';g.lineWidth=Math.max(1,R*.05);g.setLineDash(dv?[]:[R*.3,R*.22]);g.lineDashOffset=t*R*.8;
+    g.beginPath();g.arc(x,y,R*1.55+pu*R*.06,0,7);g.stroke();g.setLineDash([]);
+    if(top){
+      /* Lv3: a second ring, and for the divine a pair of wings; for the demonic, cracks of fire in the ground */
+      g.strokeStyle='rgba('+c1+',.45)';g.lineWidth=Math.max(1,R*.035);g.beginPath();g.arc(x,y,R*2.15,t*.4,t*.4+4.6);g.stroke();
+      if(dv){[-1,1].forEach(function(sd){for(let f=0;f<5;f++){const a=ang+Math.PI+sd*(.5+f*.24)+Math.sin(t*1.8)*.06*sd,L=R*(2.6-f*.28);
+          g.fillStyle='rgba(255,250,235,'+(.34-f*.04).toFixed(2)+')';g.beginPath();g.moveTo(x+Math.cos(a-.09)*R*.7,y+Math.sin(a-.09)*R*.7);
+          g.quadraticCurveTo(x+Math.cos(a)*L*.7,y+Math.sin(a)*L*.7,x+Math.cos(a+sd*.12)*L,y+Math.sin(a+sd*.12)*L);
+          g.lineTo(x+Math.cos(a+.09)*R*.7,y+Math.sin(a+.09)*R*.7);g.closePath();g.fill();}});}
+      else{g.strokeStyle='rgba(255,120,40,'+(.5+.3*pu).toFixed(2)+')';g.lineWidth=Math.max(1,R*.05);g.lineJoin='round';
+        for(let i=0;i<6;i++){const a=i/6*Math.PI*2+.4;let px=x+Math.cos(a)*R*1.1,py=y+Math.sin(a)*R*1.1;g.beginPath();g.moveTo(px,py);
+          for(let q=1;q<4;q++){const aa=a+Math.sin(i*2.7+q*1.9)*.5;px+=Math.cos(aa)*R*.55;py+=Math.sin(aa)*R*.55;g.lineTo(px,py);}g.stroke();}}
+    }
+  } else {
+    g.globalCompositeOperation='lighter';
+    /* motes of light, or embers, in orbit */
+    const n=top?9:5;
+    for(let i=0;i<n;i++){const a=t*(dv?1.1:-1.6)+i/n*Math.PI*2,d=R*(1.45+.35*Math.sin(t*2.2+i*1.7)),px=x+Math.cos(a)*d,py=y+Math.sin(a)*d*(dv?1:.92)-(dv?0:((t*26+i*17)%(R*1.2))*.5);
+      g.fillStyle='rgba('+c2+',.95)';g.beginPath();g.arc(px,py,Math.max(1,R*(top?.075:.06)),0,7);g.fill();
+      g.fillStyle='rgba('+c1+',.35)';g.beginPath();g.arc(px,py,Math.max(2,R*.17),0,7);g.fill();}
+    if(top){
+      /* Lv3: a halo over the head, or two horns of fire */
+      const hx=x+Math.cos(ang)*R*.62,hy=y+Math.sin(ang)*R*.62;
+      if(dv){g.strokeStyle='rgba(255,246,214,.95)';g.lineWidth=Math.max(1.2,R*.07);g.shadowColor='#fff3c4';g.shadowBlur=RM?0:R*.5;g.beginPath();g.ellipse(hx,hy,R*.5,R*.5,0,0,7);g.stroke();g.shadowBlur=0;}
+      else{[-1,1].forEach(function(sd){const bx=hx+Math.cos(ang+sd*Math.PI/2)*R*.34,by=hy+Math.sin(ang+sd*Math.PI/2)*R*.34,a=ang+sd*.75,fl=.85+.15*Math.sin(t*11+sd);
+          const tg=g.createLinearGradient(bx,by,bx+Math.cos(a)*R*.8,by+Math.sin(a)*R*.8);tg.addColorStop(0,'rgba(255,220,120,.95)');tg.addColorStop(1,'rgba(255,60,30,0)');g.fillStyle=tg;
+          g.beginPath();g.moveTo(bx+Math.cos(a+1.57)*R*.13,by+Math.sin(a+1.57)*R*.13);g.quadraticCurveTo(bx+Math.cos(a+sd*.3)*R*.5,by+Math.sin(a+sd*.3)*R*.5,bx+Math.cos(a)*R*.85*fl,by+Math.sin(a)*R*.85*fl);
+          g.lineTo(bx+Math.cos(a-1.57)*R*.13,by+Math.sin(a-1.57)*R*.13);g.closePath();g.fill();});}
+    }
+  }
+  g.restore();
+}
+function soulAura0(g,x,y,R,ang,t,soul,under){
   if(!soul)return;
   g.save();
   if(soul==='divine'){
@@ -2434,13 +2497,13 @@ function derive(c,scale){
   const hpS=scale*(hog?2.4:1)*(gab?2.6:1)*(c.weak||1);
   const dS=(c.dmgScale!==undefined?c.dmgScale:scale)*(hog?1.45:1)*(gab?1.55:1)*(c.weak||1);
   const TRn=trainOf(c);
-  const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp);
+  const maxHp=BASE_HP*B.hp*P.hp*hpS*(1+IV_HP*v)*tm.hp*(1+.03*TRn.hp)*(1+(SHIELD_HP[(cosOf(c)||{}).hat]||0));
   const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
   const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+finPct(wlvOf(c))/100)*(1+(SWORD_DMG[(cosOf(c)||{}).hat]||0));
   const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
   const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk)/(1+(AXE_ATK[(cosOf(c)||{}).hat]||0));
   /* a bound soul, divine or demonic: +10% to everything */
-  const SB=1+soulPct(soulOf(c))/100;
+  const SB=1+soulPctOf(c)/100;
   if(SB>1){return derive2(c,B,A,W,P,tm,maxHp*SB,speed*SB,dmgMult*SB,clamp(dr*SB,0,.62),atk/SB);}
   return derive2(c,B,A,W,P,tm,maxHp,speed,dmgMult,dr,atk);
 }
@@ -2475,7 +2538,7 @@ function encodeLion(c,rec){
     c.gold|0,
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
-    soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':''))),
+    (soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':''))))+(soulLvOf(c)>1?soulLvOf(c):''),
     wlvOf(c)||'',
     (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
@@ -2500,7 +2563,8 @@ function decodeLion(str){
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
-    if(a[18]==='d')c.soul='divine';else if(a[18]==='x')c.soul='demon';else if(a[18]==='v')c.soul='void';else if(a[18]==='p')c.soul='pirate';
+    {const sc=(a[18]||'').charAt(0),sl=+(a[18]||'').charAt(1);if(sc==='d')c.soul='divine';else if(sc==='x')c.soul='demon';else if(sc==='v')c.soul='void';else if(sc==='p')c.soul='pirate';
+      if((sc==='d'||sc==='x')&&(sl===2||sl===3))c.slv=sl;}
     if(a[19]){const wl=clamp(+a[19]|0,0,5);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
       if(M[v]&&i<3)o[k]=M[v];else{const x=COS_VALS[k][(+v|0)-1];if(x)o[k]=x;}});if(Object.keys(o).length)c.cos=o;}
@@ -2553,6 +2617,7 @@ const ICONS={
   refresh:'<path d="M13.2 8a5.2 5.2 0 1 1-1.6-3.7"/><path d="M13.4 2.6v3h-3"/>',
   fang:'<path d="M5.2 3.2h5.6L8.9 12.6c-.2.9-1.6.9-1.8 0z"/><path d="M5.2 3.2h5.6"/>',
   bone:'<path d="M5.4 10.6 10.6 5.4"/><path d="M5.4 10.6a1.6 1.6 0 1 1-2.2.6 1.6 1.6 0 1 1 .6-2.2M10.6 5.4a1.6 1.6 0 1 1 2.2-.6 1.6 1.6 0 1 1-.6 2.2"/>',
+  gem:'<path d="M4.6 2.6h6.8l2.4 3.4L8 13.6 2.2 6z"/><path d="M2.2 6h11.6"/><path d="M6 2.6 5 6l3 7.6L11 6l-1-3.4"/>',
   patch:'<path d="M2.2 3.8 13.8 12.2"/><path d="M5.6 7.6c0-1.7 1.4-2.8 3-2.8s3 1.1 3 2.8-1.4 3.6-3 3.6-3-1.9-3-3.6z"/>',
   paint:'<path d="M3.6 12.6 7 3.4M7.4 13 10.6 4M11.2 13.2l2.4-6.6"/>',
   share:'<path d="M8 1.9v8.4M5.2 4.6 8 1.9l2.8 2.7"/><path d="M5.4 6.6H4a1 1 0 0 0-1 1v5.6a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.6a1 1 0 0 0-1-1h-1.4"/>',
@@ -2678,7 +2743,7 @@ function lionSummaryText(c){
     ' in '+r.fights+' bout'+(r.fights===1?'':'s')+' \u00b7 '+(r.losses||0)+' loss'+((r.losses||0)===1?'':'es')+
     (r.bestWave?(' \u00b7 best pack wave '+r.bestWave):''));
   else L.push('  none \u2014 this one has never entered a championship');
-  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+SOULS[soulOf(c)].name+' \u2014 +'+soulPct(soulOf(c))+'% to health, damage, speed, swing and armour');}
+  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+soulName(c)+' \u2014 +'+soulPctOf(c)+'% to health, damage, speed, swing and armour');}
   const bag=(Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0);
   if(bag.length){L.push('');L.push('BAG');
     L.push('  '+bag.map(it=>ITEMS[it.k].name+(it.n>1?' \u00d7'+it.n:'')).join(' \u00b7 '));}
@@ -2768,13 +2833,13 @@ function drawLionCard(c){
   const R=Math.min(112,BUILDS[c.build].r*3.7),lx=W/2+R*.5,ly=ay+ah/2+R*.25,ang=-.62;
   if(gab)gabAura(g,lx,ly,R,1.3);
   const cso=(!gab&&!hog)?soulOf(c):null;
-  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,true);
+  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,true,soulLvOf(c));
   if(hog){const hg=g.createRadialGradient(lx,ly,R*.6,lx,ly,R*2.6);hg.addColorStop(0,'rgba(226,56,44,.35)');hg.addColorStop(1,'rgba(226,56,44,0)');
     g.fillStyle=hg;g.beginPath();g.arc(lx,ly,R*2.6,0,7);g.fill();}
   g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(lx+8,ly+R*.9,R*1.5,R*.32,0,0,7);g.fill();
   paintLion(g,{x:lx,y:ly,R:R,ang:ang,t:1.3,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),
     scars:c.scars||[],belts:belts,armor:c.armor,cols:hog?KINGCOLS:(gab?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!cso,cos:cosOf(c)});
-  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,false);
+  if(cso)soulAura(g,lx,ly,R,ang,1.3,cso,false,soulLvOf(c));
   if(c.old)drawOldBits(g,lx,ly,R,ang,1.3,false,0);
   g.restore();
   rr(g,ax,ay,aw,ah,36);g.lineWidth=1.5;g.strokeStyle='rgba(255,255,255,.08)';g.stroke();
@@ -2823,8 +2888,8 @@ function drawLionCard(c){
   if(gab)badge('Ascended','#ffc72c','rgba(255,199,44,.16)');
   if(hog)badge('Awakened','#ff5a4d','rgba(255,90,77,.16)');
   if(wlvOf(c))badge(FINISH[wlvOf(c)].name+' Lv'+wlvOf(c),finCol(c),'rgba(255,255,255,.08)',ICONS.hammer);
-  if(soulOf(c)==='divine')badge('Divine soul','#fff1cc','rgba(255,241,204,.14)',ICONS.soulD);
-  if(soulOf(c)==='demon')badge('Demonic soul','#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
+  if(soulOf(c)==='divine')badge('Divine soul Lv'+soulLvOf(c),'#fff1cc','rgba(255,241,204,.14)',ICONS.soulD);
+  if(soulOf(c)==='demon')badge('Demonic soul Lv'+soulLvOf(c),'#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
   if(soulOf(c)==='void')badge('Void soul','#c9a2ff','rgba(150,100,255,.18)',ICONS.soulV);
   if(soulOf(c)==='pirate')badge('Pirate soul','#5effc8','rgba(63,217,176,.16)',ICONS.soulP);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
@@ -3589,7 +3654,7 @@ function loadPastedCode(){
 /* the Editor only ever takes a blank slate: belts and medallions are earned in championships */
 function loadCode(c){
   if(MATCH.mode==='editor'){
-    const had=hasCareer(c);c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;delete c.wlv;placeLoaded(c);
+    const had=hasCareer(c);c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;delete c.slv;delete c.wlv;placeLoaded(c);
     if(had)toast('Loaded blank \u2014 belts are earned, not pasted');
     return;}
   askCareer(c,placeLoaded);
@@ -3628,7 +3693,7 @@ function answerCareer(keep){
   const q=UI.ask;UI.ask=null;$('askWrap').classList.add('hidden');
   if(!q)return;
   const c=q.c;
-  if(!keep){c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;delete c.wlv;}
+  if(!keep){c.perks=[];c.record=null;delete c.train;delete c.gold;delete c.inv;delete c.soul;delete c.slv;delete c.wlv;}
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
@@ -3723,8 +3788,8 @@ function badgesFor(L,rec){
   else if(!(rec.losses||0)&&rec.fights>=3)out.push('<span class="badge">Unbeaten</span>');
   if(rec.losses)out.push('<span class="badge blood">'+rec.losses+' scar'+(rec.losses>1?'s':'')+'</span>');
   if(wlvOf(L))out.push('<span class="badge fin" style="color:'+finCol(L)+'">'+ico('hammer')+FINISH[wlvOf(L)].name+' Lv'+wlvOf(L)+'</span>');
-  if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul</span>');
-  if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul</span>');
+  if(soulOf(L)==='divine')out.push('<span class="badge holy">'+ico('soulD')+'Divine soul Lv'+soulLvOf(L)+'</span>');
+  if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul Lv'+soulLvOf(L)+'</span>');
   if(soulOf(L)==='void')out.push('<span class="badge void">'+ico('soulV')+'Void soul</span>');
   if(soulOf(L)==='pirate')out.push('<span class="badge sea">'+ico('soulP')+'Pirate soul</span>');
   if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
@@ -3773,7 +3838,7 @@ function renderCareer(){
     '<div class="doors">'+
       '<button class="door" data-act="openShop">'+shopIconHTML()+'<span><b>Lion Store</b><small class="g">'+ico('coin')+(L.gold||0)+' gold</small></span></button>'+
       '<button class="door" data-act="openMystic">'+mysticIconHTML()+'<span><b>Mystic Lion</b><small class="s">'+(questOf(L,'void')!==null?ico('soulV')+questOf(L,'void')+'/'+QUEST.void.need+' belts':ico('skull')+invCount(L,'skull')+' skull'+(invCount(L,'skull')===1?'':'s'))+'</small></span></button>'+
-      '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(questOf(L,'smith')!==null?questOf(L,'smith')+'/'+QUEST.smith.need+' lions':bladeOf(L)?bladeCount(L)+'/3 fragments':(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel'))+'</small></span></button>'+
+      '<button class="door" data-act="openSmith">'+smithIconHTML()+'<span><b>Blacksmith</b><small'+(wlvOf(L)?' style="color:'+finCol(L)+'"':'')+'>'+ico('hammer')+(questOf(L,'smith')!==null?questOf(L,'smith')+'/'+QUEST.smith.need+' lions':bladeOf(L)?(bladeCount(L)>=3?(bladeOf(L).god?'Blade ready to forge':'The God Lion is awake'):bladeCount(L)+'/3 fragments'):(wlvOf(L)?'Weapon Lv'+wlvOf(L):'Plain steel'))+'</small></span></button>'+
       '<button class="door" data-act="openFence">'+fenceIconHTML()+'<span><b>Hyena Fence</b><small class="g">'+ico('crate')+'New deals</small></span></button>'+
       '<button class="door" data-act="openBookie">'+bookieIconHTML()+'<span><b>The Bookie</b><small class="bk">'+ico('coin')+bookieDoorLine()+'</small></span></button>'+
       '<button class="door" data-act="openCosmo">'+cosmoIconHTML()+'<span><b>Cosmetic Lion</b><small class="cz">'+ico('paint')+'War gear</small></span></button>'+
@@ -3845,7 +3910,7 @@ function renderHall(){}
 /* ---------- inventory ----------
    Every championship lion carries its own bag, saved on the lion itself (L.inv = [{k,n}]), never on the player.
    Store purchases land here and are used from here. Skulls are trophies: they stack and do nothing else (yet). */
-const INV_SLOTS=20,INV_STACK=99;
+const INV_SLOTS=24,INV_STACK=99;
 const ITEMS={
   coat:  {name:'Colour Change',     ico:'drop', use:'shopCoat',  desc:'A pot of dye. Use it to give your lion any coat you like.'},
   potion:{name:'Personality Potion',ico:'flask',use:'shopPotion',desc:'Rerolls one of its two traits. You choose which one goes.'},
@@ -3874,6 +3939,9 @@ const ITEMS={
   earFang:  {name:'Fang Earring',    ico:'fang',use:'cos',cs:'ear',val:'fang',desc:'A rival\u2019s fang on a leather cord. Pick an ear, left or right.'},
   noseBone: {name:'Bone Nose Ring',  ico:'bone',use:'cos',cs:'nose',val:'bone',desc:'A sharpened bone pushed clean through the nose.'},
   maneBones:{name:'Mane Bones',      ico:'bone',use:'cos',cs:'mane',val:'bones',desc:'Small bones knotted into the mane, the old way.'},
+  gemSapphire:{name:'Sapphire Eye',  ico:'gem',use:'cos',cs:'gem',gem:'s',desc:'A cut sapphire set where one eye was. Pick which one. It catches the light.'},
+  gemEmerald:{name:'Emerald Eye',    ico:'gem',use:'cos',cs:'gem',gem:'e',desc:'A cut emerald set where one eye was. Pick which one. It catches the light.'},
+  gemRuby:   {name:'Ruby Eye',       ico:'gem',use:'cos',cs:'gem',gem:'r',desc:'A cut ruby set where one eye was. Pick which one. It catches the light.'},
   patch:    {name:'Eyepatch',        ico:'patch',use:'cos',cs:'patch',desc:'Black leather over one eye. Pick which one.'},
   paintBlood:{name:'War Paint: Blood',ico:'paint',use:'cos',cs:'paint',val:'blood',desc:'Three red claw stripes dragged across the face.'},
   paintBone:{name:'War Paint: Bone', ico:'paint',use:'cos',cs:'paint',val:'bone',desc:'White paint round the eyes and down the brow, like a skull.'},
@@ -3895,6 +3963,8 @@ const ITEMS={
   swordGod:{name:'Godslayer Blade',   ico:'sword',use:'cos',cs:'hat',val:'swgod',swap:1,desc:'The sword that killed a god, forged whole again from three fragments. White steel in a scabbard of pale gold, and it glows. +15% damage while it is worn. Takes the hat slot.'},
   axeSilver:{name:'Silver Axe',       ico:'sword',use:'cos',cs:'hat',val:'axsilver',swap:1,desc:'A bearded axe with a silvered head on a dark ash haft, slung across the back. +5% swing rate while it is worn. Takes the hat slot.'},
   axeGold:{name:'Gold Axe',           ico:'sword',use:'cos',cs:'hat',val:'axgold',swap:1,desc:'A gilded axe on a black haft banded in gold, with a ruby set in the head, slung across the back. +8% swing rate while it is worn. Takes the hat slot.'},
+  shieldSilver:{name:'Silver Shield', ico:'shield',use:'cos',cs:'hat',val:'shsilver',swap:1,desc:'A small round shield with a steel rim and boss, slung on the back. +5% health while it is worn. Takes the hat slot.'},
+  shieldGold:{name:'Gold Shield',     ico:'shield',use:'cos',cs:'hat',val:'shgold',swap:1,desc:'A small round shield faced in crimson with a gold rim and a ruby in the boss, slung on the back. +8% health while it is worn. Takes the hat slot.'},
   swordGold:{name:'Gold Sword',       ico:'sword',use:'cos',cs:'hat',val:'swgold',swap:1,desc:'A gilded blade in a gold scabbard with a ruby in the pommel, slung across the back. +10% damage while it is worn. Takes the hat slot.'},
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
@@ -3993,13 +4063,14 @@ function invUse(k){
     const o=cosOf(L)||{};
     if(I.cs==='ear'){if(o.earL&&o.earR){toast('Both ears are taken. Snip one off with Cosmetic Shears first');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
     if(I.cs==='patch'){if(o.patch){toast(L.name+' already wears an eyepatch. Snip it off with Cosmetic Shears first');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
+    if(I.cs==='gem'){if(o.gem){toast(L.name+' already has a gem eye. Snip it out with Cosmetic Shears first');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
     cosPut(k);return;
   }
   if(I.use==='gift'){SFX.ui();openGift();return;}
   if(I.use==='shears'){if(!cosOf(L)){toast(L.name+' has nothing to snip off');return;}UI.cosCut=null;SFX.ui();openCosSheet(k);return;}
   if(I.use==='cleanse'){
     if(!soulOf(L)){toast(L.name+' has no soul to cleanse');return;}
-    const was=SOULS[soulOf(L)].name;invTake(L,'cleanse');delete L.soul;SFX.heal();
+    const was=SOULS[soulOf(L)].name;invTake(L,'cleanse');delete L.soul;delete L.slv;SFX.heal();
     toast('The '+was.toLowerCase()+' is washed away');
     delete PREVMEM.career;Store.save();refresh();openInventory();return;}
   if(I.use==='pact'){
@@ -4198,7 +4269,7 @@ const CHAL={
     blurb:'Two kings. One crown.',
     desc:'Fought in the Twin Throne. First their four children: Brann swings, Ysra shoots, Morwen casts and Vex tricks. Whatever health you have left, you take to the kings. Kaldur, huge and slow in white, and Sevrin, black and quick, fight together. Kill one and the other goes mad with grief: stronger, faster, and healed.',
     reward:'The Twin Crown Sash, the first time you beat both',tip:'Nothing heals between the children and the kings. Take Ysra and Morwen out early, and bring allies.'},
-  shagon:{name:'Cal the Shagon',act:'startShagon',go:'Cross the bridge',diff:5,diffName:'Godslayer',col:'#ffe08a',final:1,
+  shagon:{name:'The God Slayer',act:'startShagon',go:'Cross the bridge',diff:5,diffName:'Godslayer',col:'#ffe08a',final:1,
     blurb:'He slew a god.',
     desc:'A god lion walked into the world. Cal the Shagon was blessed with a sword, and he killed it. Now he holds court in the Godfall, at the far end of a stone bridge, with his faithful kneeling round him. Small, pink and impossibly fast, with a Sunbeam that can end you from across the arena, a golden cut that splits the floor, and hyenas that come when he calls.',
     reward:'The Godslayer’s Sash, the first time you beat him',tip:'The hyenas are just for show: keep your eyes on him. When a gold line cuts across the floor, get off it.'}};
@@ -4321,10 +4392,10 @@ function paintChalCanvases(){
     g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
     const R=Math.min(h*.3,BUILDS[c.build].r*.9),so=soulOf(c);
     if(isGab(c))gabAura(g,w/2,h/2,R,1);
-    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,true);
+    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,true,soulLvOf(c));
     paintLion(g,{x:w/2,y:h/2+2,R:R,ang:-Math.PI/2,t:1,pelt:c.pelt||0,mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],belts:beltsOf(c),armor:c.armor,
       cols:isHog(c)?KINGCOLS:(isGab(c)?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!so,cos:cosOf(c)});
-    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,false);
+    if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,false,soulLvOf(c));
   });
 }
 /* ---------- tournament ---------- */
@@ -4728,9 +4799,9 @@ const COSMO={quip:'',
   hello:['A dandelion? For you, five gold. I will not tell anyone.','The gold laurel is for champions only.','Leaves for the crowd\u2019s favourite. Gold for the champion.','A party hat? Even killers like cake.','Wear your kills.','Scars tell the story. Paint shouts it.','A lion should look like a threat.','Bones in the mane. The old way.','Gold for the vain. Bone for the brave.','Let them see you coming.'],
   thanks:['Now you look like a killer.','The arena will remember that face.','Good. Let them fear you.','That is a war face.'],
   broke:['No gold, no war paint.','Come back when you have won something.'],
-  groups:[['Tools',['shears']],['Arena trophies',['laurel','leafLaurel','fangCaps','partyHat']],['Sashes',['sashRed','sashNavy','sashBone']],['Face',['paintBlood','paintBone','paintAsh','patch']],['Mane',['maneBones']],
+  groups:[['Tools',['shears']],['Arena trophies',['laurel','leafLaurel','fangCaps','partyHat']],['Sashes',['sashRed','sashNavy','sashBone']],['Gem eyes',['gemSapphire','gemEmerald','gemRuby']],['Face',['paintBlood','paintBone','paintAsh','patch']],['Mane',['maneBones']],
     ['Neck',['neckFangs']],['Ears',['earGold','earSilver','earFang','earDandelion']],['Nose',['noseGold','noseSilver','noseBone']]],
-  price:{earGold:200,earSilver:20,earDandelion:5,noseGold:200,noseSilver:20,patch:40,shears:15,laurel:250,leafLaurel:40,fangCaps:150,partyHat:30,sashRed:70,sashNavy:70,sashBone:70},
+  price:{gemSapphire:1000,gemEmerald:1000,gemRuby:1000,earGold:200,earSilver:20,earDandelion:5,noseGold:200,noseSilver:20,patch:40,shears:15,laurel:250,leafLaurel:40,fangCaps:150,partyHat:30,sashRed:70,sashNavy:70,sashBone:70},
   skulls:{paintBlood:3,paintBone:3,paintAsh:3,maneBones:3,noseBone:3,earFang:3,neckFangs:3}};
 const COSMOCOLS={mane:'#7a1c16',body:'#3a3230',edge:'#16110f',muz:'#bfae96',plate:'#5a4e48'};
 const COSMOWEARS={paint:'bone',mane:'bones',earL:'gold',earR:'fang',nose:'bone',neck:'fangs'};
@@ -4808,7 +4879,7 @@ function cosmoHTML(L){
   const gold=L.gold||0,sk=invCount(L,'skull'),o=cosOf(L)||{};
   const row=function(k){
     const I=ITEMS[k],skp=COSMO.skulls[k],pr=skp?skp:COSMO.price[k],ok=skp?sk>=skp:gold>=pr;
-    const slot=I.cs==='ear'?null:I.cs,worn=slot&&slot!=='patch'&&o[slot]===I.val;
+    const slot=I.cs==='ear'?null:I.cs,worn=slot==='gem'?(!!o.gem&&String(o.gem).charAt(0)===I.gem):(slot&&slot!=='patch'&&o[slot]===I.val);
     return '<button class="row" data-act="cosBuy" data-k="'+k+'"><span class="rico '+(I.val==='gold'?'czg':(I.val==='silver'?'czs':'czw'))+'">'+ico(I.ico)+'</span>'+
       '<span class="v">'+I.name+(worn?' <em class="cosOn">Wearing</em>':'')+(k==='laurel'&&!beltsOf(L)?' <em class="cosLock">Belt holders</em>':'')+'<small>'+I.desc+'</small></span>'+
       '<span class="price'+(ok?'':' poor')+(skp?' skp':'')+'">'+ico(skp?'skull':'coin')+pr+'</span></button>';
@@ -4844,7 +4915,7 @@ function cosBuy(k){
 function openCosSheet(k){
   const L=CAREER.lion,I=ITEMS[k];if(!L||!I)return;
   const o=cosOf(L)||{};let body='';
-  if(I.use==='cos'&&(I.cs==='ear'||I.cs==='patch')){
+  if(I.use==='cos'&&(I.cs==='ear'||I.cs==='patch'||I.cs==='gem')){
     const ear=I.cs==='ear';
     const side=function(v,lab){const on=ear?o[v]:null;
       return '<button class="cosSide'+(on?' full':'')+'" data-act="cosPut" data-k="'+k+'" data-s="'+v+'"'+(on?' disabled':'')+'>'+ico(I.ico)+'<b>'+lab+'</b>'+
@@ -4870,7 +4941,7 @@ function openCosSheet(k){
     const R=Math.min(56,h*.34);
     paintLion(g,{x:w/2,y:h/2+R*.55,R:R,ang:-Math.PI/2,t:0,pelt:L.pelt||0,cols:colsOf(L),mane:lookOf(L,'mane'),tail:lookOf(L,'tail'),seed:hashStr(L.name),
       scars:L.scars||[],armor:L.armor,eyes:lionEyes(L),eyeGlow:!!soulOf(L),cos:o});
-    if(I.cs==='ear'||I.cs==='patch'){g.font='600 12px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,255,255,.5)';g.textAlign='center';
+    if(I.cs==='ear'||I.cs==='patch'||I.cs==='gem'){g.font='600 12px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle='rgba(255,255,255,.5)';g.textAlign='center';
       g.fillText('LEFT',w/2-R*1.75,h/2+R*.2);g.fillText('RIGHT',w/2+R*1.75,h/2+R*.2);g.textAlign='start';}
   }catch(e){}
 }
@@ -4897,11 +4968,12 @@ function cosPut(k,side){
   let slot=I.cs,val=I.val;
   if(I.cs==='ear'){if(side!=='earL'&&side!=='earR')return;slot=side;}
   if(I.cs==='patch'){if(side!=='L'&&side!=='R')return;val=side;}
+  if(I.cs==='gem'){if(side!=='L'&&side!=='R')return;val=I.gem+side;}
   if(L.cos[slot]){const old=cosItemFor(slot,L.cos[slot]);if(old&&(ITEMS[old].dev||ITEMS[old].swap)&&(I.dev||I.swap)){invTake(L,k);if(!devUnequip(old,true)){invAdd(L,k,1);return;}invAdd(L,k,1);L.cos=cosOf(L)||{};}}
   if(L.cos[slot]){const was=ITEMS[cosItemFor(slot,L.cos[slot])].name.toLowerCase();
     toast(I.cs==='ear'?'That ear is taken':L.name+' already wears the '+was+'. Snip it off with Cosmetic Shears first');if(!Object.keys(L.cos).length)delete L.cos;return;}
   invTake(L,k);L.cos[slot]=val;SFX.roar();
-  const where=I.cs==='ear'?' in its '+COS_WHERE[slot]:(I.cs==='patch'?' over its '+COS_WHERE[val]:'');
+  const where=I.cs==='ear'?' in its '+COS_WHERE[slot]:(I.cs==='patch'?' over its '+COS_WHERE[val]:(I.cs==='gem'?' in its '+COS_WHERE[side]:''));
   toast(L.name+(I.cs==='paint'?' is painted for war':((I.dev||I.swap)?' equips the '+I.name:' wears the '+I.name.toLowerCase())+where));
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
@@ -4914,8 +4986,9 @@ function cosCutGo(){
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
-const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1},axeSilver:{price:200,atk:.05},axeGold:{price:1000,atk:.08}};
+const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1},axeSilver:{price:200,atk:.05},axeGold:{price:1000,atk:.08},shieldSilver:{price:200,hp:.05},shieldGold:{price:1000,hp:.08}};
 const AXE_ATK={axsilver:.05,axgold:.08};
+const SHIELD_HP={shsilver:.05,shgold:.08};
 const SWORD_DMG={swsteel:.05,swgold:.1,swgod:.15};
 const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
@@ -4951,7 +5024,7 @@ function paintSwordRows(){
   document.querySelectorAll('canvas.swordCv').forEach(function(cv){const g=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1);
     if(cv.width!==88*dpr){cv.width=88*dpr;cv.height=56*dpr;}g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,88,56);
     g.fillStyle='#151210';g.fillRect(0,0,88,56);
-    g.save();g.translate(44,28);g.rotate(.72);drawSheathedSword(g,30,0,1.2,cv.dataset.sword);g.restore();});
+    g.save();g.translate(44,28);if(SHIELD_STYLE[cv.dataset.sword])drawBackShield(g,60,1.2,cv.dataset.sword);else{g.rotate(.72);drawSheathedSword(g,30,0,1.2,cv.dataset.sword);}g.restore();});
 }
 function smithHTML(L){
   const gold=L.gold||0,lv=wlvOf(L),nx=lv<3?FINISH[lv+1]:null;
@@ -4987,6 +5060,13 @@ function smithHTML(L){
           '<small><b style="color:#5ee6a8">+'+Math.round(S.atk*100)+'% swing rate</b> \u00b7 '+(own?'You have '+own+(((cosOf(L)||{}).hat===I.val)?' (worn)':'')+'. ':'')+(k==='axeGold'?'Gilded head, ruby, black haft.':'Silvered head, ash haft.')+'</small></span>'+
           '<span class="price'+(gold>=S.price?'':' poor')+'">'+ico('coin')+S.price+'</span></button>';}).join('')+
     '</div>'+
+    '<div class="hd sub2"><h2>Shields for the back</h2><span>Small round shields, worn in the same slot as a sword or an axe. They add health.</span></div>'+
+    '<div class="card">'+
+      ['shieldSilver','shieldGold'].map(function(k){const S=SWORDS[k],I=ITEMS[k],own=invCount(L,k)+((cosOf(L)||{}).hat===I.val?1:0);
+        return '<button class="row" data-act="smithBuy" data-k="'+k+'"><canvas class="swordCv" data-sword="'+I.val+'" width="88" height="56"></canvas><span class="v">'+I.name+
+          '<small><b style="color:#5ee6a8">+'+Math.round(S.hp*100)+'% health</b> \u00b7 '+(own?'You have '+own+(((cosOf(L)||{}).hat===I.val)?' (worn)':'')+'. ':'')+(k==='shieldGold'?'Crimson face, gold rim, ruby boss.':'Blue-grey face, steel rim.')+'</small></span>'+
+          '<span class="price'+(gold>=S.price?'':' poor')+'">'+ico('coin')+S.price+'</span></button>';}).join('')+
+    '</div>'+
     '<div class="card">'+
       '<button class="row" data-act="smithBuy" data-k="reforge"><span class="rico">'+ico('shield')+'</span><span class="v">Reforge Armour'+
         '<small>A ticket for the bag. Use it to swap to any armour. Wearing '+ARMORS[L.armor].name.toLowerCase()+' now.</small></span>'+
@@ -5019,6 +5099,7 @@ function questStart(k){
   if(k==='smith'&&wlvOf(L)<3)return;
   if(k==='void'&&soulOf(L)==='void')return;
   if(k==='void'&&soulOf(L)!=='divine'&&soulOf(L)!=='demon'){mysticSay(['The void needs a soul to swallow. Bring me one.']);toast('Bind a Divine or Demonic Soul first');refresh();return;}
+  if(k==='void'&&soulLvOf(L)<SOUL_LV.max){mysticSay(['That soul is still small. Grow it first.']);toast('Grow the soul to Lv3 first');refresh();return;}
   L.quest=L.quest||{};L.quest[k]=0;
   if(k==='smith'){SFX.clang();SMITH.quip='A hundred lions. I will be counting.';toast('Quest started · defeat 100 lions');}
   else {SFX.cast();MYSTIC.quip='Ten belts. A hundred skulls. The void can wait.';toast('Quest started · win 10 championships');}
@@ -5036,11 +5117,11 @@ function questForge(k){
     SFX.clang();SMITH.quip='Lionsteel. Quenched in the blood of a hundred. Wear it proud.';
     toast(WEAPONS[L.weapon].name+' · Lv4 Lionsteel');
   } else {
-    if(soulOf(L)!=='divine'&&soulOf(L)!=='demon'){mysticSay(['The void needs a soul to swallow. Bring me one.']);toast('The Void upgrades a Divine or Demonic Soul. Bind one first');refresh();return;}
+    if((soulOf(L)!=='divine'&&soulOf(L)!=='demon')||soulLvOf(L)<SOUL_LV.max){mysticSay(['The void needs a full-grown soul to swallow. Bring me one.']);toast('The Void upgrades a Lv3 Divine or Demonic Soul. '+(soulOf(L)==='divine'||soulOf(L)==='demon'?'Grow yours to Lv3 first':'Bind one and grow it first'));refresh();return;}
     if(sk<Q.skulls){mysticSay(MYSTIC.broke);toast('You need '+(Q.skulls-sk)+' more skull'+(Q.skulls-sk===1?'':'s'));refresh();return;}
     const prev=soulOf(L);
     for(let i=0;i<Q.skulls;i++)invTake(L,'skull');
-    L.soul='void';delete L.quest.void;
+    L.soul='void';delete L.slv;delete L.quest.void;
     SFX.cast();SFX.roar();MYSTIC.quip='It is open. Do not stare into its eyes too long.';
     toast(prev?'The Void swallows the '+SOULS[prev].name.toLowerCase():L.name+' takes the Void Soul');
     delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
@@ -5066,6 +5147,7 @@ function bladeStart(){
 }
 function bladeForge(){
   const L=CAREER.lion;if(!L||!CAREER.locked||bladeCount(L)<3)return;
+  if(!bladeOf(L).god){toast('The fragments will not join. The God Lion has to fall first');return;}
   const sk=invCount(L,'skull');L.gold=L.gold||0;
   if(L.gold<BLADE.gold||sk<BLADE.skulls){smithSay(SMITH.broke);toast('You need '+[L.gold<BLADE.gold?(BLADE.gold-L.gold)+' more gold':'',sk<BLADE.skulls?(BLADE.skulls-sk)+' more skull'+(BLADE.skulls-sk===1?'':'s'):''].filter(Boolean).join(' and '));refresh();return;}
   for(let i=0;i<BLADE.skulls;i++)invTake(L,'skull');
@@ -5082,17 +5164,20 @@ function bladeQuestHTML(L){
     '<small><b style="color:#5ee6a8">+15% damage</b> · a sword for the back, the best there is</small></div></div>';
   if(own)return '<div class="qCard">'+head+'<div class="qDone" style="color:'+BLADE.col+'">'+ico('check')+'Forged. The sword that killed a god belongs to '+esc(L.name)+' now. Equip it from the bag.</div></div>';
   if(!q)return '<div class="qCard">'+head+
-    '<div class="qSay">“So you beat him. Then you saw his sword. It broke when it went into the god, did you know that? What he carries is one piece. Kaldur and Sevrin keep another. The third is inside the Ancient Lion, where the god spat it out. Beat all three again and bring me the pieces, with 1,000 gold and 10 skulls.”</div>'+
-    '<button class="row" data-act="bladeStart"><span class="rico" style="color:'+BLADE.col+'">'+ico('sword')+'</span><span class="v">Start the quest<small>Beat Cal the Shagon, the Twin Kings and the Ancient Lion once more each.</small></span><span class="go">›</span></button></div>';
+    '<div class="qSay">“So you beat him. Then you saw his sword. It broke when it went into the god, did you know that? What he carries is one piece. Kaldur and Sevrin keep another. The third is inside the Ancient Lion, where the god spat it out. Beat all three again and get the pieces. Then carry them back into the Godfall. I can\u2019t join them while the god\u2019s bones are still sulking on that wall, so you will have to settle it. After that: 1,000 gold and 10 skulls.”</div>'+
+    '<button class="row" data-act="bladeStart"><span class="rico" style="color:'+BLADE.col+'">'+ico('sword')+'</span><span class="v">Start the quest<small>Beat Cal the Shagon, the Twin Kings and the Ancient Lion once more each. Then face what wakes up.</small></span><span class="go">›</span></button></div>';
   const n=bladeCount(L),gold=L.gold||0,sk=invCount(L,'skull'),can=gold>=BLADE.gold&&sk>=BLADE.skulls;
   const rows=BLADE.from.map(function(k){const done=!!q[k];
     return '<div class="asRow'+(done?' done':'')+'"><span class="asName">'+(done?ico('check'):'')+esc(BOSSES[k].name)+'</span>'+
       '<div class="qBar" style="--qa:#5a4410;--qb:'+BLADE.col+'"><i style="width:'+(done?100:0)+'%"></i></div><b>'+(done?'Found':'Beat '+(k==='twins'?'them':(k==='ancient'?'it':'him')))+'</b></div>';}).join('');
-  return '<div class="qCard">'+head+'<div class="asList">'+rows+'</div>'+
-    (n>=3?'<button class="row" data-act="bladeForge"><span class="rico" style="color:'+BLADE.col+'">'+ico('hammer')+'</span><span class="v">Forge the blade'+
+  const god=!!q.god,grow='<div class="asRow'+(god?' done':'')+'"><span class="asName">'+(god?ico('check'):(n>=3?'':ico('lock')))+'The God Lion</span>'+
+      '<div class="qBar" style="--qa:#5a4410;--qb:#fff3c4"><i style="width:'+(god?100:0)+'%"></i></div><b>'+(god?'Slain':(n>=3?'Awake':'Asleep'))+'</b></div>';
+  return '<div class="qCard">'+head+'<div class="asList">'+rows+grow+'</div>'+
+    (n>=3&&!god?'<div class="qLock" style="color:'+BLADE.col+'">All three fragments are ringing. Go to Challenges and cross the bridge to the God Slayer again: the god they were pulled out of is waking up. Beat it, then come back here.</div>'
+    :n>=3?'<button class="row" data-act="bladeForge"><span class="rico" style="color:'+BLADE.col+'">'+ico('hammer')+'</span><span class="v">Forge the blade'+
         '<small>All three fragments are on the anvil. Pay the Blacksmith and he will make it whole.</small></span>'+
         '<span class="price both'+(can?'':' poor')+'"><span>'+ico('coin')+BLADE.gold+'</span><span class="skullPrice">'+ico('skull')+BLADE.skulls+'</span></span></button>'
-      :'<div class="qLock">'+n+' of 3 fragments. Each of them gives up its piece the next time '+esc(L.name)+' beats it. Then 1,000 gold and 10 skulls for the forging.</div>')+
+      :'<div class="qLock">'+n+' of 3 fragments. Each of them gives up its piece the next time '+esc(L.name)+' beats it. Then the God Lion, and then 1,000 gold and 10 skulls for the forging.</div>')+
     '</div>';
 }
 /* ---------- Lv5 Ancient Steel: for a lion that has beaten the big four many times over ---------- */
@@ -5152,14 +5237,14 @@ function voidQuestHTML(L){
   const prev='<canvas class="lionCv prevCv voidCv" data-prev="voidPrev"></canvas>';
   if(so==='void')return '<div class="qCard">'+head+prev+'<div class="qDone" style="color:#c9a2ff">'+ico('check')+'The void is in '+esc(L.name)+'. Something looks back out of its eyes.</div></div>';
   if(q===null)return '<div class="qCard">'+head+prev+
-    '<div class="qSay">“Light and dark are only colours. Past them both is the void, and the void is not for sale. It does not come to an empty lion: it swallows the soul you already carry, divine or demonic, and grows out of it. Win ten championships and bring me a hundred skulls, and I will open the door. What comes through will look out of your lion’s eyes for the rest of its life.”</div>'+
-    ((so==='divine'||so==='demon')?'<button class="row" data-act="questStart" data-k="void"><span class="rico void">'+ico('spark')+'</span><span class="v">Start the quest'+
+    '<div class="qSay">“Light and dark are only colours. Past them both is the void, and the void is not for sale. It does not come to an empty lion: it swallows the soul you already carry, divine or demonic, once that soul is full grown, and grows out of it. Win ten championships and bring me a hundred skulls, and I will open the door. What comes through will look out of your lion’s eyes for the rest of its life.”</div>'+
+    ((so==='divine'||so==='demon')&&soulLvOf(L)>=SOUL_LV.max?'<button class="row" data-act="questStart" data-k="void"><span class="rico void">'+ico('spark')+'</span><span class="v">Start the quest'+
       '<small>Win 10 championships. Only belts won from today count. The Void will upgrade the '+SOULS[so].name.toLowerCase()+'.</small></span><span class="go">›</span></button>'
-      :'<div class="qLock">'+ico('lock')+' '+esc(L.name)+' has no soul to upgrade. Bind a Divine or Demonic Soul first, then come back.</div>')+'</div>';
+      :'<div class="qLock">'+ico('lock')+' '+((so==='divine'||so==='demon')?'The '+SOULS[so].name.toLowerCase()+' is only Lv'+soulLvOf(L)+'. Grow it to Lv3 above, then the Void will take it.':esc(L.name)+' has no soul to upgrade. Bind a Divine or Demonic Soul, grow it to Lv3, then come back.')+'</div>')+'</div>';
   const done=q>=Q.need,sk=invCount(L,'skull');
   return '<div class="qCard">'+head+prev+qBar(q,Q.need,'#2a0d5e','#b48cff','Championships won for the void')+
     (done?'<button class="row" data-act="questForge" data-k="void"><span class="rico void">'+ico('soulV')+'</span><span class="v">Bind the Void Soul'+
-        '<small>'+((so==='divine'||so==='demon')?'It will swallow the '+SOULS[so].name.toLowerCase()+'. Ten belts are enough. Now the skulls.':'It needs a Divine or Demonic Soul to upgrade. Bind one first.')+'</small></span>'+
+        '<small>'+((so==='divine'||so==='demon')&&soulLvOf(L)>=SOUL_LV.max?'It will swallow the '+SOULS[so].name.toLowerCase()+'. Ten belts are enough. Now the skulls.':'It needs a Lv3 Divine or Demonic Soul to upgrade.')+'</small></span>'+
         '<span class="price skullPrice'+(sk>=Q.skulls?'':' poor')+'">'+ico('skull')+Q.skulls+'</span></button>'
       :'<div class="qLock">'+(Q.need-q)+' to go. When the bar is full, bring 100 skulls.</div>')+
     '</div>';
@@ -5179,7 +5264,7 @@ function smithBuy(k){
   if(L0&&CAREER.locked&&SWORDS[k]){const S=SWORDS[k],I=ITEMS[k];L0.gold=L0.gold||0;
     if(L0.gold<S.price){smithSay(SMITH.broke);toast('You need '+(S.price-L0.gold)+' more gold');refresh();return;}
     if(!invAdd(L0,k,1)){toast('The bag is full');return;}
-    L0.gold-=S.price;SFX.clang();SMITH.quip=S.atk?(k==='axeGold'?'Light in the paw, that one. It wants to keep moving.':'A good axe swings itself. You just hold on.'):(k==='swordGold'?'Gold over good steel. Try not to get it dirty.':'Good steel. It will not let you down.');
+    L0.gold-=S.price;SFX.clang();SMITH.quip=S.hp?(k==='shieldGold'?'Pretty, and it will still stop a maul. Once.':'Small, but it turns a blow. Keep it on your back.'):S.atk?(k==='axeGold'?'Light in the paw, that one. It wants to keep moving.':'A good axe swings itself. You just hold on.'):(k==='swordGold'?'Gold over good steel. Try not to get it dirty.':'Good steel. It will not let you down.');
     toast(I.name+' is in the bag. Equip it from there');Store.save();refresh();return;}
   const L=CAREER.lion;if(!L||!CAREER.locked||k!=='reforge')return;
   L.gold=L.gold||0;
@@ -5252,6 +5337,41 @@ function mysticIconHTML(){
   }
   return MYSTICON?'<img class="shopIco" src="'+MYSTICON+'" alt="">':'<span class="rico">'+ico('soulD')+'</span>';
 }
+function soulLvHTML(L){
+  const so=soulOf(L);if(so!=='divine'&&so!=='demon')return '';
+  const lv=soulLvOf(L),S=SOULS[so],sk=invCount(L,'skull'),col=so==='divine'?'#ffe9a8':'#ff5a4d',mx=lv>=SOUL_LV.max;
+  const track=[1,2,3].map(function(n){return '<div class="slStep'+(n<=lv?' on':'')+(n===lv?' cur':'')+'" style="--sc:'+col+'"><canvas class="slCv" data-sl="'+n+'"></canvas><b>Lv'+n+'</b><small>+'+SOUL_LV.pct[n]+'%</small></div>';}).join('<i class="slArrow">›</i>');
+  return '<div class="hd sub2"><h2>Your soul</h2><span>Feed it skulls and it grows. A soul has to reach Lv3 before the Void will take it.</span></div>'+
+    '<div class="card"><div class="qCard"><div class="qHead"><span class="rico '+(so==='divine'?'holy':'hell')+'">'+ico(so==='divine'?'soulD':'soulX')+'</span><div class="v"><b>'+S.name+' <span style="color:'+col+'">Lv'+lv+'</span></b>'+
+      '<small>+'+SOUL_LV.pct[lv]+'% to every stat right now</small></div></div>'+
+    '<div class="slTrack">'+track+'</div>'+
+    (mx?'<div class="qDone" style="color:'+col+'">'+ico('check')+'Lv3. As strong as this soul can get. Only the Void is past it.</div>'
+      :'<button class="row" data-act="soulUp"><span class="rico '+(so==='divine'?'holy':'hell')+'">'+ico('spark')+'</span><span class="v">Grow it to Lv'+(lv+1)+
+        '<small>+'+SOUL_LV.pct[lv]+'% becomes <b style="color:#5ee6a8">+'+SOUL_LV.pct[lv+1]+'%</b> to every stat, and the aura gets '+(lv===1?'bigger and brighter':(so==='divine'?'wings and a halo':'horns of fire'))+'.</small></span>'+
+        '<span class="price skullPrice'+(sk>=SOUL_LV.skulls?'':' poor')+'">'+ico('skull')+SOUL_LV.skulls+'</span></button>')+
+    '</div></div>';
+}
+function soulUp(){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;const so=soulOf(L);if(so!=='divine'&&so!=='demon')return;
+  const lv=soulLvOf(L);if(lv>=SOUL_LV.max)return;
+  const sk=invCount(L,'skull');
+  if(sk<SOUL_LV.skulls){mysticSay(MYSTIC.broke);toast('You need '+(SOUL_LV.skulls-sk)+' more skull'+(SOUL_LV.skulls-sk===1?'':'s'));refresh();return;}
+  for(let i=0;i<SOUL_LV.skulls;i++)invTake(L,'skull');
+  L.slv=lv+1;
+  if(so==='divine')SFX.heal();else SFX.roar();SFX.cast();
+  MYSTIC.quip=L.slv>=3?'It cannot grow any more. Now it is ready for what comes after.':'It is hungrier now. Good.';
+  toast(SOULS[so].name+' · Lv'+L.slv+' · +'+SOUL_LV.pct[L.slv]+'% to every stat');
+  delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
+  Store.save();refresh();
+}
+function paintSoulSteps(){
+  if(typeof document==='undefined'||!document.querySelectorAll)return;const L=CAREER.lion;if(!L)return;const so=soulOf(L);
+  document.querySelectorAll('canvas.slCv').forEach(function(cv){const w=cv.clientWidth||80,h=cv.clientHeight||80,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;
+    const g=cv.getContext('2d');g.scale(d,d);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);const lv=+cv.dataset.sl,R=h*.15;
+    try{soulAura(g,w/2,h/2+2,R,-Math.PI/2,1.4,so,true,lv);
+      paintLion(g,{x:w/2,y:h/2+2,R:R,ang:-Math.PI/2,t:1,pelt:L.pelt||0,cols:colsOf(L),mane:lookOf(L,'mane'),tail:lookOf(L,'tail'),seed:hashStr(L.name),scars:[],armor:L.armor,eyes:lionEyes(L),eyeGlow:true});
+      soulAura(g,w/2,h/2+2,R,-Math.PI/2,1.4,so,false,lv);}catch(e){}});
+}
 function mysticHTML(L){
   const sk=invCount(L,'skull');
   const item=function(k){
@@ -5269,6 +5389,7 @@ function mysticHTML(L){
     '<div class="card"><canvas class="lionCv prevCv shopCv" data-prev="mystic"></canvas></div>'+
     '<div class="hd sub2"><h2>On the altar</h2><span>Two souls and a blessing. Paid in skulls.</span></div>'+
     '<div class="card">'+item('divine')+item('demon')+item('halo')+item('cleanse')+item('pact')+'</div>'+
+    soulLvHTML(L)+
     '<div class="hd sub2"><h2>Beyond the altar</h2><span>One soul the Mystic Lion will not sell.</span></div>'+
     '<div class="card">'+voidQuestHTML(L)+'</div>'+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
@@ -5290,7 +5411,7 @@ function bindSoul(kind){
   const prev=soulOf(L);
   if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
   if(prev&&SOULS[prev].dev&&SOULS[prev].item){invTake(L,S.item);invAdd(L,SOULS[prev].item,1);}else invTake(L,S.item);
-  L.soul=kind;
+  L.soul=kind;delete L.slv;
   if(kind==='divine')SFX.heal();else if(kind==='pirate'){SFX.cast();SFX.roar();}else SFX.roar();
   toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
   delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
@@ -5480,7 +5601,7 @@ function refresh(){
   else renderPack();
   renderLaunch();
   renderHdrRes();
-  if(typeof document!=='undefined'&&document.querySelectorAll)try{paintRivalIcons();if(MATCH.mode==='pack')paintChalCanvases();if(MATCH.mode==='online')paintOnlineIcons();paintMinis();
+  if(typeof document!=='undefined'&&document.querySelectorAll)try{paintSoulSteps();paintRivalIcons();if(MATCH.mode==='pack')paintChalCanvases();if(MATCH.mode==='online')paintOnlineIcons();paintMinis();
     const hd=document.querySelector('.hdr');if(hd&&hd.offsetHeight)document.documentElement.style.setProperty('--hdrH',hd.offsetHeight+'px');}catch(e){}
   bindPreviews();
   requestAnimationFrame(bindPreviews);
@@ -5630,7 +5751,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('blade','sword','Ready for the Godslayer Blade','3 fragments, gold and skulls')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('lionsword','sword','LionSword','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('blade','sword','Ready for the Godslayer Blade','All done, gold and skulls')+btn('bladeGod','sword','Ready for the God Lion','3 fragments, god not beaten')+btn('godFight','sword','Fight the God Lion','Straight in')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('lionsword','sword','LionSword','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5668,7 +5789,7 @@ function devDo(k){
   else if(k==='scars'){L.scars=[];msg='Scars cleared';}
   else if(k==='qLions'){L.wlv=3;L.quest=L.quest||{};if(L.quest.smith==null)L.quest.smith=0;questLion(L,25);msg='Lionsteel quest: '+L.quest.smith+'/100';}
   else if(k==='qBelts'){if(soulOf(L)==='void')delete L.soul;L.quest=L.quest||{};if(L.quest.void==null)L.quest.void=0;questBelt(L);msg='Void quest: '+L.quest.void+'/10';}
-  else if(k==='qFill'){if(wlvOf(L)<3)L.wlv=3;if(wlvOf(L)>3)L.wlv=3;if(soulOf(L)==='void')delete L.soul;L.quest={smith:100,void:10};msg='Both quests ready to pay for';}
+  else if(k==='qFill'){if(wlvOf(L)<3)L.wlv=3;if(wlvOf(L)>3)L.wlv=3;if(soulOf(L)==='void')delete L.soul;L.soul='divine';L.slv=3;L.quest={smith:100,void:10};msg='Both quests ready to pay for';}
   else if(k==='qReset'){delete L.quest;if(wlvOf(L)>3)L.wlv=3;if(soulOf(L)==='void')delete L.soul;msg='Quests reset';}
   else if(k==='final'){if(!CAREER.champ)startChampionship();CAREER.champ.i=4;CAREER.event=null;msg='Next up: the final';}
   else if(k==='bookie'){bookieCard().left=BOOKIE.fights;CAREER.bookie.bet=null;msg='The Bookie has 3 fights on';}
@@ -5678,7 +5799,9 @@ function devDo(k){
   else if(k==='pirate'){if(!invAdd(L,'pirate',1)){msg='Bag is full';}else msg='Pirate Soul is in the bag. Use it from there to bind it';}
   else if(k==='lionsword'){if(!invAdd(L,'lionSword',1)){msg='Bag is full';}else msg='LionSword is in the bag. Use it from there';}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
-  else if(k==='blade'){const r=L.record;r.shagonKills=Math.max(1,r.shagonKills|0);L.quest=L.quest||{};L.quest.blade={shagon:1,twins:1,ancient:1};L.gold=Math.max(L.gold|0,1000);if(invCount(L,'skull')<10)invAdd(L,'skull',10-invCount(L,'skull'));msg='Three fragments, 1,000 gold and 10 skulls';}
+  else if(k==='bladeGod'){const r=L.record;r.shagonKills=Math.max(1,r.shagonKills|0);r.twinsKills=Math.max(1,r.twinsKills|0);L.quest=L.quest||{};L.quest.blade={shagon:1,twins:1,ancient:1};msg='Three fragments. Cross the bridge';}
+  else if(k==='godFight'){closeSheet();MATCH.mode='pack';UI.chal='shagon';startFight('god');return;}
+  else if(k==='blade'){const r=L.record;r.shagonKills=Math.max(1,r.shagonKills|0);L.quest=L.quest||{};L.quest.blade={shagon:1,twins:1,ancient:1,god:1};L.gold=Math.max(L.gold|0,1000);if(invCount(L,'skull')<10)invAdd(L,'skull',10-invCount(L,'skull'));msg='Three fragments, 1,000 gold and 10 skulls';}
   else if(k==='ancSteel'){L.wlv=4;const r=L.record;r.ancientKills=Math.max(10,r.ancientKills|0);r.twinsKills=Math.max(5,r.twinsKills|0);r.kingKills=Math.max(10,r.kingKills|0);r.gateKills=Math.max(5,r.gateKills|0);L.gold=(L.gold||0)+1000;invAdd(L,'skull',20);msg='Lionsteel weapon, boss wins, 1,000 gold and 20 skulls. Go see the Blacksmith';}
   else if(k==='glitch'){if(!invAdd(L,'devGlitch',1)){msg='Bag is full';}else msg='Glitch is in the bag. Use it from there';}
   else if(k==='allBosses'){DEV.allBosses=!DEV.allBosses;msg=DEV.allBosses?'Every boss is open':'Bosses come in order again';}
@@ -6087,6 +6210,7 @@ function handleAct(a,el){
   if(a==='shSkip'){shSkip();return;}
   if(a==='questForge'){questForge(el&&el.dataset.k);return;}
   if(a==='ancSteelForge'){ancSteelForge();return;}
+  if(a==='soulUp'){soulUp();return;}
   if(a==='bladeStart'){bladeStart();return;}
   if(a==='bladeForge'){bladeForge();return;}
   if(a==='openCosmo'){if(!CAREER.lion||!CAREER.locked)return;SFX.ui();MATCH.mode='career';closeSheet();UI.view='cosmo';cosmoSay(COSMO.hello);refresh();
@@ -6218,7 +6342,7 @@ function makeLion(c,x,y,ang,light){
 function startFight(ctxName){
   if(ctxName==='ambush'){SURV.ambush=true;ctxName='survival';}
   else if(ctxName==='survival')SURV.ambush=false;
-  if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'||ctxName==='shagon'){BOSSKIND=ctxName;ctxName='king';}
+  if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'||ctxName==='shagon'||ctxName==='god'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
   ['duel','career','pack','editor','tourn','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
@@ -6260,12 +6384,12 @@ function fightArena(){
   if(G.ctx==='king'&&BOSSKIND==='king')return 'hall';
   if(G.ctx==='king'&&BOSSKIND==='ancient')return 'sanctum';
   if(G.ctx==='king'&&BOSSKIND==='gate')return 'bastion';
-  if(G.ctx==='king'&&BOSSKIND==='shagon')return 'godfall';
+  if(G.ctx==='king'&&(BOSSKIND==='shagon'||BOSSKIND==='god'))return 'godfall';
   if(G.ctx==='survival')return SURV.ambush?'thicket':'savannah';
   return 'colonnade';
 }
 /* the walls close in every fight but the Twin Throne, where the kings hold their ground */
-function fightClosing(){if(G&&G.ctx==='king'&&(BOSSKIND==='twins'||BOSSKIND==='king'||BOSSKIND==='ancient'||BOSSKIND==='shagon'))return false;return duelLike()?MATCH.closing:true;}
+function fightClosing(){if(G&&G.ctx==='king'&&(BOSSKIND==='twins'||BOSSKIND==='king'||BOSSKIND==='ancient'||BOSSKIND==='shagon'||BOSSKIND==='god'))return false;return duelLike()?MATCH.closing:true;}
 /* ========== 11b. THE GATES ==========
    Four gates sit in the corners of every arena, cut into the stands. The two lions walk out of opposite
    corners (south-west and north-east) and stop on their marks. The other two stay shut. */
@@ -6556,6 +6680,7 @@ function newRound(){
       return;
     }
     if(G.ctx==='king'&&BOSSKIND==='shagon'){shagonSetup();buildHud();return;}
+    if(G.ctx==='king'&&BOSSKIND==='god'){godSetup();buildHud();return;}
     if(G.ctx==='king'&&BOSSKIND==='king'){
       CROWD.list=CROWD.list.filter(function(c){return !(c.y<0&&Math.abs(c.x-ARENA/2)<90);});
       const PP=[[ARENA/2-130,200],[ARENA/2,170],[ARENA/2+130,200]];
@@ -7080,15 +7205,16 @@ function kingCfg(){
 }
 const KING_SCALE=3.2, KING_DMG=.68, KING_SIZE=1.32;   /* KING_SIZE: drawn and hit-box size only, on top of what the scale gives */
 /* boss fights are long, grand affairs: far more health, much softer blows. Old Lion only a touch. */
-const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330},shagon:{hp:2.4,dmg:.11,clock:300}};
-function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):(BOSSKIND==='shagon'?(G.shPh?1e6:(G.shT0||0)):0))):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
+const BOSS_TUNE={king:{hp:6,dmg:.32,clock:330},ancient:{hp:6,dmg:.36,clock:240},old:{hp:1.8,dmg:.36,clock:150},gate:{hp:4.2,dmg:.25,clock:240},twins:{hp:2.6,dmg:.2,clock:330},shagon:{hp:2.4,dmg:.11,clock:300},god:{hp:9,dmg:.42,clock:360}};
+function fightClock(){return G.ctx==='king'?((BOSS_TUNE[BOSSKIND]||BOSS_TUNE.king).clock+(BOSSKIND==='ancient'?(G.ancPh?1e6:(G.ancT0||0)):(BOSSKIND==='shagon'?(G.shPh?1e6:(G.shT0||0)):(BOSSKIND==='god'?(G.godPh?1e6:(G.shT0||0)):0)))):(G.ctx==='survival'&&SURV.ambush?AMBUSH.clock:75);}
 const BOSS_PHASE={
   king:   ['THE KING IS BLEEDING','THE KING WILL NOT KNEEL'],
   ancient:['THE STARS STIR','THE ANCIENT ONE ROARS'],
   old:    ['\u201cNOT BAD, KID.\u201d','\u201cNOW I\u2019M AWAKE.\u201d'],
   gate:   ['NEW PLATES, BOLTED ON','THE GATES WILL NOT OPEN'],
   twins:  ['THE BROTHERS CLOSE IN','ONE CROWN. TWO KINGS.'],
-  shagon: ['THE GODSLAYER BLEEDS','\u201cI KILLED A GOD.\u201d']};
+  shagon: ['THE GODSLAYER BLEEDS','\u201cI KILLED A GOD.\u201d'],
+  god:    ['THE GOD BLEEDS GOLD','JUDGEMENT']};
 function bossPhase(b,n){
   const lines=BOSS_PHASE[BOSSKIND]||BOSS_PHASE.king;
   if(BOSSKIND==='gate'&&n===1&&!b.dead){b.shell=b.shellMax*GATE.replate;}
@@ -7097,11 +7223,13 @@ function bossPhase(b,n){
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*4.5,life:.6,max:.6,col:BOSSES[BOSSKIND].col});
   G.parts.push({ring:1,x:b.x,y:b.y,rad:b.r,maxRad:b.r*3,life:.45,max:.45,col:'#ffffff'});
   if(BOSSKIND==='ancient'&&!b.dead)ancShower(b,n);
+  if(BOSSKIND==='god'&&!b.dead){G.godCutT=.6;}
   if(BOSSKIND==='shagon'&&!b.dead){shCall(b,n===1?3:4);G.shCutT=Math.min(G.shCutT||9,1.4);}
   log(BOSSKIND==='gate'?(n===1?'<em class="gold">The Gatekeeper</em> bolts fresh iron over the cracks. Break it again.':'<em class="gold">The Gatekeeper</em> plants his halberd. The walls grind closer.')
+    :(BOSSKIND==='god'?(n===1?'<em class="gold">The God Lion</em> bleeds gold onto the floor it already stained once.':'<em class="gold">The God Lion</em> lifts its head, and the whole Godfall lights up.')
     :(BOSSKIND==='shagon'?(n===1?'<em class="gold">Cal the Shagon</em> touches the blood on his face and laughs. He whistles for more hyenas.':'<em class="gold">Cal the Shagon</em> stops laughing.')
     :(BOSSKIND==='twins'?'<em class="blood">The Twin Kings</em> circle wider, one each side.'
-    :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.')))));
+    :(BOSSKIND==='old'?'<em class="gold">Old Lion</em> straightens up.':(BOSSKIND==='ancient'?'<em class="gold">The Ancient Lion</em> is angry now.':'<em class="blood">The Lion King</em> roars, and the stands shake.'))))));
 }
 /* the Ancient Lion: Gabrielion's elder, a head taller than any titan and slower than all of them */
 const ANC={scale:1.8,dmg:.36,spd:.80,size:1.95,nova:.5,star:.4};
@@ -7120,7 +7248,9 @@ const BOSSES={
   twins:  {name:'The Twin Kings',  hud:'THE TWIN KINGS',col:'#e8e4da',meta:'Two kings, one crown',kk:'twinsKills',kt:'twinsTries',
     winV:'BOTH KINGS FALL',lossV:'THE TWIN KINGS STAND',who:'them',from:'the Twin Kings',kick:'One crown, two kings',rec:'Never beaten apart'},
   shagon: {name:'Cal the Shagon',  hud:'CAL THE SHAGON',col:'#ffe08a',meta:'Cub · Sunbeam · slew a god',kk:'shagonKills',kt:'shagonTries',
-    winV:'THE GODSLAYER FALLS',lossV:'NO ONE CAN DEFEAT HIM',who:'him',from:'Cal the Shagon',kick:'The Godslayer',rec:'Slew a god'}};
+    winV:'THE GODSLAYER FALLS',lossV:'NO ONE CAN DEFEAT HIM',who:'him',from:'Cal the Shagon',kick:'The Godslayer',rec:'Slew a god'},
+  god:    {name:'The God Lion',    hud:'THE GOD LION',col:'#fff3c4',meta:'Risen \u00b7 Nova \u00b7 Starfall \u00b7 Judgement',kk:'godKills',kt:'godTries',
+    winV:'THE GOD IS DEAD',lossV:'THE GOD STANDS',who:'it',from:'the God Lion',kick:'Risen',rec:'Killed once. It did not take'}};
 /* ---------- the Gatekeeper: plated head to tail. The plates soak every hit until heavy blows crack them ---------- */
 const GATE={scale:2.9,dmg:.72,shell:.36,replate:.5,heavy:30,chip:.25,aoe:1.6,wall:{at:16,rate:9},
   cols:{mane:'#5c6370',body:'#363b44',edge:'#aeb6c2',muz:'#7d848f',plate:'#d0d6de'}};
@@ -7887,15 +8017,16 @@ function shAnswer(yes){
   G.shWor.forEach(function(w,i){const a=Math.atan2(w.y-me.y,w.x-me.x)+rnd(-.5,.5);w.run=.05+i*.06;w.vx=Math.cos(a)*rnd(170,230);w.vy=Math.sin(a)*rnd(150,210)-60;});
 }
 function shSkip(){
+  if(G&&G.godPh==='cine'){const nx=GOD.lines.map(l=>l[0]).filter(t=>t>G.godT+.05)[0];G.godT=nx!=null?nx:Math.max(G.godT,GOD.end-.4);SFX.ui();return;}
   if(!G||G.shPh!=='cere')return;
   const nx=SHAGON.lines.map(l=>l[0]).filter(t=>t>G.shT+.05)[0];
   G.shT=nx!=null?nx:Math.max(G.shT,SHAGON.end-.4);SFX.ui();
 }
-function shSayShow(txt,n){
+function shSayShow(txt,n,who){
   const el=$('shSay');if(!el)return;
   if(txt==null){el.classList.add('hidden');G.shShown=null;return;}
   const key=txt+'|'+n;if(G.shShown===key)return;G.shShown=key;
-  el.innerHTML='<b>Cal the Shagon</b><p>'+esc(txt.slice(0,n))+'</p><small>Tap to skip</small>';
+  el.innerHTML='<b>'+esc(who||'Cal the Shagon')+'</b><p>'+esc(txt.slice(0,n))+'</p><small>Tap to skip</small>';
   el.classList.remove('hidden');
 }
 function shSay(k,f){if(!G.shSaid[k]){G.shSaid[k]=1;f();}}
@@ -7947,6 +8078,121 @@ function shStep(dt){
     G.shCutT=5;G.shCallT=4;
     banner('FIGHT',.9,true);SFX.bell();crowdReact(1.6);buildHud();
   }
+}
+/* ---------- the God Lion: what Cal killed. It wakes when its sword comes home in three pieces ---------- */
+const GODCOLS={mane:'#fff3c4',body:'#d9d2bf',edge:'#ffd24a',muz:'#fffaf0',plate:'#ffe08a'};
+const GOD={size:2.15,spd:.9,judge:{every:[10,13],n:4,warn:1.05},
+  lines:[[3.2,'Cal the Shagon','No. No. I killed you.'],[7.0,'The God Lion','You broke my sword, little thing. That is all you did.'],[10.6,'The God Lion','And this one has carried it home.']],end:13.6,rise:5.6};
+function godCfg(){
+  return {side:'P',name:'The God Lion',build:'titan',armor:'scale',weapon:'claws',abil:['aegis','roar'],brain:'adaptive',perks:[],pelt:0,mane:1,tail:3,iv:10,scars:[],
+    traits:['patient','thicknecked'],scale:2,dmgScale:.4,boss:1,ancient:1,god:1,bossCols:GODCOLS,soul:'divine',slv:3};
+}
+function godSetup(){
+  const me=G.lions[0],D={x:ARENA/2,y:ARENA/2-34};
+  CROWD.list=CROWD.list.filter(function(c){return !(c.y<0&&Math.abs(c.x-ARENA/2)<170);});
+  G.lions.forEach(function(l,i){l.y=ARENA-56;l.x=ARENA/2+(i?(i%2?1:-1)*(58+i*10):0);l.ang=l.aim=-Math.PI/2;});
+  /* Cal is here, mid-ceremony, with his back to you. He is not the one you fight today */
+  const cal=makeLion(shagonCfg(),D.x,D.y,-Math.PI/2);cal.boss=0;cal.prop=1;cal.invuln=999;cal.r*=SHAGON.size;cal.mass*=50;G.lions.push(cal);
+  G.shDais=D;G.godPh='walk';G.godT=0;G.shSaid={};G.shFx=[];G.cine=0;G.godGlow=0;G.godRisen=0;G.godCutT=7;G.scorch=[];KING.maxHp=1;
+  const pelts=[0,1,2,3,4,5,6,7,8,10,11];
+  G.shWor=[];for(let i=0;i<SHAGON.n;i++){const a=Math.PI/2+Math.PI/SHAGON.n+i/SHAGON.n*Math.PI*2;
+    G.shWor.push({x:D.x+Math.cos(a)*SHAGON.ring,y:D.y+Math.sin(a)*SHAGON.ring*.9,ang:a+Math.PI,pelt:pelts[(i*5)%pelts.length],mane:(i*3)%8,seed:40+i,ph:i*.9,run:0,vx:0,vy:0,al:1});}
+  banner('THE GODFALL',1.7,true);SFX.herald();crowdReact(.1);
+  log('<em class="gold">The Godfall.</em> The faithful are kneeling, but nobody is chanting. Every one of them is looking up at the skull on the wall. In '+esc(me.name)+'’s bag, three pieces of a sword are ringing.');
+}
+function godMove(e){
+  e.moveX=0;e.moveY=0;const D=G.shDais;if(!D||e.side==='P')return;
+  const idx=G.lions.filter(l=>l.side!=='P').indexOf(e);
+  const tx=D.x+(idx?(idx%2?1:-1)*(60+idx*8):0),ty=D.y+SHAGON.stop+30+(idx?40:0);
+  if(G.godPh==='walk'){const dx=tx-e.x,dy=ty-e.y,d=Math.hypot(dx,dy);if(d>5){e.moveX=dx/d*SHAGON.walk;e.moveY=dy/d*SHAGON.walk;}}
+  const k=G.lions.find(l=>l.boss);e.ang=e.aim=Math.atan2((k?k.y:60)-e.y,(k?k.x:D.x)-e.x);
+}
+function godStep(dt){
+  const me=G.lions[0],D=G.shDais,cal=G.lions.find(l=>l.prop),k=G.lions.find(l=>l.boss);
+  for(let i=G.shFx.length-1;i>=0;i--){const p=G.shFx[i];p.t+=dt;p.x+=(p.vx||0)*dt;p.y+=(p.vy||0)*dt;if(p.t>=p.life)G.shFx.splice(i,1);}
+  G.shWor.forEach(function(w){if(w.run>0){w.run+=dt;if(w.run>.12){w.x+=w.vx*dt;w.y+=w.vy*dt;w.ang=Math.atan2(w.vy,w.vx);w.al=Math.max(0,1-(w.run-.5)/1.1);}}});
+  for(let i=G.scorch.length-1;i>=0;i--){G.scorch[i].t+=dt;if(G.scorch[i].t>7)G.scorch.splice(i,1);}
+  if(!G.godPh){
+    G.cine=Math.max(0,(G.cine||0)-dt*1.2);
+    if(G.over||!k||k.dead||G.starting>0)return;
+    G.godCutT-=dt;
+    if(G.godCutT<=0&&k.stun<=0){const J=GOD.judge;G.godCutT=rnd(J.every[0],J.every[1])*(G.ph2?.7:(G.ph1?.85:1));godJudge(k);}
+    return;
+  }
+  G.godT+=dt;const T=G.godT;
+  if(cal){cal.invuln=999;cal.moveX=0;cal.moveY=0;}
+  if(G.godPh==='walk'){
+    if(cal)cal.ang=cal.aim=-Math.PI/2;
+    G.cine=Math.min(.6,(G.cine||0)+dt*.5);G.godGlow=.3+.3*Math.sin(G.t*3);
+    G.camFocus={x:D.x,y:(me.y+D.y)/2+10,z:1.02};
+    if(Math.hypot(me.x-D.x,me.y-(D.y+SHAGON.stop+30))<12||T>13){G.godPh='cine';G.godT=0;}
+    return;
+  }
+  /* the cinematic: the fragments fly home, the skull wakes, Cal is thrown aside, and it comes down off the wall */
+  G.cine=Math.min(1,(G.cine||0)+dt*1.6);
+  const sky={x:ARENA/2,y:-STANDS*.42};
+  shSay('ring',function(){SFX.cast();log('The three fragments tear out of the bag and hang in the air, ringing.');
+    for(let i=0;i<3;i++)G.shFx.push({k:'frag',i:i,x:me.x,y:me.y,t:0,life:2.6});});
+  G.godGlow=Math.min(3,T*.9);G.shake=Math.max(G.shake,Math.min(6,T*1.2));
+  if(T<2.6)G.camFocus={x:ARENA/2,y:ARENA*.36,z:1.0};
+  else if(T<GOD.rise)G.camFocus={x:D.x,y:D.y-20,z:1.16};
+  else G.camFocus={x:ARENA/2,y:ARENA*.3,z:1.06};
+  if(T>2.4)shSay('crack',function(){G.flash=.8;G.shake=12;SFX.boom();crowdReact(1.8,sky.x,0);
+    log('<em class="gold">They go into the skull.</em> The crack down its brow closes. Its eyes open.');
+    G.shWor.forEach(function(w,i){const a=Math.atan2(w.y-(-40),w.x-ARENA/2)+rnd(-.4,.4);w.run=.05+i*.05;w.vx=Math.cos(a)*rnd(170,230);w.vy=Math.abs(Math.sin(a))*rnd(150,210)+60;});});
+  if(cal&&T>2.6){const f=Math.atan2(sky.y-cal.y,sky.x-cal.x);cal.ang=cal.aim=f+Math.sin(G.t*22)*.05;if(T<GOD.rise){cal.x+=Math.cos(f+Math.PI)*dt*10;cal.y+=Math.sin(f+Math.PI)*dt*10;}}
+  /* the lines */
+  let ci=-1;GOD.lines.forEach(function(l,i){if(T>=l[0])ci=i;});
+  if(ci>=0&&T<GOD.end-.8){const cur=GOD.lines[ci];shSayShow(cur[2],Math.min(cur[2].length,Math.floor((T-cur[0])*42)),cur[1]);
+    shSay('l'+ci,function(){SFX.ui();log('<em class="gold">'+cur[1]+':</em> “'+esc(cur[2])+'”');if(ci===1){SFX.roar();G.shake=Math.max(G.shake,9);}});}
+  else shSayShow(null);
+  if(T>=GOD.rise)shSay('rise',function(){
+    G.godRisen=1;G.flash=1;G.shake=18;if(!RM)G.slow=Math.max(G.slow||0,.9);SFX.boom();SFX.roar();crowdReact(2.4,ARENA/2,120);
+    const g=makeLion(godCfg(),ARENA/2,128,Math.PI/2);
+    g.boss=1;g.gab=1;g.foe=me;g.r*=GOD.size;g.mass*=2.4;g.kbRes*=.45;g.speed*=GOD.spd;g.rFull=g.r;g.r=g.rFull*.2;g.invuln=99;
+    const TU=BOSS_TUNE.god;g.maxHp*=TU.hp;g.hp=g.maxHp;g.dmgMult*=TU.dmg;
+    G.lions.push(g);KING.maxHp=g.maxHp;
+    G.parts.push({ring:1,x:g.x,y:g.y,rad:20,maxRad:460,life:1.2,max:1.2,col:'#fff3c4'});
+    G.parts.push({ring:1,x:g.x,y:g.y,rad:10,maxRad:320,life:.8,max:.8,col:'#ffffff'});
+    for(let i=0;i<46;i++){const a=i/46*6.283;G.shFx.push({k:'mote',x:g.x,y:g.y,vx:Math.cos(a)*rnd(200,460),vy:Math.sin(a)*rnd(200,460),t:0,life:rnd(.6,1.2)});}
+    G.lions.forEach(function(l){if(l.side!=='P')knock(l,Math.atan2(l.y-g.y,l.x-g.x),220);});
+    if(cal){cal.fleeA=Math.atan2(ARENA-cal.y,(cal.x<ARENA/2?-1:1)*200);cal.fade=1;}
+    log('<em class="gold">The skull comes down off the wall,</em> and it is not a skull any more. Cal the Shagon is thrown across the floor like a leaf.');
+    buildHud();
+  });
+  const gd=G.lions.find(l=>l.boss);
+  if(gd&&gd.rFull){gd.r=gd.rFull*(.2+.8*ease(Math.min(1,(T-GOD.rise)/1.3)));gd.ang=gd.aim=Math.PI/2+Math.sin(T*1.6)*.06;gd.moveX=0;gd.moveY=0;}
+  /* Cal runs for the bridge, and is gone */
+  if(cal&&cal.fleeA!=null){cal.x+=Math.cos(cal.fleeA)*dt*210;cal.y+=Math.sin(cal.fleeA)*dt*210;cal.ang=cal.aim=cal.fleeA;cal.fade=Math.max(0,cal.fade-dt*.75);
+    if(cal.fade<=0){const ix=G.lions.indexOf(cal);if(ix>=0)G.lions.splice(ix,1);G.lions.forEach(function(l){if(l.foe===cal)l.foe=gd||me;});log('Cal the Shagon runs for the bridge. He does not look back.');}}
+  if(T>=GOD.end-.8)shSay('name',function(){banner('THE GOD LION',2,true);SFX.herald();});
+  if(T>=GOD.end){
+    const c2=G.lions.find(l=>l.prop);if(c2){G.lions.splice(G.lions.indexOf(c2),1);}
+    G.godPh=null;G.camFocus=null;G.shT0=G.t;shSayShow(null);G.godCutT=6;
+    if(gd){gd.r=gd.rFull;gd.invuln=.5;gd.foe=me;}
+    G.lions.forEach(function(l){if(l.side!=='P'&&(!l.foe||l.foe.prop||l.foe.dead))l.foe=gd;});
+    banner('FIGHT',.9,true);SFX.bell();crowdReact(1.8);buildHud();
+  }
+}
+/* Judgement: lines of light out from it in every direction. Stand between them */
+function godJudge(k){
+  const J=GOD.judge,n=J.n+(G.ph2?4:(G.ph1?2:0)),off=Math.random()*6.283;
+  for(let i=0;i<n;i++)G.gfx.push({k:'gcut',x:k.x,y:k.y,ang:off+i/n*Math.PI*2,len:620,w:26,t:0,warn:J.warn+(i%2)*.18,src:k,hit:{},done:0});
+  num(k.x,k.y-k.r-20,'JUDGEMENT',FX.gold,18);banner('JUDGEMENT',1.1,true);SFX.warn();k.anim=.3;crowdReact(1.2,k.x,k.y);
+}
+function drawGodFx(g,t){
+  /* the fragments flying home */
+  const sky={x:ARENA/2,y:-STANDS*.42};
+  G.shFx.forEach(function(p){if(p.k!=='frag')return;const q=p.t/p.life,up=ease(Math.min(1,q/.35)),go=ease(Math.max(0,(q-.4)/.6));
+    const a=t*3+p.i*2.094,ox=p.x+Math.cos(a)*26*(1-go),oy=p.y-40*up+Math.sin(a)*12*(1-go),x=ox+(sky.x-ox)*go,y=oy+(sky.y-oy)*go;
+    g.save();g.translate(x,y);g.rotate(a*1.7);if(!RM){g.shadowColor='#ffe9a8';g.shadowBlur=18;}
+    g.fillStyle='#fff6da';g.beginPath();g.moveTo(-9,-2.5);g.lineTo(7,-3.5);g.lineTo(10,0);g.lineTo(6,3.5);g.lineTo(-8,2.5);g.lineTo(-5,0);g.closePath();g.fill();
+    g.restore();
+    if(go>0&&go<1){g.strokeStyle='rgba(255,233,168,'+(.5*(1-go)).toFixed(2)+')';g.lineWidth=2;g.beginPath();g.moveTo(ox,oy);g.lineTo(x,y);g.stroke();}});
+  /* light pouring out of the skull once it wakes */
+  if(G.godPh==='cine'&&!G.godRisen&&G.godT>2.4){const k=Math.min(1,(G.godT-2.4)/2.5),pw=30+k*70;
+    const pl=g.createLinearGradient(sky.x-pw,0,sky.x+pw,0);pl.addColorStop(0,'rgba(255,246,214,0)');pl.addColorStop(.5,'rgba(255,250,235,'+(.25+.45*k).toFixed(2)+')');pl.addColorStop(1,'rgba(255,246,214,0)');
+    g.fillStyle=pl;g.fillRect(sky.x-pw,-STANDS,pw*2,ARENA*.62+STANDS);}
 }
 /* he whistles, and hyenas come: weak as anything, just there for the show */
 function shCall(k,n){
@@ -8023,7 +8269,7 @@ function drawShOver(g,t){
     g.fillStyle='#ffd24a';g.fillRect(x-L*.22,y+L*.18,L*.44,L*.06);g.fillRect(x-L*.04,y+L*.24,L*.08,L*.2);
     g.beginPath();g.arc(x,y+L*.47,L*.05,0,7);g.fill();g.fillStyle='#e2382c';g.beginPath();g.arc(x,y+L*.21,L*.025,0,7);g.fill();
     g.restore();}
-  G.shFx.forEach(function(p){const q=p.t/p.life;g.globalAlpha=(1-q)*.9;g.fillStyle=q<.3?'#ffffff':'#ffe08a';g.beginPath();g.arc(p.x,p.y,1.8*(1-q)+.6,0,7);g.fill();});
+  G.shFx.forEach(function(p){if(p.k==='frag')return;const q=p.t/p.life;g.globalAlpha=(1-q)*.9;g.fillStyle=q<.3?'#ffffff':'#ffe08a';g.beginPath();g.arc(p.x,p.y,1.8*(1-q)+.6,0,7);g.fill();});
   g.globalAlpha=1;
 }
 /* ---------- the Godfall: where a god came down and didn't get up ---------- */
@@ -8087,7 +8333,7 @@ function drawGodfallStands(g,t){
   const s=STANDS*.95;
   g.save();if(!RM){g.shadowColor='#ffe08a';g.shadowBlur=12;}g.strokeStyle='rgba(255,224,138,.55)';g.lineWidth=4;
   [[-2.7,-1.9],[-1.6,-.9],[-.55,.15]].forEach(function(q){g.beginPath();g.arc(mid,-STANDS*.4,s*1.5,q[0],q[1]);g.stroke();});g.restore();
-  drawGodSkull(g,mid,-STANDS*.42,s,t,G.shPh?1:.55);
+  if(!G.godRisen)drawGodSkull(g,mid,-STANDS*.42,s,t,(G.shPh||G.godPh)?1+(G.godGlow||0):.55);
   /* ribs coming up out of the side terraces */
   [[-STANDS*.5,1],[ARENA+STANDS*.5,-1]].forEach(function(q){for(let i=0;i<5;i++){const y=150+i*86,x=q[0];
     g.strokeStyle='#d8ccb0';g.lineWidth=7-i*.6;g.lineCap='round';g.beginPath();g.moveTo(x-q[1]*22,y+18);g.quadraticCurveTo(x+q[1]*26,y-6,x-q[1]*6,y-34);g.stroke();
@@ -8568,6 +8814,7 @@ function step(dt){
   if(G.ctx==='king'&&!G.rageSaid&&bossBoost(BOSSKIND)>0){G.rageSaid=1;log('<em class="blood">'+BOSSES[BOSSKIND].name+'</em> remembers losing to you '+bossWins(BOSSKIND)+' time'+(bossWins(BOSSKIND)>1?'s':'')+'. '+boostTag(BOSSKIND)+' health and damage this time.');}
   if(G.ctx==='king'&&BOSSKIND==='ancient'&&G.orb)ancStep(dt);
   if(G.ctx==='king'&&BOSSKIND==='shagon'&&G.shDais)shStep(dt);
+  if(G.ctx==='king'&&BOSSKIND==='god'&&G.shDais)godStep(dt);
   if(G.ctx==='king'&&!G.over&&G.guardPh){if(G.twinDue&&G.t>=G.twinDue)bossArrive();else if(G.t>=TGUARD.allIn&&G.lions.some(l=>l.guardHold))guardStep(false,true);}
   if(G.ctx==='king'&&!G.over){
     const bs=G.lions.filter(l=>l.boss),b=bs.filter(l=>!l.dead)[0]||bs[0];
@@ -8620,10 +8867,11 @@ function step(dt){
     }
     if(G.ancPh){ancMove(e);}
     else if(G.shPh){shMove(e);}
+    else if(G.godPh){godMove(e);}
     else if(frozen||!e.foe||e.guardHold){e.moveX=0;e.moveY=0;if(e.guardHold&&e.foe)e.ang=Math.atan2(e.foe.y-e.y,e.foe.x-e.x);}
     else if(e.stun<=0)think(e,dt);
     else{e.moveX=0;e.moveY=0;}
-    if(e.gab&&!frozen&&!G.over&&!G.ancPh&&!G.shPh&&e.stun<=0)gabStep(e,dt);
+    if(e.gab&&!frozen&&!G.over&&!G.ancPh&&!G.shPh&&!G.godPh&&e.stun<=0)gabStep(e,dt);
 
     if(e.charge>0&&!frozen){
       e.charge-=dt;
@@ -9436,6 +9684,7 @@ function draw(){
   for(let i=0;i<G.lions.length;i++)drawLion(G.lions[i]);
   if(G.orb)drawAncFx(ctx,clk());
   if(G.shDais)drawShOver(ctx,clk());
+  if(G.shDais&&BOSSKIND==='god')drawGodFx(ctx,clk());
   drawVfx(ctx,false);
   if(G.rocks)drawRocksFalling(ctx);
   if(G.night&&ctx.getTransform&&typeof document!=='undefined')drawNight();
@@ -9721,6 +9970,7 @@ function paintLion(g,o){
   if(o.eyeGlow&&o.eyes){g.save();g.shadowColor=o.eyes;g.shadowBlur=Math.max(5,R*.7);}
   [-1,1].forEach(function(s){g.beginPath();g.arc(R*.68+lunge,s*R*.17,R*(o.eyeGlow?.105:.09),0,7);g.fill();});
   if(o.eyeGlow&&o.eyes)g.restore();
+  if(o.cos&&o.cos.gem)cosGem(g,R,lunge,o.cos.gem,o.t||0);
   if(o.cos&&o.cos.patch)cosPatch(g,R,lunge,o.cos.patch);
   g.fillStyle=C.muz;
   g.beginPath();g.arc(R*.86+lunge,0,R*.13,0,7);g.fill();
@@ -9729,10 +9979,10 @@ function paintLion(g,o){
   g.restore();
 }
 /* cosmetics: looks only. One thing per slot; ears and eyes pick a side */
-const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
+const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx','gem'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold','swgod','axsilver','axgold'],sash:['redgold','navy','bone','king','ancient','gate','twins','shagon'],fx:['glitch']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold','swgod','axsilver','axgold','shsilver','shgold'],sash:['redgold','navy','bone','king','ancient','gate','twins','shagon'],fx:['glitch'],gem:['sL','sR','eL','eR','rL','rR']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9740,10 +9990,10 @@ function cosOf(c){const o=c&&c.cos;if(!o)return null;const r={};COS_SLOTS.forEac
   return Object.keys(r).length?r:null;}
 function cosItemFor(slot,val){
   const cs=(slot==='earL'||slot==='earR')?'ear':slot;
-  return Object.keys(ITEMS).filter(k=>ITEMS[k].use==='cos'&&ITEMS[k].cs===cs&&(cs==='patch'||ITEMS[k].val===val))[0]||null;
+  return Object.keys(ITEMS).filter(k=>ITEMS[k].use==='cos'&&ITEMS[k].cs===cs&&(cs==='patch'||(cs==='gem'?ITEMS[k].gem===String(val).charAt(0):ITEMS[k].val===val)))[0]||null;
 }
 function cosList(c){const o=cosOf(c)||{};return COS_SLOTS.filter(k=>o[k]).map(function(k){const it=cosItemFor(k,o[k]),I=ITEMS[it];
-  return {slot:k,val:o[k],item:it,name:I.name,ico:I.ico,where:k==='patch'?COS_WHERE[o[k]]:(COS_WHERE[k]||'')};});}
+  return {slot:k,val:o[k],item:it,name:I.name,ico:I.ico,where:k==='patch'?COS_WHERE[o[k]]:(k==='gem'?COS_WHERE[String(o[k]).charAt(1)]:(COS_WHERE[k]||''))};});}
 function cosText(c){return cosList(c).map(x=>x.name+(x.where?' ('+x.where+')':'')).join(', ');}
 function boneAt(g,x,y,len,w,ang){
   g.save();g.translate(x,y);g.rotate(ang);
@@ -9819,6 +10069,23 @@ function drawLionSword(g,R,lunge,t,style){
 /* a sword in its scabbard, lying along x with the hilt at +x. R sets the size. strap: draw the straps that hold it on a lion */
 const AXE_STYLE={axsilver:{haft:'#4a3422',haftDk:'#2a1c10',band:'#b8c0cc',head:['#f2f5fa','#8a93a3'],edge:'#ffffff',dk:'#4a505c',gem:'#5aa8ff',strap:'rgba(42,30,18,.9)'},
   axgold:{haft:'#17171b',haftDk:'#08080a',band:'#ffd24a',head:['#ffe9a0','#b8861a'],edge:'#fff6d0',dk:'#6a4a08',gem:'#e2382c',strap:'rgba(60,40,10,.9)'}};
+const SHIELD_STYLE={shsilver:{rim:['#f2f5fa','#7a8494'],face:['#3a4a66','#1c2638'],boss:'#dfe5ee',dk:'#3a4250',mark:'#c8d0dc',gem:'#5aa8ff',strap:'rgba(42,30,18,.9)'},
+  shgold:{rim:['#ffe9a0','#a8780c'],face:['#a81c24','#560a10'],boss:'#ffd24a',dk:'#5a3e06',mark:'#ffd24a',gem:'#e2382c',strap:'rgba(60,40,10,.9)'}};
+/* a small round shield for the back: rim, face, four studs and a boss with a stone in it */
+function drawBackShield(g,R,t,style,strap){
+  const S=SHIELD_STYLE[style],r=R*.36;
+  if(strap){g.strokeStyle=S.strap;g.lineWidth=Math.max(1,R*.07);g.beginPath();g.moveTo(-R*.5,-R*.42);g.lineTo(R*.5,R*.42);g.moveTo(-R*.5,R*.42);g.lineTo(R*.5,-R*.42);g.stroke();}
+  g.fillStyle='rgba(0,0,0,.4)';g.beginPath();g.arc(R*.04,R*.06,r*1.04,0,7);g.fill();
+  const rg=g.createLinearGradient(-r,-r,r,r);rg.addColorStop(0,S.rim[0]);rg.addColorStop(1,S.rim[1]);g.fillStyle=rg;g.beginPath();g.arc(0,0,r,0,7);g.fill();
+  g.strokeStyle=S.dk;g.lineWidth=Math.max(.6,R*.022);g.stroke();
+  const fg=g.createRadialGradient(-r*.25,-r*.3,r*.05,0,0,r*.8);fg.addColorStop(0,S.face[0]);fg.addColorStop(1,S.face[1]);g.fillStyle=fg;g.beginPath();g.arc(0,0,r*.78,0,7);g.fill();g.stroke();
+  /* a cross of metal over the face, and studs on the rim */
+  g.strokeStyle=S.mark;g.lineWidth=Math.max(.8,R*.035);g.beginPath();g.moveTo(-r*.74,0);g.lineTo(r*.74,0);g.moveTo(0,-r*.74);g.lineTo(0,r*.74);g.stroke();
+  g.fillStyle=S.dk;for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.39;g.beginPath();g.arc(Math.cos(a)*r*.89,Math.sin(a)*r*.89,Math.max(.5,R*.022),0,7);g.fill();}
+  g.fillStyle=S.boss;g.strokeStyle=S.dk;g.lineWidth=Math.max(.6,R*.02);g.beginPath();g.arc(0,0,r*.3,0,7);g.fill();g.stroke();
+  g.save();g.shadowColor=S.gem;g.shadowBlur=RM?0:Math.max(3,R*.15)*(.7+.3*Math.sin(t*3));g.fillStyle=S.gem;g.beginPath();g.arc(0,0,r*.13,0,7);g.fill();g.restore();
+  g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=Math.max(.6,R*.025);g.beginPath();g.arc(0,0,r*.9,Math.PI*1.1,Math.PI*1.45);g.stroke();
+}
 /* an axe for the back: haft along x, a bearded head up by the shoulder */
 function drawBackAxe(g,R,t,style,strap){
   const S=AXE_STYLE[style],L=R*1.5,W=R*.07,hx=L*.36;
@@ -9844,6 +10111,7 @@ function drawBackAxe(g,R,t,style,strap){
 }
 function drawSheathedSword(g,R,lunge,t,style,strap){
   if(AXE_STYLE[style]){drawBackAxe(g,R,t,style,strap);return;}
+  if(SHIELD_STYLE[style]){drawBackShield(g,R,t,style,strap);return;}
   const S=SWORD_STYLE[style]||SWORD_STYLE.lionsword;
   const L=R*1.55,W=R*.15;
   if(strap)[[-L*.32,1],[L*.12,1]].forEach(function(q){g.strokeStyle=S.strap;g.lineWidth=Math.max(1,R*.07);
@@ -9892,7 +10160,7 @@ function swordRule(src,t){
 }
 function cosBack(g,R,lunge,o,t,C){
   const hx=R*.42+lunge;
-  if(o.hat==='lionsword'||o.hat==='swsteel'||o.hat==='swgold'||o.hat==='swgod'||AXE_ATK[o.hat])drawLionSword(g,R,lunge,t,o.hat);
+  if(o.hat==='lionsword'||o.hat==='swsteel'||o.hat==='swgold'||o.hat==='swgod'||AXE_ATK[o.hat]||SHIELD_HP[o.hat])drawLionSword(g,R,lunge,t,o.hat);
 
   if(o.mane==='bones')[1.7,2.35,3.14,3.93,4.58].forEach(function(a,i){
     const rr=R*(.7+(i%2)*.06);boneAt(g,hx+Math.cos(a)*rr,Math.sin(a)*rr,R*.3,Math.max(1,R*.06),a+Math.PI/2+(i%2?.3:-.3));});
@@ -9995,6 +10263,29 @@ function cosFace(g,R,lunge,o){
     g.save();g.beginPath();g.arc(hx,0,R*.5,0,7);g.clip();
     g.fillStyle='rgba(14,12,12,.85)';g.fillRect(ex-R*.11,-R*.5,R*.2,R);g.restore();
   }
+}
+/* a cut gem set in one eye socket: sapphire, emerald or ruby */
+const GEMS={s:['#bfe0ff','#2f7bff','#0a2a8a'],e:['#c8ffd8','#19c46a','#06502a'],r:['#ffc8c8','#f02a3c','#6a0612']};
+function cosGem(g,R,lunge,v,t){
+  const G3=GEMS[String(v).charAt(0)];if(!G3)return;const s=String(v).charAt(1)==='L'?-1:1,ex=R*.68+lunge,ey=s*R*.17,r=R*.125;
+  g.save();g.translate(ex,ey);
+  /* a gold setting round it */
+  g.fillStyle='#1a1208';g.beginPath();g.arc(0,0,r*1.22,0,7);g.fill();
+  g.strokeStyle='#e8b830';g.lineWidth=Math.max(.6,R*.03);g.beginPath();g.arc(0,0,r*1.12,0,7);g.stroke();
+  /* the stone: a six-sided cut */
+  const pts=[];for(let i=0;i<6;i++){const a=i/6*Math.PI*2+Math.PI/6;pts.push([Math.cos(a)*r,Math.sin(a)*r]);}
+  if(!RM){g.shadowColor=G3[1];g.shadowBlur=Math.max(3,R*.45)*(.75+.25*Math.sin(t*2.4));}
+  const gr=g.createLinearGradient(-r,-r,r,r);gr.addColorStop(0,G3[0]);gr.addColorStop(.5,G3[1]);gr.addColorStop(1,G3[2]);
+  g.fillStyle=gr;g.beginPath();pts.forEach(function(p,i){if(i)g.lineTo(p[0],p[1]);else g.moveTo(p[0],p[1]);});g.closePath();g.fill();g.shadowBlur=0;
+  /* facets */
+  g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=Math.max(.4,R*.014);
+  pts.forEach(function(p){g.beginPath();g.moveTo(p[0],p[1]);g.lineTo(p[0]*.42,p[1]*.42);g.stroke();});
+  g.beginPath();pts.forEach(function(p,i){if(i)g.lineTo(p[0]*.42,p[1]*.42);else g.moveTo(p[0]*.42,p[1]*.42);});g.closePath();g.stroke();
+  g.fillStyle='rgba(255,255,255,.75)';g.beginPath();g.moveTo(pts[3][0],pts[3][1]);g.lineTo(pts[4][0],pts[4][1]);g.lineTo(pts[4][0]*.42,pts[4][1]*.42);g.lineTo(pts[3][0]*.42,pts[3][1]*.42);g.closePath();g.globalAlpha=.45;g.fill();g.globalAlpha=1;
+  /* a glint that comes and goes */
+  const k=(t*.45+(s>0?.5:0))%1;if(k<.25){const a=1-Math.abs(k/.25*2-1);g.fillStyle='rgba(255,255,255,'+(.95*a).toFixed(2)+')';g.save();g.translate(-r*.3,-r*.35);g.rotate(.5);
+    g.fillRect(-r*.9*a,-Math.max(.4,R*.012),r*1.8*a,Math.max(.8,R*.024));g.fillRect(-Math.max(.4,R*.012),-r*.9*a,Math.max(.8,R*.024),r*1.8*a);g.restore();}
+  g.restore();
 }
 function cosPatch(g,R,lunge,side){
   const s=side==='L'?-1:1,ex=R*.68+lunge,ey=s*R*.17;
@@ -10268,7 +10559,7 @@ function drawLionBody(e){
   if(!e.dead&&e.hidden<=0&&isNemesis(e.cfg)){const pu=.5+.5*Math.sin(clk()*3);
     ctx.save();ctx.strokeStyle='rgba(226,56,44,'+(.35+pu*.3).toFixed(2)+')';ctx.lineWidth=2;ctx.setLineDash([6,6]);ctx.lineDashOffset=-clk()*20;
     ctx.beginPath();ctx.arc(e.x,e.y,R*1.55,0,7);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
-  if(so){soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,true);
+  if(so){soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,true,soulLvOf(e.cfg));
     if(!RM&&Math.random()<.3&&G.parts.length<240){
       const a=Math.random()*7,rr=R*(1+Math.random()*.6);
       G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,life:.6,max:.6,
@@ -10278,7 +10569,7 @@ function drawLionBody(e){
     cols:e.cfg.bossCols||(e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null))),eyes:e.cfg.twin?(e.grief?'#ff3a2a':'#ffd24a'):e.cfg.gate?'#ffd24a':e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
     mane:lookOf(e.cfg,'mane'),tail:lookOf(e.cfg,'tail'),seed:hashStr(e.name),scars:e.cfg.scars||[],belts:beltsOf(e.cfg),cos:cosOf(e.cfg),
     anim:e.anim>0,flash:e.hitFlash>0,dead:e.dead,hidden:e.hidden>0,stunned:e.stun>0});
-  if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false);
+  if(so)soulAura(ctx,e.x,e.y,R,e.ang,clk(),so,false,soulLvOf(e.cfg));
   if(e.cfg.gate)drawGateShell(ctx,e,R);
   if(e.cfg.twin)drawHalfCrown(ctx,e,R);
   if(e.cfg.old){ctx.save();if(e.hidden>0)ctx.globalAlpha=.16;if(e.dead)ctx.globalAlpha=.28;
@@ -10338,7 +10629,7 @@ function buildHud(){
       ' \u00b7 '+me.W.name+(wlvOf(me.cfg)?' Lv'+wlvOf(me.cfg):'')+' \u00b7 IV '+(me.cfg.iv||5)+(beltsOf(me.cfg)?' \u00b7 '+beltsOf(me.cfg)+' belt'+(beltsOf(me.cfg)>1?'s':''):'');
     hudPips(h,me);
     const BH=BOSSES[BOSSKIND],bc=G.ctx==='king'?BH.col:'#ff5a4d';
-    hb.querySelector('.fname').textContent=(G.ctx==='king')?(G.ancPh?'THE ORB':G.guardPh?(BOSSKIND==='king'?'THE BLACK PRINCES':'THE KINGS\u2019 CHILDREN'):BH.hud):(SURV.ambush?'HYENAS':'THE PACK');
+    hb.querySelector('.fname').textContent=(G.ctx==='king')?(G.godPh?'THE GODFALL':G.ancPh?'THE ORB':G.guardPh?(BOSSKIND==='king'?'THE BLACK PRINCES':'THE KINGS\u2019 CHILDREN'):BH.hud):(SURV.ambush?'HYENAS':'THE PACK');
     hb.querySelector('.fname').style.color=bc;
     hb.querySelector('.hpFill').style.background=bc;
     hb.querySelector('.pips').innerHTML='';
@@ -10399,13 +10690,13 @@ function updateHud(){
     });
     if(G.ctx==='king'){
       const ks=G.lions.filter(x=>G.guardPh?x.guard:x.boss),k=ks[0];
-      const tot=ks.reduce((a,x)=>a+x.maxHp,0)||1,kr=G.ancPh?1:ks.reduce((a,x)=>a+Math.max(0,x.hp),0)/tot;
+      const tot=ks.reduce((a,x)=>a+x.maxHp,0)||1,kr=(G.ancPh||G.godPh)?1:ks.reduce((a,x)=>a+Math.max(0,x.hp),0)/tot;
       hb.querySelector('.hpFill').style.transform='scaleX('+kr+')';
       hb.querySelector('.hpGhost').style.transform='scaleX('+kr+')';
       const shield=k&&k.shell>0?k.shell/k.maxHp:(k?ks.reduce((a,x)=>a+(x.barrier||0),0)/tot:0);
       hb.querySelector('.shieldFill').style.transform='scaleX('+Math.min(1,shield)+')';
       hb.querySelector('.fmeta').textContent=BOSSKIND==='gate'&&k?(k.shell>0?'Plates '+Math.ceil(k.shell/k.shellMax*100)+'% \u00b7 hit hard to crack them':'Plates broken \u00b7 he bleeds')
-        :(BOSSKIND==='twins'?(G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' children standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):(BOSSKIND==='shagon'&&G.shPh?'The ceremony \u00b7 his faithful kneel':G.ancPh?(G.ancPh==='summon'?'Waking\u2026':'Something sleeps inside it'):G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||3)+' princes standing \u00b7 the Lion King waits':BOSSES[BOSSKIND].meta))+(bossBoost(BOSSKIND)>0?' \u00b7 '+boostTag(BOSSKIND):'');
+        :(BOSSKIND==='twins'?(G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||ks.length)+' children standing \u00b7 the Twin Kings wait':ks.map(x=>x.name+(x.dead?' \u2020':(x.grief?' (grieving)':''))).join(' & ')):(BOSSKIND==='god'&&G.godPh?'The skull on the wall is looking at you':BOSSKIND==='shagon'&&G.shPh?'The ceremony \u00b7 his faithful kneel':G.ancPh?(G.ancPh==='summon'?'Waking\u2026':'Something sleeps inside it'):G.guardPh?ks.filter(x=>!x.dead).length+' of '+(G.guardN||3)+' princes standing \u00b7 the Lion King waits':BOSSES[BOSSKIND].meta))+(bossBoost(BOSSKIND)>0?' \u00b7 '+boostTag(BOSSKIND):'');
       $('roundLbl').textContent=alliesUp()>1?(alliesUp()+' of you'):'';
     } else {
       const alive=packAlive();
@@ -10503,11 +10794,11 @@ function stepPreviews(dt){
     if(p.key==='career'&&p.cfg===CAREER.lion&&p.cfg.wiz&&!CAREER.locked){wizPaint(g,p,p.cfg);continue;}
     if(isGab(p.cfg))gabAura(g,p.x,p.y,p.R,p.t);
     const pso=soulOf(p.cfg);
-    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,true);
+    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,true,soulLvOf(p.cfg));
     paintLion(g,{x:p.x,y:p.y,R:p.R,ang:p.ang,t:p.t,pelt:p.cfg.pelt||0,
       mane:lookOf(p.cfg,'mane'),tail:lookOf(p.cfg,'tail'),seed:hashStr(p.cfg.name),scars:p.cfg.scars||[],belts:beltsOf(p.cfg),armor:p.cfg.armor,
       cols:isHog(p.cfg)?KINGCOLS:(isGab(p.cfg)?GABCOLS:null),eyes:lionEyes(p.cfg),eyeGlow:!!pso&&!isHog(p.cfg)&&!isGab(p.cfg),anim:p.anim>0,cos:cosOf(p.cfg)});
-    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,false);
+    if(pso)soulAura(g,p.x,p.y,p.R,p.ang,p.t,pso,false,soulLvOf(p.cfg));
   }
 }
 
@@ -10578,7 +10869,8 @@ function kingOver(won){
   const L=CAREER.lion;UI.bossDrop=null;
   if(L&&L.record){
     const kk=BOSSES[BOSSKIND].kk,kt=BOSSES[BOSSKIND].kt;
-    UI.fragDrop=null;
+    UI.fragDrop=null;UI.godDrop=0;
+    if(won&&BOSSKIND==='god'){const bq=bladeOf(L);if(bq&&!bq.god){bq.god=1;UI.godDrop=1;}}
     if(won){L.record[kk]=(L.record[kk]||0)+1;UI.bossDrop=bossDrop(L);UI.fragDrop=bladeFrag(L);questLion(L,BOSSKIND==='twins'?2:1);}
     else L.record[kt]=(L.record[kt]||0)+1;
     Store.save();
@@ -10855,8 +11147,10 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       '<p>Very few lions manage this. Nothing changes on the record, but everyone in the pit saw it.</p></div>'+
       (DI?'<div class="lootCard bossLoot"><span class="rico">'+ico('sash')+'</span><div><b>'+(D.had?esc(L.name)+' already has the '+DI.name:(D.ok?DI.name+' \u00b7 in the bag':'The bag is full. The '+DI.name+' stays in the sand.'))+'</b>'+
         '<small>'+(D.had?'One is enough. It\u2019s yours for good.':(D.ok?'Torn off '+(nu?BX.from:(anc?'the Ancient Lion':'the Lion King'))+'. Put it on from the bag.':'Make room and beat '+(nu?BX.who:(anc?'it':'him'))+' again.'))+'</small></div></div>':'');
+    if(UI.godDrop)P.innerHTML+='<div class="lootCard bossLoot"><span class="rico" style="color:'+BLADE.col+'">'+ico('sword')+'</span><div><b>The sword can be made whole</b>'+
+      '<small>The three fragments stopped ringing when it fell. Take them to the Blacksmith with 1,000 gold and 10 skulls, and he will forge the Godslayer Blade.</small></div></div>';
     {const F=UI.fragDrop;if(F)P.innerHTML+='<div class="lootCard bossLoot"><span class="rico" style="color:'+BLADE.col+'">'+ico('sword')+'</span><div><b>Sword fragment · '+F.n+' of 3</b>'+
-      '<small>'+(F.n>=3?'That is all three. Take them to the Blacksmith with 1,000 gold and 10 skulls.':'A piece of the sword that killed a god, pulled out of '+esc(BX.from||BOSSES[F.k].name)+'. The Blacksmith wants all three.')+'</small></div></div>';}
+      '<small>'+(F.n>=3?'That is all three, and they have started to ring. Something in the Godfall is calling them. Cross the bridge again.':'A piece of the sword that killed a god, pulled out of '+esc(BX.from||BOSSES[F.k].name)+'. The Blacksmith wants all three.')+'</small></div></div>';}
     B.innerHTML='<button class="primary" data-act="again">Again</button>'+
       '<button data-act="home">Back to the den</button>';
     SFX.champ();
@@ -11061,7 +11355,11 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['hammer','Axes at the Blacksmith','A Silver Axe (200 gold, +5% swing rate) and a Gold Axe (1,000 gold, +8% swing rate), worn across the back in the same slot as a sword. Also: lions in the Yard are now their real size, and the Void Soul quest needs a Divine or Demonic Soul to upgrade.'],
+  items:[['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
+    ['soulD','Souls that grow','Divine and Demonic souls now have levels. Lv1 is +10%, Lv2 +12%, Lv3 +14% to every stat, 10 skulls a level at the Mystic Lion, and the aura gets bigger each time: rings and rays, then wings and a halo, or horns of fire. The Void only takes a Lv3 soul.'],
+    ['gem','Gem eyes','Sapphire, Emerald and Ruby eyes at the Cosmetic Lion, 1,000 gold each. Pick which eye the stone goes in.'],
+    ['shield','Back shields and a bigger bag','A small Silver Shield (+5% health) and Gold Shield (+8% health) at the Blacksmith, in the same slot as swords and axes. And the bag has another row: 24 slots.'],
+    ['hammer','Axes at the Blacksmith','A Silver Axe (200 gold, +5% swing rate) and a Gold Axe (1,000 gold, +8% swing rate), worn across the back in the same slot as a sword. Also: lions in the Yard are now their real size, and the Void Soul quest needs a Divine or Demonic Soul to upgrade.'],
     ['globe','The Yard','Online now opens on the Yard: the top ten lions on the leaderboard walk about with their player’s name over their heads, and number one wears a crown. Tap any of them to see its card. The leaderboard sits right under it.'],
     ['sword','Questline: the Godslayer Blade','Beat Cal the Shagon and the Blacksmith tells you his sword broke in three. Beat Cal, the Twin Kings and the Ancient Lion once more each for the fragments, then pay 1,000 gold and 10 skulls. A glowing sword for the back, +15% damage.'],
     ['spark','Four new events','The Blacksmith’s Apprentice sharpens your weapon for free (70% it works, 30% it really does not). Vex has three cups: skulls, gold, or a curse. The Bookie needs guarding from hyenas, and pays in a free bet at double odds. And the Night Market sells three things at half price, for gold.'],
@@ -11469,6 +11767,7 @@ function evPick(i){
   if(c.go==='grudge'){evClose();SFX.unlock();startFight('grudge');return;}
   if(c.go==='fightAmb'){evClose();SFX.unlock();startFight('ambush');return;}
   if(c.go==='oldFight'){evClose();SFX.unlock();MATCH.mode='pack';UI.chal='old';startFight('old');return;}
+  if(c.go==='godFight'){evClose();SFX.unlock();MATCH.mode='pack';UI.chal='shagon';startFight('god');return;}
   if(c.go==='shagonFight'){evClose();SFX.unlock();MATCH.mode='pack';UI.chal='shagon';startFight('shagon');return;}
   evNode(c.go,c);
 }
@@ -11516,10 +11815,10 @@ function ambushOver(won){
 /* ---- drawing the three scenes ---- */
 function evYou(g,x,y,R,ang,t,anim){
   const L=CAREER.lion;if(!L)return;const so=soulOf(L);
-  if(so)soulAura(g,x,y,R,ang,t,so,true);
+  if(so)soulAura(g,x,y,R,ang,t,so,true,soulLvOf(L));
   paintLion(g,{x:x,y:y,R:R,ang:ang,t:t,pelt:L.pelt,cols:colsOf(L),mane:L.mane,tail:L.tail,seed:3,scars:L.scars||[],armor:L.armor||'none',
     eyes:lionEyes(L),eyeGlow:!!so,belts:beltsOf(L),anim:anim,cos:cosOf(L)});
-  if(so)soulAura(g,x,y,R,ang,t,so,false);
+  if(so)soulAura(g,x,y,R,ang,t,so,false,soulLvOf(L));
 }
 function evVignette(g,w,h){
   const v=g.createRadialGradient(w/2,h/2,Math.min(w,h)*.35,w/2,h/2,Math.max(w,h)*.75);
@@ -12740,10 +13039,10 @@ function drawGrudgeScene(g,w,h,t,ph,tt){
     let fx=cx+Math.sin(t*.9)*16,fy=74,fa=Math.PI/2+Math.cos(t*.9)*.35;
     if(ph==='decline'){const q=ease(Math.max(0,tt-.4)/1.2);fx=cx+q*62;fa=Math.PI/2+q*.9;}
     const so=soulOf(c);
-    if(so)soulAura(g,fx,fy,20,fa,t,so,true);
+    if(so)soulAura(g,fx,fy,20,fa,t,so,true,soulLvOf(c));
     paintLion(g,{x:fx,y:fy,R:20,ang:fa,t:t,pelt:c.pelt||0,cols:colsOf(c),mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name),scars:c.scars||[],armor:c.armor||'none',
       eyes:lionEyes(c),eyeGlow:!!so,belts:beltsOf(c),anim:(t*.7%1)<.08,cos:cosOf(c)});
-    if(so)soulAura(g,fx,fy,20,fa,t,so,false);
+    if(so)soulAura(g,fx,fy,20,fa,t,so,false,soulLvOf(c));
   }
   const yy=h-44;let py=yy,ya=-Math.PI/2,walk=false;
   if(ph==='arrive'){const q=ease(tt/2);py=h+26-q*(h+26-yy);walk=q<1;}
@@ -13195,14 +13494,24 @@ function drawPrinceYardScene(g,w,h,t,ph,tt){
 /* ---------- the stone bridge: Old Lion is waiting on it ---------- */
 EVENTS.bridge={title:'The Stone Bridge',sub:'At the edge of the world',tag:'Challenge',tagIco:'sword',col:'#ffe08a',bg:'rgba(255,224,138,.14)',draw:drawBridgeScene,
   nodes:{
-    start:function(L){const b=bossBoost('shagon',L);
+    start:function(L){const b=bossBoost('shagon',L),q=bladeOf(L),wake=!!q&&bladeCount(L)>=3&&!q.god,again=!wake&&bossWins('god',L)>0;
+      if(wake)return {scene:'arrive',lines:[
+        ['n','The stone bridge again. But the chanting at the far end has stopped, and the three fragments in '+L.name+'’s bag are ringing like struck glass.'],
+        ['Old Lion','You hear that? So does it. That sword was pulled out of a god in three pieces, and you are carrying all three back to the body.'],
+        ['Old Lion','Cal only killed it once. I don’t think once was enough.']],
+        stake:evChip('dn','sword','The God Lion wakes'+(bossBoost('god',L)>0?' · '+boostTag('god',L):''))+evChip('up','hammer','Win: the Blacksmith can forge the blade'),
+        choices:[{t:'Carry the sword home',go:'crossGod',yes:1},{t:'Stand down',go:'stand'}]};
       return {scene:'arrive',lines:[
         ['n','Past the Twin Throne, past the end of every map, there is a stone bridge over nothing at all. Mist comes up out of the dark on both sides.'],
         ['n','At the far end there is gold light, and chanting. And on the bridge, standing in the way, a small grey lion in round glasses.'],
         ['Old Lion','I wouldn’t go there…'],
         ['Old Lion','The man you are about to face has slain a god.']],
         stake:evChip('dn','sword','Cal the Shagon'+(b>0?' · '+boostTag('shagon',L):''))+evChip('up','sash','Win: the Godslayer’s Sash'),
-        choices:[{t:'Cross the bridge',go:'cross',yes:1},{t:'Stand down',go:'stand'}]};},
+        choices:[{t:'Cross the bridge',go:'cross',yes:1}].concat(again?[{t:'Wake the God Lion again'+(bossBoost('god',L)>0?' ('+boostTag('god',L)+')':''),go:'crossGod'}]:[]).concat([{t:'Stand down',go:'stand'}])};},
+    crossGod:function(L){return {scene:'cross',lines:[
+        ['Old Lion','Then go. And if it speaks to you, don’t answer. Gods remember names.'],
+        ['n','Old Lion steps aside. '+L.name+' walks out over the drop. The light at the far end is not gold any more. It is white.']],
+        choices:[{t:'Into the Godfall',go:'godFight',yes:1}]};},
     cross:function(L){return {scene:'cross',lines:[
         ['Old Lion','…Of course you will. I taught you, didn’t I.'],
         ['Old Lion','Don’t look down. And don’t let him talk for too long.'],
@@ -14027,9 +14336,9 @@ function olYardDraw(dt){
   L.sort((a,b)=>a.o.y-b.o.y).forEach(function(q){const o=q.o,c=q.r.lion,moving=o.tx!=null;
     g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(o.x+2,o.y+4,o.R*.95,o.R*.6,0,0,7);g.fill();
     if(q.i===0){const hg=g.createRadialGradient(o.x,o.y,o.R*.5,o.x,o.y,o.R*2.3);hg.addColorStop(0,'rgba(255,210,74,.28)');hg.addColorStop(1,'rgba(255,210,74,0)');g.fillStyle=hg;g.beginPath();g.arc(o.x,o.y,o.R*2.3,0,7);g.fill();}
-    try{const so=soulOf(c);if(so)soulAura(g,o.x,o.y,o.R,o.ang,t,so,true);
+    try{const so=soulOf(c);if(so)soulAura(g,o.x,o.y,o.R,o.ang,t,so,true,soulLvOf(c));
       paintLion(g,{x:o.x,y:o.y+(moving?Math.sin(o.st)*.6:0),R:o.R,ang:o.ang,t:moving?o.st*.14:t*.3,pelt:c.pelt||0,cols:colsOf(c),mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:hashStr(c.name||''),scars:c.scars||[],armor:c.armor,eyes:lionEyes(c),eyeGlow:!!so,belts:beltsOf(c),cos:cosOf(c)});
-      if(so)soulAura(g,o.x,o.y,o.R,o.ang,t,so,false);}catch(e){}
+      if(so)soulAura(g,o.x,o.y,o.R,o.ang,t,so,false,soulLvOf(c));}catch(e){}
   });
   /* names over their heads: rank, player name, and a crown for number one */
   g.textBaseline='middle';
