@@ -3962,9 +3962,9 @@ const ITEMS={
   swordSteel:{name:'Steel Sword',     ico:'sword',use:'cos',cs:'hat',val:'swsteel',swap:1,desc:'A plain, honest blade in a leather scabbard, slung across the back. +5% damage while it is worn. Takes the hat slot.'},
   swordGod:{name:'Godslayer Blade',   ico:'sword',use:'cos',cs:'hat',val:'swgod',swap:1,desc:'The sword that killed a god, forged whole again from three fragments. White steel in a scabbard of pale gold, and it glows. +15% damage while it is worn. Takes the hat slot.'},
   axeSilver:{name:'Silver Axe',       ico:'sword',use:'cos',cs:'hat',val:'axsilver',swap:1,desc:'A bearded axe with a silvered head on a dark ash haft, slung across the back. +5% swing rate while it is worn. Takes the hat slot.'},
-  axeGold:{name:'Gold Axe',           ico:'sword',use:'cos',cs:'hat',val:'axgold',swap:1,desc:'A gilded axe on a black haft banded in gold, with a ruby set in the head, slung across the back. +8% swing rate while it is worn. Takes the hat slot.'},
+  axeGold:{name:'Gold Axe',           ico:'sword',use:'cos',cs:'hat',val:'axgold',swap:1,desc:'A gilded axe on a black haft banded in gold, with a ruby set in the head, slung across the back. +15% swing rate while it is worn. Takes the hat slot.'},
   shieldSilver:{name:'Silver Shield', ico:'shield',use:'cos',cs:'hat',val:'shsilver',swap:1,desc:'A small round shield with a steel rim and boss, slung on the back. +5% health while it is worn. Takes the hat slot.'},
-  shieldGold:{name:'Gold Shield',     ico:'shield',use:'cos',cs:'hat',val:'shgold',swap:1,desc:'A small round shield faced in crimson with a gold rim and a ruby in the boss, slung on the back. +8% health while it is worn. Takes the hat slot.'},
+  shieldGold:{name:'Gold Shield',     ico:'shield',use:'cos',cs:'hat',val:'shgold',swap:1,desc:'A small round shield faced in crimson with a gold rim and a ruby in the boss, slung on the back. +15% health while it is worn. Takes the hat slot.'},
   swordGold:{name:'Gold Sword',       ico:'sword',use:'cos',cs:'hat',val:'swgold',swap:1,desc:'A gilded blade in a gold scabbard with a ruby in the pommel, slung across the back. +10% damage while it is worn. Takes the hat slot.'},
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
@@ -4986,9 +4986,9 @@ function cosCutGo(){
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
-const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1},axeSilver:{price:200,atk:.05},axeGold:{price:1000,atk:.08},shieldSilver:{price:200,hp:.05},shieldGold:{price:1000,hp:.08}};
-const AXE_ATK={axsilver:.05,axgold:.08};
-const SHIELD_HP={shsilver:.05,shgold:.08};
+const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1},axeSilver:{price:200,atk:.05},axeGold:{price:1000,atk:.15},shieldSilver:{price:200,hp:.05},shieldGold:{price:1000,hp:.15}};
+const AXE_ATK={axsilver:.05,axgold:.15};
+const SHIELD_HP={shsilver:.05,shgold:.15};
 const SWORD_DMG={swsteel:.05,swgold:.1,swgod:.15};
 const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
@@ -11359,12 +11359,13 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
+  items:[['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
+    ['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
     ['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
     ['soulD','Souls that grow','Divine and Demonic souls now have levels. Lv1 is +10%, Lv2 +12%, Lv3 +14% to every stat, 10 skulls a level at the Mystic Lion, and the aura gets bigger each time: rings and rays, then wings and a halo, or horns of fire. The Void only takes a Lv3 soul.'],
     ['gem','Gem eyes','Sapphire, Emerald and Ruby eyes at the Cosmetic Lion, 1,000 gold each. Pick which eye the stone goes in.'],
-    ['shield','Back shields and a bigger bag','A small Silver Shield (+5% health) and Gold Shield (+8% health) at the Blacksmith, in the same slot as swords and axes. And the bag has another row: 24 slots.'],
-    ['hammer','Axes at the Blacksmith','A Silver Axe (200 gold, +5% swing rate) and a Gold Axe (1,000 gold, +8% swing rate), worn across the back in the same slot as a sword. Also: lions in the Yard are now their real size, and the Void Soul quest needs a Divine or Demonic Soul to upgrade.'],
+    ['shield','Back shields and a bigger bag','A small Silver Shield (+5% health) and Gold Shield (+15% health) at the Blacksmith, in the same slot as swords and axes. And the bag has another row: 24 slots.'],
+    ['hammer','Axes at the Blacksmith','A Silver Axe (200 gold, +5% swing rate) and a Gold Axe (1,000 gold, +15% swing rate), worn across the back in the same slot as a sword. Also: lions in the Yard are now their real size, and the Void Soul quest needs a Divine or Demonic Soul to upgrade.'],
     ['globe','The Yard','Online now opens on the Yard: the top ten lions on the leaderboard walk about with their player’s name over their heads, and number one wears a crown. Tap any of them to see its card. The leaderboard sits right under it.'],
     ['sword','Questline: the Godslayer Blade','Beat Cal the Shagon and the Blacksmith tells you his sword broke in three. Beat Cal, the Twin Kings and the Ancient Lion once more each for the fragments, then pay 1,000 gold and 10 skulls. A glowing sword for the back, +15% damage.'],
     ['spark','Four new events','The Blacksmith’s Apprentice sharpens your weapon for free (70% it works, 30% it really does not). Vex has three cups: skulls, gold, or a curse. The Bookie needs guarding from hyenas, and pays in a free bet at double odds. And the Night Market sells three things at half price, for gold.'],
