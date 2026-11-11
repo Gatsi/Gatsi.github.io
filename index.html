@@ -2438,7 +2438,7 @@ function derive(c,scale){
   const speed=BASE_SPD*B.spd*A.spd*P.spd*(W.mspd||1)*(1+IV_SPD*v)*tm.spd*(hog?1.08:1)*(gab?.72:1)*(c.ancient?ANC.spd:1)*(1+.025*TRn.spd);
   const dmgMult=B.dmg*P.dmg*dS*(1+IV_DMG*v)*tm.dmg*(1+.03*TRn.dmg)*(1+finPct(wlvOf(c))/100)*(1+(SWORD_DMG[(cosOf(c)||{}).hat]||0));
   const dr=clamp(A.dr+P.dr+(gab||c.ancient?.08:0)+.02*TRn.dr,0,.62);
-  const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk);
+  const atk=B.atk*P.atk*(A.atk||1)*Math.pow(.97,TRn.atk)/(1+(AXE_ATK[(cosOf(c)||{}).hat]||0));
   /* a bound soul, divine or demonic: +10% to everything */
   const SB=1+soulPct(soulOf(c))/100;
   if(SB>1){return derive2(c,B,A,W,P,tm,maxHp*SB,speed*SB,dmgMult*SB,clamp(dr*SB,0,.62),atk/SB);}
@@ -3893,6 +3893,8 @@ const ITEMS={
   gift:     {name:'Gift Parcel',     ico:'gift',use:'gift',desc:'Brown paper and string. Wrap up an item, gold or skulls with a note, and send it to another player online.'},
   swordSteel:{name:'Steel Sword',     ico:'sword',use:'cos',cs:'hat',val:'swsteel',swap:1,desc:'A plain, honest blade in a leather scabbard, slung across the back. +5% damage while it is worn. Takes the hat slot.'},
   swordGod:{name:'Godslayer Blade',   ico:'sword',use:'cos',cs:'hat',val:'swgod',swap:1,desc:'The sword that killed a god, forged whole again from three fragments. White steel in a scabbard of pale gold, and it glows. +15% damage while it is worn. Takes the hat slot.'},
+  axeSilver:{name:'Silver Axe',       ico:'sword',use:'cos',cs:'hat',val:'axsilver',swap:1,desc:'A bearded axe with a silvered head on a dark ash haft, slung across the back. +5% swing rate while it is worn. Takes the hat slot.'},
+  axeGold:{name:'Gold Axe',           ico:'sword',use:'cos',cs:'hat',val:'axgold',swap:1,desc:'A gilded axe on a black haft banded in gold, with a ruby set in the head, slung across the back. +8% swing rate while it is worn. Takes the hat slot.'},
   swordGold:{name:'Gold Sword',       ico:'sword',use:'cos',cs:'hat',val:'swgold',swap:1,desc:'A gilded blade in a gold scabbard with a ruby in the pommel, slung across the back. +10% damage while it is worn. Takes the hat slot.'},
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
@@ -4912,7 +4914,8 @@ function cosCutGo(){
   delete PREVMEM.career;Store.save();refresh();openInventory();
 }
 /* ---------- the Blacksmith: an old grey lion, a hammer, a lot of soot ---------- */
-const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1}};
+const SWORDS={swordSteel:{price:200,dmg:.05},swordGold:{price:1000,dmg:.1},axeSilver:{price:200,atk:.05},axeGold:{price:1000,atk:.08}};
+const AXE_ATK={axsilver:.05,axgold:.08};
 const SWORD_DMG={swsteel:.05,swgold:.1,swgod:.15};
 const SMITH={reforge:50,quip:'',hit:0,
   hello:['Mind the sparks.','Steel remembers every blow. So do I.','Bring it here. I will make it sing.','Hot iron, cold coin. That is the deal.'],
@@ -4977,6 +4980,13 @@ function smithHTML(L){
           '<small><b style="color:#5ee6a8">+'+Math.round(S.dmg*100)+'% damage</b> \u00b7 '+(own?'You have '+own+(((cosOf(L)||{}).hat===I.val)?' (worn)':'')+'. ':'')+(k==='swordGold'?'Gilded scabbard, ruby pommel.':'Leather scabbard, steel fittings.')+'</small></span>'+
           '<span class="price'+(gold>=S.price?'':' poor')+'">'+ico('coin')+S.price+'</span></button>';}).join('')+
     '</div>'+
+    '<div class="hd sub2"><h2>Axes for the back</h2><span>Worn in the same slot as a sword, so it is one or the other. They make your lion swing faster.</span></div>'+
+    '<div class="card">'+
+      ['axeSilver','axeGold'].map(function(k){const S=SWORDS[k],I=ITEMS[k],own=invCount(L,k)+((cosOf(L)||{}).hat===I.val?1:0);
+        return '<button class="row" data-act="smithBuy" data-k="'+k+'"><canvas class="swordCv" data-sword="'+I.val+'" width="88" height="56"></canvas><span class="v">'+I.name+
+          '<small><b style="color:#5ee6a8">+'+Math.round(S.atk*100)+'% swing rate</b> \u00b7 '+(own?'You have '+own+(((cosOf(L)||{}).hat===I.val)?' (worn)':'')+'. ':'')+(k==='axeGold'?'Gilded head, ruby, black haft.':'Silvered head, ash haft.')+'</small></span>'+
+          '<span class="price'+(gold>=S.price?'':' poor')+'">'+ico('coin')+S.price+'</span></button>';}).join('')+
+    '</div>'+
     '<div class="card">'+
       '<button class="row" data-act="smithBuy" data-k="reforge"><span class="rico">'+ico('shield')+'</span><span class="v">Reforge Armour'+
         '<small>A ticket for the bag. Use it to swap to any armour. Wearing '+ARMORS[L.armor].name.toLowerCase()+' now.</small></span>'+
@@ -5008,6 +5018,7 @@ function questStart(k){
   const L=CAREER.lion;if(!L||!CAREER.locked||!QUEST[k]||questOf(L,k)!==null)return;
   if(k==='smith'&&wlvOf(L)<3)return;
   if(k==='void'&&soulOf(L)==='void')return;
+  if(k==='void'&&soulOf(L)!=='divine'&&soulOf(L)!=='demon'){mysticSay(['The void needs a soul to swallow. Bring me one.']);toast('Bind a Divine or Demonic Soul first');refresh();return;}
   L.quest=L.quest||{};L.quest[k]=0;
   if(k==='smith'){SFX.clang();SMITH.quip='A hundred lions. I will be counting.';toast('Quest started · defeat 100 lions');}
   else {SFX.cast();MYSTIC.quip='Ten belts. A hundred skulls. The void can wait.';toast('Quest started · win 10 championships');}
@@ -5025,6 +5036,7 @@ function questForge(k){
     SFX.clang();SMITH.quip='Lionsteel. Quenched in the blood of a hundred. Wear it proud.';
     toast(WEAPONS[L.weapon].name+' · Lv4 Lionsteel');
   } else {
+    if(soulOf(L)!=='divine'&&soulOf(L)!=='demon'){mysticSay(['The void needs a soul to swallow. Bring me one.']);toast('The Void upgrades a Divine or Demonic Soul. Bind one first');refresh();return;}
     if(sk<Q.skulls){mysticSay(MYSTIC.broke);toast('You need '+(Q.skulls-sk)+' more skull'+(Q.skulls-sk===1?'':'s'));refresh();return;}
     const prev=soulOf(L);
     for(let i=0;i<Q.skulls;i++)invTake(L,'skull');
@@ -5140,13 +5152,14 @@ function voidQuestHTML(L){
   const prev='<canvas class="lionCv prevCv voidCv" data-prev="voidPrev"></canvas>';
   if(so==='void')return '<div class="qCard">'+head+prev+'<div class="qDone" style="color:#c9a2ff">'+ico('check')+'The void is in '+esc(L.name)+'. Something looks back out of its eyes.</div></div>';
   if(q===null)return '<div class="qCard">'+head+prev+
-    '<div class="qSay">“Light and dark are only colours. Past them both is the void, and the void is not for sale. Win ten championships and bring me a hundred skulls, and I will open the door. What comes through will look out of your lion’s eyes for the rest of its life.”</div>'+
-    '<button class="row" data-act="questStart" data-k="void"><span class="rico void">'+ico('spark')+'</span><span class="v">Start the quest'+
-      '<small>Win 10 championships. Only belts won from today count.</small></span><span class="go">›</span></button></div>';
+    '<div class="qSay">“Light and dark are only colours. Past them both is the void, and the void is not for sale. It does not come to an empty lion: it swallows the soul you already carry, divine or demonic, and grows out of it. Win ten championships and bring me a hundred skulls, and I will open the door. What comes through will look out of your lion’s eyes for the rest of its life.”</div>'+
+    ((so==='divine'||so==='demon')?'<button class="row" data-act="questStart" data-k="void"><span class="rico void">'+ico('spark')+'</span><span class="v">Start the quest'+
+      '<small>Win 10 championships. Only belts won from today count. The Void will upgrade the '+SOULS[so].name.toLowerCase()+'.</small></span><span class="go">›</span></button>'
+      :'<div class="qLock">'+ico('lock')+' '+esc(L.name)+' has no soul to upgrade. Bind a Divine or Demonic Soul first, then come back.</div>')+'</div>';
   const done=q>=Q.need,sk=invCount(L,'skull');
   return '<div class="qCard">'+head+prev+qBar(q,Q.need,'#2a0d5e','#b48cff','Championships won for the void')+
     (done?'<button class="row" data-act="questForge" data-k="void"><span class="rico void">'+ico('soulV')+'</span><span class="v">Bind the Void Soul'+
-        '<small>'+(so?'It will swallow the '+SOULS[so].name.toLowerCase()+'. ':'')+'Ten belts are enough. Now the skulls.</small></span>'+
+        '<small>'+((so==='divine'||so==='demon')?'It will swallow the '+SOULS[so].name.toLowerCase()+'. Ten belts are enough. Now the skulls.':'It needs a Divine or Demonic Soul to upgrade. Bind one first.')+'</small></span>'+
         '<span class="price skullPrice'+(sk>=Q.skulls?'':' poor')+'">'+ico('skull')+Q.skulls+'</span></button>'
       :'<div class="qLock">'+(Q.need-q)+' to go. When the bar is full, bring 100 skulls.</div>')+
     '</div>';
@@ -5166,7 +5179,7 @@ function smithBuy(k){
   if(L0&&CAREER.locked&&SWORDS[k]){const S=SWORDS[k],I=ITEMS[k];L0.gold=L0.gold||0;
     if(L0.gold<S.price){smithSay(SMITH.broke);toast('You need '+(S.price-L0.gold)+' more gold');refresh();return;}
     if(!invAdd(L0,k,1)){toast('The bag is full');return;}
-    L0.gold-=S.price;SFX.clang();SMITH.quip=k==='swordGold'?'Gold over good steel. Try not to get it dirty.':'Good steel. It will not let you down.';
+    L0.gold-=S.price;SFX.clang();SMITH.quip=S.atk?(k==='axeGold'?'Light in the paw, that one. It wants to keep moving.':'A good axe swings itself. You just hold on.'):(k==='swordGold'?'Gold over good steel. Try not to get it dirty.':'Good steel. It will not let you down.');
     toast(I.name+' is in the bag. Equip it from there');Store.save();refresh();return;}
   const L=CAREER.lion;if(!L||!CAREER.locked||k!=='reforge')return;
   L.gold=L.gold||0;
@@ -9719,7 +9732,7 @@ function paintLion(g,o){
 const COS_SLOTS=['earL','earR','nose','mane','patch','paint','head','neck','tail','crown','teeth','pelt','tally','brand','braids','hat','sash','fx'];
 const COS_VALS={earL:['gold','silver','fang','dandelion'],earR:['gold','silver','fang','dandelion'],nose:['gold','silver','bone'],mane:['bones'],patch:['L','R'],
   paint:['blood','bone','ash'],head:[],neck:['-','fangs'],tail:[],
-  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold','swgod'],sash:['redgold','navy','bone','king','ancient','gate','twins','shagon'],fx:['glitch']};
+  crown:['laurel','leaf'],teeth:['gold'],pelt:[],tally:[],brand:[],braids:[],hat:['party','straw','lionsword','swsteel','swgold','swgod','axsilver','axgold'],sash:['redgold','navy','bone','king','ancient','gate','twins','shagon'],fx:['glitch']};
 const COS_MET={gold:{name:'Gold',ring:'#f2c230',hi:'#fff6c8',dk:'#7a5a08'},silver:{name:'Silver',ring:'#d6dbe4',hi:'#ffffff',dk:'#6c7482'}};
 const COS_WHERE={earL:'left ear',earR:'right ear',L:'left eye',R:'right eye'};
 const CBONE='#ece2cc',CBONED='#6e5e46',CSTEEL='#c9cfd8',CSTEELD='#4c525c';
@@ -9804,7 +9817,33 @@ function drawLionSword(g,R,lunge,t,style){
   g.save();g.translate(-R*.38,R*.02);g.rotate(-.72);drawSheathedSword(g,R,lunge,t,style||'lionsword',true);g.restore();
 }
 /* a sword in its scabbard, lying along x with the hilt at +x. R sets the size. strap: draw the straps that hold it on a lion */
+const AXE_STYLE={axsilver:{haft:'#4a3422',haftDk:'#2a1c10',band:'#b8c0cc',head:['#f2f5fa','#8a93a3'],edge:'#ffffff',dk:'#4a505c',gem:'#5aa8ff',strap:'rgba(42,30,18,.9)'},
+  axgold:{haft:'#17171b',haftDk:'#08080a',band:'#ffd24a',head:['#ffe9a0','#b8861a'],edge:'#fff6d0',dk:'#6a4a08',gem:'#e2382c',strap:'rgba(60,40,10,.9)'}};
+/* an axe for the back: haft along x, a bearded head up by the shoulder */
+function drawBackAxe(g,R,t,style,strap){
+  const S=AXE_STYLE[style],L=R*1.5,W=R*.07,hx=L*.36;
+  if(strap)[[-L*.3],[L*.08]].forEach(function(q){g.strokeStyle=S.strap;g.lineWidth=Math.max(1,R*.07);
+    g.beginPath();g.moveTo(q[0]-R*.06,-R*.5);g.quadraticCurveTo(q[0]+R*.02,0,q[0]-R*.06,R*.5);g.stroke();});
+  g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(-L*.08+R*.04,R*.06,L*.62,R*.14,0,0,7);g.fill();
+  /* haft */
+  g.fillStyle=S.haft;g.strokeStyle=S.haftDk;g.lineWidth=Math.max(.6,R*.02);
+  g.beginPath();g.moveTo(-L*.68,-W);g.lineTo(L*.56,-W*.85);g.lineTo(L*.56,W*.85);g.lineTo(-L*.68,W);g.closePath();g.fill();g.stroke();
+  g.fillStyle=S.band;[-L*.6,-L*.34,-L*.08,L*.5].forEach(function(x){g.fillRect(x,-W*1.15,L*.03,W*2.3);});
+  g.beginPath();g.arc(-L*.7,0,W*1.5,0,7);g.fill();g.stroke();
+  /* the head: a bearded blade sweeping out to one side, a spike on the other */
+  const hg=g.createLinearGradient(hx,-R*.5,hx,R*.1);hg.addColorStop(0,S.head[0]);hg.addColorStop(1,S.head[1]);
+  g.fillStyle=hg;g.strokeStyle=S.dk;g.lineWidth=Math.max(.7,R*.025);
+  g.beginPath();g.moveTo(hx-R*.09,-W);g.quadraticCurveTo(hx-R*.16,-R*.3,hx-R*.34,-R*.5);
+  g.quadraticCurveTo(hx+R*.04,-R*.6,hx+R*.36,-R*.42);g.quadraticCurveTo(hx+R*.16,-R*.26,hx+R*.1,-W);g.closePath();g.fill();g.stroke();
+  g.strokeStyle=S.edge;g.lineWidth=Math.max(.8,R*.03);g.beginPath();g.moveTo(hx-R*.33,-R*.5);g.quadraticCurveTo(hx+R*.04,-R*.6,hx+R*.35,-R*.42);g.stroke();
+  g.fillStyle=S.head[1];g.strokeStyle=S.dk;g.lineWidth=Math.max(.6,R*.02);
+  g.beginPath();g.moveTo(hx-R*.07,W);g.lineTo(hx,R*.24);g.lineTo(hx+R*.07,W);g.closePath();g.fill();g.stroke();
+  g.fillStyle=S.band;g.fillRect(hx-R*.1,-W*1.4,R*.2,W*2.8);g.strokeRect(hx-R*.1,-W*1.4,R*.2,W*2.8);
+  g.save();g.shadowColor=S.gem;g.shadowBlur=RM?0:Math.max(3,R*.15)*(.7+.3*Math.sin(t*3));g.fillStyle=S.gem;g.beginPath();g.arc(hx,0,W*.9,0,7);g.fill();g.restore();
+  const gp=((t*.5)%1);if(gp<.3){g.fillStyle='rgba(255,255,255,'+(.7*(1-gp/.3)).toFixed(2)+')';g.beginPath();g.arc(hx-R*.3+gp/.3*R*.6,-R*.5,R*.04,0,7);g.fill();}
+}
 function drawSheathedSword(g,R,lunge,t,style,strap){
+  if(AXE_STYLE[style]){drawBackAxe(g,R,t,style,strap);return;}
   const S=SWORD_STYLE[style]||SWORD_STYLE.lionsword;
   const L=R*1.55,W=R*.15;
   if(strap)[[-L*.32,1],[L*.12,1]].forEach(function(q){g.strokeStyle=S.strap;g.lineWidth=Math.max(1,R*.07);
@@ -9853,7 +9892,7 @@ function swordRule(src,t){
 }
 function cosBack(g,R,lunge,o,t,C){
   const hx=R*.42+lunge;
-  if(o.hat==='lionsword'||o.hat==='swsteel'||o.hat==='swgold'||o.hat==='swgod')drawLionSword(g,R,lunge,t,o.hat);
+  if(o.hat==='lionsword'||o.hat==='swsteel'||o.hat==='swgold'||o.hat==='swgod'||AXE_ATK[o.hat])drawLionSword(g,R,lunge,t,o.hat);
 
   if(o.mane==='bones')[1.7,2.35,3.14,3.93,4.58].forEach(function(a,i){
     const rr=R*(.7+(i%2)*.06);boneAt(g,hx+Math.cos(a)*rr,Math.sin(a)*rr,R*.3,Math.max(1,R*.06),a+Math.PI/2+(i%2?.3:-.3));});
@@ -11022,7 +11061,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['globe','The Yard','Online now opens on the Yard: the top ten lions on the leaderboard walk about with their player’s name over their heads, and number one wears a crown. Tap any of them to see its card. The leaderboard sits right under it.'],
+  items:[['hammer','Axes at the Blacksmith','A Silver Axe (200 gold, +5% swing rate) and a Gold Axe (1,000 gold, +8% swing rate), worn across the back in the same slot as a sword. Also: lions in the Yard are now their real size, and the Void Soul quest needs a Divine or Demonic Soul to upgrade.'],
+    ['globe','The Yard','Online now opens on the Yard: the top ten lions on the leaderboard walk about with their player’s name over their heads, and number one wears a crown. Tap any of them to see its card. The leaderboard sits right under it.'],
     ['sword','Questline: the Godslayer Blade','Beat Cal the Shagon and the Blacksmith tells you his sword broke in three. Beat Cal, the Twin Kings and the Ancient Lion once more each for the fragments, then pay 1,000 gold and 10 skulls. A glowing sword for the back, +15% damage.'],
     ['spark','Four new events','The Blacksmith’s Apprentice sharpens your weapon for free (70% it works, 30% it really does not). Vex has three cups: skulls, gold, or a curse. The Bookie needs guarding from hyenas, and pays in a free bet at double odds. And the Night Market sells three things at half price, for gold.'],
     ['sword','New boss: Cal the Shagon','The last challenge, after the Twin Kings. A god lion walked into the world, and Cal the Shagon was blessed with a sword and killed it. Small, pink and very fast, with a Sunbeam, a golden cut that splits the floor, and hyenas that come when he calls (they hardly hurt, they are just for show).'],
@@ -13973,14 +14013,14 @@ function olYardDraw(dt){
     g.fillStyle='#ffb347';g.beginPath();g.ellipse(q[0],q[1],3*fl,5*fl,0,0,7);g.fill();});
   /* wander */
   const L=top.map(function(r,i){return {r:r,i:i,o:YARD.list[r.user_id]};}).filter(q=>q.o);
-  L.forEach(function(q){const o=q.o,R=q.i===0?17:14;o.R=R;
+  L.forEach(function(q){const o=q.o,B=BUILDS[q.r.lion.build]||BUILDS.prime,R=B.r*.68;o.R=R;
     if(dt>0){
       if(o.tx==null){o.wait-=dt;if(o.wait<=0){o.tx=rnd(26,w-26);o.ty=rnd(52,h-26);}}
       else{const dx=o.tx-o.x,dy=o.ty-o.y,dd=Math.hypot(dx,dy);
         if(dd<4){o.tx=null;o.wait=rnd(.8,3.2);}
         else{let da=Math.atan2(dy,dx)-o.ang;while(da>Math.PI)da-=Math.PI*2;while(da<-Math.PI)da+=Math.PI*2;o.ang+=da*Math.min(1,dt*5);
           const sp=26+((q.i*7)%10);o.x+=Math.cos(o.ang)*sp*dt;o.y+=Math.sin(o.ang)*sp*dt;o.st+=dt*7;}}
-      L.forEach(function(p){if(p===q)return;const dx=o.x-p.o.x,dy=o.y-p.o.y,dd=Math.hypot(dx,dy)||1,min=46;if(dd<min){o.x+=dx/dd*(min-dd)*.5;o.y+=dy/dd*(min-dd)*.5;}});
+      L.forEach(function(p){if(p===q)return;const dx=o.x-p.o.x,dy=o.y-p.o.y,dd=Math.hypot(dx,dy)||1,min=o.R+(p.o.R||14)+16;if(dd<min){o.x+=dx/dd*(min-dd)*.5;o.y+=dy/dd*(min-dd)*.5;}});
       o.x=clamp(o.x,22,w-22);o.y=clamp(o.y,48,h-22);}
   });
   /* lions, back to front */

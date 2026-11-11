@@ -63,7 +63,7 @@ Every win also has a **35% chance of a training opportunity**: pick health, dama
 
 Your lion's gold and skulls sit at the top of the screen (tap them to go straight to the shops), and the den shows who's next at a glance. Every championship win earns your lion **gold**. Spend it in the **Lion Store**, run by a red lion in a gold monocle: a new coat, a potion that rerolls one personality trait, a whole new weapon, an **Upgrade Token** (100 gold) for a guaranteed training session, or a **Name Plaque** (60 gold) to rename it.
 
-Next door, the **Blacksmith** (an old grey lion covered in soot) puts a finish on your lion's weapon: **Bronze, Obsidian, then Gilded** (50, 150 and 250 gold), each worth +2% damage and a glint of its colour on every swing and shot. The finish belongs to the weapon, so swap weapons and it's gone (you'll get a warning first). He also sells **Reforge Armour** (50 gold) to change armour, and two swords your lion wears across its back: the **Steel Sword** (200 gold, +5% damage) and the **Gold Sword** (1,000 gold, +10% damage).
+Next door, the **Blacksmith** (an old grey lion covered in soot) puts a finish on your lion's weapon: **Bronze, Obsidian, then Gilded** (50, 150 and 250 gold), each worth +2% damage and a glint of its colour on every swing and shot. The finish belongs to the weapon, so swap weapons and it's gone (you'll get a warning first). He also sells **Reforge Armour** (50 gold) to change armour, and two swords your lion wears across its back: the **Steel Sword** (200 gold, +5% damage) and the **Gold Sword** (1,000 gold, +10% damage). Or an axe in the same slot: the **Silver Axe** (200 gold, +5% swing rate) and the **Gold Axe** (1,000 gold, +8% swing rate).
 
 **The Cosmetic Lion** keeps a war tent at the den: paint, bone, steel, sashes, laurels, earrings, a party hat, even a **DandeLion** (5 gold, a dandelion behind one ear). Looks only, none of it changes a fight. **Cosmetic Shears** snip anything off for good. **Gift Parcels** (15 gold) let you wrap an item, gold or skulls with a note and send it to any player on the leaderboard.
 
@@ -74,7 +74,7 @@ Under the stands, the **Hyena Fence** buys skulls (1 skull → 25 gold), sells *
 **Questlines.** Two things in the den can't be bought outright:
 - **Lionsteel (Lv4).** Get your weapon to Gilded and the Blacksmith has a job for you: beat **100 lions** (championship bouts, grudges, bosses and online fights all count), then bring **25 skulls and 1,000 gold**. +12% damage and a blood-red edge.
 - **Ancient Steel (Lv5).** Past Lionsteel: beat the Ancient Lion 10 times, the Twin Kings 5, the Lion King 10 and the Gatekeeper 5, then pay **1,000 gold and 20 skulls**. +20% damage and a starlight-blue edge.
-- **The Void Soul.** The one soul the Mystic Lion won't sell. Win **10 championships**, then bring **100 skulls**. A black sun rises behind your lion and it gets **+15%** to every stat.
+- **The Void Soul.** The one soul the Mystic Lion won't sell. It upgrades a Divine or Demonic Soul, so your lion needs one of those first. Win **10 championships**, then bring **100 skulls**. A black sun rises behind your lion and it gets **+15%** to every stat.
 - **The Godslayer Blade.** Beat Cal the Shagon and the Blacksmith tells you his sword broke in three. Beat Cal, the Twin Kings and the Ancient Lion once more each for the fragments, then pay **1,000 gold and 10 skulls**. A glowing sword for the back, +15% damage.
 
 The Blacksmith and Mystic Lion doors in the den show how far along each one is.
