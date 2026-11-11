@@ -6829,7 +6829,7 @@ function log(m){G.log.push(m);if(G.log.length>4)G.log.shift();
 
 /* ---- damage ---- */
 function hurt(t,amt,src,o){
-  {const sw=swordRule(src,t);if(sw==='none')return;if(sw==='kill'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}}
+  {const sw=swordRule(src||(o&&o.from),t);if(sw==='none')return;if(sw==='kill'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}}
   if(t.guardHold&&src&&src.side!=='P'){t.guardHold=0;if(G&&G.lions)log('<em class="gold">'+t.name+'</em> is struck and joins the fight.');}
   o=o||{};
   if(t.dead||amt<=0)return 0;
@@ -6865,7 +6865,7 @@ function hurt(t,amt,src,o){
     src.stats.big=Math.max(src.stats.big,dmg);
     if(src.abil&&src.abil.indexOf('siphon')>=0){const h=Math.min(dmg*ABILITIES.siphon.leech,src.maxHp-src.hp);
       src.hp+=h;src.stats.healed+=h;if(h>.5)spark(src.x,src.y,FX.heal,2);}}
-  if(!o.noReflect&&src&&t.abil.indexOf('thorns')>=0)hurt(src,dmg*ABILITIES.thorns.reflect,null,{noReflect:1,dot:1});
+  if(!o.noReflect&&src&&t.abil.indexOf('thorns')>=0)hurt(src,dmg*ABILITIES.thorns.reflect,null,{noReflect:1,dot:1,from:t});
   const hitAng=(src?Math.atan2(t.y-src.y,t.x-src.x):Math.random()*7);
   spark(t.x,t.y,o.col||peltCols(t.cfg.pelt||0).mane,Math.min(16,3+dmg/2.6),hitAng);
   impactFx(t,src,hitAng,dmg,o);
