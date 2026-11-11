@@ -10199,13 +10199,23 @@ function drawSheathedSword(g,R,lunge,t,style,strap){
   const gp=((t*.5)%1);if(gp<.3){g.fillStyle='rgba(255,255,255,'+(.6*(1-gp/.3)).toFixed(2)+')';g.beginPath();g.arc(-L*.6+gp/.3*L*.95,-W*.3,W*.15,0,7);g.fill();}
 }
 /* in the online pit the LionSword settles one grudge: it one-shots Adamullah's lion and takes nothing from it, and every other player's lion one-shots it */
-const SWORD_GRUDGE='adamullah';
-function wearsSword(e){return !!(e&&e.cfg&&e.cfg.cos&&e.cfg.cos.hat==='lionsword');}
-function pitOwner(e){if(!e||!G||G.ctx!=='pit')return '';return String(e.side==='A'?(typeof onlineName==='function'?onlineName():''):((CAREER.pit&&CAREER.pit.player)||'')).toLowerCase();}
+/* names are compared loosely: any capitals, spaces or punctuation, and either spelling */
+const SWORD_GRUDGE=['adamullah','adamullas'];
+function grudgeName(n){return String(n||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function isGrudge(n){const k=grudgeName(n);return !!k&&SWORD_GRUDGE.indexOf(k)>=0;}
+function wearsSword(e){const c=e&&e.cfg&&(cosOf(e.cfg)||e.cfg.cos);return !!(c&&c.hat==='lionsword');}
+/* who owns a lion in a pit fight: your lion is the one you sent in, the other belongs to the player you picked off the board */
+function pitOwner(e){if(!e||!G||G.ctx!=='pit')return '';
+  const mine=e===G.lions[0]||(e.side==='A'&&e!==G.lions[1]);
+  return mine?(typeof onlineName==='function'?onlineName():''):((CAREER.pit&&CAREER.pit.player)||'');}
+/* the attacker might be a cub, a pet or a minion: the owner is whoever's lion it fights for */
+function pitLionOf(x){if(!x||!G||!G.lions)return x;if(G.lions.indexOf(x)>=0&&!x.pet)return x;
+  const side=x.side,own=G.lions.filter(l=>l.side===side&&!l.pet)[0];return own||x;}
 function swordRule(src,t){
   if(!G||G.ctx!=='pit'||!src||!t||src===t)return '';
-  if(wearsSword(t))return pitOwner(src)===SWORD_GRUDGE?'none':'kill';
-  if(wearsSword(src)&&pitOwner(t)===SWORD_GRUDGE)return 'kill';
+  const s=pitLionOf(src),v=pitLionOf(t);if(!s||!v||s.side===v.side)return '';
+  if(wearsSword(v))return isGrudge(pitOwner(s))?'none':'kill';
+  if(wearsSword(s)&&isGrudge(pitOwner(v)))return 'kill';
   return '';
 }
 function cosBack(g,R,lunge,o,t,C){
