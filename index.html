@@ -11367,7 +11367,7 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 50 gold and grows 10 an hour, up to 2,000. Beat number one and it is paid to your lion.'],
+  items:[['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 1,000 gold and grows 500 every hour, up to 100,000. Beat number one and it is paid to your lion.'],
     ['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
     ['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
     ['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
@@ -14143,7 +14143,7 @@ function pitOver(){
         :/daily_limit/.test(m)?'That’s the daily limit of rated fights. It still counts for gold.'
         :'The result couldn’t be saved ('+errText(r.error)+').';}
     else{P.res.state='done';P.res.delta=(r.data&&r.data.delta)|0;P.res.rating=(r.data&&r.data.rating)|0;
-      const bo=(r.data&&r.data.bounty)|0;if(bo>0&&CAREER.lion){P.res.bounty=bo;CAREER.lion.gold=(CAREER.lion.gold||0)+bo;Store.save();SFX.coin();toast('Bounty collected \u00b7 +'+bo+' gold');refresh();}}
+      const bo=(r.data&&r.data.bounty)|0;if(bo>0&&CAREER.lion){P.res.bounty=bo;CAREER.lion.gold=(CAREER.lion.gold||0)+bo;Store.save();SFX.coin();toast('Bounty collected \u00b7 +'+bo.toLocaleString('en-GB')+' gold');refresh();}}
     pitResPaint();pitLoad(true);
   },function(e){P.res.state='err';P.res.err='The result couldn’t be saved ('+errText(e)+').';pitResPaint();});
 }
@@ -14151,7 +14151,7 @@ function pitResText(){
   const P=CAREER.pit,R=P&&P.res;if(!R)return '';
   if(R.state==='saving')return 'Saving the result…';
   if(R.state==='err')return esc(R.err);
-  return 'Your Elo: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>'+(R.bounty?'<br><b style="color:#ffd24a">Bounty collected: +'+R.bounty+' gold.</b> You beat number one.':'');
+  return 'Your Elo: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>'+(R.bounty?'<br><b style="color:#ffd24a">Bounty collected: +'+R.bounty.toLocaleString('en-GB')+' gold.</b> You beat number one.':'');
 }
 function pitResPaint(){const el=$('pitRes');if(el)el.innerHTML=pitResText();}
 function timeAgo(iso){const s=Math.max(0,(Date.now()-Date.parse(iso))/1000);
@@ -14303,7 +14303,7 @@ function olYardHTML(){
     '<div class="card olYardCard"><canvas id="olYard" class="olYard" role="img" aria-label="The top lions on the leaderboard, walking about"></canvas></div>';
 }
 /* number one: how long it has held the top, the bounty on its head, and its kills since it last lost */
-const CROWN={base:50,hour:10,cap:2000};
+const CROWN={base:1000,hour:500,cap:100000};
 function crownBounty(c){return Math.min(CROWN.cap,CROWN.base+CROWN.hour*Math.floor(Math.max(0,Date.now()-Date.parse(c.bounty_from))/3600000));}
 function fmtHeld(ms){const m=Math.max(0,Math.floor(ms/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;
   return d?d+' day'+(d>1?'s':'')+(h?' '+h+' h':''):(h?h+' h'+(mm?' '+mm+' min':''):(mm?mm+' min':'under a minute'));}
@@ -14314,7 +14314,7 @@ function olCrownHTML(){
   return '<div class="card olCrown"><div class="ocTop"><span class="ocIco">'+ico('crown')+'</span><span class="ocWho"><small>Number one</small><b>'+esc(r.player)+(mine?' (you)':'')+'</b><small>'+esc(r.name)+' · Elo '+r.rating+'</small></span>'+
       (mine?'':'<button class="ocGo" data-act="olView" data-u="'+r.user_id+'">'+ico('duel')+'Hunt it</button>')+'</div>'+
     '<div class="ocStats"><div><b>'+fmtHeld(Date.now()-Date.parse(c.since))+'</b><small>at number one</small></div>'+
-      '<div class="gold"><b>'+ico('coin')+bo+'</b><small>bounty'+(bo<CROWN.cap?' · +'+CROWN.hour+' an hour':' · maxed')+'</small></div>'+
+      '<div class="gold"><b>'+ico('coin')+bo.toLocaleString('en-GB')+'</b><small>bounty'+(bo<CROWN.cap?' · +'+CROWN.hour+' an hour':' · maxed')+'</small></div>'+
       '<div><b>'+ico('skull')+k+'</b><small>kill'+(k===1?'':'s')+' since it last lost</small></div></div>'+
     '<p class="ocNote">'+(mine?'Every hour nobody beats '+esc(r.name)+', the price on its head goes up. Whoever beats it takes the gold.':'Beat '+esc(r.name)+' and the bounty is yours, paid in gold to your championship lion.')+'</p></div>';
 }
