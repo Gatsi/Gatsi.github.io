@@ -5974,16 +5974,28 @@ const SOUL_FOE=.02;
 const FOE_UP={share:[.35,.5,.6,.65,.7],base:.7,bout:.4,
   fin:{per:.1,bout:.05,mine:.1,max:.8},perk:{base:.25,bout:.08,per:.05},
   soul:{first:.015,base:.03,per:.008,bout:.006,belt:.08,max:.1},
-  cos:{from:2,base:.05,per:.03,bout:.01,belt:.1,max:.3}};
-function foeCos(belt){
-  const o={},pool=['ear','ear','nose','paint','paint','patch','mane','neck','teeth','leaf'].concat(belt?['crown','crown']:[]),n=1+(Math.random()<.45?1:0)+(Math.random()<.2?1:0);
+  cos:{from:2,base:.05,per:.03,bout:.01,belt:.1,max:.3},
+  /* past five belts the arena dresses up: war gear on most lions, things on their backs, and more and more bound souls, slowly */
+  late:{from:6,cos:.4,cosPer:.06,cosMax:.92,back:.12,backPer:.03,backMax:.5,gem:.02,gemPer:.01,gemMax:.15,
+        soul:.1,soulPer:.02,soulMax:.45,lv2From:10,lv2:.3,lv3From:15,lv3:.25}};
+function foeCos(belt,champ){
+  const late=(champ|0)>=FOE_UP.late.from,deep=Math.max(0,(champ|0)-FOE_UP.late.from);
+  const o={},pool=['ear','ear','nose','paint','paint','patch','mane','neck','teeth','leaf'].concat(belt?['crown','crown']:[]).concat(late?['sash','sash','tail','head','brand','tally','braids','ear','neck']:[]),
+    n=1+(Math.random()<.45?1:0)+(Math.random()<.2?1:0)+(late?1+(Math.random()<Math.min(.8,.3+deep*.05)?1:0)+(Math.random()<Math.min(.5,deep*.04)?1:0):0);
   for(let q=0;q<n*3&&Object.keys(o).length<n;q++){
     const k=pickOne(pool);
     if(k==='ear'){const sd=Math.random()<.5?'earL':'earR';if(!o[sd])o[sd]=pickOne(COS_VALS.earL);}
     else if(k==='patch'){if(!o.patch)o.patch=Math.random()<.5?'L':'R';}
     else if(k==='leaf'){if(!o.crown)o.crown='leaf';}
     else if(k==='crown'){if(!o.crown)o.crown='laurel';}
-    else if(!o[k]){const vs=COS_VALS[k].filter(v=>v!=='-');if(vs.length)o[k]=pickOne(vs);}
+    else if(k==='sash'){if(!o.sash)o.sash=pickOne(['redgold','navy','bone']);}
+    else if(!o[k]&&COS_VALS[k]){const vs=COS_VALS[k].filter(v=>v!=='-');if(vs.length)o[k]=pickOne(vs);}
+  }
+  if(late){const U=FOE_UP.late;
+    /* something on the back: steel and silver at first, gold the deeper you go */
+    if(Math.random()<Math.min(U.backMax,U.back+U.backPer*deep)){const gold=Math.random()<Math.min(.6,.1+deep*.04),kind=pickOne(['sw','ax','sh']);
+      o.hat=kind==='sw'?(gold?'swgold':'swsteel'):(kind==='ax'?(gold?'axgold':'axsilver'):(gold?'shgold':'shsilver'));}
+    if(!o.patch&&Math.random()<Math.min(U.gemMax,U.gem+U.gemPer*deep))o.gem=pickOne(['s','e','r'])+(Math.random()<.5?'L':'R');
   }
   return o;
 }
@@ -6002,9 +6014,11 @@ function foeUpgrade(f,L,n,i,belt){
   }
   /* a soul: rare, more likely later on and on a belt holder */
   const sc=n<2?U.soul.first:clamp(U.soul.base+U.soul.per*(n-2)+U.soul.bout*i+(belt?U.soul.belt:0),0,U.soul.max+(belt?U.soul.belt:0));
-  if(Math.random()<sc)f.soul=Math.random()<.5?'divine':'demon';
+  const LT=FOE_UP.late,deep=n-LT.from,sc2=deep>=0?Math.max(sc,Math.min(LT.soulMax,LT.soul+LT.soulPer*deep)+(belt?FOE_UP.soul.belt:0)):sc;
+  if(Math.random()<sc2){f.soul=Math.random()<.5?'divine':'demon';
+    if(n>=LT.lv3From&&Math.random()<LT.lv3)f.slv=3;else if(n>=LT.lv2From&&Math.random()<LT.lv2)f.slv=2;}
   /* war gear, from the second championship */
-  if(n>=U.cos.from&&Math.random()<clamp(U.cos.base+U.cos.per*(n-2)+U.cos.bout*i+(belt?U.cos.belt:0),0,U.cos.max)){const o=foeCos(belt);if(Object.keys(o).length)f.cos=o;}
+  if(n>=U.cos.from&&Math.random()<(deep>=0?Math.min(LT.cosMax,LT.cos+LT.cosPer*deep+(belt?U.cos.belt:0)):clamp(U.cos.base+U.cos.per*(n-2)+U.cos.bout*i+(belt?U.cos.belt:0),0,U.cos.max))){const o=foeCos(belt,n);if(Object.keys(o).length)f.cos=o;}
 }
 /* what a foe brings with it: training, a forged weapon, medallions, war gear */
 function foeUpChips(f){
@@ -6018,7 +6032,7 @@ function foeUpChips(f){
 function soulBadge(f){const s=soulOf(f);if(!s)return '';
   if(s==='void')return '<span class="badge void">'+ico('soulV')+'Void soul</span>';
   if(s==='pirate')return '<span class="badge sea">'+ico('soulP')+'Pirate soul</span>';
-  return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul</span>';}
+  return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>';}
 function rivalBadge(f){
   const R=rivalOf(f);if(!R)return '';
   return R.nem?'<span class="badge nem">'+ico('skull')+'Nemesis</span>':'<span class="badge rival">'+ico('duel')+'Rival \u00b7 '+h2hText(R)+'</span>';
@@ -11395,7 +11409,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 1,000 gold and grows 500 every hour, up to 100,000. Beat number one and it is paid to your lion.'],
+  items:[['paint','A better-dressed arena','From your sixth championship on, most opponents turn up in war gear: sashes, braids, brands, swords, axes and shields on their backs, now and then a gem eye. Bound souls get more common the more belts you hold, and deep in they can be Lv2 or Lv3.'],
+    ['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 1,000 gold and grows 500 every hour, up to 100,000. Beat number one and it is paid to your lion.'],
     ['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
     ['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
     ['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
