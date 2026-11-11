@@ -10887,6 +10887,10 @@ function survivalOver(){
   }
   showResult('survival');
 }
+/* a win pays more the further a lion has come: every belt it holds adds to the purse, and so does every bout deeper into a championship */
+const WIN_GOLD={base:5,spread:11,belt:6,beltCap:40,bout:3},SKULL_DROP=.4;
+function winGoldBase(L,bout){const b=Math.min(WIN_GOLD.beltCap,beltsOf(L)|0);return WIN_GOLD.base+b*WIN_GOLD.belt+Math.max(0,(bout|0)-1)*WIN_GOLD.bout;}
+function winGold(L,bout){return winGoldBase(L,bout)+((Math.random()*WIN_GOLD.spread)|0);}
 function roundOver(){
   if(G.ctx==='bookie'){bookieOver();return;}
   if(G.ctx==='grudge'){grudgeOver();return;}
@@ -10905,11 +10909,11 @@ function roundOver(){
     if(G.winner===you){
       rivalAfterBout(foeCfg,true,false,you,L.name);
       L.record.wins++;ch.i++;questLion(L,1);
-      CAREER.earned=5+((Math.random()*11)|0);L.gold=(L.gold||0)+CAREER.earned;
+      CAREER.earned=winGold(L,ch.i);L.gold=(L.gold||0)+CAREER.earned;
       evSettle(L,true);
       CAREER.trainChance=Math.random()<.35;
       CAREER.loot=null;
-      if(Math.random()<.3){const foe=G.lions[1];CAREER.loot={k:'skull',from:foe?foe.name:'its rival',ok:invAdd(L,'skull',1),n:0};
+      if(Math.random()<SKULL_DROP){const foe=G.lions[1];CAREER.loot={k:'skull',from:foe?foe.name:'its rival',ok:invAdd(L,'skull',1),n:0};
         CAREER.loot.n=invCount(L,'skull');}
       if(ch.i<5)evRollAfterWin();else CAREER.event=null;
       if(ch.i>=5){
@@ -11266,7 +11270,7 @@ const TUT=[
      chip('','Ironheart','+9% health','gold',medalHTML('hp'))+chip('','Keen Fang','+9% damage','gold',medalHTML('dmg'))+'</div>'+
      '<div class="stat" style="margin-top:12px"><span>'+ico('heart')+'Health</span><div class="bar"><i style="width:48%"></i><i class="ext" style="width:12%"></i></div><b class="trained">132</b></div>'},
   {t:'Gold and the store',
-   say:"Each win pays your lion 5 to 15 gold. The pack pays nothing, that one is for pride. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
+   say:"Each win pays your lion gold: 5 to 15 at first, and more for every belt it holds and every bout deeper into a championship, so harder fights pay better. The pack pays nothing, that one is for pride. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
    vis:()=>'<div class="tutChips">'+chip('coin','5-15 per win','championship bouts','gold')+chip('drop','Colour Change','20 gold')+
      chip('flask','Personality Potion','30 gold: reroll one trait')+chip('sword','New weapon','60 gold')+'</div>'},
   {t:'Challenges',
@@ -11355,7 +11359,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
+  items:[['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
+    ['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
     ['soulD','Souls that grow','Divine and Demonic souls now have levels. Lv1 is +10%, Lv2 +12%, Lv3 +14% to every stat, 10 skulls a level at the Mystic Lion, and the aura gets bigger each time: rings and rays, then wings and a halo, or horns of fire. The Void only takes a Lv3 soul.'],
     ['gem','Gem eyes','Sapphire, Emerald and Ruby eyes at the Cosmetic Lion, 1,000 gold each. Pick which eye the stone goes in.'],
     ['shield','Back shields and a bigger bag','A small Silver Shield (+5% health) and Gold Shield (+8% health) at the Blacksmith, in the same slot as swords and axes. And the bag has another row: 24 slots.'],
