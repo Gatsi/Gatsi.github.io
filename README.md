@@ -75,12 +75,13 @@ Under the stands, the **Hyena Fence** buys skulls (1 skull → 25 gold), sells *
 - **Lionsteel (Lv4).** Get your weapon to Gilded and the Blacksmith has a job for you: beat **100 lions** (championship bouts, grudges, bosses and online fights all count), then bring **25 skulls and 1,000 gold**. +12% damage and a blood-red edge.
 - **Ancient Steel (Lv5).** Past Lionsteel: beat the Ancient Lion 10 times, the Twin Kings 5, the Lion King 10 and the Gatekeeper 5, then pay **1,000 gold and 20 skulls**. +20% damage and a starlight-blue edge.
 - **The Void Soul.** The one soul the Mystic Lion won't sell. Win **10 championships**, then bring **100 skulls**. A black sun rises behind your lion and it gets **+15%** to every stat.
+- **The Godslayer Blade.** Beat Cal the Shagon and the Blacksmith tells you his sword broke in three. Beat Cal, the Twin Kings and the Ancient Lion once more each for the fragments, then pay **1,000 gold and 10 skulls**. A glowing sword for the back, +15% damage.
 
 The Blacksmith and Mystic Lion doors in the den show how far along each one is.
 
 **The Bookie.** A green lion in a flat cap and a pencil behind his ear runs fights between two other lions. You get a look at both (record, frame, weapon, mind and how big they are) and his odds on the chalkboard, back one, and watch it play out. Win and you get your stake times the odds; lose and he keeps it. Bigger lions are usually the favourites, and the odds lean very slightly your way, so it's a way to make money, slowly: he only runs **three fights between each of your championship bouts**, and stakes are capped at 25 gold (+15 per belt, up to 100). You can also watch for free. Your lion keeps a tally of how its betting is going.
 
-**Events.** After a win, with another bout still to come, there's a **20% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice. There are seventeen:
+**Events.** After a win, with another bout still to come, there's a **20% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice. There are twenty-one:
 - **The Royal Lion** wants a bet on your next fight: win and he **doubles your gold**, lose and he **takes all of it**.
 - **The Mystic Lion** offers **two skulls** if your lion starts its next bout on **75% health**.
 - **The Lion Store owner** wants your lion as the face of his shop: **30% off for 5 bouts**.
@@ -98,6 +99,10 @@ The Blacksmith and Mystic Lion doors in the den show how far along each one is.
 - **Scavenger Night.** Search the arena floor for armour, an edge or gold. Hyenas may come for it.
 - **The Twin Statue.** Pray to Kaldur or Sevrin, leave them a skull, or steal their gold eyes.
 - **The Princes' Yard.** The Black Princes are training. Peek through the wall and learn a stat for free, but there's a **40% chance one catches you**, and then it's one on one in his yard.
+- **The Blacksmith's Apprentice.** He'll sharpen your weapon for free. 70% it works (+5% damage for 3 bouts), 30% he ruins the finish.
+- **Vex's Game.** Three cups: skulls, gold, or a curse. Pick one.
+- **The Bookie's Debt.** Guard him from five hyenas and he pays in a **free bet**: top stake, double odds.
+- **The Night Market.** Three random items at half price, for gold, gone by morning.
 
 Say no to any of them and nothing changes. Anything still waiting to be settled shows in the den.
 
@@ -115,7 +120,7 @@ Seven of them, and each boss only opens once your lion has beaten the one before
 Boss fights are long, grand affairs with huge health bars and big moments along the way. Every time you beat a boss it comes back **10% stronger**, and it shows you by how much before the fight. Beaten bosses show as trophies on your lion's card. Bring up to two friends to any of them.
 
 ### 🌐 Online
-Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**.
+Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**. At the top of the page is **the Yard**, where the top ten lions walk about with their player's name over their heads. Number one wears a crown.
 
 ### 🥇 Tournament
 Eight lions, one bracket. Quarter-finals, semis, final, and every match is best of three. Edit any lion, roll them all, shuffle the draw and watch one come out on top.
