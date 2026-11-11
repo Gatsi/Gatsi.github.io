@@ -120,7 +120,7 @@ Seven of them, and each boss only opens once your lion has beaten the one before
 Boss fights are long, grand affairs with huge health bars and big moments along the way. Every time you beat a boss it comes back **10% stronger**, and it shows you by how much before the fight. Beaten bosses show as trophies on your lion's card. Bring up to two friends to any of them.
 
 ### 🌐 Online
-Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**. At the top of the page is **the Yard**, where the top ten lions walk about with their player's name over their heads. Number one wears a crown.
+Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**. At the top of the page is **the Yard**, where the top ten lions walk about with their player's name over their heads. Number one wears a crown, and a card under the Yard shows how long they have held the top, their kills since they last lost, and the **bounty** on their head: 50 gold, growing 10 an hour up to 2,000, paid to whoever beats them.
 
 ### 🥇 Tournament
 Eight lions, one bracket. Quarter-finals, semis, final, and every match is best of three. Edit any lion, roll them all, shuffle the draw and watch one come out on top.

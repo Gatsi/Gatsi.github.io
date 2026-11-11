@@ -1208,6 +1208,14 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .acForgotHd{display:flex;gap:12px;align-items:flex-start;margin:4px 16px 14px}.acForgotHd .ico{width:26px;height:26px;color:#7cc2ff;flex:none;margin-top:2px}
 .acForgotHd b{display:block;font-size:17px;color:var(--t1)}.acForgotHd small{display:block;font-size:13.5px;color:var(--t2);line-height:1.4;margin-top:2px}
 .olAuth .acTabs{margin:0 16px 12px}.olAuth .acctForm{padding:0 16px}.olAuth .acMsg{margin:10px 16px 0}
+.olCrown{padding:14px 16px 12px;border:1px solid rgba(255,210,74,.35);background:linear-gradient(180deg,rgba(255,210,74,.1),rgba(255,210,74,.02) 60%),var(--s1)}
+.ocTop{display:flex;align-items:center;gap:12px}.ocIco{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,210,74,.16);color:#ffd24a;flex:none}.ocIco .ico{width:22px;height:22px}
+.ocWho{flex:1;min-width:0;display:flex;flex-direction:column}.ocWho small{font-size:12px;color:var(--t2)}.ocWho small:first-child{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#ffd24a}.ocWho b{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ocGo{flex:none;display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:999px;background:#ffd24a;color:#1a1204;font-weight:700;font-size:14px}.ocGo .ico{width:16px;height:16px}
+.ocStats{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;margin:12px 0 8px}
+.ocStats>div{background:var(--s2);border-radius:14px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ocStats b{font-size:16px;display:inline-flex;align-items:center;gap:5px}.ocStats b .ico{width:15px;height:15px}.ocStats .gold b{color:#ffd24a}.ocStats small{font-size:11px;color:var(--t2);line-height:1.25}
+.ocNote{margin:0;font-size:13px;color:var(--t2)}
 .olYardCard{padding:0;overflow:hidden}.olYard{display:block;width:100%;height:270px;cursor:pointer}
 .olMe{padding:14px 16px 10px;position:relative}
 .olMeTop{display:flex;align-items:center;gap:12px}
@@ -11359,7 +11367,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
+  items:[['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 50 gold and grows 10 an hour, up to 2,000. Beat number one and it is paid to your lion.'],
+    ['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
     ['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
     ['sword','The God Lion','The Godslayer Blade quest has a last step now. Carry all three fragments back over the bridge and the god they were pulled out of wakes up. Beat the God Lion, and then the Blacksmith can forge the blade. The challenge is now called the God Slayer.'],
     ['soulD','Souls that grow','Divine and Demonic souls now have levels. Lv1 is +10%, Lv2 +12%, Lv3 +14% to every stat, 10 skulls a level at the Mystic Lion, and the aura gets bigger each time: rings and rays, then wings and a halo, or horns of fire. The Void only takes a Lv3 soul.'],
@@ -14058,6 +14067,7 @@ async function pitLoad(force){
     const r=await ONLINE.sb.from('pit_board').select('*').order('rating',{ascending:false}).limit(100);
     if(r.error)ONLINE.boardErr=errText(r.error);else{ONLINE.board=r.data||[];ONLINE.boardAt=Date.now();}
   }catch(e){ONLINE.boardErr=errText(e);}
+  try{const c=await ONLINE.sb.from('pit_crown').select('*').eq('id',1).maybeSingle();if(c&&!c.error&&c.data)ONLINE.crown=c.data;}catch(e){}
   if(MATCH.mode==='online'&&$('fight').classList.contains('hidden'))bKeepScroll(refresh);
 }
 async function pitNews(){
@@ -14132,7 +14142,8 @@ function pitOver(){
       P.res.state='err';P.res.err=/too_soon/.test(m)?'You fought this lion a moment ago, so this one doesn’t count. Try someone else.'
         :/daily_limit/.test(m)?'That’s the daily limit of rated fights. It still counts for gold.'
         :'The result couldn’t be saved ('+errText(r.error)+').';}
-    else{P.res.state='done';P.res.delta=(r.data&&r.data.delta)|0;P.res.rating=(r.data&&r.data.rating)|0;}
+    else{P.res.state='done';P.res.delta=(r.data&&r.data.delta)|0;P.res.rating=(r.data&&r.data.rating)|0;
+      const bo=(r.data&&r.data.bounty)|0;if(bo>0&&CAREER.lion){P.res.bounty=bo;CAREER.lion.gold=(CAREER.lion.gold||0)+bo;Store.save();SFX.coin();toast('Bounty collected \u00b7 +'+bo+' gold');refresh();}}
     pitResPaint();pitLoad(true);
   },function(e){P.res.state='err';P.res.err='The result couldn’t be saved ('+errText(e)+').';pitResPaint();});
 }
@@ -14140,7 +14151,7 @@ function pitResText(){
   const P=CAREER.pit,R=P&&P.res;if(!R)return '';
   if(R.state==='saving')return 'Saving the result…';
   if(R.state==='err')return esc(R.err);
-  return 'Your Elo: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>';
+  return 'Your Elo: <b>'+R.rating+'</b> <em class="'+(R.delta>=0?'up':'dn')+'">'+(R.delta>=0?'+':'')+R.delta+'</em>'+(R.bounty?'<br><b style="color:#ffd24a">Bounty collected: +'+R.bounty+' gold.</b> You beat number one.':'');
 }
 function pitResPaint(){const el=$('pitRes');if(el)el.innerHTML=pitResText();}
 function timeAgo(iso){const s=Math.max(0,(Date.now()-Date.parse(iso))/1000);
@@ -14273,7 +14284,7 @@ function renderOnline(){
   if(!onlineOn())h+='<div class="card pad"><p class="muted" style="margin:0">Online play needs the internet. Everything else still works.</p></div>';
   else{
     if(!signedIn())h+='<div class="olHero">'+ico('globe')+'<b>Play online</b><small>Make a free account, put your lion on the leaderboard and fight everyone else’s. Win and your Elo goes up.</small></div>'+olAuthHTML();
-    h+=olYardHTML()+olBoardHTML();
+    h+=olYardHTML()+olCrownHTML()+olBoardHTML();
     if(signedIn())h+=olMeHTML(L)+olNewsHTML();
     h+='<p class="muted" style="padding:0 2px 8px">Tap any lion to see its card. Beat a higher-rated lion for more Elo. A win also pays your championship lion '+PIT.winGold+' gold, up to '+PIT.goldWins+' times a day. Online fights never count on your championship record, and nobody dies.</p>';
   }
@@ -14290,6 +14301,22 @@ function olYardHTML(){
   if(!ONLINE.board||!ONLINE.board.filter(r=>r.lion).length)return '';
   return '<div class="hd"><h2>The Yard</h2><span>The top '+Math.min(YARD.n,ONLINE.board.length)+' on the board. Tap one to see its card.</span></div>'+
     '<div class="card olYardCard"><canvas id="olYard" class="olYard" role="img" aria-label="The top lions on the leaderboard, walking about"></canvas></div>';
+}
+/* number one: how long it has held the top, the bounty on its head, and its kills since it last lost */
+const CROWN={base:50,hour:10,cap:2000};
+function crownBounty(c){return Math.min(CROWN.cap,CROWN.base+CROWN.hour*Math.floor(Math.max(0,Date.now()-Date.parse(c.bounty_from))/3600000));}
+function fmtHeld(ms){const m=Math.max(0,Math.floor(ms/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;
+  return d?d+' day'+(d>1?'s':'')+(h?' '+h+' h':''):(h?h+' h'+(mm?' '+mm+' min':''):(mm?mm+' min':'under a minute'));}
+function olCrownHTML(){
+  const c=ONLINE.crown,b=ONLINE.board;if(!c||!c.user_id||!b||!b.length)return '';
+  const r=b.filter(x=>x.user_id===c.user_id)[0];if(!r||b[0].rating>r.rating)return '';
+  const mine=signedIn()&&c.user_id===ONLINE.user.id,bo=crownBounty(c),k=c.kills|0;
+  return '<div class="card olCrown"><div class="ocTop"><span class="ocIco">'+ico('crown')+'</span><span class="ocWho"><small>Number one</small><b>'+esc(r.player)+(mine?' (you)':'')+'</b><small>'+esc(r.name)+' · Elo '+r.rating+'</small></span>'+
+      (mine?'':'<button class="ocGo" data-act="olView" data-u="'+r.user_id+'">'+ico('duel')+'Hunt it</button>')+'</div>'+
+    '<div class="ocStats"><div><b>'+fmtHeld(Date.now()-Date.parse(c.since))+'</b><small>at number one</small></div>'+
+      '<div class="gold"><b>'+ico('coin')+bo+'</b><small>bounty'+(bo<CROWN.cap?' · +'+CROWN.hour+' an hour':' · maxed')+'</small></div>'+
+      '<div><b>'+ico('skull')+k+'</b><small>kill'+(k===1?'':'s')+' since it last lost</small></div></div>'+
+    '<p class="ocNote">'+(mine?'Every hour nobody beats '+esc(r.name)+', the price on its head goes up. Whoever beats it takes the gold.':'Beat '+esc(r.name)+' and the bounty is yours, paid in gold to your championship lion.')+'</p></div>';
 }
 function olYardTop(){return (ONLINE.board||[]).filter(r=>r.lion).slice(0,YARD.n);}
 function olYardStart(){
