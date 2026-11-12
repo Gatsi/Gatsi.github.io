@@ -548,8 +548,10 @@ button{cursor:pointer}
 .lockedNote{display:flex;gap:14px;align-items:flex-start;margin-bottom:24px;color:var(--amber)}
 .lockedNote .ico{width:24px;height:24px;flex:none}
 .lockedNote b{display:block;color:var(--t1);font-size:16px}.lockedNote small{display:block;color:var(--t2);font-size:14px;margin-top:3px}
+.rushPips{display:flex;gap:6px;margin:8px 0 2px}.rushPips i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.1)}.rushPips i.on{background:#ff7a3c}.rushPips i.nx{background:rgba(255,122,60,.35)}
+.rushHp{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}.rushHp i{display:block;height:100%;background:#5ee6a8;border-radius:4px}
 .chalGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.chalCard.final{grid-column:1/-1}.chalCard.final .chalCv{height:150px}
+.chalCard.final{grid-column:auto}
 .chalCard{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--s1);text-align:left;transition:transform .15s,box-shadow .2s}
 .chalCard canvas{width:100%;height:108px;display:block}
 .chalCard:active{transform:scale(.98)}
@@ -4352,22 +4354,53 @@ const CHAL={
     blurb:'He slew a god.',
     desc:'A god lion walked into the world. Cal the Shagon was blessed with a sword, and he killed it. Now he holds court in the Godfall, at the far end of a stone bridge, with his faithful kneeling round him. Small, pink and impossibly fast, with a Sunbeam that can end you from across the arena, a golden cut that splits the floor, and hyenas that come when he calls.',
     reward:'The Godslayer’s Sash, the first time you beat him',tip:'The hyenas are just for show: keep your eyes on him. When a gold line cuts across the floor, get off it.'}};
-const CHAL_K=['pack','old','king','ancient','gate','twins','shagon'];
+CHAL.rush={name:'Boss Rush',act:'startRush',go:'Start the rush',diff:5,diffName:'Endless',col:'#ff7a3c',
+  blurb:'Every boss, back to back.',
+  desc:'All six bosses, one after another, in order: Old Lion, the Lion King, the Ancient Lion, the Gatekeeper, the Twin Kings and Cal the Shagon. Your lion keeps whatever health it has left from one boss to the next. Beat all six and it starts again from Old Lion with full health, but every boss is 10% stronger in health, damage, speed and swing rate. Then 20%, then 30%. It ends when your lion falls.',
+  reward:'Nothing but the number. Your longest run goes on the record',tip:'Health is the whole game here: a healing ability, Siphon or allies will carry you much further than raw damage.'};
+const CHAL_K=['pack','old','king','ancient','gate','twins','shagon','rush'];
+/* Boss Rush: the ladder as one run. i = which boss is next, lap = how many times round, hp = the share of health carried over, n = bosses beaten this run */
+const RUSH={on:false,i:0,lap:0,hp:1,n:0,last:null,lapDone:0,walk:0};
+function rushStart(){
+  const L=CAREER.lion;if(!L||!CAREER.locked)return;
+  Object.assign(RUSH,{on:true,i:0,lap:0,hp:1,n:0,last:null,lapDone:0,walk:0});
+  rushFight();
+}
+function rushFight(){
+  if(!RUSH.on)return;
+  const k=BOSS_LADDER[RUSH.i];
+  startFight(k);
+  log('<em class="gold">Boss Rush</em> \u00b7 lap '+(RUSH.lap+1)+' \u00b7 boss '+(RUSH.i+1)+' of '+BOSS_LADDER.length+(RUSH.hp<1?' \u00b7 '+esc(G.lions[0].name)+' starts on '+Math.max(1,Math.round(RUSH.hp*100))+'% health':'')+(RUSH.lap?' \u00b7 bosses +'+RUSH.lap*10+'%':''));
+}
+function rushOver(won){
+  const L=CAREER.lion,me=G.lions[0];RUSH.last=BOSSKIND;
+  if(won){
+    /* a lion that went down but was carried over the line by its allies gets up on a tenth of its health */
+    RUSH.hp=clamp((me&&!me.dead&&me.maxHp>0)?me.hp/me.maxHp:.1,.01,1);
+    RUSH.n++;RUSH.i++;RUSH.lapDone=0;
+    if(RUSH.i>=BOSS_LADDER.length){RUSH.i=0;RUSH.lap++;RUSH.hp=1;RUSH.lapDone=1;}
+    if(L&&L.record){L.record.rushBest=Math.max(L.record.rushBest|0,RUSH.n);Store.save();}
+    showResult('rushWin');
+  } else showResult('rushLoss');
+}
+function rushText(n){n=n|0;const lap=Math.floor(n/BOSS_LADDER.length)+1;return n+' boss'+(n===1?'':'es')+(n>=BOSS_LADDER.length?' \u00b7 reached lap '+lap:'');}
 /* the bosses come in order: each one opens when the one before it is beaten (or if you have beaten it already) */
 const BOSS_LADDER=['old','king','ancient','gate','twins','shagon'];
-function chalPrev(k){const i=BOSS_LADDER.indexOf(k);return i>0?BOSS_LADDER[i-1]:null;}
+function chalPrev(k){if(k==='rush')return 'shagon';const i=BOSS_LADDER.indexOf(k);return i>0?BOSS_LADDER[i-1]:null;}
 function chalOpen(k,rec){
   rec=rec||{};const p=chalPrev(k);if(!p)return true;
   if(DEV.allBosses)return true;
+  if(k==='rush')return (rec.shagonKills|0)>0;
   return ((rec[BOSSES[p].kk]|0)>0)||((rec[BOSSES[k].kk]|0)>0);
 }
 /* every time a lion beats a boss, that boss comes back 10% stronger for it: health and damage, guards and all */
 const BOSS_RAGE=.1;
 function bossWins(k,L){L=L||CAREER.lion;return (L&&L.record&&BOSSES[k])?(L.record[BOSSES[k].kk]|0):0;}
-function bossBoost(k,L){return bossWins(k,L)*BOSS_RAGE;}
+function bossBoost(k,L){return RUSH.on?RUSH.lap*BOSS_RAGE:bossWins(k,L)*BOSS_RAGE;}
 function boostTag(k,L){const b=bossBoost(k,L);return b>0?'+'+Math.round(b*100)+'%':'';}
 function oldBeaten(L){return !!(L&&L.record&&(L.record.oldKills|0)>0);}
 function chalRecord(k,rec){
+  if(k==='rush')return rec.rushBest?('Longest run: '+rushText(rec.rushBest)):'Never tried';
   if(k==='pack')return rec.bestWave?('Best wave '+rec.bestWave+' · '+(rec.packKills||0)+' killed'):'Never faced';
   const kk=BOSSES[k]&&BOSSES[k].kk,kt=BOSSES[k]&&BOSSES[k].kt;
   const w=rec[kk]|0,l=rec[kt]|0;
@@ -4426,11 +4459,18 @@ function paintChalCanvases(){
   const sz=function(cv){const w=cv.clientWidth||160,h=cv.clientHeight||110,d=Math.min(devicePixelRatio||1,2);cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.scale(d,d);return [g,w,h];};
   document.querySelectorAll('canvas.chalCv').forEach(function(cv){
     const k=cv.dataset.chal,q=sz(cv),g=q[0],w=q[1],h=q[2];
-    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16'],gate:['#232830','#0b0d10'],twins:['#2a2622','#0b0a09'],shagon:['#2c2412','#0a0806']}[k];
+    const bg={pack:['#2a1f14','#120d09'],king:['#2a0c0a','#0a0505'],old:['#24221f','#0f0e0d'],ancient:['#16234a','#070a16'],gate:['#232830','#0b0d10'],twins:['#2a2622','#0b0a09'],shagon:['#2c2412','#0a0806'],rush:['#2e1608','#0a0605']}[k];
     const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,bg[0]);gr.addColorStop(1,bg[1]);g.fillStyle=gr;g.fillRect(0,0,w,h);
     g.fillStyle='rgba(255,255,255,.035)';for(let x=8;x<w;x+=16)for(let y=8;y<h;y+=16)g.fillRect(x,y,1.2,1.2);
     const cx=w/2,cy=h/2+6;
-    if(k==='pack'){
+    if(k==='rush'){
+      /* all six of them, in the order you meet them, with a loop arrow round the lot */
+      const rg=g.createRadialGradient(cx,cy,6,cx,cy,h*.8);rg.addColorStop(0,'rgba(255,122,60,.32)');rg.addColorStop(1,'rgba(255,122,60,0)');g.fillStyle=rg;g.fillRect(0,0,w,h);
+      const r=Math.min(w/9.5,h/5.4);
+      BOSS_LADDER.forEach(function(b,i){const col=i%3,row=(i/3)|0;try{bossEmblem(g,b,cx+(col-1)*r*2.7,cy-4+(row?r*1.35:-r*1.35),r,true);}catch(e){}});
+      g.strokeStyle='rgba(255,160,90,.55)';g.lineWidth=1.6;g.lineCap='round';g.beginPath();g.ellipse(cx,cy-4,r*4.25,r*2.8,0,-.25,Math.PI*1.72);g.stroke();
+      const ax=cx+Math.cos(-.25)*r*4.25,ay=cy-4+Math.sin(-.25)*r*2.8;g.fillStyle='rgba(255,160,90,.8)';g.beginPath();g.moveTo(ax-5,ay-2);g.lineTo(ax+4,ay-3);g.lineTo(ax+1,ay+6);g.closePath();g.fill();
+    } else if(k==='pack'){
       [[.22,.62,.9,'dog'],[.38,.32,.5,'dog'],[.78,.4,2.4,'dog'],[.6,.72,-1.8,'hyena'],[.84,.75,3.6,'dog'],[.16,.28,.2,'hyena']].forEach(function(p){
         const B=BEASTS[p[3]],R=p[3]==='hyena'?11:8;
         paintLion(g,{x:w*p[0],y:h*p[1],R:R,ang:p[2],t:p[0]*9,pelt:B.pelt,mane:4,tail:0,seed:(p[0]*99)|0,scars:[],armor:'none',eyes:'#ffd24a'});});
@@ -6325,6 +6365,8 @@ function handleAct(a,el){
   if(a==='visitOld'){if(!CAREER.lion||!CAREER.locked||!oldBeaten(CAREER.lion))return;SFX.unlock();enterEvent('oldVisit');return;}
   if(a==='pickChal'){if(!CAREER.lion||!CAREER.locked){toast('Create a lion under Championship first');return;}SFX.ui();UI.chal=el.dataset.k;refresh();return;}
   if(a==='startPack'){SFX.unlock();startFight('survival');return;}
+  if(a==='startRush'){if(!CAREER.lion||!CAREER.locked)return;if(!chalOpen('rush',CAREER.lion.record)){toast('Beat '+CHAL.shagon.name+' first');return;}SFX.unlock();$('result').classList.add('hidden');rushStart();return;}
+  if(a==='rushNext'){if(!RUSH.on)return;SFX.unlock();$('result').classList.add('hidden');rushFight();return;}
   {const SK={startKing:'king',startAncient:'ancient',startGate:'gate',startShagon:'shagon'}[a];if(SK&&CAREER.lion&&!chalOpen(SK,CAREER.lion.record)){toast('Beat '+CHAL[chalPrev(SK)].name+' first');return;}}
   if(a==='startShagon'){SFX.unlock();enterEvent('bridge');return;}
   if(a==='startKing'){SFX.unlock();startFight('king');return;}
@@ -6372,6 +6414,7 @@ function makeLion(c,x,y,ang,light){
     stats:{dealt:0,taken:0,hits:0,shots:0,big:0,healed:0,abil:0,dist:0}};
 }
 function startFight(ctxName){
+  if(RUSH.on&&ctxName!==BOSS_LADDER[RUSH.i])RUSH.on=false;   /* any other fight ends a rush */
   if(ctxName==='ambush'){SURV.ambush=true;ctxName='survival';}
   else if(ctxName==='survival')SURV.ambush=false;
   if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'||ctxName==='shagon'||ctxName==='god'){BOSSKIND=ctxName;ctxName='king';}
@@ -6395,6 +6438,7 @@ function startFight(ctxName){
   MUSIC.sad(false);
 }
 function showHome(){
+  RUSH.on=false;
   $('fight').classList.add('hidden');$('result').classList.add('hidden');
   $('launchBar').classList.remove('hidden');$('modeSeg').classList.remove('hidden');$('hdrRes').classList.remove('hidden');
   refresh();
@@ -6546,7 +6590,7 @@ function introCaption(i,grp){
     :introRec(L[0]);
   el.innerHTML='<div class="ik">'+escT(introKick(i,grp))+'</div><div class="inm">'+names+'</div>'+
     '<div class="iline" style="background:linear-gradient(90deg,transparent,'+k0[0]+','+k0[1]+',transparent)"></div>'+
-    '<div class="irec">'+recs+'</div>'+(G.ctx==='king'&&L.some(e=>e.boss||e.guard)&&bossBoost(BOSSKIND)>0?'<div class="iboost">'+ico('flame')+boostTag(BOSSKIND)+' stronger \u00b7 beaten '+bossWins(BOSSKIND)+'\u00d7</div>':'')+'<div class="skip">Tap to skip</div>';
+    '<div class="irec">'+recs+'</div>'+(G.ctx==='king'&&L.some(e=>e.boss||e.guard)&&bossBoost(BOSSKIND)>0?'<div class="iboost">'+ico('flame')+boostTag(BOSSKIND)+' stronger \u00b7 '+(RUSH.on?'Boss Rush lap '+(RUSH.lap+1):'beaten '+bossWins(BOSSKIND)+'\u00d7')+'</div>':'')+'<div class="skip">Tap to skip</div>';
   el.classList.remove('hidden','out','in','top');void el.offsetWidth;el.classList.add('in');
   if(grp.gate===0)el.classList.add('top');
 }
@@ -6662,6 +6706,7 @@ function newRound(){
   if(G.ctx==='survival'||G.ctx==='king'){
     const a=makeLion(Object.assign({},G.aCfg,{side:'A'}),ARENA/2,ARENA-170,-Math.PI/2,true);
     a.hp=a.maxHp;a.abil.forEach(k=>{a.cd[k]=1.2;});
+    if(RUSH.on&&G.ctx==='king')a.hp=Math.max(1,a.maxHp*RUSH.hp);
     G.lions=[a];
     if(!(G.ctx==='survival'&&SURV.ambush))ALLIES.forEach(function(cfgA,i){
       const off=(i%2?1:-1)*(110+i*30);
@@ -6926,7 +6971,7 @@ function kill(t,by){
       G.winner=G.lions[0];G.method='the crown';
       G.slow=RM?0:1.7;G.flash=.7;
       if(BOSSKIND==='shagon'){shFall(t);}
-      if(BOSSKIND==='old'){
+      if(BOSSKIND==='old'&&!RUSH.on){
         log('<em>Old Lion goes down slowly. The crowd goes quiet.</em>');
         G.slow=RM?0:2.4;crowdReact(0);
         const tk0=G.token;
@@ -8857,8 +8902,10 @@ function step(dt){
     G.wall=Math.min(WALL0+168,WALL0+(G.t-wAt)*wRate);
   }
   if(G.ctx==='king'&&G.lions){let ch=0;const bb=bossBoost(BOSSKIND);
-    G.lions.forEach(function(l){if((l.boss||l.guard)&&!l.boosted){l.boosted=1;if(bb>0){l.maxHp*=1+bb;l.hp*=1+bb;l.dmgMult*=1+bb;ch=1;}}});
+    G.lions.forEach(function(l){if((l.boss||l.guard)&&!l.boosted){l.boosted=1;if(bb>0){l.maxHp*=1+bb;l.hp*=1+bb;l.dmgMult*=1+bb;ch=1;
+      if(RUSH.on){const q=1+Math.min(bb,.5);l.speed*=q;l.atkMul/=q;}}}});
     if(ch){const ks=G.lions.filter(x=>G.guardPh?x.guard:x.boss);if(ks.length)KING.maxHp=ks.reduce((a,k)=>a+k.maxHp,0);}}
+  if(G.ctx==='king'&&!G.rageSaid&&RUSH.on){G.rageSaid=1;}
   if(G.ctx==='king'&&!G.rageSaid&&bossBoost(BOSSKIND)>0){G.rageSaid=1;log('<em class="blood">'+BOSSES[BOSSKIND].name+'</em> remembers losing to you '+bossWins(BOSSKIND)+' time'+(bossWins(BOSSKIND)>1?'s':'')+'. '+boostTag(BOSSKIND)+' health and damage this time.');}
   if(G.ctx==='king'&&BOSSKIND==='ancient'&&G.orb)ancStep(dt);
   if(G.ctx==='king'&&BOSSKIND==='shagon'&&G.shDais)shStep(dt);
@@ -10942,6 +10989,7 @@ function bossDrop(L){
   return {k:k,ok:invAdd(L,k,1)};
 }
 function kingOver(won){
+  if(RUSH.on){rushOver(won);return;}
   const L=CAREER.lion;UI.bossDrop=null;
   if(L&&L.record){
     const kk=BOSSES[BOSSKIND].kk,kt=BOSSES[BOSSKIND].kt;
@@ -11050,7 +11098,31 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
   if(V.style)V.style.color='';
   const w=G.winner,l=w?w.foe:null,s=Math.floor(G.t);
   V.className='verdict';P.innerHTML='';
-  if(kind==='duel'&&G.ctx==='duo'){
+  if(RUSH.on&&(kind==='shWalk'||kind==='ancAfraid')){RUSH.walk=1;RUSH.last=BOSSKIND;kind='rushLoss';}
+  if(kind==='rushWin'||kind==='rushLoss'){
+    const L=CAREER.lion,N=BOSS_LADDER.length,won=kind==='rushWin',last=BOSSES[RUSH.last]||{name:'the boss'},best=(L&&L.record&&L.record.rushBest)|0;
+    const pips=function(done){let o='<div class="rushPips">';BOSS_LADDER.forEach(function(b,i){o+='<i class="'+(i<done?'on':'')+(i===done&&won?' nx':'')+'" title="'+BOSSES[b].name+'"></i>';});return o+'</div>';};
+    if(won){
+      const nx=BOSSES[BOSS_LADDER[RUSH.i]],pct=Math.max(1,Math.round(RUSH.hp*100));
+      V.textContent=RUSH.lapDone?'LAP '+RUSH.lap+' CLEARED':(last.winV||last.name.toUpperCase()+' FALLS');V.className='verdict gold';
+      M.textContent='Boss Rush \u00b7 '+rushText(RUSH.n)+' beaten this run \u00b7 '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+      P.innerHTML='<div class="perkCard"><h5>'+(RUSH.lapDone?'All six are down. Round again':'Next: '+nx.name)+'</h5>'+pips(RUSH.lapDone?0:RUSH.i)+
+        '<p>'+(RUSH.lapDone?esc(L.name)+' is back to <b>full health</b>, and it starts again from Old Lion. Every boss is now <b>+'+RUSH.lap*10+'%</b> in health, damage, speed and swing rate.'
+          :esc(L.name)+' goes on with <b>'+pct+'% health</b>. Nothing heals between bosses.'+(RUSH.lap?' Lap '+(RUSH.lap+1)+': bosses are +'+RUSH.lap*10+'%.':''))+'</p>'+
+        '<div class="rushHp"><i style="width:'+pct+'%"></i></div></div>';
+      B.innerHTML='<button class="primary" data-act="rushNext">'+(RUSH.lapDone?'Start lap '+(RUSH.lap+1):'Next boss')+'</button><button data-act="home">Stop here</button>';
+      SFX.champ();
+    } else {
+      V.textContent='THE RUSH ENDS';V.className='verdict blood';
+      M.textContent=(RUSH.walk?'walked away from ':'stopped by ')+last.name+' \u00b7 lap '+(RUSH.lap+1)+' \u00b7 '+rushText(RUSH.n)+' beaten';
+      P.innerHTML='<div class="perkCard neutral"><h5>'+(RUSH.n&&RUSH.n>=best?'A new longest run':'Back on its feet')+'</h5>'+pips(RUSH.i)+
+        '<p>'+esc(L.name)+' beat '+rushText(RUSH.n)+' before it '+(RUSH.walk?'turned back':'went down')+'. Its longest run is '+rushText(best)+'. A rush costs nothing, and nothing here touches its record.</p></div>';
+      B.innerHTML='<button class="primary" data-act="startRush">Start again</button><button data-act="home">Back to the den</button>';
+      RUSH.on=false;
+    }
+    try{$('sheet').innerHTML='';}catch(e){}
+  }
+  else if(kind==='duel'&&G.ctx==='duo'){
     const T=G.lions.filter(l=>l.side===w.side);
     V.textContent='TEAM '+w.side+' TAKES IT';
     M.textContent=T.map(l=>l.name).join(' & ')+' \u00b7 '+G.wins.A+'\u2013'+G.wins.B+' \u00b7 '+(G.method||'attrition');
@@ -11546,7 +11618,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['soulA','The Ancient Lion Soul','A new soul at the Mystic Lion, for 15 skulls, once your lion has beaten the Ancient Lion 10 times. It gives no stat boost. Instead three stars fall on its enemies every 7 seconds, all fight long, in every mode. It is a soul of its own: it goes in the bag and you bind it like a Divine or Demonic one, and binding it drives the old soul out. Old gold eyes and a night sky that turns around your lion.'],
+  items:[['flame','Boss Rush','A new challenge next to the God Slayer, unlocked by beating Cal the Shagon. All six bosses in order, one after another, and your lion keeps whatever health it has left from one to the next. Beat all six and it goes round again with full health, but every boss is 10% stronger in health, damage, speed and swing rate, then 20%, and so on until your lion falls. Your longest run is kept on the challenge card. Nothing else is recorded.'],
+    ['soulA','The Ancient Lion Soul','A new soul at the Mystic Lion, for 15 skulls, once your lion has beaten the Ancient Lion 10 times. It gives no stat boost. Instead three stars fall on its enemies every 7 seconds, all fight long, in every mode. It is a soul of its own: it goes in the bag and you bind it like a Divine or Demonic one, and binding it drives the old soul out. Old gold eyes and a night sky that turns around your lion.'],
     ['fish','New event: the Fisherman','An old lion in a straw hat is fishing by the river. Pay 50 gold and he casts for you, up to three times a visit. What comes up is random: any item from any shop. Often something small, about half the time something worth more than 50, and now and then a sword, a soul or a gem eye. Boss sashes and quest rewards never come out of the river.'],
     ['mind','A new tutorial','Old Lion has rebuilt his tour: 14 short steps, each with a moving picture and the few things worth remembering. Tap the dots to jump about. It is behind the ? button.'],
     ['spark','More events, no tournament','An event now turns up after 35% of wins, up from 20%. And the Tournament tab is gone, so the bottom bar has more room.'],
