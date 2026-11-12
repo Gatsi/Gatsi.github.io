@@ -6763,7 +6763,9 @@ function log(m){G.log.push(m);if(G.log.length>4)G.log.shift();
 
 /* ---- damage ---- */
 function hurt(t,amt,src,o){
-  {const sw=swordRule(src||(o&&o.from),t);if(sw==='none')return;if(sw==='kill'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}}
+  {const sw=swordRule(src||(o&&o.from),t);if(sw==='none')return;if(sw==='kill'||sw==='mark'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}
+   /* a marked lion's thorns do not throw that killing blow back */
+   if(sw==='mark')o=Object.assign({},o,{noReflect:1});}
   if(t.guardHold&&src&&src.side!=='P'){t.guardHold=0;if(G&&G.lions)log('<em class="gold">'+t.name+'</em> is struck and joins the fight.');}
   o=o||{};
   if(t.dead||amt<=0)return 0;
@@ -10158,9 +10160,17 @@ function pitOwner(e){if(!e||!G||G.ctx!=='pit')return '';
 /* the attacker might be a cub, a pet or a minion: the owner is whoever's lion it fights for */
 function pitLionOf(x){if(!x||!G||!G.lions)return x;if(G.lions.indexOf(x)>=0&&!x.pet)return x;
   const side=x.side,own=G.lions.filter(l=>l.side===side&&!l.pet)[0];return own||x;}
+/* accounts caught cheating: not banned, but online their lion falls to the first hit from anyone. The server enforces the same rule */
+const PIT_MARKED=['32244d4f-2f5d-4a83-90fb-0e55cc95919d'];
+function pitOwnerId(e){if(!e||!G||G.ctx!=='pit')return '';
+  const mine=e===G.lions[0]||(e.side==='A'&&e!==G.lions[1]);
+  return String(mine?((typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||''):((CAREER.pit&&CAREER.pit.uid)||'')).toLowerCase();}
+function pitMarked(e){const id=pitOwnerId(e);return !!id&&PIT_MARKED.indexOf(id)>=0;}
 function swordRule(src,t){
   if(!G||G.ctx!=='pit'||!src||!t||src===t)return '';
   const s=pitLionOf(src),v=pitLionOf(t);if(!s||!v||s.side===v.side)return '';
+  if(pitMarked(v))return 'mark';
+  if(pitMarked(s))return 'none';   /* and nothing it does lands, so a tampered lion cannot win the race to the first hit */
   if(wearsSword(v))return isGrudge(pitOwner(s))?'none':'kill';
   if(wearsSword(s)&&isGrudge(pitOwner(v)))return 'kill';
   return '';
