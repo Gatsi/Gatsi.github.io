@@ -4356,7 +4356,7 @@ const CHAL={
     reward:'The Godslayer’s Sash, the first time you beat him',tip:'The hyenas are just for show: keep your eyes on him. When a gold line cuts across the floor, get off it.'}};
 CHAL.rush={name:'Boss Rush',act:'startRush',go:'Start the rush',diff:5,diffName:'Endless',col:'#ff7a3c',
   blurb:'Every boss, back to back.',
-  desc:'All six bosses, one after another, in order: Old Lion, the Lion King, the Ancient Lion, the Gatekeeper, the Twin Kings and Cal the Shagon. Your lion keeps whatever health it has left from one boss to the next. Beat all six and it starts again from Old Lion with full health, but every boss is 10% stronger in health, damage, speed and swing rate. Then 20%, then 30%. It ends when your lion falls.',
+  desc:'All six bosses, one after another, in order: Old Lion, the Lion King, the Ancient Lion, the Gatekeeper, the Twin Kings and Cal the Shagon. Your lion keeps whatever health it has left from one boss to the next. Beat all six and it goes straight into the next lap from Old Lion with full health, but every boss is 10% stronger in health, damage, speed and swing rate. Then 20%, then 30%. It ends when your lion falls.',
   reward:'Nothing but the number. Your longest run goes on the record',tip:'Health is the whole game here: a healing ability, Siphon or allies will carry you much further than raw damage.'};
 const CHAL_K=['pack','old','king','ancient','gate','twins','shagon','rush'];
 /* Boss Rush: the ladder as one run. i = which boss is next, lap = how many times round, hp = the share of health carried over, n = bosses beaten this run */
@@ -4380,6 +4380,13 @@ function rushOver(won){
     RUSH.n++;RUSH.i++;RUSH.lapDone=0;
     if(RUSH.i>=BOSS_LADDER.length){RUSH.i=0;RUSH.lap++;RUSH.hp=1;RUSH.lapDone=1;}
     if(L&&L.record){L.record.rushBest=Math.max(L.record.rushBest|0,RUSH.n);Store.save();}
+    if(RUSH.lapDone){
+      /* all six down: no stop, straight back to Old Lion on full health with the bosses a notch stronger */
+      rushFight();
+      banner('LAP '+(RUSH.lap+1)+' \u00b7 BOSSES +'+RUSH.lap*10+'%',2.4,true);SFX.champ();crowdReact(2);
+      log('<em class="gold">Lap '+RUSH.lap+' cleared.</em> '+esc(G.lions[0].name)+' is back to full health. Every boss is now +'+RUSH.lap*10+'%.');
+      return;
+    }
     showResult('rushWin');
   } else showResult('rushLoss');
 }
@@ -6748,6 +6755,7 @@ function newRound(){
       G.ancPh='walk';G.orb={x:ARENA/2,y:ARENA/2,lift:0,glow:.35,gone:0,t:0};G.dim=.1;G.cine=0;G.ancFx=[];G.ringLit=0;G.scorch=[];KING.maxHp=1;
       banner('THE STAR SANCTUM',1.7,true);SFX.herald();crowdReact(.2);
       log('<em class="gold">The Star Sanctum.</em> The crowd has gone quiet. In the middle of the floor an orb hangs over a ring of gold, humming.');
+      if(RUSH.on)ancRushSkip();
       buildHud();
       return;
     }
@@ -8073,6 +8081,13 @@ function shagonSetup(){
     G.shWor.push({x:D.x+Math.cos(a)*SHAGON.ring,y:D.y+Math.sin(a)*SHAGON.ring*.9,ang:a+Math.PI,pelt:pelts[(i*5)%pelts.length],mane:(i*3)%8,seed:40+i,ph:i*.9,run:0,vx:0,vy:0,al:1});}
   banner('THE GODFALL',1.7,true);SFX.herald();crowdReact(.2);
   log('<em class="gold">The Godfall.</em> At the end of the bridge the floor is cracked and gold runs in the cracks. In the middle, lions kneel in a ring around one small pink lion, chanting his name.');
+  if(RUSH.on){
+    /* in a Boss Rush the faithful have already gone and he has already turned round */
+    G.shPh=null;G.shT0=0;G.shWor=[];G.shLight=0;G.shSword=0;G.cine=0;G.camFocus=null;G.shCutT=5;G.shCallT=4;
+    k.invuln=.6;k.ang=k.aim=Math.PI/2;
+    banner('CAL THE SHAGON',1.7,true);SFX.roar();crowdReact(1.5);
+    log('<em class="gold">Cal the Shagon</em> is waiting, sword already drawn.');
+  }
 }
 function shMove(e){
   e.moveX=0;e.moveY=0;const D=G.shDais;if(!D)return;
@@ -8481,6 +8496,17 @@ function ancAnswer(yes){
   }
   G.ancPh='summon';G.sumT=0;G.ancSaid={};SFX.cast();
   log('<em class="gold">'+esc(G.lions[0].name)+'</em> puts a paw on the orb.');
+}
+/* in a Boss Rush nobody has time for the orb: he is already awake and waiting */
+function ancRushSkip(){
+  const O=G.orb,me=G.lions[0];
+  O.gone=1;O.lift=1;O.glow=1.2;G.ringLit=1;G.ancPh=null;G.ancT0=0;G.dim=.2;G.cine=0;G.camFocus=null;G.ancSaid={};
+  const k=makeLion(ancientCfg(),O.x,150,Math.PI/2);
+  k.boss=1;k.dark=0;k.foe=me;k.r*=ANC.size;k.mass*=2.2;k.kbRes*=.5;k.rFull=k.r;k.invuln=.6;
+  const TU=BOSS_TUNE.ancient;k.maxHp*=TU.hp;k.hp=k.maxHp;k.dmgMult*=TU.dmg;
+  G.lions.push(k);KING.maxHp=k.maxHp;
+  banner('THE ANCIENT LION',1.7,true);SFX.roar();crowdReact(1.5);
+  log('<em class="gold">The Ancient Lion</em> is already awake.');
 }
 function ancSay(k,f){if(!G.ancSaid[k]){G.ancSaid[k]=1;f();}}
 function ancStep(dt){
