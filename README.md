@@ -42,7 +42,7 @@ Hit **Roll** anywhere to get a random lion in one tap.
 ## Modes
 
 <p align="center">
-  <img src="assets/modes.svg" alt="Duel, Championship, Challenges, Tournament" width="100%">
+  <img src="assets/modes.svg" alt="Duel, Championship, Challenges, Online" width="100%">
 </p>
 
 ### ⚔️ Duel
@@ -81,7 +81,7 @@ The Blacksmith and Mystic Lion doors in the den show how far along each one is.
 
 **The Bookie.** A green lion in a flat cap and a pencil behind his ear runs fights between two other lions. You get a look at both (record, frame, weapon, mind and how big they are) and his odds on the chalkboard, back one, and watch it play out. Win and you get your stake times the odds; lose and he keeps it. Bigger lions are usually the favourites, and the odds lean very slightly your way, so it's a way to make money, slowly: he only runs **three fights between each of your championship bouts**, and stakes are capped at 25 gold (+15 per belt, up to 100). You can also watch for free. Your lion keeps a tally of how its betting is going.
 
-**Events.** After a win, with another bout still to come, there's a **20% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice. There are twenty-one:
+**Events.** After a win, with another bout still to come, there's a **35% chance something happens** outside the den. The den shows it, the bottom button turns into **An event awaits**, and you can't fight on until you've gone and seen it. Each one plays out as a little scene with a choice. There are twenty-one:
 - **The Royal Lion** wants a bet on your next fight: win and he **doubles your gold**, lose and he **takes all of it**.
 - **The Mystic Lion** offers **two skulls** if your lion starts its next bout on **75% health**.
 - **The Lion Store owner** wants your lion as the face of his shop: **30% off for 5 bouts**.
@@ -122,9 +122,6 @@ Boss fights are long, grand affairs with huge health bars and big moments along 
 ### 🌐 Online
 Make an account and your lion can fight other players' lions in the **Online Pit**. Every lion starts on a rating of 1,000 that goes up and down with every fight, and the best sit on the **leaderboard**. At the top of the page is **the Yard**, where the top ten lions walk about with their player's name over their heads. Number one wears a crown, and a card under the Yard shows how long they have held the top, their kills since they last lost, and the **bounty** on their head: 1,000 gold, growing 500 an hour up to 100,000, paid to whoever beats them.
 
-### 🥇 Tournament
-Eight lions, one bracket. Quarter-finals, semis, final, and every match is best of three. Edit any lion, roll them all, shuffle the draw and watch one come out on top.
-
 ---
 
 ## Lion codes
@@ -152,7 +149,7 @@ Belts can only be won. The Editor always loads lions without them.
 - Every mode lives in the bar along the bottom, with a free **Editor** at the end for building anything you want, just for fun.
 - New here? Tap **?** and Old Lion will walk you through everything. He's been around a while.
 - The **What's New** tab lists every update, with older ones further down.
-- Your progress saves in the browser (and to your account if you sign in), so your lion, gold and tournament are still there next time.
+- Your progress saves in the browser (and to your account if you sign in), so your lion and gold are still there next time.
 
 ---
 

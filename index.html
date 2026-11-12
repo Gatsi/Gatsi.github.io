@@ -300,11 +300,6 @@ button{cursor:pointer}
 .badge.belt{display:inline-flex;align-items:center;gap:5px}
 .vsSep{text-align:center;font-size:11px;font-weight:600;color:var(--t3);letter-spacing:.14em;padding:2px 0 4px;
   text-transform:uppercase;border-top:1px solid var(--sep)}
-.tSlot .rico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center}
-.tSlot .v .badge{font-size:12px;padding:3px 8px;margin-left:6px;vertical-align:2px}
-.tSlot .v .badge .ico{width:13px;height:13px}
-.tMatch{margin-bottom:12px}
-.tMatch.next{box-shadow:0 0 0 1.5px var(--amber)}
 .tLine{display:flex;align-items:center;gap:12px;padding:14px 18px;font-size:16px;font-weight:500}
 .tLine+.tLine{border-top:1px solid var(--sep)}
 .tLine .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1315,7 +1310,17 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 .tutWho small{display:block;color:var(--t3);font-size:13px;margin-top:2px}
 .tutSkip{margin-left:auto;align-self:flex-start;color:var(--t3);font-size:14px;padding:6px 10px;border-radius:12px}
 .tutSkip:hover{color:var(--t1);background:var(--s2)}
-.tutTitle{font-size:22px;font-weight:700;letter-spacing:-.025em;margin:16px 2px 10px}
+.tutCard{position:relative;overflow:hidden;max-height:calc(100dvh - 24px);overflow-y:auto}
+.tutBar{position:absolute;left:0;right:0;top:0;height:4px;background:var(--s2)}.tutBar i{display:block;height:100%;background:var(--amber);border-radius:0 2px 2px 0;transition:width .3s}
+#tutCv{width:64px;height:64px;border-radius:16px}
+.tutWho .tutStep{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin:0}
+.tutWho b.tutTitle{font-size:21px;font-weight:700;letter-spacing:-.025em;margin:2px 0 0;line-height:1.15}
+.tutScene{display:block;width:100%;height:160px;border-radius:16px;background:#0c0c0e;margin:14px 0 12px}
+.tutBubble{min-height:84px}.tutBubble::before{display:none}
+.tutVis{margin-top:12px}
+.tutDots button{width:8px;height:8px;border-radius:4px;background:var(--s3);padding:0;transition:.25s;flex:none}
+.tutDots button.done{background:rgba(255,179,64,.45)}.tutDots button.on{width:22px;background:var(--amber)}
+.tutDots{gap:5px;flex-wrap:wrap}
 .tutBubble{position:relative;background:var(--s2);border-radius:16px;padding:14px 16px;font-size:15.5px;
   line-height:1.5;color:var(--t1);min-height:96px;cursor:pointer}
 .tutBubble::before{content:"";position:absolute;left:34px;top:-8px;border:8px solid transparent;border-top:0;border-bottom-color:var(--s2)}
@@ -1356,14 +1361,6 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
 #tutArena{width:100%;height:150px;border-radius:14px;background:#0c0c0e;display:block}
 .tutCode{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--amber);background:var(--bg);
   border:1px solid var(--sep);border-radius:12px;padding:10px 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px}
-.tutBracket{display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--bg);
-  border:1px solid var(--sep);border-radius:14px;padding:14px}
-.tutBracket .col{display:flex;flex-direction:column;gap:6px;align-items:center}
-.tutBracket .col i{display:block;width:34px;height:10px;border-radius:5px;background:var(--s3)}
-.tutBracket .col.w i{background:var(--amber)}
-.tutBracket .col small{font-size:11px;color:var(--t3);margin-top:4px}
-.tutBracket .arrow{color:var(--t3)}
-.tutBracket .cup{color:var(--gold)} .tutBracket .cup .ico{width:28px;height:28px}
 .tutTips{margin:0;padding:0;list-style:none}
 .tutTips li{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--sep);font-size:14.5px;color:var(--t2);line-height:1.4}
 .tutTips li:first-child{border-top:0}
@@ -1424,7 +1421,6 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
     <button data-mode="pack" aria-pressed="false"><span class="ti navico" data-i="pack"></span><span class="tl">Challenges</span></button>
     <button data-mode="career" aria-pressed="true" class="tabMain"><span class="ti navico" data-i="lion"></span><span class="tl">Championship</span></button>
     <button data-mode="online" aria-pressed="false" class="tabOn"><span class="ti navico" data-i="globe"></span><span class="tl">Online</span></button>
-    <button data-mode="tourn" aria-pressed="false"><span class="ti navico" data-i="trophy"></span><span class="tl">Tournament</span></button>
     <button id="editorBtn" class="tabEd" aria-pressed="false"><span class="ti eico"></span><span class="tl elabel">Editor</span></button>
   </nav>
 
@@ -1432,7 +1428,6 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
   <section id="career" class="hidden"></section>
   <section id="editor" class="hidden"></section>
   <section id="pack" class="hidden"></section>
-  <section id="tourn" class="hidden"></section>
   <section id="online" class="hidden"></section>
 
   <div class="dock" id="launchBar"></div>
@@ -1456,8 +1451,6 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <p>Bigger frames carry slightly more health, hit harder, and swing and move noticeably slower. Smaller frames are the reverse. Across the whole size range the damage per second comes out close, so what you are really choosing is tempo. Weapons have weight too: claws let you move at 1.16×, a Sunbeam drags you down to 0.86×. Reach costs you your legs.</p>
       <h6>Duel</h6>
       <p>Best of three, no exceptions. Both lions return to full health at the start of every round. Paste a lion code into either slot to fight someone else's lion. Switch to <b>2v2</b> for two teams of two: a round ends only when both lions on one side are down, and teammates never hit each other.</p>
-      <h6>Tournament</h6>
-      <p>Eight lions of your choosing in a knockout bracket. Every match is best of three, winners go through, and three rounds later there is one champion. Edit, roll or paste a code into any slot before it starts. Nothing in a tournament touches your championship lion.</p>
       <h6>Career</h6>
       <p>You build your own lion one tap at a time, from grey clay to finished fighter: name, looks, size, armour, weapon, abilities, fighting style and personality. At the end, <b>All set?</b> shows everything; tap anything to change it. Its IV is drawn the moment you start and is not yours to touch. When you press <b>Finish lion</b> it is locked for good — nothing changes again until it dies or you retire it, and then you build the next one.</p>
       <p>A championship is five bouts against five different lions. Every bout starts at full health for both of them (unless you have made a deal with the Mystic Lion), so a run is five honest fights rather than a war of attrition. Win all five and it takes the belt and a medallion. Very rarely (about one opponent in fifty) a lion you face carries a <b>bound soul</b>, divine or demonic, with the glowing eyes, the aura and +10% to everything; the den and the gate intro tell you when one is next.</p>
@@ -1475,7 +1468,7 @@ canvas#arena{background:#0c0c0e;border-radius:var(--r);display:block;box-shadow:
       <h6>Training</h6>
       <p>After every championship win there is a 35% chance of a training opportunity. You pick the stat: health, damage, speed, swing or armour, and the lion gains a little (2 to 3%) for good. Trained gains show as a green extension on its stat bars and on its lion card.</p>
       <h6>Events</h6>
-      <p>After a championship win, with another bout still to come, there is a 20% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are nine. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. The <b>Lion Store</b> owner wants your lion as his mascot: sign and everything in his store is 30% off for your next five bouts. Sometimes you get <b>robbed</b>: four hyenas under the stands want 10% of your gold. Pay up, or fight them off and keep it, with a 40% chance your lion comes away with a <b>cut eye</b>, a scar straight through one eye that it wears for good. <b>Old Lion</b> invites you into his hut: 50 gold for a lesson, and you pick the stat to train, for good. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). A <b>cub</b> by the road needs a healer: pay 20 gold and, a few bouts later, it comes tearing in through the gate to fight beside your lion. A <b>wandering merchant</b> sells one rare thing for a strange price: half your gold, a scar, all your skulls, even your lion’s name. And sometimes a <b>grudge</b> is waiting on the road: a rival, or the lion you just beat, wants a fight for gold, off the record. Win and take the gold, lose and hand it over; nobody dies and nothing goes on the record. Say no to any of them and nothing happens.</p>
+      <p>After a championship win, with another bout still to come, there is a 35% chance of an <b>event</b>. The den shows it, the bottom button turns into <b>An event awaits</b>, and the next bout waits until you have gone out and seen it. There are nine. The <b>Royal Lion</b>, a big grey lion in a crown and a red sash with two guards, offers a wager on your next bout: win and your gold is doubled, lose and he takes every coin. The <b>Mystic Lion</b>, sat by a campfire, offers two skulls if your lion starts its next bout on 75% health. The <b>Lion Store</b> owner wants your lion as his mascot: sign and everything in his store is 30% off for your next five bouts. Sometimes you get <b>robbed</b>: four hyenas under the stands want 10% of your gold. Pay up, or fight them off and keep it, with a 40% chance your lion comes away with a <b>cut eye</b>, a scar straight through one eye that it wears for good. <b>Old Lion</b> invites you into his hut: 50 gold for a lesson, and you pick the stat to train, for good. And deep in the forest sits a <b>crate</b>: open it for a free random item, then fight off the five hyenas that were waiting for you. Beat them and the item is yours; lose and they take it back (losing to them never kills your lion or touches its record). A <b>cub</b> by the road needs a healer: pay 20 gold and, a few bouts later, it comes tearing in through the gate to fight beside your lion. A <b>wandering merchant</b> sells one rare thing for a strange price: half your gold, a scar, all your skulls, even your lion’s name. And sometimes a <b>grudge</b> is waiting on the road: a rival, or the lion you just beat, wants a fight for gold, off the record. Win and take the gold, lose and hand it over; nobody dies and nothing goes on the record. Say no to any of them and nothing happens.</p>
       <h6>The Bookie</h6>
       <p>A green lion in a flat cap runs fights between two other lions, and takes bets. You see both lions (record, frame, weapon, mind and size) and his odds, back one, and watch the fight. Win and you get your stake times the odds. The odds come mostly from size, and bigger usually wins. They lean very slightly your way, so over time it pays, but slowly: he runs <b>three fights between each of your championship bouts</b>, and the most you can stake is 25 gold, plus 15 for each belt your lion holds (up to 100). You can also just watch for free. Your lion keeps a running tally of its bets.</p>
       <h6>Loading a lion into the den</h6>
@@ -1835,9 +1828,6 @@ const cfg={
   B2:{side:'B',name:'Nightfang',build:'prime',armor:'scale',weapon:'maul',abil:['frenzy','dash'],brain:'berserk',perks:[],pelt:8,mane:3,tail:2,iv:6,traits:['bold','rangy']},
 };
 let SCRATCH=null;
-/* the tournament: eight lions, three rounds, one left */
-const TOURN={lions:[],br:null};
-function tournLions(){while(TOURN.lions.length<8)TOURN.lions.push(randomLion('A'));return TOURN.lions;}
 function scratchLion(){if(!SCRATCH)SCRATCH=randomLion('A');return SCRATCH;}
 const MATCH={duo:false,mode:'career',arena:'colonnade',rounds:3,closing:true,sound:false,music:true,tab:'A'};
 const CAREER={lion:null,locked:false,champ:null,hall:[]};
@@ -1847,13 +1837,12 @@ let G={speed:1};
 let LOCAL_AT=0,LOCAL_OWNER='';
 function saveObj(){
   return {hall:CAREER.hall,lion:CAREER.lion,locked:CAREER.locked,champ:CAREER.champ,fence:CAREER.fence||null,rivals:CAREER.rivals||[],event:CAREER.event||null,wager:CAREER.wager||null,weak:CAREER.weak||null,lastEv:CAREER.lastEv||null,mascot:CAREER.mascot|0,cub:CAREER.cub||null,tonic:CAREER.tonic|0,boon:CAREER.boon||null,feud:CAREER.feud||null,bookie:CAREER.bookie||null,edge:CAREER.edge||null,betToken:CAREER.betToken|0,
-    daily:CAREER.daily||null,tourn:TOURN.lions.length?{lions:TOURN.lions,br:TOURN.br}:null,savedAt:Date.now(),owner:(typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||LOCAL_OWNER||''};
+    daily:CAREER.daily||null,savedAt:Date.now(),owner:(typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||LOCAL_OWNER||''};
 }
 /* put a whole save in place (from this device, or from your account) */
 function applySave(d){
   d=d||{};
   CAREER.hall=d.hall||[];
-  if(d.tourn&&d.tourn.lions&&d.tourn.lions.length===8){TOURN.lions=d.tourn.lions;TOURN.br=d.tourn.br||null;}else{TOURN.lions=[];TOURN.br=null;}
   CAREER.daily=d.daily||null;
   CAREER.lion=d.lion||null;CAREER.locked=d.lion?(d.locked!==false):false;CAREER.champ=d.lion?(d.champ||null):null;
   CAREER.fence=(d.fence&&d.fence.deals)?d.fence:null;
@@ -3165,9 +3154,8 @@ function editorHTML(scope,c,title,career){
   const creating=career&&!CAREER.locked;
   const pc=PELTS[c.pelt||0].hex;
   const dotFor='<span class="dot" style="background:'+pc+';margin-right:9px"></span>';
-  const tourn=!career&&MATCH.mode==='tourn';
-  const prevKey=career?'career':(tourn?'t'+(UI.tslot|0):UI.side);
-  const head=(creating?'':'<button class="back" data-act="back">‹ Back to '+(career?'the den':(tourn?'the draw':'the card'))+'</button>')+
+  const prevKey=career?'career':UI.side;
+  const head=(creating?'':'<button class="back" data-act="back">‹ Back to '+(career?'the den':'the card')+'</button>')+
     '<div class="hd"><h2>'+title+'</h2>'+
       (career?'<span class="editsLeft'+(locked?' none':'')+'" id="editsPill">'+
         (locked?'locked in':'new lion')+'</span>':
@@ -3181,8 +3169,7 @@ function editorHTML(scope,c,title,career){
         (locked?'':'<span class="nameEdit" title="Rename">'+ico('edit')+'</span>')+'</label>'+
         '<span class="badge amber">IV '+(c.iv||5)+'</span>'+
         (career?(creating?'<button class="badge" data-act="careerRoll">'+ico('dice')+'Roll</button>':'')
-               :(tourn?'<button class="badge" data-act="tRoll">'+ico('dice')+'Roll</button>'
-                      :'<button class="badge" data-act="rollside" data-side="'+UI.side+'">'+ico('dice')+'Roll</button>'))+'</div>';
+               :'<button class="badge" data-act="rollside" data-side="'+UI.side+'">'+ico('dice')+'Roll</button>')+'</div>';
   const rows=row('pick','build','Frame',BUILDS[c.build].name,BUILD_NOTE[c.build],locked)+
       row('pick','armor','Armour',ARMORS[c.armor].name,ARMOR_NOTE(c.armor),locked)+
       row('pick','weapon','Weapon',wName(c),(wlvOf(c)?finText(c)+'. ':'')+WEAPONS[c.weapon].desc,locked)+
@@ -3677,8 +3664,6 @@ function loadCode(c){
 function placeLoaded(c){
   if(MATCH.mode==='editor'){
     c.side='A';SCRATCH=c;delete PREVMEM.scratch;
-  } else if(MATCH.mode==='tourn'){
-    c.side='A';tournLions()[UI.tslot|0]=c;delete PREVMEM['t'+(UI.tslot|0)];
   } else {
     c.side=UI.side;Object.assign(cfg[UI.side],c);delete PREVMEM[UI.side];
   }
@@ -3711,7 +3696,7 @@ function answerCareer(keep){
   q.apply(c);
   if(!keep)toast('Blank slate: no medallions');
 }
-function currentLion(){return MATCH.mode==='editor'?scratchLion():((MATCH.mode==='career'||(MATCH.mode==='pack'&&CAREER.lion))?CAREER.lion:(MATCH.mode==='tourn'?tournLions()[UI.tslot|0]:cfg[UI.side]));}
+function currentLion(){return MATCH.mode==='editor'?scratchLion():((MATCH.mode==='career'||(MATCH.mode==='pack'&&CAREER.lion))?CAREER.lion:cfg[UI.side]);}
 function lionSheetText(c){
   return c.name+'\n'+BUILDS[c.build].name+' \u00b7 '+ARMORS[c.armor].name+' \u00b7 '+wName(c)+'\n'+
     c.abil.map(k=>ABILITIES[k].name).join(' + ')+' \u00b7 '+BRAINS[c.brain].name+' mind\n'+
@@ -4411,93 +4396,6 @@ function paintChalCanvases(){
       cols:isHog(c)?KINGCOLS:(isGab(c)?GABCOLS:null),eyes:lionEyes(c),eyeGlow:!!so,cos:cosOf(c)});
     if(so)soulAura(g,w/2,h/2,R,-Math.PI/2,1,so,false,soulLvOf(c));
   });
-}
-/* ---------- tournament ---------- */
-const TROUND=[{name:'Quarter-finals',one:'Quarter-final'},{name:'Semi-finals',one:'Semi-final'},{name:'Final',one:'Final'}];
-function tCopy(i,side){const c=JSON.parse(JSON.stringify(tournLions()[i]));c.side=side;return c;}
-function tournStart(){
-  tournLions();
-  TOURN.br={rounds:[
-    [0,1,2,3].map(k=>({a:2*k,b:2*k+1,w:null,sa:0,sb:0})),
-    [0,1].map(()=>({a:null,b:null,w:null,sa:0,sb:0})),
-    [{a:null,b:null,w:null,sa:0,sb:0}]]};
-  UI.view='home';Store.save();refresh();
-  if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);
-}
-function tournNext(){
-  const br=TOURN.br;if(!br)return null;
-  for(let r=0;r<br.rounds.length;r++)for(let m=0;m<br.rounds[r].length;m++){
-    const x=br.rounds[r][m];
-    if(x.w===null&&x.a!==null&&x.b!==null)return {r:r,m:m,match:x};
-  }
-  return null;
-}
-function tournChamp(){const br=TOURN.br;return br?br.rounds[2][0].w:null;}
-function tournMatchOver(){
-  const cur=TOURN.cur,br=TOURN.br;
-  if(!cur||!br){showResult('duel');return;}
-  const x=br.rounds[cur.r][cur.m];
-  const aWon=G.wins.A>G.wins.B;
-  x.w=aWon?x.a:x.b;x.sa=G.wins.A;x.sb=G.wins.B;
-  if(cur.r<2){const nx=br.rounds[cur.r+1][cur.m>>1];if(cur.m%2===0)nx.a=x.w;else nx.b=x.w;}
-  Store.save();
-  showResult(cur.r===2?'tchamp':'tmatch');
-}
-function tSlotRow(i){
-  const c=tournLions()[i],pc=PELTS[c.pelt||0].hex;
-  const n=(c.scars||[]).length;
-  return '<button class="row tSlot" data-act="tEdit" data-i="'+i+'">'+
-    '<span class="rico" style="background:'+pc+'22;color:'+pc+'">'+ico('lion')+'</span>'+
-    '<span class="v">'+esc(c.name)+beltBadge(c)+(n?'<span class="badge blood">'+n+' scar'+(n>1?'s':'')+'</span>':'')+
-      '<small>'+BUILDS[c.build].name+' \u00b7 '+WEAPONS[c.weapon].name+' \u00b7 '+BRAINS[c.brain].name+' mind \u00b7 threat '+derive(c).threat+'</small></span>'+
-    '<span class="go">\u203a</span></button>';
-}
-function tLine(i,won,lost,score,fallback){
-  if(i===null)return '<div class="tLine tbd"><span class="dot" style="background:var(--s3)"></span><span class="tn">'+fallback+'</span><b></b></div>';
-  const c=tournLions()[i];
-  return '<div class="tLine'+(won?' win':(lost?' lose':''))+'"><span class="dot" style="background:'+PELTS[c.pelt||0].hex+'"></span>'+
-    '<span class="tn">'+esc(c.name)+'</span>'+beltBadge(c)+'<b>'+(score===null?'':score)+'</b></div>';
-}
-function renderTourn(){
-  const host=$('tourn'),L=tournLions();
-  if(!TOURN.br&&UI.view==='edit'){
-    const i=UI.tslot|0;
-    host.innerHTML=editorHTML('t'+i,L[i],'Slot '+(i+1)+' <span class="hdSep">|</span> '+esc(L[i].name),false);
-    return;
-  }
-  if(!TOURN.br){
-    host.innerHTML='<div class="hd"><h2>Tournament</h2><span>Eight lions, best of three every match, winners move on until one is left.</span></div>'+
-      '<div class="card"><div class="act" style="padding:14px 16px"><button data-act="tRollAll">'+ico('dice')+'Roll all eight</button>'+
-        '<button data-act="tShuffle">'+ico('refresh')+'Shuffle the draw</button></div></div>'+
-      [0,1,2,3].map(k=>'<div class="hd sub2"><h2>Quarter-final '+(k+1)+'</h2></div>'+
-        '<div class="card">'+tSlotRow(2*k)+'<div class="vsSep">vs</div>'+tSlotRow(2*k+1)+'</div>').join('')+
-      '<p class="muted" style="padding:0 2px 8px">Tap any lion to edit it, roll it, or paste a lion code into its slot. '+
-      'Copy and save work the same as in a duel. Once the tournament starts the draw is locked.</p>';
-    return;
-  }
-  const br=TOURN.br,nx=tournNext(),ch=tournChamp();
-  let html='';
-  if(ch!==null){
-    html+='<div class="hd"><h2>Champion</h2><span>Eight went in. This one came out.</span></div>'+
-      lionCard(L[ch],{prev:'t'+ch,badges:['<span class="badge gold belt">'+ico('trophy')+'Tournament champion</span>'].concat(scarBadge(L[ch]))});
-  } else {
-    html+='<div class="hd"><h2>Tournament</h2><span>'+TROUND[nx.r].name+' \u00b7 best of three.</span></div>';
-  }
-  const feed=['','Winner of QF','Winner of SF'];
-  br.rounds.forEach(function(rd,r){
-    html+='<div class="hd sub2'+(r===0&&ch===null?'':' gapTop')+'"><h2>'+TROUND[r].name+'</h2></div>';
-    rd.forEach(function(x,m){
-      const isNext=nx&&nx.r===r&&nx.m===m,done=x.w!==null;
-      html+='<div class="card tMatch'+(isNext?' next':'')+'">'+
-        (isNext?'<div style="padding:12px 18px 0"><span class="tTag">Up next</span></div>':'')+
-        tLine(x.a,done&&x.w===x.a,done&&x.w!==x.a,done?x.sa:null,feed[r]+' '+(m*2+1))+
-        tLine(x.b,done&&x.w===x.b,done&&x.w!==x.b,done?x.sb:null,feed[r]+' '+(m*2+2))+'</div>';
-    });
-  });
-  html+='<div class="card" style="margin-top:22px"><button class="row" data-act="tAbandon"><span class="rico">'+ico('refresh')+'</span>'+
-    '<span class="v">'+(ch!==null?'Back to the draw':'Scrap this tournament')+'<small>Your eight lions stay as they are</small></span>'+
-    '<span class="go">\u203a</span></button></div>';
-  host.innerHTML=html;
 }
 function careerLoadCode(txt){
   const c=decodeLion(txt);
@@ -5560,14 +5458,6 @@ function renderLaunch(){
     return;
   }
   if(MATCH.mode==='duel'){bar.innerHTML='<button class="go1" data-act="startDuel">'+ico('play')+(MATCH.duo?'Send in both teams':'Send them in')+'</button>';return;}
-  if(MATCH.mode==='tourn'){
-    if(!TOURN.br){bar.innerHTML='<button class="go1" data-act="tStart">'+ico('trophy')+'Start the tournament</button>';return;}
-    const nx=tournNext();
-    if(nx)bar.innerHTML='<button class="go1" data-act="tFight">'+ico('play')+(nx.r===2?'Fight the final':'Fight '+TROUND[nx.r].one.toLowerCase())+
-      (nx.r<2?' '+(nx.m+1):'')+'</button>';
-    else bar.innerHTML='<button class="go1" data-act="tNew">'+ico('refresh')+'Run it again</button>';
-    return;
-  }
   if(MATCH.mode==='pack'){
     if(L&&CAREER.locked){const C=CHAL[UI.chal]||CHAL.pack,rec=L.record||{};
       if(!chalOpen(UI.chal,rec))bar.innerHTML='<button class="go1 sealed" data-act="chalSealed">'+ico('lock')+'Beat '+CHAL[chalPrev(UI.chal)].name+' first</button>';
@@ -5603,14 +5493,14 @@ function renderHdrRes(){
     '<button class="resChip bone" data-act="openMystic" title="'+esc(L.name)+'\u2019s skulls \u00b7 Mystic Lion">'+ico('skull')+invCount(L,'skull')+'</button>';
 }
 function refresh(){
+  if(['duel','career','pack','editor','online'].indexOf(MATCH.mode)<0)MATCH.mode='career';
   if(typeof paintAcct==='function')paintAcct();
-  ['duel','career','pack','editor','tourn','online'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
+  ['duel','career','pack','editor','online'].forEach(m=>$(m).classList.toggle('hidden',MATCH.mode!==m));
   $('modeSeg').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===MATCH.mode));
   $('editorBtn').setAttribute('aria-pressed',MATCH.mode==='editor');
   if(MATCH.mode==='editor')renderEditorMode();
   else if(MATCH.mode==='duel')renderDuel();
   else if(MATCH.mode==='career')renderCareer();
-  else if(MATCH.mode==='tourn')renderTourn();
   else if(MATCH.mode==='online')renderOnline();
   else renderPack();
   renderLaunch();
@@ -6194,7 +6084,7 @@ function buryLion(killer,boutN,champN){
 }
 function addAlly(c){c.side='A';if(ALLIES.length<2)ALLIES.push(c);refresh();toast(c.name+' joins you');}
 function handleAct(a,el){
-  if(a.indexOf('tut')===0&&tutAct(a))return;
+  if(a.indexOf('tut')===0){TS.goI=el&&el.dataset?el.dataset.i:0;if(tutAct(a))return;}
   if(a==='appTab'){SFX.ui();APP.os=el&&el.dataset.v==='android'?'android':'ios';
     if(!$('tut').classList.contains('hidden')){const say=TS.shown;renderTut();TS.shown=say;paintSay();}else openAppHow(APP.os);return;}
   if(a==='nudgeHow'){SFX.ui();nudgeHide(true);openAppHow();return;}
@@ -6325,17 +6215,6 @@ function handleAct(a,el){
   if(a==='invTrashGo'){invTrash(el.dataset.n==='all');return;}
   if(a==='useScout'){useScout();return;}
   if(a==='renameGo'){const v=($('renameIn')||{value:''}).value;invApply('shopRename',v);return;}
-  if(a==='tEdit'){SFX.ui();UI.tslot=+el.dataset.i;UI.view='edit';refresh();
-    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
-  if(a==='tRoll'){SFX.ui();const i=UI.tslot|0;tournLions()[i]=randomLion('A');delete PREVMEM['t'+i];refresh();return;}
-  if(a==='tRollAll'){SFX.ui();TOURN.lions=[];tournLions();for(let i=0;i<8;i++)delete PREVMEM['t'+i];refresh();toast('Eight new lions');return;}
-  if(a==='tShuffle'){SFX.ui();const L=tournLions();
-    for(let i=L.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;const x=L[i];L[i]=L[j];L[j]=x;}
-    for(let i=0;i<8;i++)delete PREVMEM['t'+i];refresh();toast('Draw shuffled');return;}
-  if(a==='tStart'){SFX.unlock();SFX.bell();tournStart();return;}
-  if(a==='tFight'){SFX.unlock();startFight('tourn');return;}
-  if(a==='tNew'||a==='tAbandon'){SFX.ui();TOURN.br=null;TOURN.cur=null;UI.view='home';Store.save();refresh();
-    if(typeof window!=='undefined'&&window.scrollTo)window.scrollTo(0,0);return;}
   if(a==='openTut'){SFX.ui();openTut();return;}
   if(a==='bstep'){SFX.ui();UI.bstep=el.dataset.s;refresh();
     const st=document.querySelector&&document.querySelector('.bSteps');if(st&&st.getBoundingClientRect&&st.getBoundingClientRect().top<0&&window.scrollTo)window.scrollTo(0,window.scrollY+st.getBoundingClientRect().top-4);return;}
@@ -6401,7 +6280,7 @@ function startFight(ctxName){
   if(ctxName==='ancient'||ctxName==='old'||ctxName==='gate'||ctxName==='twins'||ctxName==='shagon'||ctxName==='god'){BOSSKIND=ctxName;ctxName='king';}
   else if(ctxName==='king')BOSSKIND='king';
   G.ctx=ctxName;
-  ['duel','career','pack','editor','tourn','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
+  ['duel','career','pack','editor','online','launchBar','modeSeg','hdrRes'].forEach(id=>$(id).classList.add('hidden'));moreMenu(false);
   closeSheet();
   $('fight').classList.remove('hidden');$('result').classList.add('hidden');
   fitCanvas();
@@ -6410,10 +6289,6 @@ function startFight(ctxName){
     const ch=CAREER.champ;
     G.aCfg=CAREER.lion;G.bCfg=ch.foes[ch.i];G.rounds=1;
   } else if(ctxName==='survival'||ctxName==='king'){G.aCfg=CAREER.lion;G.bCfg=null;G.rounds=1;}
-  else if(ctxName==='tourn'){
-    const nx=tournNext();if(!nx){showHome();return;}
-    TOURN.cur=nx;G.aCfg=tCopy(nx.match.a,'A');G.bCfg=tCopy(nx.match.b,'B');G.rounds=3;
-  }
   else if(ctxName==='pit'){const P=CAREER.pit;if(!P||!P.foe){showHome();return;}G.aCfg=CAREER.lion;G.bCfg=Object.assign(JSON.parse(JSON.stringify(P.foe)),{side:'B'});G.rounds=1;}
   else if(ctxName==='grudge'){const E=CAREER.event;if(!E||!E.foe){showHome();return;}G.aCfg=CAREER.lion;G.bCfg=Object.assign(JSON.parse(JSON.stringify(E.foe)),{side:'B'});G.rounds=1;}
   else if(ctxName==='bookie'){const c=bookieCard();G.aCfg=Object.assign(JSON.parse(JSON.stringify(c.a)),{side:'A'});G.bCfg=Object.assign(JSON.parse(JSON.stringify(c.b)),{side:'B'});G.rounds=1;}
@@ -6557,7 +6432,6 @@ function introKick(i,grp){
   if(c==='grudge')return i===0?'Off the record':('A grudge match'+(CAREER.event&&CAREER.event.rid?' \u00b7 your rival':''));
   let k=i===0?'In this corner':'And in this corner';
   if((c==='career'||c==='grudge')&&i===0&&G.arenaK&&ARENAS[G.arenaK])k=ARENAS[G.arenaK].name+' \u00b7 '+k;
-  if(c==='tourn'&&TOURN.cur&&i===0)k=['Quarter-final','Semi-final','The final'][TOURN.cur.r]+' · '+k;
   if(c==='career'&&CAREER.champ&&i===1){
     const ch=CAREER.champ,b=grp.lions[0],R=rivalOf(b.cfg);
     k=R&&R.nem?'Your nemesis \u00b7 killed '+R.kills.join(', '):(R?'Your rival \u00b7 '+h2hText(R):(beltsOf(b.cfg)?'The belt holder':k)+' \u00b7 Bout '+(ch.i+1)+' of '+ch.foes.length);
@@ -10812,7 +10686,7 @@ function bindPreviews(){
   PREV.length=0;
   document.querySelectorAll('.prevCv').forEach(function(el){
     const key=el.dataset.prev;
-    const conf=(key==='voidPrev')?voidPrevCfg():(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):(/^t\d$/.test(key)?tournLions()[+key.slice(1)]:cfg[key]));
+    const conf=(key==='voidPrev')?voidPrevCfg():(key==='olMine')?olMineCfg():(key==='hall')?UI.hallLion:(key==='scratch')?scratchLion():((key==='career'||key==='pack'||key==='shop'||key==='mystic'||key==='smith'||key==='fence'||key==='bookie'||key==='cosmo')?CAREER.lion:(key==='bkA'||key==='bkB')?bookieLion(key):cfg[key]);
     if(!conf)return;
     const w=el.clientWidth||el.parentNode.clientWidth||300;
     const h=el.clientHeight||130;
@@ -11020,7 +10894,7 @@ function roundOver(){
     return;
   }
   const need=Math.ceil(G.rounds/2);
-  if(G.wins.A>=need||G.wins.B>=need){if(G.ctx==='tourn'){tournMatchOver();return;}showResult('duel');return;}
+  if(G.wins.A>=need||G.wins.B>=need){showResult('duel');return;}
   banner(G.winner.name.toUpperCase()+' TAKES THE ROUND',1.3);SFX.win();
   setTimeout(newRound,1500);
 }
@@ -11057,20 +10931,6 @@ function showResult(kind,perk,dead,killer,boutN,champN,where){
       (G.rounds>1?(' · '+G.wins.A+'–'+G.wins.B):'')+' · '+Math.round(w.hp)+' health left';
     B.innerHTML='<button class="primary" data-act="again">Run it back</button><button data-act="home">Edit lions</button>';
     SFX.win();
-  }
-  else if(kind==='tmatch'||kind==='tchamp'){
-    const cur=TOURN.cur;
-    if(kind==='tchamp'){
-      V.textContent=w.name.toUpperCase()+' WINS THE TOURNAMENT';V.className='verdict gold';
-      M.textContent='Three best-of-threes, eight lions, one left standing \u00b7 '+G.wins.A+'\u2013'+G.wins.B+' in the final';
-      SFX.champ();
-    } else {
-      V.textContent=w.name.toUpperCase()+' GOES THROUGH';
-      M.textContent=TROUND[cur.r].one+(TOURN.br.rounds[cur.r].length>1?' '+(cur.m+1):'')+' \u00b7 '+G.wins.A+'\u2013'+G.wins.B+
-        ' \u00b7 '+(G.method||'attrition');
-      SFX.win();
-    }
-    B.innerHTML='<button class="primary" data-act="home">'+(kind==='tchamp'?'See the bracket':'Back to the bracket')+'</button>';
   }
   else if(kind==='bout'){
     const ch=CAREER.champ;
@@ -11303,68 +11163,193 @@ function chip(icon,label,note,cls,raw){
   return '<div class="tutChip'+(cls?' '+cls:'')+'"><span class="ci">'+(raw||ico(icon))+'</span>'+
     '<span><b>'+label+'</b><small>'+note+'</small></span></div>';
 }
+/* ---- the tutorial: every page has a moving picture, a few lines from Old Lion, and the two or four things to remember ---- */
+const TSC={bg:'#0c0c0e'};
+function tsBg(g,w,h,tint){g.fillStyle=TSC.bg;g.fillRect(0,0,w,h);
+  if(tint){const r=g.createRadialGradient(w/2,h*.55,10,w/2,h*.55,w*.7);r.addColorStop(0,tint);r.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=r;g.fillRect(0,0,w,h);}
+  g.fillStyle='rgba(255,255,255,.035)';for(let x=12;x<w;x+=24)for(let y=12;y<h;y+=24)g.fillRect(x,y,1.5,1.5);}
+function tsTxt(g,txt,x,y,size,col,align,weight){g.font=(weight||600)+' '+size+'px -apple-system,BlinkMacSystemFont,sans-serif';g.fillStyle=col||'#f5f5f7';g.textAlign=align||'center';g.textBaseline='middle';g.fillText(txt,x,y);g.textAlign='start';g.textBaseline='alphabetic';}
+function tsBar(g,x,y,w,h,f,col,ext,extCol){g.fillStyle='rgba(255,255,255,.1)';tsRR(g,x,y,w,h,h/2);g.fill();
+  if(f>0){g.fillStyle=col;tsRR(g,x,y,Math.max(h,w*Math.min(1,f)),h,h/2);g.fill();}
+  if(ext>0){g.fillStyle=extCol||'#5ee6a8';tsRR(g,x+w*f-h/2,y,Math.max(h,w*ext+h/2),h,h/2);g.fill();}}
+function tsRR(g,x,y,w,h,r){g.beginPath();if(g.roundRect)g.roundRect(x,y,w,h,r);else g.rect(x,y,w,h);}
+function tsPill(g,txt,x,y,col,bg){g.font='700 11px -apple-system,BlinkMacSystemFont,sans-serif';const tw=g.measureText(txt).width+14;g.fillStyle=bg||'rgba(0,0,0,.6)';tsRR(g,x-tw/2,y-9,tw,18,9);g.fill();tsTxt(g,txt,x,y+.5,11,col||'#fff','center',700);return tw;}
+function tsLion(g,c,x,y,R,ang,t,extra){paintLion(g,Object.assign({x:x,y:y,R:R,ang:ang,t:t,pelt:c.pelt||0,cols:c.bossCols||colsOf(c),mane:lookOf(c,'mane'),tail:lookOf(c,'tail'),seed:c.seed||3,scars:c.scars||[],armor:c.armor||'none',cos:c.cos},extra||{}));}
+function tsCoin(g,x,y,r){g.fillStyle='#ffd24a';g.beginPath();g.arc(x,y,r,0,7);g.fill();g.strokeStyle='#a8780c';g.lineWidth=Math.max(1,r*.18);g.stroke();g.fillStyle='#fff3c4';g.beginPath();g.arc(x-r*.25,y-r*.25,r*.3,0,7);g.fill();}
+function tsEase(k){k=clamp(k,0,1);return k*k*(3-2*k);}
+function tsCast(){return TS.cast||(TS.cast={a:Object.assign(randomLion('A'),{seed:1,pelt:2,build:'prime'}),b:Object.assign(randomLion('B'),{seed:2,pelt:8,build:'heavy'}),
+  shop:[['Lion Store','gold items',REDCOLS,'coin','#ff6f61'],['Blacksmith','weapons, armour',SMITHCOLS,'hammer','#c8c8d0'],['Mystic Lion','souls, for skulls',MYSTCOLS,'spark','#b48cff'],
+        ['Cosmetic Lion','looks only',COSMOCOLS,'paint','#e0584a'],['The Bookie','bet on fights',BOOKCOLS,'dice','#6fc2a4'],['Hyena Fence','buys skulls',HYENACOLS,'skull','#c9a46a']]});}
+const TSCENE={
+  /* 1: you build it, it fights, it grows */
+  welcome:function(g,w,h,t){tsBg(g,w,h,'rgba(255,179,64,.12)');const C=tsCast(),k=(t%6)/6,step=Math.floor(k*3),cx=[w*.18,w*.5,w*.82],lab=['Build','Fight','Grow'],sub=['pick every part','it fights by itself','belts, gear, souls'];
+    for(let i=0;i<3;i++){const on=i===step,y=h*.42;
+      g.fillStyle=on?'rgba(255,179,64,.16)':'rgba(255,255,255,.04)';tsRR(g,cx[i]-w*.14,h*.1,w*.28,h*.8,14);g.fill();if(on){g.strokeStyle='#ffb340';g.lineWidth=1.5;g.stroke();}
+      if(i===0)tsLion(g,{pelt:0,bossCols:CLAYCOLS,seed:4},cx[i],y,15+Math.sin(t*3)*2,-Math.PI/2,t,{mane:Math.floor(t*1.5)%8});
+      if(i===1){tsLion(g,C.a,cx[i]-13,y+6,11,-.5,t,{anim:(t%1)<.2});tsLion(g,C.b,cx[i]+13,y-6,11,Math.PI-.5,t,{anim:((t+.5)%1)<.2});}
+      if(i===2){const R=13+2*Math.sin(t*2);soulAura(g,cx[i],y,R,-Math.PI/2,t,'divine',true,2);tsLion(g,C.a,cx[i],y,R,-Math.PI/2,t,{eyes:'#fff3d6',eyeGlow:true,belts:3});soulAura(g,cx[i],y,R,-Math.PI/2,t,'divine',false,2);}
+      tsTxt(g,(i+1)+'. '+lab[i],cx[i],h*.74,13,on?'#ffb340':'#f5f5f7','center',700);tsTxt(g,sub[i],cx[i],h*.85,10,'#8e8e93');
+      if(i<2)tsTxt(g,'›',(cx[i]+cx[i+1])/2,h*.42,20,'#48484a');}},
+  /* 2: a fight you only watch */
+  fight:function(g,w,h,t){tsBg(g,w,h);const C=tsCast(),T=t%9,cx=w/2,cy=h*.56,rx=Math.min(w*.26,105),ry=h*.2;
+    const ax=cx+Math.cos(t*.9)*rx,ay=cy+Math.sin(t*.9)*ry,bx=cx+Math.cos(t*.9+Math.PI)*rx*.8,by=cy+Math.sin(t*.9+Math.PI)*ry*.8,aa=Math.atan2(by-ay,bx-ax),ba=aa+Math.PI;
+    const swA=(t%1.4)<.18,swB=((t+.7)%1.4)<.18,ha=Math.max(.08,1-T*.07),hb=Math.max(0,1-T*.115);
+    tsLion(g,C.a,ax,ay,14,aa,t,{anim:swA});tsLion(g,C.b,bx,by,16,ba,t,{anim:swB});
+    [[swA,ax,ay,aa],[swB,bx,by,ba]].forEach(function(q){if(q[0]){g.strokeStyle='rgba(255,255,255,.6)';g.lineWidth=3;g.beginPath();g.arc(q[1],q[2],26,q[3]-.8,q[3]+.8);g.stroke();}});
+    if(swA){tsTxt(g,String(8+Math.floor(t*7)%9),bx,by-26,13,'#fff','center',800);}
+    tsTxt(g,'YOUR LION',12,14,9,'#ffb340','left',800);tsBar(g,12,22,w*.36,7,ha,'#5ee6a8');
+    tsTxt(g,'OPPONENT',w-12,14,9,'#ff6f61','right',800);tsBar(g,w-12-w*.36,22,w*.36,7,hb,'#ff6f61');
+    tsPill(g,'you just watch',cx,h-14,'#c7c7cc');},
+  /* 3: frame and weapon */
+  build:function(g,w,h,t){tsBg(g,w,h);const ks=['cub','lean','prime','heavy','titan'],i=Math.floor(t/1.6)%5,B=BUILDS[ks[i]],k=tsEase((t%1.6)/.4);
+    const R=(BUILDS[ks[(i+4)%5]].r+(B.r-BUILDS[ks[(i+4)%5]].r)*k)*.95;
+    tsLion(g,{pelt:4,seed:6,armor:'hide'},w*.26,h*.55,R,-Math.PI/2,t);
+    tsTxt(g,B.name,w*.26,h*.1,14,'#ffb340','center',700);
+    const x=w*.52,bw=w*.42,sp=clamp((B.spd-.7)/.7,0.08,1),hp=clamp((B.hp-.6)/.9,.08,1),dm=clamp((B.dmg-.6)/.9,.08,1);
+    [['Speed',sp,'#5aa8ff'],['Health',hp,'#5ee6a8'],['Hit power',dm,'#ff6f61']].forEach(function(q,n){const y=h*.28+n*h*.2;tsTxt(g,q[0],x,y-9,11,'#c7c7cc','left');tsBar(g,x,y,bw,8,q[1],q[2]);});
+    ks.forEach(function(q,n){g.fillStyle=n===i?'#ffb340':'rgba(255,255,255,.18)';g.beginPath();g.arc(w*.26-28+n*14,h*.92,n===i?3.5:2.5,0,7);g.fill();});},
+  /* 4: five bouts and a belt */
+  champ:function(g,w,h,t){tsBg(g,w,h,'rgba(255,210,74,.1)');const C=tsCast(),T=t%8,n=Math.min(5,Math.floor(T/1.1)),won=n>=5;
+    for(let i=0;i<5;i++){const x=w*.14+i*w*.18,y=h*.36,done=i<n,cur=i===n;
+      g.fillStyle=done?'rgba(94,230,168,.18)':'rgba(255,255,255,.05)';g.beginPath();g.arc(x,y,19,0,7);g.fill();g.strokeStyle=done?'#5ee6a8':(cur?'#ffb340':'rgba(255,255,255,.12)');g.lineWidth=cur?2:1.3;g.stroke();
+      if(done)evIcon(g,'check',x,y,16,'#5ee6a8');else tsLion(g,{pelt:(i*3+1)%10,seed:20+i},x,y,9+i*.9,Math.PI/2,t,{anim:cur&&(t%1)<.2});
+      tsTxt(g,'Bout '+(i+1),x,y+30,10,done?'#5ee6a8':'#8e8e93');
+      if(i<4){g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=1.5;g.beginPath();g.moveTo(x+22,y);g.lineTo(x+w*.18-22,y);g.stroke();}}
+    const by=h*.8,k=won?tsEase((T-5.5)/.6):0;
+    if(won){g.save();g.globalAlpha=k;g.shadowColor='#ffd24a';g.shadowBlur=14;g.fillStyle='#ffd24a';tsRR(g,w/2-58*k,by-11,116*k,22,6);g.fill();g.shadowBlur=0;g.fillStyle='#a8780c';g.beginPath();g.arc(w/2,by,9,0,7);g.fill();g.fillStyle='#fff3c4';g.beginPath();g.arc(w/2,by,5,0,7);g.fill();g.restore();
+      tsTxt(g,'CHAMPION: a belt and a medallion',w/2,by+22,11,'#ffd24a','center',700);}
+    else tsTxt(g,'Win 5 in a row for the belt',w/2,by,12,'#c7c7cc');},
+  /* 5: what a loss costs */
+  lose:function(g,w,h,t){tsBg(g,w,h,'rgba(226,56,44,.1)');const T=t%7,roll=T<2.2,pick=roll?Math.floor(T*9)%5:(Math.floor(t/7)%5===0?4:Math.floor(t/7)%4);
+    tsTxt(g,'When your lion loses a bout',w/2,h*.12,12,'#c7c7cc');
+    for(let i=0;i<5;i++){const x=w*.14+i*w*.18,y=h*.44,dead=i===4,on=i===pick;
+      g.fillStyle=dead?'rgba(226,56,44,.16)':'rgba(255,255,255,.05)';tsRR(g,x-22,y-26,44,52,10);g.fill();
+      if(on){g.strokeStyle=dead?'#e2382c':'#ffb340';g.lineWidth=2;g.stroke();}
+      evIcon(g,dead?'skull':'scar',x,y-4,20,dead?'#e2382c':'#c7c7cc');tsTxt(g,dead?'dies':'scar',x,y+17,10,dead?'#e2382c':'#8e8e93');}
+    tsTxt(g,roll?'…':(pick===4?'1 in 5: gone for good, into the Hall of Fame':'4 in 5: it lives, with a scar. The run ends'),w/2,h*.84,11.5,roll?'#8e8e93':(pick===4?'#ff6f61':'#f5f5f7'),'center',700);},
+  /* 6: getting stronger */
+  grow:function(g,w,h,t){tsBg(g,w,h,'rgba(94,230,168,.08)');const C=tsCast(),T=t%8,st=Math.min(3,Math.floor(T/2)),k=tsEase((T-st*2)/.7);
+    tsLion(g,C.a,w*.2,h*.5,17,-Math.PI/2,t,{belts:st>=2?1:0});
+    const x=w*.4,bw=w*.52,rows=[['Health',.5,'#5ee6a8'],['Damage',.42,'#ff6f61'],['Speed',.55,'#5aa8ff']];
+    rows.forEach(function(q,n){const y=h*.2+n*h*.2,ext=(st>n?.14:(st===n?.14*k:0));tsTxt(g,q[0],x,y-9,11,'#c7c7cc','left');tsBar(g,x,y,bw,8,q[1],q[2],ext);});
+    const msg=['Training: pick a stat, it grows for good','Training again: the green part is what you earned','A belt gives a medallion: a big permanent boost','Then weapons, souls and gear from the den'][st];
+    tsPill(g,msg,w/2,h*.88,'#5ee6a8');},
+  /* 7: the den and who is in it */
+  den:function(g,w,h,t){tsBg(g,w,h);const C=tsCast().shop,i=Math.floor(t/1.7)%6,S=C[i];
+    for(let n=0;n<6;n++){const x=w*.1+n*w*.16,y=h*.36,on=n===i,R=on?15:10;
+      if(on){const r=g.createRadialGradient(x,y,2,x,y,36);r.addColorStop(0,C[n][4]+'55');r.addColorStop(1,C[n][4]+'00');g.fillStyle=r;g.fillRect(x-36,y-36,72,72);}
+      g.globalAlpha=on?1:.45;tsLion(g,{bossCols:C[n][2],seed:30+n,pelt:0},x,y+(on?Math.sin(t*4)*1.5:0),R,Math.PI/2,t,{mane:n===3?5:(n===5?0:2)});g.globalAlpha=1;}
+    evIcon(g,S[3],w/2-64,h*.74,18,S[4]);tsTxt(g,S[0],w/2-48,h*.71,14,'#f5f5f7','left',700);tsTxt(g,S[1],w/2-48,h*.83,11,'#8e8e93','left');},
+  /* 8: gold and skulls */
+  money:function(g,w,h,t){tsBg(g,w,h,'rgba(255,210,74,.08)');const T=t%6;
+    for(let i=0;i<7;i++){const k=((t*.5+i/7)%1),x=w*.25+Math.sin(i*2.1)*w*.12,y=h*.06+k*h*.5;g.globalAlpha=1-Math.max(0,k-.7)/.3;tsCoin(g,x,y,5);g.globalAlpha=1;}
+    tsCoin(g,w*.25,h*.66,13);tsTxt(g,'Gold',w*.25,h*.86,12,'#ffd24a','center',700);
+    const drop=(T%3)<1.2;g.globalAlpha=drop?1:.35;evIcon(g,'skull',w*.75,h*.36+(drop?Math.sin(t*5)*2:0),34,'#e8dfcc');g.globalAlpha=1;
+    tsPill(g,'40% of wins',w*.75,h*.64,'#e8dfcc');tsTxt(g,'Skulls',w*.75,h*.86,12,'#e8dfcc','center',700);
+    tsTxt(g,'every win',w*.25,h*.5,10,'#8e8e93');g.strokeStyle='rgba(255,255,255,.1)';g.beginPath();g.moveTo(w/2,h*.14);g.lineTo(w/2,h*.9);g.stroke();},
+  /* 9: events */
+  events:function(g,w,h,t){tsBg(g,w,h,'rgba(159,180,255,.1)');const ks=EVENT_K.filter(k=>EVENTS[k]),i=Math.floor(t/1.5)%ks.length,E=EVENTS[ks[i]],k=tsEase((t%1.5)/.35);
+    for(let n=2;n>=1;n--){g.fillStyle='rgba(255,255,255,'+(.03*n)+')';tsRR(g,w/2-96+n*5,h*.2-n*5,192,h*.6,14);g.fill();}
+    g.save();g.translate(w/2,h*.5);g.scale(.3+.7*k,1);g.fillStyle='#1c1c1e';tsRR(g,-96,-h*.3,192,h*.6,14);g.fill();g.strokeStyle=E.col||'#ffb340';g.lineWidth=1.5;g.stroke();
+    if(k>.6){tsTxt(g,E.title,0,-h*.08,14,'#f5f5f7','center',700);tsTxt(g,E.sub||'',0,h*.08,10.5,'#8e8e93');}g.restore();
+    tsPill(g,'35% chance after a win · '+ks.length+' different events',w/2,h*.92,E.col||'#ffb340');},
+  /* 10: souls and quests */
+  souls:function(g,w,h,t){tsBg(g,w,h);const C=tsCast(),lv=1+Math.floor(t/2)%3,dv=Math.floor(t/6)%2===0,so=dv?'divine':'demon',col=dv?'#ffe9a8':'#ff5a4d';
+    const x=w*.3,y=h*.5,R=15;soulAura(g,x,y,R,-Math.PI/2,t,so,true,lv);tsLion(g,C.a,x,y,R,-Math.PI/2,t,{eyes:SOULS[so].eyes,eyeGlow:true});soulAura(g,x,y,R,-Math.PI/2,t,so,false,lv);
+    tsTxt(g,SOULS[so].name,w*.7,h*.2,13,col,'center',700);
+    [1,2,3].forEach(function(n){const px=w*.56+(n-1)*w*.14,on=n===lv;g.fillStyle=on?col:'rgba(255,255,255,.08)';tsRR(g,px-21,h*.31,42,46,9);g.fill();
+      tsTxt(g,'Lv'+n,px,h*.42,11,on?'#1a1204':'#c7c7cc','center',800);tsTxt(g,'+'+SOUL_LV.pct[n]+'%',px,h*.53,10,on?'#1a1204':'#8e8e93');});
+    tsTxt(g,'to every stat · 10 skulls a level',w*.7,h*.7,10.5,'#8e8e93');tsPill(g,'Lv3 can become the Void: +15%',w*.7,h*.86,'#b48cff');},
+  /* 11: the boss ladder */
+  bosses:function(g,w,h,t){tsBg(g,w,h,'rgba(226,56,44,.08)');const ks=BOSS_LADDER,T=t%9,n=Math.min(6,Math.floor(T/1.2));
+    ks.forEach(function(k,i){const x=w*.1+i*w*.16,y=h*.4,lit=i<=n,r=i===n?19:15;
+      try{bossEmblem(g,k,x,y,r,lit);}catch(e){}
+      if(!lit)evIcon(g,'lock',x,y,13,'#8e8e93');
+      if(i<5){g.strokeStyle=i<n?'#ffd24a':'rgba(255,255,255,.12)';g.lineWidth=1.5;g.beginPath();g.moveTo(x+21,y);g.lineTo(x+w*.16-21,y);g.stroke();}});
+    const nm=CHAL[ks[Math.min(5,n)]].name;tsTxt(g,nm,w/2,h*.74,14,'#f5f5f7','center',700);tsTxt(g,n<5?'Beat it to unlock the next':'The last one. He slew a god',w/2,h*.87,10.5,'#8e8e93');},
+  /* 12: online */
+  online:function(g,w,h,t){tsBg(g,w,h,'rgba(255,150,60,.08)');const names=['Mufasa99','You','Nala','Roarzilla'],C=tsCast();
+    names.forEach(function(nm,i){const x=w*.2+i*w*.2+Math.sin(t*.7+i*2)*14,y=h*.55+Math.cos(t*.6+i*1.7)*h*.16,a=t*.7+i*2,R=[15,12,10,17][i];
+      tsLion(g,{pelt:[8,2,5,0][i],seed:50+i},x,y,R,Math.atan2(-Math.sin(t*.6+i*1.7),Math.cos(t*.7+i*2)),t);
+      const tw=tsPill(g,(i===0?'    ':'')+'#'+(i+1)+' '+nm,x,y-R-13,i===0?'#ffd24a':(i===1?'#ffb340':'#f5f5f7'),i===0?'rgba(40,28,6,.92)':'rgba(10,10,12,.78)');
+      if(i===0){const kx=x-tw/2+11,ky=y-R-13;g.fillStyle='#ffd24a';g.beginPath();g.moveTo(kx-5,ky+4);g.lineTo(kx-5,ky-2);g.lineTo(kx-2.5,ky+.5);g.lineTo(kx,ky-4);g.lineTo(kx+2.5,ky+.5);g.lineTo(kx+5,ky-2);g.lineTo(kx+5,ky+4);g.closePath();g.fill();}});
+    tsPill(g,'Beat number one for the bounty',w/2,h-13,'#ffd24a');},
+  /* 13: duel and codes */
+  codes:function(g,w,h,t){tsBg(g,w,h);const C=tsCast(),code='LION1-R29sZG1hbmV8NHwyfDN8MTEuNXwzfDAuMnwy',n=Math.floor((t%6)*9);
+    tsLion(g,C.a,w*.16,h*.36,15,0,t);g.fillStyle='#17171c';tsRR(g,w*.3,h*.22,w*.4,h*.28,8);g.fill();g.strokeStyle='rgba(255,179,64,.4)';g.lineWidth=1;g.stroke();
+    g.save();g.beginPath();g.rect(w*.31,h*.22,w*.38,h*.28);g.clip();tsTxt(g,code.slice(0,n),w*.32,h*.36,10,'#ffb340','left',600);g.restore();
+    const k=clamp(((t%6)-4.2)/.8,0,1);g.globalAlpha=k;tsLion(g,C.a,w*.84,h*.36,15,Math.PI,t);g.globalAlpha=1;
+    tsTxt(g,'›',w*.26,h*.36,18,'#48484a');tsTxt(g,'›',w*.74,h*.36,18,'#48484a');
+    tsTxt(g,'your lion',w*.16,h*.62,10,'#8e8e93');tsTxt(g,'one line of text',w*.5,h*.62,10,'#8e8e93');tsTxt(g,'a friend’s phone',w*.84,h*.62,10,'#8e8e93');
+    tsPill(g,'Duel: paste any two lions and watch them fight',w/2,h*.88,'#c7c7cc');},
+  /* 14: off you go */
+  go:function(g,w,h,t){tsBg(g,w,h,'rgba(255,179,64,.14)');const C=tsCast(),x=((t*46)%(w+80))-40;
+    tsLion(g,C.a,x,h*.5+Math.sin(t*10),17,0,t*2);for(let i=1;i<5;i++){g.fillStyle='rgba(255,255,255,'+(.08-i*.015)+')';g.beginPath();g.ellipse(x-22-i*12,h*.5+12,7,2.5,0,0,7);g.fill();}
+    tsTxt(g,'Go and build something ferocious',w/2,h*.86,12,'#ffb340','center',700);}
+};
 const TUT=[
-  {t:'Well, well. A new owner.',
-   say:"Name's Old Lion. I've been fighting in this pit since before sand was invented. Pull up a rock and I'll show you how it all works. Won't take long. I'm old, not slow. Well... both.",
-   vis:()=>'<div class="tutChips">'+chip('duel','Duel','two lions, best of three')+chip('lion','Championship','your lion, your career')+
-     chip('pack','Challenges','bosses and hyenas')+chip('trophy','Tournament','eight lions, one winner')+'</div>'+
-     (appInstalled()?'':'<button class="tutApp'+(TS.app?' open':'')+'" data-act="tutApp"><span class="appIco sm">'+ico('homeadd')+'</span><span><b>Tired of logging in?</b><small>Add Lion Sim to your phone</small></span><span class="go">'+(TS.app?'\u2212':'+')+'</span></button>'+
+  {t:'Welcome to the pit',sc:'welcome',
+   say:"Name's Old Lion. I've fought here since before sand was invented. The whole game is three things: build a lion, watch it fight, make it stronger. I'll show you each one.",
+   vis:()=>'<div class="tutChips">'+chip('lion','Championship','your own lion and its career')+chip('pack','Challenges','bosses, in order')+
+     chip('globe','Online','fight other players')+chip('duel','Duel','any two lions, for fun')+'</div>'+
+     (appInstalled()?'':'<button class="tutApp'+(TS.app?' open':'')+'" data-act="tutApp"><span class="appIco sm">'+ico('homeadd')+'</span><span><b>Tired of logging in?</b><small>Add Lion Sim to your phone</small></span><span class="go">'+(TS.app?'−':'+')+'</span></button>'+
        (TS.app?appHowHTML(APP.os):''))},
-  {t:'Rule one: paws off',
-   say:"You don't fight. Your lion does. It picks its range, dodges shots and uses its moves all on its own. Your job is to build it well, then watch and shout at it. Shouting doesn't help. My owner tried for years.",
-   vis:()=>'<canvas id="tutArena"></canvas>'},
-  {t:'Build it right',
-   say:"Little lions are quick. Big ones hit like falling trees, and turn like them too. Long-range weapons slow your legs down. Nothing in this pit is free, kid.",
-   vis:()=>'<div class="tutChips">'+chip('frame','Frame','cub to titan: speed vs. weight')+chip('sword','Weapon','more reach, slower feet')+
-     chip('spark','Abilities','pick two: dash, shield, heal…')+chip('mind','Mind','how it thinks in a fight')+'</div>'},
-  {t:'Personality and looks',
-   say:"Every lion's born with two quirks. Some help, some are just character. Mine are Grumpy and Grumpier. Coats, manes and tails are for looking good and change nothing. I still look good.",
-   vis:()=>'<div class="tutChips">'+
-     ['grudge','showman','lucky','bold'].filter(k=>TRAITS[k]).slice(0,4).map(k=>chip('',TRAITS[k].name,TRAITS[k].desc,'',traitIco(TRAITS[k]))).join('')+'</div>'},
-  {t:'Duel',
-   say:"Two lions, best of three, full health every round. Paste in a friend's lion and settle the argument properly. Feeling sociable? Flip to 2v2 and it's two on two. Teammates don't bite each other. Mostly.",
-   vis:()=>'<div class="tutChips">'+chip('duel','Best of three','first to two rounds wins')+chip('pack','2v2','two teams, last pair standing')+
-     chip('paste','Paste a code','fight anybody\'s lion')+chip('heart','Full health','every round starts fresh')+'</div>'},
-  {t:'Championship',
-   say:"Build your own lion, then lock it in for good. Win five fights in a row and it takes a belt. Lose and it gets a scar. Lose and get unlucky, one time in five, and it comes to live on the wall with me.",
-   vis:()=>'<div class="tutChips">'+chip('belt','5 wins = belt','plus a medallion buff','gold')+chip('scar','Lose, get a scar','it\'s yours forever')+
-     chip('retire','1 in 5 losses','your lion dies for good','red')+chip('lion','Then','build the next one')+'</div>'},
-  {t:'Getting stronger',
-   say:"Every win, there's about a one-in-three chance you get a training session. You pick the stat. It's a small gain, but it sticks, and it shows as a green bit on the stat bars. Win a belt and you get a medallion. Those are the big ones. Each has its own emblem. I had seven. Now I have arthritis.",
-   vis:()=>'<div class="tutChips">'+chip('heart','Training','35% of wins, +2-3% to one stat')+
-     chip('','Medallions','one per belt, much bigger','gold',medalHTML('hp'))+
-     chip('','Ironheart','+9% health','gold',medalHTML('hp'))+chip('','Keen Fang','+9% damage','gold',medalHTML('dmg'))+'</div>'+
-     '<div class="stat" style="margin-top:12px"><span>'+ico('heart')+'Health</span><div class="bar"><i style="width:48%"></i><i class="ext" style="width:12%"></i></div><b class="trained">132</b></div>'},
-  {t:'Gold and the store',
-   say:"Each win pays your lion gold: 5 to 15 at first, and more for every belt it holds and every bout deeper into a championship, so harder fights pay better. The pack pays nothing, that one is for pride. Take it to the Lion Store, run by a red lion in a monocle. Charming fellow. Would sell his own tail. New coat, a personality potion, or a whole new weapon.",
-   vis:()=>'<div class="tutChips">'+chip('coin','5-15 per win','championship bouts','gold')+chip('drop','Colour Change','20 gold')+
-     chip('flask','Personality Potion','30 gold: reroll one trait')+chip('sword','New weapon','60 gold')+'</div>'},
-  {t:'Challenges',
-   say:"Nothing here touches your record, so go wild. Bring up to two friends. No shame in it. I had friends once.",
-   vis:()=>'<div class="tutChips">'+chip('pack','The pack','waves of dogs and hyenas')+chip('crown','Lion King','big, dark and rude','red')+
-     chip('spark','Ancient Lion','older than me. Somehow.','gold')+chip('plus','Allies','up to two lions help you')+'</div>'},
-  {t:'Tournament',
-   say:"Eight lions, knockout bracket, best of three every match. Edit them, roll them, shuffle the draw. Perfect for settling who's actually best in the group chat.",
-   vis:()=>'<div class="tutBracket"><div class="col"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><small>8</small></div>'+
-     '<span class="arrow">\u203a</span><div class="col"><i></i><i></i><i></i><i></i><small>4</small></div>'+
-     '<span class="arrow">\u203a</span><div class="col"><i></i><i></i><small>2</small></div>'+
-     '<span class="arrow">\u203a</span><div class="col w"><i></i><small>1</small></div><span class="cup">'+ico('trophy')+'</span></div>'},
-  {t:'Lion codes',
-   say:"Every lion fits into one line of text: belts, scars, training, gold, the lot. Copy it, send it, load it straight back into the den any time. Pasting belts into the Editor? Nice try. Oh, and open a Summary for a lion card. A proper picture. Show off a bit.",
-   vis:()=>'<div class="tutCode">LION1-R29sZG1hbmV8NHwyfDN8MTEuNXwzfDAuMnwy\u2026</div><div class="tutChips">'+
-     chip('copy','Copy or save','send it to a mate')+chip('paste','Load into the den','any code becomes your lion')+
-     chip('summary','Lion card','a picture to copy or share')+chip('belt','Belts are earned','the Editor strips them')+'</div>'},
-  {t:"Old Lion's tips",
-   say:"Here's what four hundred years in the pit taught me. Write it down. Or don't, I'm not your dad.",
+  {t:'Rule one: paws off',sc:'fight',
+   say:"You don't fight. Your lion does. It moves, dodges and uses its moves on its own. Your job is the building, and the shouting. Shouting doesn't help. I checked.",
+   vis:()=>'<div class="tutChips">'+chip('play','It fights alone','you never press a button')+chip('heart','Health bars','first to empty loses')+
+     chip('mind','It has a mind','you choose how it thinks')+chip('refresh','Speed it up','1×, 2× or 4×')+'</div>'},
+  {t:'Build your lion',sc:'build',
+   say:"Tap Championship and you build one piece by piece. Small lions are quick. Big ones hit like falling trees and turn like them too. Nothing in this pit is free, kid.",
+   vis:()=>'<div class="tutChips">'+chip('frame','Frame','cub to titan: speed or weight')+chip('sword','Weapon','longer reach, slower feet')+
+     chip('spark','Abilities','pick two: dash, shield, heal…')+chip('flask','Two traits','its personality, for life')+'</div>'},
+  {t:'The championship',sc:'champ',
+   say:"Five fights against five lions, full health every time. Win all five and your lion takes a belt. Then you do it again, and it gets harder. That's the career.",
+   vis:()=>'<div class="tutChips">'+chip('belt','5 wins = a belt','and a medallion','gold')+chip('trophy','Then another','every belt is harder')+
+     chip('heart','Kind to rookies','a second chance early on')+chip('coin','More belts, more gold','harder fights pay more','gold')+'</div>'},
+  {t:'Losing',sc:'lose',
+   say:"Lose a bout and the run is over. Four times in five your lion limps home with a scar. The fifth time it doesn't get up, and it comes to live on the wall with me. For good.",
+   vis:()=>'<div class="tutChips">'+chip('scar','4 in 5: a scar','it shows forever')+chip('retire','1 in 5: it dies','gone for good','red')+
+     chip('heart','Before the first belt','a lion cannot die')+chip('spark','Heavenly Protection','the Mystic sells a way out','gold')+'</div>'},
+  {t:'Getting stronger',sc:'grow',
+   say:"Wins sometimes give a training session. You pick a stat and it grows for good. The green part of a bar is what your lion has earned. Belts give medallions, and those are the big ones.",
+   vis:()=>'<div class="tutChips">'+chip('heart','Training','a small gain that stays')+chip('','Medallions','one per belt, much bigger','gold',medalHTML('hp'))+
+     chip('hammer','Weapon finishes','forged at the Blacksmith')+chip('spark','Souls','a boost to everything')+'</div>'},
+  {t:'The den',sc:'den',
+   say:"Between fights you're in the den. Six doors, six shopkeepers. The red one would sell his own tail. Tap a door to go in, and tap your lion to see everything about it.",
+   vis:()=>'<div class="tutChips">'+chip('coin','Lion Store','potions, coats, crates')+chip('hammer','Blacksmith','finishes, swords, shields')+
+     chip('spark','Mystic Lion','souls and protection')+chip('paint','Cosmetic Lion','paint, sashes, gem eyes')+'</div>'},
+  {t:'Gold and skulls',sc:'money',
+   say:"Two kinds of money. Gold comes with every win, and more the further you've come. Skulls come off beaten lions, about four wins in ten. The Mystic only takes skulls. Don't ask.",
+   vis:()=>'<div class="tutChips">'+chip('coin','Gold','every win. Buys most things','gold')+chip('skull','Skulls','40% of wins. Buys souls')+
+     chip('crate','Daily crate','free, once a day, in the den')+chip('dice','The Bookie','bet gold on other lions')+'</div>'},
+  {t:'Events',sc:'events',
+   say:"Sometimes, after a win, something happens on the way home. A king with a wager. Three cups. A market that wasn't there an hour ago. You always get a choice, and you can always say no.",
+   vis:()=>'<div class="tutChips">'+chip('spark','About 1 win in 3','the den tells you')+chip('check','Always a choice','take it or walk on')+
+     chip('coin','Could pay well','gold, skulls, training','gold')+chip('scar','Could go badly','read the stakes first','red')+'</div>'},
+  {t:'Souls and quests',sc:'souls',
+   say:"When you've got skulls, see the Mystic. A soul lifts every stat, and you can feed it to Lv3. After that come the long jobs: Lionsteel, the Void, a sword that killed a god.",
+   vis:()=>'<div class="tutChips">'+chip('soulD','Divine or Demonic','Lv1 to Lv3, 10 skulls each')+chip('soulV','The Void','10 belts and a Lv3 soul')+
+     chip('sword','Lionsteel','beat 100 lions')+chip('sword','Godslayer Blade','after the last boss','gold')+'</div>'},
+  {t:'Challenges',sc:'bosses',
+   say:"The Challenges tab is the bosses. Start with the hyena pack, then me, and work up. Each one opens the next. Nothing there touches your record, and you can bring two friends.",
+   vis:()=>'<div class="tutChips">'+chip('pack','The Pack','waves of hyenas, for the record')+chip('crown','Six bosses','each opens the next','red')+
+     chip('plus','Allies','bring up to two lions')+chip('sash','Sashes','a prize from each boss','gold')+'</div>'},
+  {t:'Online',sc:'online',
+   say:"Make an account and your lion goes on the board with everyone else's. Beat a lion and your rating goes up. Whoever's on top has a price on their head, and it grows by the hour.",
+   vis:()=>'<div class="tutChips">'+chip('globe','Free account','keeps your save safe too')+chip('trophy','Rating','up for wins, down for losses')+
+     chip('crown','Number one','wears the crown','gold')+chip('coin','The bounty','beat number one to take it','gold')+'</div>'},
+  {t:'Duels and lion codes',sc:'codes',
+   say:"Every lion fits in one line of text. Copy it, send it to a mate, and they can load it or fight it. Duel is where you paste two lions in and settle the argument.",
+   vis:()=>'<div class="tutChips">'+chip('copy','Copy a code','from your lion’s Summary')+chip('paste','Paste it anywhere','a duel slot, or the den')+
+     chip('duel','Duel','best of three, or 2v2')+chip('summary','Lion card','a picture to share')+'</div>'},
+  {t:"Old Lion's tips",sc:'go',
+   say:"That's all of it. Here's what four hundred years taught me. Now go and build something ferocious. And if you get stuck, the ? button brings me back.",
    vis:()=>'<ul class="tutTips">'+
-     '<li><b>1</b>Ranged lions struggle against Dash and Blink. Close the gap and they panic.</li>'+
-     '<li><b>2</b>Berserkers charge straight in. A Kiter with a bow makes them pay for it.</li>'+
-     '<li><b>3</b>Not sure what to pick? An Adaptive mind is never a bad call.</li>'+
+     '<li><b>1</b>Not sure what to build? Roll one. Some of my best lions were accidents.</li>'+
+     '<li><b>2</b>Ranged lions hate Dash and Blink. Close the gap and they panic.</li>'+
+     '<li><b>3</b>Spend gold on training early. It stays with the lion for good.</li>'+
      '<li><b>4</b>Losing to a boss? Bring allies. Pride never won a fight.</li>'+
-     '<li><b>5</b>Hit Roll when you\'re stuck. Some of my best lions were accidents.</li></ul>'},
-  {t:'Off you go',
-   say:"That's everything. Go build something ferocious. Oh, and some names are... special. Type the right one and something wakes up. I'm not saying which. I'm old, not a snitch.",
-   vis:()=>''}
+     '<li><b>5</b>Sign in Online. A cleared browser can’t take your lion then.</li></ul>'}
 ];
 const TS={i:0,shown:0,full:'',raf:0,t:0,last:0,arena:null,app:false};
 /* ---------- Lion Sim on your phone's home screen ---------- */
@@ -11425,7 +11410,9 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['paint','A better-dressed arena','From your sixth championship on, most opponents turn up in war gear: sashes, braids, brands, swords, axes and shields on their backs, now and then a gem eye. Bound souls get more common the more belts you hold, and deep in they can be Lv2 or Lv3.'],
+  items:[['mind','A new tutorial','Old Lion has rebuilt his tour: 14 short steps, each with a moving picture and the few things worth remembering. Tap the dots to jump about. It is behind the ? button.'],
+    ['spark','More events, no tournament','An event now turns up after 35% of wins, up from 20%. And the Tournament tab is gone, so the bottom bar has more room.'],
+    ['paint','A better-dressed arena','From your sixth championship on, most opponents turn up in war gear: sashes, braids, brands, swords, axes and shields on their backs, now and then a gem eye. Bound souls get more common the more belts you hold, and deep in they can be Lv2 or Lv3.'],
     ['crown','The bounty on number one','Online now shows who is number one, how long they have held it, their kills since they last lost, and the bounty on their head. The bounty starts at 1,000 gold and grows 500 every hour, up to 100,000. Beat number one and it is paid to your lion.'],
     ['shield','Gold Axe and Gold Shield are stronger','The Gold Axe is now +15% swing rate and the Gold Shield +15% health, up from +8%, so they stand next to the Godslayer Blade\u2019s +15% damage. Pick the one that suits your lion.'],
     ['coin','Harder fights pay more','A championship win now pays more gold for every belt your lion holds (+6 each) and for every bout further in (+3 each), on top of the usual 5 to 15. A ten-belt lion earns about 65 to 90 a win. And beaten lions drop their skull 40% of the time, up from 30%.'],
@@ -11525,20 +11512,22 @@ function renderTut(){
   const st=TUT[TS.i],last=TS.i===TUT.length-1;
   TS.full=st.say;TS.shown=0;
   $('tutCard').innerHTML=
-    '<div class="tutTop"><canvas id="tutCv"></canvas><div class="tutWho"><b>Old Lion</b><small>retired champion</small><small>'+(TS.i+1)+' / '+TUT.length+'</small></div>'+
+    '<div class="tutBar"><i style="width:'+((TS.i+1)/TUT.length*100).toFixed(1)+'%"></i></div>'+
+    '<div class="tutTop"><canvas id="tutCv"></canvas><div class="tutWho"><small class="tutStep">Step '+(TS.i+1)+' of '+TUT.length+'</small><b class="tutTitle">'+st.t+'</b></div>'+
       '<button class="tutSkip" data-act="tutClose">Skip</button></div>'+
-    '<div class="tutTitle">'+st.t+'</div>'+
+    '<canvas id="tutScene" class="tutScene" role="img" aria-label="'+st.t+'"></canvas>'+
     '<div class="tutBubble" data-act="tutFinish" id="tutSay"></div>'+
     '<div class="tutVis">'+st.vis()+'</div>'+
-    '<div class="tutDots">'+TUT.map((x,i)=>'<i class="'+(i===TS.i?'on':'')+'"></i>').join('')+'</div>'+
+    '<div class="tutDots">'+TUT.map((x,i)=>'<button class="'+(i===TS.i?'on':(i<TS.i?'done':''))+'" data-act="tutGo" data-i="'+i+'" aria-label="Step '+(i+1)+': '+x.t+'"></button>').join('')+'</div>'+
     '<div class="tutNav"><button data-act="tutBack"'+(TS.i?'':' disabled')+'>Back</button>'+
       '<button class="key" data-act="'+(last?'tutClose':'tutNext')+'">'+(last?'Let\'s go':'Next')+'</button></div>';
-  TS.arena=null;
-  const ac=$('tutArena');
+  TS.arena=null;TS.st=TS.t;
+  const ac=$('tutScene');
   if(ac&&ac.getContext){
-    const w=ac.clientWidth||320,h=ac.clientHeight||150,dpr=Math.min(devicePixelRatio||1,2);
+    const w=ac.clientWidth||320,h=ac.clientHeight||160,dpr=Math.min(devicePixelRatio||1,2);
     ac.width=w*dpr;ac.height=h*dpr;const g=ac.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
-    TS.arena={g:g,w:w,h:h,a:randomLion('A'),b:randomLion('B')};
+    TS.arena={g:g,w:w,h:h,sc:st.sc};
+    try{(TSCENE[st.sc]||TSCENE.welcome)(g,w,h,0);}catch(e){}
   }
   const pc=$('tutCv');
   if(pc&&pc.getContext){const dpr=Math.min(devicePixelRatio||1,2);pc.width=92*dpr;pc.height=92*dpr;
@@ -11635,19 +11624,7 @@ function tutTick(ts){
     drawOldPortrait(g,TS.t,talking);
   }
   const A=TS.arena;
-  if(A){
-    const g=A.g,w=A.w,h=A.h;g.clearRect(0,0,w,h);g.fillStyle='#0c0c0e';g.fillRect(0,0,w,h);
-    g.fillStyle='#17171c';for(let x=12;x<w;x+=24)for(let y=12;y<h;y+=24)g.fillRect(x,y,1.5,1.5);
-    const t=TS.t,cx=w/2,cy=h/2,rx=Math.min(w*.28,110),ry=h*.26;
-    const ax=cx+Math.cos(t*.9)*rx,ay=cy+Math.sin(t*.9)*ry,bx=cx+Math.cos(t*.9+Math.PI)*rx*.8,by=cy+Math.sin(t*.9+Math.PI)*ry*.8;
-    const aa=Math.atan2(by-ay,bx-ax),ba=aa+Math.PI;
-    const swA=(t%1.6)<.2,swB=((t+.8)%1.6)<.2;
-    paintLion(g,{x:ax,y:ay,R:15,ang:aa,t:t,pelt:A.a.pelt,mane:A.a.mane,tail:A.a.tail,seed:1,scars:[],armor:A.a.armor,anim:swA});
-    paintLion(g,{x:bx,y:by,R:15,ang:ba,t:t,pelt:A.b.pelt,mane:A.b.mane,tail:A.b.tail,seed:2,scars:[],armor:A.b.armor,anim:swB});
-    if(swA){g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=3;g.beginPath();g.arc(ax,ay,26,aa-.8,aa+.8);g.stroke();}
-    if(swB){g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=3;g.beginPath();g.arc(bx,by,26,ba-.8,ba+.8);g.stroke();}
-    g.fillStyle='#8e8e93';g.font='12px -apple-system,sans-serif';g.fillText('you: \u201cgo left!\u201d   lion: *goes right*',12,h-12);
-  }
+  if(A&&!RM){const g=A.g;g.save();try{(TSCENE[A.sc]||TSCENE.welcome)(g,A.w,A.h,TS.t-(TS.st||0));}catch(e){}g.restore();}
   TS.raf=requestAnimationFrame(tutTick);
 }
 function tutAct(a){
@@ -11655,6 +11632,7 @@ function tutAct(a){
   if(a==='tutNext'){if(TS.shown<TS.full.length){TS.shown=TS.full.length;paintSay();return true;}
     SFX.ui();TS.i=Math.min(TUT.length-1,TS.i+1);renderTut();return true;}
   if(a==='tutBack'){SFX.ui();TS.i=Math.max(0,TS.i-1);renderTut();return true;}
+  if(a==='tutGo'){SFX.ui();TS.i=clamp(+(TS.goI||0),0,TUT.length-1);renderTut();return true;}
   if(a==='tutClose'){SFX.ui();closeTut();return true;}
   if(a==='tutApp'){SFX.ui();TS.app=!TS.app;const say=TS.shown;renderTut();TS.shown=say;paintSay();return true;}
   return false;
@@ -11673,7 +11651,7 @@ addEventListener('keydown',function(ev){
    royal  - the Royal Lion bets on your next bout: win and your gold is doubled, lose and he takes all of it
    mystic - the Mystic Lion, by a campfire: two skulls now, for starting the next bout at 75% health
    forest - a crate in a clearing: a free random item, and then five hyenas. Lose to them and they take it back */
-const EVENT_RATE=.2,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge','statue','princes','apprentice','vex','debt','nightmarket'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
+const EVENT_RATE=.35,EVENT_K=['royal','mystic','forest','shop','hut','rob','cub','merchant','rival','carrion','fix','exile','clan','mirror','scavenge','statue','princes','apprentice','vex','debt','nightmarket'],MASCOT={bouts:5,off:.3},AMBUSH={n:5,scale:1.1,hp:1.6,dmg:.35,wild:5,clock:130};
 const ROYALCOLS={mane:'#a2a2aa',body:'#4c4c54',edge:'#d6d6de',muz:'#efeff3',plate:'#c4c4cc'};
 const GUARDCOLS={mane:'#4a3c2a',body:'#2a2219',edge:'#aeb4bc',muz:'#7a6c56',plate:'#dde1e7'};
 const EV={on:false,k:null,node:null,name:'',i:0,shown:0,t:0,st:0,raf:0,last:0,g:null,w:0,h:0,ready:null};
