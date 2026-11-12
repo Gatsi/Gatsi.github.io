@@ -4356,7 +4356,7 @@ const CHAL={
     reward:'The Godslayer’s Sash, the first time you beat him',tip:'The hyenas are just for show: keep your eyes on him. When a gold line cuts across the floor, get off it.'}};
 CHAL.rush={name:'Boss Rush',act:'startRush',go:'Start the rush',diff:5,diffName:'Endless',col:'#ff7a3c',
   blurb:'Every boss, back to back.',
-  desc:'All six bosses, one after another, in order: Old Lion, the Lion King, the Ancient Lion, the Gatekeeper, the Twin Kings and Cal the Shagon. Your lion keeps whatever health it has left from one boss to the next. Beat all six and it goes straight into the next lap from Old Lion with full health, but every boss is 10% stronger in health, damage, speed and swing rate. Then 20%, then 30%. It ends when your lion falls.',
+  desc:'All six bosses, one after another, in order: Old Lion, the Lion King, the Ancient Lion, the Gatekeeper, the Twin Kings and Cal the Shagon. It runs by itself with no stops: your lion keeps whatever health it has left and goes straight into the next boss. Beat all six and it goes straight into the next lap from Old Lion with full health, but every boss is 10% stronger in health, damage, speed and swing rate. Then 20%, then 30%. It ends when your lion falls, or when you tap Leave.',
   reward:'Nothing but the number. Your longest run goes on the record',tip:'Health is the whole game here: a healing ability, Siphon or allies will carry you much further than raw damage.'};
 const CHAL_K=['pack','old','king','ancient','gate','twins','shagon','rush'];
 /* Boss Rush: the ladder as one run. i = which boss is next, lap = how many times round, hp = the share of health carried over, n = bosses beaten this run */
@@ -4387,7 +4387,11 @@ function rushOver(won){
       log('<em class="gold">Lap '+RUSH.lap+' cleared.</em> '+esc(G.lions[0].name)+' is back to full health. Every boss is now +'+RUSH.lap*10+'%.');
       return;
     }
-    showResult('rushWin');
+    /* and no stop between bosses either: the run goes on untouched until the lion falls or the player taps Leave */
+    {const beat=(BOSSES[RUSH.last]||{}).name||'The boss',pct=Math.max(1,Math.round(RUSH.hp*100));
+     rushFight();
+     banner('BOSS '+(RUSH.i+1)+' OF '+BOSS_LADDER.length+' \u00b7 '+pct+'% HEALTH',2,true);SFX.unlock();
+     log('<em class="gold">'+esc(beat)+' is down.</em> '+RUSH.n+' beaten this run.');}
   } else showResult('rushLoss');
 }
 function rushText(n){n=n|0;const lap=Math.floor(n/BOSS_LADDER.length)+1;return n+' boss'+(n===1?'':'es')+(n>=BOSS_LADDER.length?' \u00b7 reached lap '+lap:'');}
