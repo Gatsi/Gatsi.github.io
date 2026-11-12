@@ -169,6 +169,10 @@ button{cursor:pointer}
 /* Championship is the heart of the game: a raised amber button in the middle of the bar */
 .tabbar .tabMain{position:relative}
 .tabbar .tabOn .ti{color:#7cc2ff}
+.tabbar button[data-mode="pack"] .ti{color:#ff5a4d}
+.tabbar button[data-mode="pack"][aria-pressed="true"]{color:#ff8278}.tabbar button[data-mode="pack"][aria-pressed="true"] .ti{background:rgba(255,90,77,.16)}
+.tabbar button[data-mode="duel"] .ti{color:#fff}
+.tabbar button[data-mode="duel"][aria-pressed="true"]{color:#fff}.tabbar button[data-mode="duel"][aria-pressed="true"] .ti{background:rgba(255,255,255,.14)}
 .tabbar .tabOn[aria-pressed="true"]{color:#9fd0ff}.tabbar .tabOn[aria-pressed="true"] .ti{background:rgba(124,194,255,.16)}
 @media (max-width:400px){.tabbar button{font-size:10.5px}.tabbar .ti{width:46px}}
 .tabbar .tabMain .ti{width:62px;height:62px;border-radius:50%;margin-top:-26px;margin-bottom:1px;
