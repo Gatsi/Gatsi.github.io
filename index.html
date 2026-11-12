@@ -652,6 +652,8 @@ button{cursor:pointer}
 .price.skullPrice.poor{opacity:.5}
 .badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
 .badge.sea{color:#7dffd6;background:rgba(40,180,150,.16);display:inline-flex;align-items:center;gap:5px}.badge.sea .ico{width:14px;height:14px}
+.badge.starry{color:#ffd86a;background:rgba(255,199,44,.14);display:inline-flex;align-items:center;gap:5px}.badge.starry .ico{width:14px;height:14px}
+.rico.starry{color:#ffd86a}
 .badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
 .invSlot.void,.rico.void{color:#c9a2ff}
 .invSlot.sea,.rico.sea{color:#5effc8}.row .rico.void{color:#d4b6ff;filter:drop-shadow(0 0 6px rgba(150,90,255,.85))}
@@ -2181,8 +2183,11 @@ const SOULS={
   divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
   demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'},
   pirate:{name:'Pirate Soul', item:'pirate',    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
+  ancient:{name:'Ancient Lion Soul',item:'soulAncient',eyes:'#ffd86a',col:'#ffc72c',pct:0,star:1,desc:'Eyes of old gold and a night sky that turns around it. No stat boost: instead, stars fall on its enemies all fight long.'},
   void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
-function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct||10):0;}
+function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct!=null?SOULS[so].pct:10):0;}
+/* the Ancient Lion Soul: no stats, but a volley of falling stars on the nearest enemy every few seconds */
+const ASOUL={price:15,kills:10,cd:7,first:[2.5,4.5],n:3,dmg:.62};
 /* a Divine or Demonic soul grows: Lv1 +10%, Lv2 +12%, Lv3 +14%. Only a Lv3 soul can become the Void */
 const SOUL_LV={max:3,skulls:10,pct:[0,10,12,14]};
 function soulLvOf(c){const so=soulOf(c);return (so==='divine'||so==='demon')?clamp((c.slv|0)||1,1,SOUL_LV.max):(so?1:0);}
@@ -2364,6 +2369,34 @@ function soulAura0(g,x,y,R,ang,t,soul,under){
         g.beginPath();g.arc(x+Math.cos(a)*R*(.9+ph*.5),y+Math.sin(a)*R*(.9+ph*.5),Math.max(.6,R*.04),0,7);g.fill();}
       g.globalAlpha=1;
     }
+  } else if(soul==='ancient'){
+    /* the Ancient Lion Soul: a small night sky that turns around the lion, with a slow ring of gold stars */
+    const pu=.5+.5*Math.sin(t*1.5);
+    if(under){
+      const sk=g.createRadialGradient(x,y,R*.5,x,y,R*2.5);
+      sk.addColorStop(0,'rgba(34,52,130,.62)');sk.addColorStop(.55,'rgba(20,28,84,.34)');sk.addColorStop(1,'rgba(10,14,48,0)');
+      g.fillStyle=sk;g.beginPath();g.arc(x,y,R*2.5,0,7);g.fill();
+      /* far stars, twinkling */
+      for(let i=0;i<16;i++){const a=i*2.399+t*.05,d=R*(1.15+((i*37)%10)/10*1.15),tw=.5+.5*Math.sin(t*2.6+i*1.9);
+        g.fillStyle='rgba(214,226,255,'+(.2+.55*tw).toFixed(2)+')';g.beginPath();g.arc(x+Math.cos(a)*d,y+Math.sin(a)*d,Math.max(.5,R*.035*(.6+tw)),0,7);g.fill();}
+      /* the turning ring and its constellation */
+      g.save();g.translate(x,y);g.rotate(t*.22);
+      g.strokeStyle='rgba(255,214,110,'+(.22+.16*pu).toFixed(2)+')';g.lineWidth=Math.max(.8,R*.035);g.setLineDash([R*.22,R*.2]);g.beginPath();g.arc(0,0,R*1.62,0,7);g.stroke();g.setLineDash([]);
+      const pts=[];for(let i=0;i<5;i++){const a=i*Math.PI*2/5,d=R*(1.62+(i%2?.16:-.1));pts.push([Math.cos(a)*d,Math.sin(a)*d]);}
+      g.strokeStyle='rgba(190,208,255,.32)';g.lineWidth=Math.max(.6,R*.025);g.beginPath();pts.forEach(function(p,i){if(i)g.lineTo(p[0],p[1]);else g.moveTo(p[0],p[1]);});g.stroke();
+      g.shadowColor='#ffd86a';g.shadowBlur=Math.max(3,R*.4);
+      pts.forEach(function(p,i){const tw=.6+.4*Math.sin(t*3+i*1.7);g.fillStyle='rgba(255,236,170,'+(.6+.4*tw).toFixed(2)+')';drawStar(g,p[0],p[1],R*(.15+.05*tw),t*.8+i);});
+      g.restore();
+    } else {
+      /* a shooting star crossing over it now and then, and gold dust falling */
+      const cyc=(t*.45)%1;
+      if(cyc<.35){const k=cyc/.35,sx=x+R*(1.9-3.2*k),sy=y-R*(1.9-1.5*k),tl=g.createLinearGradient(sx,sy,sx+R*.9,sy-R*.42);
+        tl.addColorStop(0,'rgba(255,246,200,'+(.9*(1-k)).toFixed(2)+')');tl.addColorStop(1,'rgba(120,150,255,0)');
+        g.strokeStyle=tl;g.lineWidth=Math.max(1,R*.07);g.lineCap='round';g.beginPath();g.moveTo(sx,sy);g.lineTo(sx+R*.9,sy-R*.42);g.stroke();
+        g.fillStyle='rgba(255,250,225,'+(1-k).toFixed(2)+')';drawStar(g,sx,sy,R*.13,t*5);}
+      for(let i=0;i<5;i++){const p=((t*.35+i/5)%1),a=i*1.9+1,d=R*(.5+((i*29)%7)/7*.9);
+        g.fillStyle='rgba(255,224,130,'+(.75*(1-p)).toFixed(2)+')';g.beginPath();g.arc(x+Math.cos(a)*d,y+Math.sin(a)*d*.8-R*.9+p*R*1.5,Math.max(.5,R*.04),0,7);g.fill();}
+    }
   } else if(soul==='void'){
     /* the Void Soul: an eclipse. A black sun behind the lion with a cold corona, shadowfire, a broken
        sigil of crescent moons, and ash being pulled in instead of drifting off */
@@ -2544,7 +2577,7 @@ function encodeLion(c,rec){
     c.gold|0,
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
-    (soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':''))))+(soulLvOf(c)>1?soulLvOf(c):''),
+    (soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':(soulOf(c)==='ancient'?'a':'')))))+(soulLvOf(c)>1?soulLvOf(c):''),
     wlvOf(c)||'',
     (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
@@ -2569,7 +2602,7 @@ function decodeLion(str){
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
-    {const sc=(a[18]||'').charAt(0),sl=+(a[18]||'').charAt(1);if(sc==='d')c.soul='divine';else if(sc==='x')c.soul='demon';else if(sc==='v')c.soul='void';else if(sc==='p')c.soul='pirate';
+    {const sc=(a[18]||'').charAt(0),sl=+(a[18]||'').charAt(1);if(sc==='d')c.soul='divine';else if(sc==='x')c.soul='demon';else if(sc==='v')c.soul='void';else if(sc==='p')c.soul='pirate';else if(sc==='a')c.soul='ancient';
       if((sc==='d'||sc==='x')&&(sl===2||sl===3))c.slv=sl;}
     if(a[19]){const wl=clamp(+a[19]|0,0,5);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
@@ -2676,7 +2709,7 @@ const ICONS={
   thorn:'<path d="M2.4 13.2C5 10.3 7 9.8 8.6 7.6S11 3.7 13.6 2.9"/><path d="M5.1 10.6 4 8.7M7.7 8.8l1.8.6M8.9 6.8 8 5.1M11.1 4.4l1.1 1.7"/>',
   rock:'<path d="M3.2 13.4 2.5 9.6 5 6.8h4.6l3.2 2.6.6 4z"/><path d="M7.4 6.8 8.2 9.2l-1.4 1.6"/><path d="M5.4 2.2v2.2M8.6 1.4v2.6M11.6 2.6v2.2"/>',
   skull:'<path d="M8 2.6c-3 0-5.1 2.1-5.1 4.8 0 1.6.8 2.9 2 3.7v1.9h6.2v-1.9c1.2-.8 2-2.1 2-3.7 0-2.7-2.1-4.8-5.1-4.8z"/><path d="M3.9 4.3 3.3 2.4l2 .9M12.1 4.3l.6-1.9-2 .9"/><circle cx="6.1" cy="7.6" r="1.15"/><circle cx="9.9" cy="7.6" r="1.15"/><path d="M7.4 10.4 8 9.5l.6.9M7 13v-1.3M9 13v-1.3"/>',
-  soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
+  soulA:'<path d="M8 1.6l1.7 4.1 4.4.4-3.3 2.9 1 4.3L8 11l-3.8 2.3 1-4.3-3.3-2.9 4.4-.4z"/><circle cx="8" cy="7.6" r="0.9"/>',soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
   lock:'<rect x="3.5" y="7.2" width="9" height="6.6" rx="1.6"/><path d="M5.6 7.2V5.3a2.4 2.4 0 0 1 4.8 0v1.9"/><path d="M8 9.8v1.4"/>',
   dandelion:'<path d="M8 9v5"/><path d="M8 12.2c-1-.9-2.2-1-3-.6"/><circle cx="8" cy="5.6" r="1"/><path d="M8 2.2v1.4M8 7.6V9M4.6 5.6H6M10 5.6h1.4M5.6 3.2l1 1M10.4 3.2l-1 1M5.6 8l1-1M10.4 8l-1-1"/>',
   straw:'<ellipse cx="8" cy="9.6" rx="6.4" ry="2.6"/><path d="M4.8 9.2c0-2.6 1.4-4.6 3.2-4.6s3.2 2 3.2 4.6"/><path d="M4.9 8.2h6.2"/>',
@@ -2749,7 +2782,7 @@ function lionSummaryText(c){
     ' in '+r.fights+' bout'+(r.fights===1?'':'s')+' \u00b7 '+(r.losses||0)+' loss'+((r.losses||0)===1?'':'es')+
     (r.bestWave?(' \u00b7 best pack wave '+r.bestWave):''));
   else L.push('  none \u2014 this one has never entered a championship');
-  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+soulName(c)+' \u2014 +'+soulPctOf(c)+'% to health, damage, speed, swing and armour');}
+  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+soulName(c)+' \u2014 '+(soulOf(c)==='ancient'?'Starfall: stars fall on its enemies. No stat boost':'+'+soulPctOf(c)+'% to health, damage, speed, swing and armour'));}
   const bag=(Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0);
   if(bag.length){L.push('');L.push('BAG');
     L.push('  '+bag.map(it=>ITEMS[it.k].name+(it.n>1?' \u00d7'+it.n:'')).join(' \u00b7 '));}
@@ -2898,6 +2931,7 @@ function drawLionCard(c){
   if(soulOf(c)==='demon')badge('Demonic soul Lv'+soulLvOf(c),'#ff5a4d','rgba(255,90,77,.16)',ICONS.soulX);
   if(soulOf(c)==='void')badge('Void soul','#c9a2ff','rgba(150,100,255,.18)',ICONS.soulV);
   if(soulOf(c)==='pirate')badge('Pirate soul','#5effc8','rgba(63,217,176,.16)',ICONS.soulP);
+  if(soulOf(c)==='ancient')badge('Ancient Lion soul','#ffd86a','rgba(255,199,44,.16)',ICONS.soulA);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
   if((c.iv||5)>=9)badge('Rare blood','#ffb340','rgba(255,179,64,.14)');
   if((c.iv||5)<=2)badge('Runt','#a1a1a6','rgba(255,255,255,.08)');
@@ -3794,6 +3828,7 @@ function badgesFor(L,rec){
   if(soulOf(L)==='demon')out.push('<span class="badge blood">'+ico('soulX')+'Demonic soul Lv'+soulLvOf(L)+'</span>');
   if(soulOf(L)==='void')out.push('<span class="badge void">'+ico('soulV')+'Void soul</span>');
   if(soulOf(L)==='pirate')out.push('<span class="badge sea">'+ico('soulP')+'Pirate soul</span>');
+  if(soulOf(L)==='ancient')out.push('<span class="badge starry">'+ico('soulA')+'Ancient Lion soul</span>');
   if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
@@ -3970,7 +4005,8 @@ const ITEMS={
   swordGold:{name:'Gold Sword',       ico:'sword',use:'cos',cs:'hat',val:'swgold',swap:1,desc:'A gilded blade in a gold scabbard with a ruby in the pommel, slung across the back. +10% damage while it is worn. Takes the hat slot.'},
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
-  partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'}};
+  partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'},
+  soulAncient:{name:'Ancient Lion Soul',ico:'soulA',use:'soul',soul:'ancient',earn:1,desc:'Bind it and your lion\u2019s eyes turn old gold, with a night sky turning around it. No stat boost. Instead, stars fall on its enemies all fight long, the way they do for the Ancient Lion.'}};
 const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic',shopGift:'gift'};
 function invOf(L){
   if(!Array.isArray(L.inv))L.inv=[];
@@ -4013,7 +4049,7 @@ function openInventory(sel){
   let det='';
   if(sel>=0){
     const it=items[sel],I=ITEMS[it.k];
-    det='<div class="invDet"><span class="rico'+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='pirate'?' sea':'')+'">'+ico(I.ico)+'</span><div class="v"><b>'+I.name+
+    det='<div class="invDet"><span class="rico'+(it.k==='skull'?' bone':'')+(it.k==='divine'||it.k==='halo'?' holy':'')+(it.k==='demon'?' hell':'')+(it.k==='pirate'?' sea':'')+(it.k==='soulAncient'?' starry':'')+'">'+ico(I.ico)+'</span><div class="v"><b>'+I.name+
       (it.n>1?' <em>×'+it.n+'</em>':'')+'</b><small>'+I.desc+'</small></div></div>'+
       (I.use==='pact'?'<div class="grp">a gamble: the new IV is rolled fresh, from 1 to 10. '+esc(L.name)+' is IV '+(L.iv||5)+' now</div>':'')+
       (it.k==='weapon'&&wlvOf(L)?'<div class="grp warnTxt">its Lv'+wlvOf(L)+' '+FINISH[wlvOf(L)].name+' finish will be lost if it changes weapon</div>':'')+
@@ -5231,7 +5267,7 @@ function drawSmithScene(g,p){
   g.fillStyle='#2a2420';lines.forEach(function(l,i){g.fillText(l,bx+9,by+18+i*15);});
 }
 /* ---------- the Mystic Lion: souls for skulls ---------- */
-const MYSTIC={price:7,prices:{divine:7,demon:7,halo:3,cleanse:2,pact:5},quip:'',
+const MYSTIC={price:7,prices:{divine:7,demon:7,halo:3,cleanse:2,pact:5,soulAncient:15},quip:'',
   hello:['Sit. The spirits were expecting you.','Seven skulls a soul. The dead are not cheap.','Light or dark. Choose, and it chooses you back.',
          'Every skull remembers. So do I.','I see a lion. I see skulls. Good.'],
   thanks:['It is done. Do not look back.','The soul has found its keeper.','Wear it well. It is watching.'],
@@ -5305,6 +5341,8 @@ function mysticHTML(L){
     '<div class="hd sub2"><h2>On the altar</h2><span>Two souls and a blessing. Paid in skulls.</span></div>'+
     '<div class="card">'+item('divine')+item('demon')+item('halo')+item('cleanse')+item('pact')+'</div>'+
     soulLvHTML(L)+
+    '<div class="hd sub2"><h2>The old soul</h2><span>Only for a lion the Ancient Lion has fallen to, ten times.</span></div>'+
+    '<div class="card">'+ancSoulHTML(L)+'</div>'+
     '<div class="hd sub2"><h2>Beyond the altar</h2><span>One soul the Mystic Lion will not sell.</span></div>'+
     '<div class="card">'+voidQuestHTML(L)+'</div>'+
     '<div class="card"><button class="row" data-act="openInv"><span class="rico">'+ico('bag')+'</span>'+
@@ -5312,8 +5350,19 @@ function mysticHTML(L){
     '<p class="muted" style="padding:0 2px 8px">A lion can carry one soul at a time. Binding a new one drives the old one out. '+
     'Skulls come from championship wins: about one time in three, your lion takes the loser’s skull.</p>';
 }
+function ancSoulKills(L){return (L&&L.record&&L.record.ancientKills)|0;}
+function ancSoulHTML(L){
+  const n=ancSoulKills(L),need=ASOUL.kills,open=n>=need,sk=invCount(L,'skull'),has=soulOf(L)==='ancient'||invCount(L,'soulAncient')>0;
+  return '<button class="row" data-act="mysticBuy" data-k="soulAncient"'+(open?'':' aria-disabled="true"')+'><span class="rico starry">'+ico('soulA')+'</span>'+
+      '<span class="v">Ancient Lion Soul<small>Eyes of old gold and a night sky around it. <b>No stat boost.</b> Instead, three stars fall on its enemies every '+ASOUL.cd+' seconds, all fight long. A soul of its own: bind it from the bag like any other.</small></span>'+
+      (open?'<span class="price skullPrice'+(sk>=ASOUL.price?'':' poor')+'">'+ico('skull')+ASOUL.price+'</span>':'<span class="price poor">'+ico('lock')+'</span>')+'</button>'+
+    '<div class="questBar" style="padding:0 14px 12px"><div class="row" style="padding:0;min-height:0;border:0"><span class="v"><small>'+(open?(has?'Earned. '+esc(L.name)+' already has one.':'Earned. The Mystic Lion will part with it for '+ASOUL.price+' skulls.')
+      :'Beat the Ancient Lion '+need+' times in Challenges: <b>'+n+' of '+need+'</b>')+'</small></span></div>'+
+      '<div style="height:6px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,n/need*100).toFixed(0)+'%;background:#ffc72c;border-radius:3px"></i></div></div>';
+}
 function mysticBuy(k){
   const L=CAREER.lion,pr=MYSTIC.prices[k];if(!L||!CAREER.locked||!ITEMS[k]||!pr)return;
+  if(k==='soulAncient'&&ancSoulKills(L)<ASOUL.kills){mysticSay(['That one is not mine to sell. It is his. Fell him ten times and he will let it go.']);toast('Beat the Ancient Lion '+(ASOUL.kills-ancSoulKills(L))+' more time'+(ASOUL.kills-ancSoulKills(L)===1?'':'s'));refresh();return;}
   const have=invCount(L,'skull');
   if(have<pr){mysticSay(MYSTIC.broke);toast('You need '+(pr-have)+' more skull'+(pr-have===1?'':'s'));refresh();return;}
   for(let i=0;i<pr;i++)invTake(L,'skull');
@@ -5327,7 +5376,7 @@ function bindSoul(kind){
   if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
   if(prev&&SOULS[prev].dev&&SOULS[prev].item){invTake(L,S.item);invAdd(L,SOULS[prev].item,1);}else invTake(L,S.item);
   L.soul=kind;delete L.slv;
-  if(kind==='divine')SFX.heal();else if(kind==='pirate'){SFX.cast();SFX.roar();}else SFX.roar();
+  if(kind==='divine')SFX.heal();else if(kind==='pirate'||kind==='ancient'){SFX.cast();SFX.roar();}else SFX.roar();
   toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
   delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
   Store.save();refresh();openInventory();
@@ -5932,6 +5981,7 @@ function foeUpChips(f){
 function soulBadge(f){const s=soulOf(f);if(!s)return '';
   if(s==='void')return '<span class="badge void">'+ico('soulV')+'Void soul</span>';
   if(s==='pirate')return '<span class="badge sea">'+ico('soulP')+'Pirate soul</span>';
+  if(s==='ancient')return '<span class="badge starry">'+ico('soulA')+'Ancient Lion soul</span>';
   return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>';}
 function rivalBadge(f){
   const R=rivalOf(f);if(!R)return '';
@@ -6880,6 +6930,18 @@ function gabStep(e,dt){
     num(e.x,e.y-e.r-18,'STARFALL',FX.gold,15);
   }
 }
+/* the Ancient Lion Soul: nothing to press, nothing to aim. Every few seconds three stars come down on the nearest enemy */
+function ancSoulStep(e,dt){
+  if(e.asCd==null)e.asCd=rnd(ASOUL.first[0],ASOUL.first[1]);
+  e.asCd-=dt;if(e.asCd>0)return;
+  const f=(e.foe&&!e.foe.dead)?e.foe:gabFoes(e)[0];if(!f)return;
+  e.asCd=ASOUL.cd;
+  for(let i=0;i<ASOUL.n;i++){
+    const a=i/ASOUL.n*6.283+Math.random(),off=i?rnd(26,54):0;
+    G.gfx.push({k:'star',x:f.x+(f.vx||0)*.45+Math.cos(a)*off,y:f.y+(f.vy||0)*.45+Math.sin(a)*off,t:0,life:GAB.star.delay+i*.14,src:e,vol:G.t+e.uid*.001,m:ASOUL.dmg,anc:1});
+  }
+  num(e.x,e.y-e.r-18,'STARFALL',FX.gold,13);
+}
 function stepGab(dt){
   for(let i=G.gfx.length-1;i>=0;i--){
     const g=G.gfx[i];g.t+=dt;
@@ -6903,7 +6965,7 @@ function stepGab(dt){
       spark(g.x,g.y,FX.gold,g.big?30:14);spark(g.x,g.y,'#6f8fff',g.big?14:6);SFX.hit(g.big?1.6:.9);G.shake=Math.min(g.big?16:9,G.shake+(g.big?12:2.5));
       if(g.big){G.flash=Math.max(G.flash||0,.6);SFX.boom();crowdReact(2,g.x,g.y);}
       if(G.scorch&&G.scorch.length<40)G.scorch.push({x:g.x,y:g.y,r:gr*(g.big?.9:.55),t:0});
-      if(g.src&&g.src.cfg&&g.src.cfg.ancient)G.parts.push({ring:1,x:g.x,y:g.y,rad:gr*.3,maxRad:gr*(g.big?1.8:1.3),life:.45,max:.45,col:'#fff3b0'});
+      if(g.anc||(g.src&&g.src.cfg&&g.src.cfg.ancient))G.parts.push({ring:1,x:g.x,y:g.y,rad:gr*.3,maxRad:gr*(g.big?1.8:1.3),life:.45,max:.45,col:'#fff3b0'});
       gabFoes(g.src).forEach(function(l){
         if(Math.hypot(l.x-g.x,l.y-g.y)<=gr+l.r*.5){
           hurt(l,GAB.star.dmg*(g.m||1)*g.src.dmgMult*(g.src.cfg.ancient?ANC.star:1),g.src,{col:FX.gold,by:g.big?'the sky falling':'a falling star'});
@@ -6935,7 +6997,7 @@ function drawGabFx(){
     } else if(g.k==='gcut'){gcutDraw(ctx,g);
     } else if(g.k==='star'){
       ctx.save();
-      const gr=g.r||GAB.star.r,anc=g.src&&g.src.cfg&&g.src.cfg.ancient;
+      const gr=g.r||GAB.star.r,anc=g.anc||(g.src&&g.src.cfg&&g.src.cfg.ancient);
       if(!g.done){
         const k=g.t/g.life;
         ctx.globalAlpha=.25+.45*k;ctx.strokeStyle=g.big?'#ff8a5a':'#ffd24a';ctx.lineWidth=g.big?3:2;ctx.setLineDash([6,6]);
@@ -8806,6 +8868,7 @@ function step(dt){
     else if(e.stun<=0)think(e,dt);
     else{e.moveX=0;e.moveY=0;}
     if(e.gab&&!frozen&&!G.over&&!G.ancPh&&!G.shPh&&!G.godPh&&e.stun<=0)gabStep(e,dt);
+    else if(!e.gab&&!e.dead&&!frozen&&!G.over&&!G.ancPh&&!G.shPh&&!G.godPh&&e.cfg&&e.cfg.soul==='ancient')ancSoulStep(e,dt);
 
     if(e.charge>0&&!frozen){
       e.charge-=dt;
@@ -11414,7 +11477,8 @@ if(typeof window!=='undefined'){
 }
 /* ---------- what's new ---------- */
 const NEWS={id:'2026-11-godslayer',title:'The Godslayer update',top:'THE',bottom:'GODSLAYER',tag:'NEW BOSS · CAL THE SHAGON',
-  items:[['fish','New event: the Fisherman','An old lion in a straw hat is fishing by the river. Pay 50 gold and he casts for you, up to three times a visit. What comes up is random: any item from any shop. Often something small, about half the time something worth more than 50, and now and then a sword, a soul or a gem eye. Boss sashes and quest rewards never come out of the river.'],
+  items:[['soulA','The Ancient Lion Soul','A new soul at the Mystic Lion, for 15 skulls, once your lion has beaten the Ancient Lion 10 times. It gives no stat boost. Instead three stars fall on its enemies every 7 seconds, all fight long, in every mode. It is a soul of its own: it goes in the bag and you bind it like a Divine or Demonic one, and binding it drives the old soul out. Old gold eyes and a night sky that turns around your lion.'],
+    ['fish','New event: the Fisherman','An old lion in a straw hat is fishing by the river. Pay 50 gold and he casts for you, up to three times a visit. What comes up is random: any item from any shop. Often something small, about half the time something worth more than 50, and now and then a sword, a soul or a gem eye. Boss sashes and quest rewards never come out of the river.'],
     ['mind','A new tutorial','Old Lion has rebuilt his tour: 14 short steps, each with a moving picture and the few things worth remembering. Tap the dots to jump about. It is behind the ? button.'],
     ['spark','More events, no tournament','An event now turns up after 35% of wins, up from 20%. And the Tournament tab is gone, so the bottom bar has more room.'],
     ['paint','A better-dressed arena','From your sixth championship on, most opponents turn up in war gear: sashes, braids, brands, swords, axes and shields on their backs, now and then a gem eye. Bound souls get more common the more belts you hold, and deep in they can be Lv2 or Lv3.'],
@@ -13862,7 +13926,7 @@ function fishWorth(k){
 function fishTierOf(v){return v>=1000?3:(v>=150?2:(v>=50?1:0));}
 /* everything the river can give: no boss sashes, no quest rewards, nothing developer-only */
 function fishPool(){
-  return Object.keys(ITEMS).filter(function(k){const I=ITEMS[k];return !I.dev&&!I.boss&&k!=='swordGod';})
+  return Object.keys(ITEMS).filter(function(k){const I=ITEMS[k];return !I.dev&&!I.boss&&!I.earn&&k!=='swordGod';})
     .map(function(k){const v=fishWorth(k);return {k:k,v:v,tier:fishTierOf(v)};});
 }
 function fishRoll(){
