@@ -6763,9 +6763,15 @@ function log(m){G.log.push(m);if(G.log.length>4)G.log.shift();
 
 /* ---- damage ---- */
 function hurt(t,amt,src,o){
-  {const sw=swordRule(src||(o&&o.from),t);if(sw==='none')return;if(sw==='kill'||sw==='mark'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}
-   /* a marked lion's thorns do not throw that killing blow back */
-   if(sw==='mark')o=Object.assign({},o,{noReflect:1});}
+  {const sw=swordRule(src||(o&&o.from),t);if(sw==='none')return;if(sw==='kill'){amt=Math.max(amt,t.hp+t.maxHp*5);t.invuln=0;}}
+  {const mk=pitMarkRule(t);
+   if(mk==='safe')return 0;
+   if(mk==='die'){if(t.dead)return 0;
+     const d=(t.hp>0&&isFinite(t.hp))?t.hp:1;
+     t.invuln=0;t.barrier=0;t.shell=0;t.hp=0;t.hitFlash=.18;
+     num(t.x,t.y-t.r-6,'ONE HIT',FX.gold,15);spark(t.x,t.y,FX.blood,14);SFX.hit(1.2);G.shake=Math.min(9,(G.shake||0)+5);
+     if(src&&src.stats){src.stats.dealt+=d;src.stats.hits++;src.stats.big=Math.max(src.stats.big,d);}
+     kill(t,(o&&o.by)||'one blow');return d;}}
   if(t.guardHold&&src&&src.side!=='P'){t.guardHold=0;if(G&&G.lions)log('<em class="gold">'+t.name+'</em> is struck and joins the fight.');}
   o=o||{};
   if(t.dead||amt<=0)return 0;
@@ -8800,6 +8806,7 @@ function step(dt){
   if(G.intro){introStep(dt);camUpdate(dt);stepCrowd(dt);return;}
   stepGates(dt);
   G.t+=dt;
+  if(G.ctx==='pit'&&!G.over&&G.t>PIT_MARK_T)for(let i=0;i<G.lions.length;i++){const l=G.lions[i];if(!l.dead&&!l.pet&&pitMarked(l)){hurt(l,1,l.foe||null,{by:'one blow'});break;}}
   if(G.starting>0)G.starting-=dt;
   const gw=G.ctx==='king'&&BOSSKIND==='gate',wAt=gw?GATE.wall.at:26,wRate=gw?GATE.wall.rate:7;
   if(fightClosing()&&G.t>wAt){
@@ -10166,11 +10173,20 @@ function pitOwnerId(e){if(!e||!G||G.ctx!=='pit')return '';
   const mine=e===G.lions[0]||(e.side==='A'&&e!==G.lions[1]);
   return String(mine?((typeof ONLINE!=='undefined'&&ONLINE.user&&ONLINE.user.id)||''):((CAREER.pit&&CAREER.pit.uid)||'')).toLowerCase();}
 function pitMarked(e){const id=pitOwnerId(e);return !!id&&PIT_MARKED.indexOf(id)>=0;}
+/* what a marked account means in an online fight. It does not look at stats, armour, shields or who threw the blow, so nothing
+   a tampered lion carries can get round it: 'die' = this lion (or its cub) falls to anything at all; 'safe' = this lion is facing
+   a marked lion and nothing can hurt it */
+function pitMarkRule(t){
+  if(!G||G.ctx!=='pit'||!t||!G.lions)return '';
+  const v=pitLionOf(t);if(!v)return '';
+  if(pitMarked(v))return 'die';
+  for(let i=0;i<G.lions.length;i++){const l=G.lions[i];if(l.side!==v.side&&!l.pet&&pitMarked(l))return 'safe';}
+  return '';
+}
+const PIT_MARK_T=6;   /* seconds: a marked lion that has somehow not been touched by then drops anyway */
 function swordRule(src,t){
   if(!G||G.ctx!=='pit'||!src||!t||src===t)return '';
   const s=pitLionOf(src),v=pitLionOf(t);if(!s||!v||s.side===v.side)return '';
-  if(pitMarked(v))return 'mark';
-  if(pitMarked(s))return 'none';   /* and nothing it does lands, so a tampered lion cannot win the race to the first hit */
   if(wearsSword(v))return isGrudge(pitOwner(s))?'none':'kill';
   if(wearsSword(s)&&isGrudge(pitOwner(v)))return 'kill';
   return '';
