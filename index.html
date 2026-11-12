@@ -652,6 +652,7 @@ button{cursor:pointer}
 .price.skullPrice.poor{opacity:.5}
 .badge.holy{color:#fff1cc;background:rgba(255,241,204,.12)}
 .badge.sea{color:#7dffd6;background:rgba(40,180,150,.16);display:inline-flex;align-items:center;gap:5px}.badge.sea .ico{width:14px;height:14px}
+.badge.cloudy{color:#f1f4f9;background:rgba(240,244,250,.13);display:inline-flex;align-items:center;gap:5px}.badge.cloudy .ico{width:14px;height:14px}
 .badge.starry{color:#ffd86a;background:rgba(255,199,44,.14);display:inline-flex;align-items:center;gap:5px}.badge.starry .ico{width:14px;height:14px}
 .rico.starry{color:#ffd86a}
 .badge.void{color:#d4b6ff;background:rgba(140,90,255,.18);display:inline-flex;align-items:center;gap:5px}.badge.void .ico{width:14px;height:14px}
@@ -2183,6 +2184,7 @@ const SOULS={
   divine:{name:'Divine Soul', item:'divine',eyes:'#fff3d6',col:'#fff1cc',desc:'Eyes like an angel, a light that follows it round. +10% to everything.'},
   demon: {name:'Demonic Soul',item:'demon', eyes:'#ff2a1a',col:'#ff4a3a',desc:'Eyes like coals, a fire that never goes out. +10% to everything.'},
   pirate:{name:'Pirate Soul', item:'pirate',    eyes:'#5effc8',col:'#3fd9b0',pct:15,dev:1,desc:'The soul of a drowned sea captain. A whirlpool turns under it, a ghost ship\u2019s wheel behind it, gold coins circling. +15% to everything.'},
+  cloud: {name:'Cloud Soul',  item:'soulCloud', eyes:'#ff2436',col:'#eef2f8',pct:0,dev:1,hair:'#f4f6fa',desc:'White-maned and red-eyed, wreathed in clouds that never stop turning. Cosmetic only.'},
   ancient:{name:'Ancient Lion Soul',item:'soulAncient',eyes:'#ffd86a',col:'#ffc72c',pct:0,star:1,desc:'Eyes of old gold and a night sky that turns around it. No stat boost: instead, stars fall on its enemies all fight long.'},
   void:  {name:'Void Soul',   item:null,    eyes:'#c9a2ff',col:'#b48cff',pct:15,desc:'Eyes like dead stars, a black sun burning behind it. +15% to everything.'}};
 function soulPct(so){return so&&SOULS[so]?(SOULS[so].pct!=null?SOULS[so].pct:10):0;}
@@ -2369,6 +2371,38 @@ function soulAura0(g,x,y,R,ang,t,soul,under){
         g.beginPath();g.arc(x+Math.cos(a)*R*(.9+ph*.5),y+Math.sin(a)*R*(.9+ph*.5),Math.max(.6,R*.04),0,7);g.fill();}
       g.globalAlpha=1;
     }
+  } else if(soul==='cloud'){
+    /* the Cloud Soul: banks of cloud turning round the lion, wind drawn in long curved strokes, wisps crossing in front */
+    const puff=function(px,py,sz,al){
+      g.fillStyle='rgba(206,214,228,'+(al*.55).toFixed(2)+')';
+      [[-.9,.28,.62],[0,.34,.8],[.9,.28,.6]].forEach(function(c){g.beginPath();g.arc(px+c[0]*sz,py+c[1]*sz,sz*c[2],0,7);g.fill();});
+      g.fillStyle='rgba(246,248,252,'+al.toFixed(2)+')';
+      [[-.95,.12,.58],[-.35,-.3,.72],[.4,-.22,.78],[1,.14,.55],[0,.2,.8]].forEach(function(c){g.beginPath();g.arc(px+c[0]*sz,py+c[1]*sz,sz*c[2],0,7);g.fill();});
+    };
+    if(under){
+      const mist=g.createRadialGradient(x,y,R*.4,x,y,R*2.7);
+      mist.addColorStop(0,'rgba(238,242,250,.34)');mist.addColorStop(.55,'rgba(210,220,236,.16)');mist.addColorStop(1,'rgba(210,220,236,0)');
+      g.fillStyle=mist;g.beginPath();g.arc(x,y,R*2.7,0,7);g.fill();
+      /* the wind: long tapering strokes on three rings, each turning its own way */
+      g.lineCap='round';
+      for(let k=0;k<3;k++){const rr=R*(1.25+k*.42),dir=k%2?-1:1,n=3+k;
+        for(let i=0;i<n;i++){const a0=dir*t*(.9-k*.2)+i*Math.PI*2/n+k*.7,len=.75+.25*Math.sin(t*1.3+i+k);
+          g.lineCap='butt';
+          for(let q=0;q<14;q++){const a=a0-dir*q*len/14,al=(.42-k*.08)*(1-q/14);
+            g.strokeStyle='rgba(244,247,252,'+al.toFixed(2)+')';g.lineWidth=Math.max(.7,R*.11*(1-q/15)*(1-k*.2));
+            g.beginPath();g.arc(x,y,rr-q*R*.012,a,a-dir*(len/14+.012),dir>0);g.stroke();}}}
+      /* the far bank of cloud, behind the lion */
+      for(let i=0;i<6;i++){const a=t*.42+i*Math.PI*2/6,d=R*(1.7+.16*Math.sin(t*.9+i*2.1));
+        puff(x+Math.cos(a)*d,y+Math.sin(a)*d*.86,R*(.36+.08*((i*5)%3)),.62+.14*Math.sin(t*1.1+i));}
+    } else {
+      /* the near bank: fewer, lower, turning the other way and passing in front of its legs */
+      for(let i=0;i<3;i++){const a=-t*.6+i*Math.PI*2/3+.5,d=R*(1.28+.12*Math.sin(t*1.2+i));
+        const py=y+Math.sin(a)*d*.8;if(Math.sin(a)<-.15)continue;
+        puff(x+Math.cos(a)*d,py,R*(.3+.05*i),.5);}
+      /* wisps breaking off and rising */
+      for(let i=0;i<5;i++){const p=((t*.3+i/5)%1),a=i*2.3+.8,d=R*(.7+((i*31)%7)/7*.9);
+        g.fillStyle='rgba(246,248,252,'+(.4*(1-p)).toFixed(2)+')';g.beginPath();g.arc(x+Math.cos(a)*d+Math.sin(t*2+i)*R*.08,y+Math.sin(a)*d*.7-p*R*1.1,Math.max(.6,R*(.1-.05*p)),0,7);g.fill();}
+    }
   } else if(soul==='ancient'){
     /* the Ancient Lion Soul: a small night sky that turns around the lion, with a slow ring of gold stars */
     const pu=.5+.5*Math.sin(t*1.5);
@@ -2517,7 +2551,11 @@ const GABCOLS={mane:'#ffc72c',body:'#14244f',edge:'#ffd95a',muz:'#ffe48a',plate:
 const GAB={nova:{cd:5.2,reach:150,max:180,life:.55,dmg:30,stun:.65,kb:430},
            star:{cd:4.0,n:3,delay:.9,r:48,dmg:21}};
 /* what a lion looks like: the two named ones override their coat, mane and tail */
-function colsOf(c){return (c&&c.old)?OLDCOLS:(isGab(c)?GABCOLS:(isHog(c)?KINGCOLS:peltCols((c&&c.pelt)||0)));}
+function colsOf(c){const b=(c&&c.old)?OLDCOLS:(isGab(c)?GABCOLS:(isHog(c)?KINGCOLS:peltCols((c&&c.pelt)||0)));
+  return (c&&c.soul&&SOULS[c.soul]&&SOULS[c.soul].hair)?hairCols(b,SOULS[c.soul].hair):b;}
+/* a soul that changes the mane: same pelt, new hair. Kept per pelt so nothing is rebuilt each frame */
+const HAIRMEMO=new Map();
+function hairCols(b,hair){let m=HAIRMEMO.get(b);if(!m||m.mane!==hair){m=Object.assign({},b,{mane:hair});HAIRMEMO.set(b,m);}return m;}
 function lookOf(c,k){if(isGab(c))return k==='mane'?1:3;return (c&&c[k])||0;}
 function perkTotals(c){
   const t={hp:1,spd:1,dmg:1,dr:0,cdr:1,atk:1,regen:0};
@@ -2577,7 +2615,7 @@ function encodeLion(c,rec){
     c.gold|0,
     c.born?Math.floor(c.born/1000).toString(36):'',
     (Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0).map(it=>Object.keys(ITEMS).indexOf(it.k)+'x'+it.n).join('.'),
-    (soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':(soulOf(c)==='ancient'?'a':'')))))+(soulLvOf(c)>1?soulLvOf(c):''),
+    (soulOf(c)==='divine'?'d':(soulOf(c)==='demon'?'x':(soulOf(c)==='void'?'v':(soulOf(c)==='pirate'?'p':(soulOf(c)==='ancient'?'a':(soulOf(c)==='cloud'?'c':''))))))+(soulLvOf(c)>1?soulLvOf(c):''),
     wlvOf(c)||'',
     (function(){const o=cosOf(c);return o?COS_SLOTS.map(k=>o[k]?String(COS_VALS[k].indexOf(o[k])+1):'').join('.').replace(/\.+$/,''):'';})()];
   return 'LION1-'+btoa(unescape(encodeURIComponent(a.join('|')))).replace(/=+$/,'');
@@ -2602,7 +2640,7 @@ function decodeLion(str){
     if(a[16]){const b=parseInt(a[16],36)*1000;if(b>0&&b<Date.now()+864e5)c.born=b;}
     if(a[17]){const IK=Object.keys(ITEMS);c.inv=a[17].split('.').map(p=>{const q=p.split('x');return {k:IK[+q[0]],n:clamp(+q[1]||0,0,INV_STACK)};})
       .filter(it=>it.k&&it.n>0).slice(0,INV_SLOTS);if(!c.inv.length)delete c.inv;}
-    {const sc=(a[18]||'').charAt(0),sl=+(a[18]||'').charAt(1);if(sc==='d')c.soul='divine';else if(sc==='x')c.soul='demon';else if(sc==='v')c.soul='void';else if(sc==='p')c.soul='pirate';else if(sc==='a')c.soul='ancient';
+    {const sc=(a[18]||'').charAt(0),sl=+(a[18]||'').charAt(1);if(sc==='d')c.soul='divine';else if(sc==='x')c.soul='demon';else if(sc==='v')c.soul='void';else if(sc==='p')c.soul='pirate';else if(sc==='a')c.soul='ancient';else if(sc==='c')c.soul='cloud';
       if((sc==='d'||sc==='x')&&(sl===2||sl===3))c.slv=sl;}
     if(a[19]){const wl=clamp(+a[19]|0,0,5);if(wl)c.wlv=wl;}
     if(a[20]){const q=a[20].split('.'),M={g:'gold',s:'silver'},o={};COS_SLOTS.forEach((k,i)=>{const v=q[i];if(!v)return;
@@ -2709,7 +2747,7 @@ const ICONS={
   thorn:'<path d="M2.4 13.2C5 10.3 7 9.8 8.6 7.6S11 3.7 13.6 2.9"/><path d="M5.1 10.6 4 8.7M7.7 8.8l1.8.6M8.9 6.8 8 5.1M11.1 4.4l1.1 1.7"/>',
   rock:'<path d="M3.2 13.4 2.5 9.6 5 6.8h4.6l3.2 2.6.6 4z"/><path d="M7.4 6.8 8.2 9.2l-1.4 1.6"/><path d="M5.4 2.2v2.2M8.6 1.4v2.6M11.6 2.6v2.2"/>',
   skull:'<path d="M8 2.6c-3 0-5.1 2.1-5.1 4.8 0 1.6.8 2.9 2 3.7v1.9h6.2v-1.9c1.2-.8 2-2.1 2-3.7 0-2.7-2.1-4.8-5.1-4.8z"/><path d="M3.9 4.3 3.3 2.4l2 .9M12.1 4.3l.6-1.9-2 .9"/><circle cx="6.1" cy="7.6" r="1.15"/><circle cx="9.9" cy="7.6" r="1.15"/><path d="M7.4 10.4 8 9.5l.6.9M7 13v-1.3M9 13v-1.3"/>',
-  soulA:'<path d="M8 1.6l1.7 4.1 4.4.4-3.3 2.9 1 4.3L8 11l-3.8 2.3 1-4.3-3.3-2.9 4.4-.4z"/><circle cx="8" cy="7.6" r="0.9"/>',soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
+  soulC:'<path d="M4.6 12.4a2.9 2.9 0 0 1-.4-5.8 3.9 3.9 0 0 1 7.5-.6 3.2 3.2 0 0 1-.3 6.4z"/><path d="M6.2 9.6c.9-.8 2-.8 2.9 0"/>',soulA:'<path d="M8 1.6l1.7 4.1 4.4.4-3.3 2.9 1 4.3L8 11l-3.8 2.3 1-4.3-3.3-2.9 4.4-.4z"/><circle cx="8" cy="7.6" r="0.9"/>',soulD:'<ellipse cx="8" cy="3.3" rx="3.6" ry="1.3"/><path d="M8 6.2c-2.3 1.4-3.6 3-3.6 4.6A3.6 3.6 0 0 0 8 14.4a3.6 3.6 0 0 0 3.6-3.6c0-1.6-1.3-3.2-3.6-4.6z"/><path d="M8 9.4v2.6M6.7 10.7h2.6"/>',
   lock:'<rect x="3.5" y="7.2" width="9" height="6.6" rx="1.6"/><path d="M5.6 7.2V5.3a2.4 2.4 0 0 1 4.8 0v1.9"/><path d="M8 9.8v1.4"/>',
   dandelion:'<path d="M8 9v5"/><path d="M8 12.2c-1-.9-2.2-1-3-.6"/><circle cx="8" cy="5.6" r="1"/><path d="M8 2.2v1.4M8 7.6V9M4.6 5.6H6M10 5.6h1.4M5.6 3.2l1 1M10.4 3.2l-1 1M5.6 8l1-1M10.4 8l-1-1"/>',
   straw:'<ellipse cx="8" cy="9.6" rx="6.4" ry="2.6"/><path d="M4.8 9.2c0-2.6 1.4-4.6 3.2-4.6s3.2 2 3.2 4.6"/><path d="M4.9 8.2h6.2"/>',
@@ -2782,7 +2820,7 @@ function lionSummaryText(c){
     ' in '+r.fights+' bout'+(r.fights===1?'':'s')+' \u00b7 '+(r.losses||0)+' loss'+((r.losses||0)===1?'':'es')+
     (r.bestWave?(' \u00b7 best pack wave '+r.bestWave):''));
   else L.push('  none \u2014 this one has never entered a championship');
-  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+soulName(c)+' \u2014 '+(soulOf(c)==='ancient'?'Starfall: stars fall on its enemies. No stat boost':'+'+soulPctOf(c)+'% to health, damage, speed, swing and armour'));}
+  if(soulOf(c)){L.push('');L.push('SOUL');L.push('  '+soulName(c)+' \u2014 '+(soulOf(c)==='cloud'?'cosmetic only':soulOf(c)==='ancient'?'Starfall: stars fall on its enemies. No stat boost':'+'+soulPctOf(c)+'% to health, damage, speed, swing and armour'));}
   const bag=(Array.isArray(c.inv)?c.inv:[]).filter(it=>it&&ITEMS[it.k]&&it.n>0);
   if(bag.length){L.push('');L.push('BAG');
     L.push('  '+bag.map(it=>ITEMS[it.k].name+(it.n>1?' \u00d7'+it.n:'')).join(' \u00b7 '));}
@@ -2932,6 +2970,7 @@ function drawLionCard(c){
   if(soulOf(c)==='void')badge('Void soul','#c9a2ff','rgba(150,100,255,.18)',ICONS.soulV);
   if(soulOf(c)==='pirate')badge('Pirate soul','#5effc8','rgba(63,217,176,.16)',ICONS.soulP);
   if(soulOf(c)==='ancient')badge('Ancient Lion soul','#ffd86a','rgba(255,199,44,.16)',ICONS.soulA);
+  if(soulOf(c)==='cloud')badge('Cloud soul','#f1f4f9','rgba(240,244,250,.14)',ICONS.soulC);
   if(sc)badge(sc+' scar'+(sc>1?'s':''),'#ff5a4d','rgba(255,90,77,.16)',ICONS.scar);
   if((c.iv||5)>=9)badge('Rare blood','#ffb340','rgba(255,179,64,.14)');
   if((c.iv||5)<=2)badge('Runt','#a1a1a6','rgba(255,255,255,.08)');
@@ -3829,6 +3868,7 @@ function badgesFor(L,rec){
   if(soulOf(L)==='void')out.push('<span class="badge void">'+ico('soulV')+'Void soul</span>');
   if(soulOf(L)==='pirate')out.push('<span class="badge sea">'+ico('soulP')+'Pirate soul</span>');
   if(soulOf(L)==='ancient')out.push('<span class="badge starry">'+ico('soulA')+'Ancient Lion soul</span>');
+  if(soulOf(L)==='cloud')out.push('<span class="badge cloudy">'+ico('soulC')+'Cloud soul</span>');
   if(cutEyes(L))out.push('<span class="badge blood">'+ico('scar')+(cutEyes(L)>1?'Two cut eyes':'Cut eye')+'</span>');
   if((L.iv||5)>=9)out.push('<span class="badge">Rare blood</span>');
   if((L.iv||5)<=2)out.push('<span class="badge">Runt</span>');
@@ -4006,7 +4046,8 @@ const ITEMS={
   lionSword:{name:'LionSword',       ico:'sword',use:'cos',cs:'hat',val:'lionsword',dev:1,desc:'Developer only. A sword in a split white-and-black sheath, worn across the back. In the online pit it has a grudge against one lion in particular, and everyone else has a grudge against it.'},
   hatStraw: {name:'Straw Hat',       ico:'straw',use:'cos',cs:'hat',val:'straw',dev:1,desc:'Developer only. A wide sun hat of woven savannah grass with a plaited twine band, pushed back off the head.'},
   partyHat: {name:'Party Hat',       ico:'party',use:'cos',cs:'hat',val:'party',desc:'A striped paper cone with a pom-pom on top. For the lion that wins and still wants cake.'},
-  soulAncient:{name:'Ancient Lion Soul',ico:'soulA',use:'soul',soul:'ancient',earn:1,desc:'Bind it and your lion\u2019s eyes turn old gold, with a night sky turning around it. No stat boost. Instead, stars fall on its enemies all fight long, the way they do for the Ancient Lion.'}};
+  soulAncient:{name:'Ancient Lion Soul',ico:'soulA',use:'soul',soul:'ancient',earn:1,desc:'Bind it and your lion\u2019s eyes turn old gold, with a night sky turning around it. No stat boost. Instead, stars fall on its enemies all fight long, the way they do for the Ancient Lion.'},
+  soulCloud:{name:'Cloud Soul',ico:'soulC',use:'soul',soul:'cloud',dev:1,desc:'Developer only. Your lion\u2019s mane turns white and its eyes red, and clouds swirl around it without end. Cosmetic only: no stat boost.'}};
 const SHOP_ITEM={shopCoat:'coat',shopPotion:'potion',shopWeapon:'weapon',shopTrain:'train',shopRename:'plaque',shopArmor:'reforge',shopScout:'scout',shopSalts:'salts',shopTonic:'tonic',shopGift:'gift'};
 function invOf(L){
   if(!Array.isArray(L.inv))L.inv=[];
@@ -5376,7 +5417,7 @@ function bindSoul(kind){
   if(prev===kind){toast(L.name+' already carries a '+S.name.toLowerCase());return;}
   if(prev&&SOULS[prev].dev&&SOULS[prev].item){invTake(L,S.item);invAdd(L,SOULS[prev].item,1);}else invTake(L,S.item);
   L.soul=kind;delete L.slv;
-  if(kind==='divine')SFX.heal();else if(kind==='pirate'||kind==='ancient'){SFX.cast();SFX.roar();}else SFX.roar();
+  if(kind==='divine')SFX.heal();else if(kind==='pirate'||kind==='ancient'||kind==='cloud'){SFX.cast();SFX.roar();}else SFX.roar();
   toast(prev?(S.name+' drives out the '+SOULS[prev].name.toLowerCase()):(L.name+' takes the '+S.name.toLowerCase()));
   delete PREVMEM.shop;delete PREVMEM.career;delete PREVMEM.pack;delete PREVMEM.mystic;
   Store.save();refresh();openInventory();
@@ -5707,7 +5748,7 @@ function openDev(){
       btn('qBelts','belt','+1 quest belt',questOf(L,'void')!==null?'Void '+questOf(L,'void')+'/10':'Starts the Void quest')+
       btn('qFill','check','Fill both bars','Ready to pay')+btn('qReset','retire','Reset quests','Lv3, no Void Soul')+'</div>'+
     '<div class="grp">Championship</div><div class="devGrid">'+
-      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('blade','sword','Ready for the Godslayer Blade','All done, gold and skulls')+btn('bladeGod','sword','Ready for the God Lion','3 fragments, god not beaten')+btn('godFight','sword','Fight the God Lion','Straight in')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('lionsword','sword','LionSword','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
+      btn('final','trophy','Skip to the final','Bout 5 of 5')+btn('ancSteel','sword','Ready for Ancient Steel','Lv4, enough boss wins, gold and skulls')+btn('blade','sword','Ready for the Godslayer Blade','All done, gold and skulls')+btn('bladeGod','sword','Ready for the God Lion','3 fragments, god not beaten')+btn('godFight','sword','Fight the God Lion','Straight in')+btn('glitch','spark','Glitch cosmetic','Dev only \u00b7 into the bag')+btn('straw','straw','Straw Hat','Dev only \u00b7 into the bag')+btn('lionsword','sword','LionSword','Dev only \u00b7 into the bag')+btn('pirate','soulP','Pirate Soul','Dev only \u00b7 into the bag')+btn('cloud','soulC','Cloud Soul','Dev only \u00b7 cosmetic \u00b7 into the bag')+btn('allBosses','lock','Open every boss',DEV.allBosses?'On \u00b7 the ladder is ignored':'Off \u00b7 bosses come in order',DEV.allBosses)+btn('beatOld','help','Mark Old Lion beaten','So you can visit him')+btn('bookie','coin','Refill the Bookie','3 fresh fights')+
       btn('immortal','halo','Can’t die',DEV.immortal?'On · losses never kill':'Off',DEV.immortal)+
       btn('oneHit','sword','One-hit opponents',DEV.oneHit?'On · they start on 1 health':'Off',DEV.oneHit)+'</div>'+
     '<div class="grp">Start an event now</div><div class="devGrid">'+
@@ -5753,6 +5794,7 @@ function devDo(k){
     f.arena=ks[(ks.indexOf(arenaOf(f))+1)%ks.length];msg='Next bout: '+ARENAS[f.arena].name;}
   else if(k==='cubNow'){CAREER.cub={name:(CAREER.cub&&CAREER.cub.name)||pickOne(CUB.names),pelt:(CAREER.cub&&CAREER.cub.pelt!=null)?CAREER.cub.pelt:2,wait:0};msg=CAREER.cub.name+' will turn up at the next bout';}
   else if(k==='pirate'){if(!invAdd(L,'pirate',1)){msg='Bag is full';}else msg='Pirate Soul is in the bag. Use it from there to bind it';}
+  else if(k==='cloud'){if(!invAdd(L,'soulCloud',1)){msg='Bag is full';}else msg='Cloud Soul is in the bag. Use it from there to bind it';}
   else if(k==='lionsword'){if(!invAdd(L,'lionSword',1)){msg='Bag is full';}else msg='LionSword is in the bag. Use it from there';}
   else if(k==='straw'){if(!invAdd(L,'hatStraw',1)){msg='Bag is full';}else msg='Straw Hat is in the bag. Use it from there';}
   else if(k==='bladeGod'){const r=L.record;r.shagonKills=Math.max(1,r.shagonKills|0);r.twinsKills=Math.max(1,r.twinsKills|0);L.quest=L.quest||{};L.quest.blade={shagon:1,twins:1,ancient:1};msg='Three fragments. Cross the bridge';}
@@ -5982,6 +6024,7 @@ function soulBadge(f){const s=soulOf(f);if(!s)return '';
   if(s==='void')return '<span class="badge void">'+ico('soulV')+'Void soul</span>';
   if(s==='pirate')return '<span class="badge sea">'+ico('soulP')+'Pirate soul</span>';
   if(s==='ancient')return '<span class="badge starry">'+ico('soulA')+'Ancient Lion soul</span>';
+  if(s==='cloud')return '<span class="badge cloudy">'+ico('soulC')+'Cloud soul</span>';
   return s==='divine'?'<span class="badge holy">'+ico('soulD')+'Divine soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>':'<span class="badge blood">'+ico('soulX')+'Demonic soul'+(soulLvOf(f)>1?' Lv'+soulLvOf(f):'')+'</span>';}
 function rivalBadge(f){
   const R=rivalOf(f);if(!R)return '';
@@ -10596,7 +10639,7 @@ function drawLionBody(e){
     if(!RM&&Math.random()<.3&&G.parts.length<240){
       const a=Math.random()*7,rr=R*(1+Math.random()*.6);
       G.parts.push({x:e.x+Math.cos(a)*rr,y:e.y+Math.sin(a)*rr,vx:rnd(-6,6),vy:-14-Math.random()*18,life:.6,max:.6,
-        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):so==='pirate'?(Math.random()<.5?'#5effc8':(Math.random()<.5?'#ffd24a':'#cffff0')):so==='void'?(Math.random()<.5?'#c9a2ff':'#0a0410'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
+        col:so==='divine'?(Math.random()<.6?'#fff6dc':'#ffe08a'):so==='cloud'?(Math.random()<.8?'#f4f6fa':'#c9d2e0'):so==='ancient'?(Math.random()<.6?'#ffe08a':'#bcd0ff'):so==='pirate'?(Math.random()<.5?'#5effc8':(Math.random()<.5?'#ffd24a':'#cffff0')):so==='void'?(Math.random()<.5?'#c9a2ff':'#0a0410'):(Math.random()<.55?'#e0202c':(Math.random()<.5?'#7a0a12':'#140404')),r:1+Math.random()*1.4});
     }}
   paintLion(ctx,{x:e.x,y:e.y,R:R,ang:e.ang,t:clk(),pelt:e.cfg.pelt||0,armor:e.cfg.armor,
     cols:e.cfg.bossCols||(e.dark?KINGCOLS:(e.gab?GABCOLS:(e.cfg.old?OLDCOLS:null))),eyes:e.cfg.twin?(e.grief?'#ff3a2a':'#ffd24a'):e.cfg.gate?'#ffd24a':e.dark?FX.blood:(e.gab?'#ffe14d':(soulOf(e.cfg)?SOULS[soulOf(e.cfg)].eyes:(isNemesis(e.cfg)?'#ff3a2a':null))),eyeGlow:!!soulOf(e.cfg)||isNemesis(e.cfg),
