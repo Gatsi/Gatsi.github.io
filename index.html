@@ -2249,7 +2249,13 @@ function soulAuraUp(g,x,y,R,ang,t,soul,under,lv){
     if(top){
       /* Lv3: a halo over the head, or two horns of fire */
       const hx=x+Math.cos(ang)*R*.62,hy=y+Math.sin(ang)*R*.62;
-      if(dv){g.strokeStyle='rgba(255,246,214,.95)';g.lineWidth=Math.max(1.2,R*.07);g.shadowColor='#fff3c4';g.shadowBlur=RM?0:R*.5;g.beginPath();g.ellipse(hx,hy,R*.5,R*.5,0,0,7);g.stroke();g.shadowBlur=0;}
+      if(dv){/* a thin gold ring floating just past the crown of the head, tilted, so it never covers the face */
+        const bob=Math.sin(t*2.2)*R*.03,cx2=x+Math.cos(ang)*(R*1.2+bob),cy2=y+Math.sin(ang)*(R*1.2+bob);
+        g.save();g.translate(cx2,cy2);g.rotate(ang+Math.PI/2);
+        g.shadowColor='#ffe9a8';g.shadowBlur=RM?0:R*.22;
+        g.strokeStyle='rgba(255,226,140,.95)';g.lineWidth=Math.max(.9,R*.045);g.beginPath();g.ellipse(0,0,R*.36,R*.13,0,0,7);g.stroke();
+        g.shadowBlur=0;g.strokeStyle='rgba(255,252,236,.9)';g.lineWidth=Math.max(.5,R*.018);g.beginPath();g.ellipse(0,0,R*.36,R*.13,0,Math.PI*1.05,Math.PI*1.7);g.stroke();
+        g.restore();}
       else{[-1,1].forEach(function(sd){const bx=hx+Math.cos(ang+sd*Math.PI/2)*R*.34,by=hy+Math.sin(ang+sd*Math.PI/2)*R*.34,a=ang+sd*.75,fl=.85+.15*Math.sin(t*11+sd);
           const tg=g.createLinearGradient(bx,by,bx+Math.cos(a)*R*.8,by+Math.sin(a)*R*.8);tg.addColorStop(0,'rgba(255,220,120,.95)');tg.addColorStop(1,'rgba(255,60,30,0)');g.fillStyle=tg;
           g.beginPath();g.moveTo(bx+Math.cos(a+1.57)*R*.13,by+Math.sin(a+1.57)*R*.13);g.quadraticCurveTo(bx+Math.cos(a+sd*.3)*R*.5,by+Math.sin(a+sd*.3)*R*.5,bx+Math.cos(a)*R*.85*fl,by+Math.sin(a)*R*.85*fl);
