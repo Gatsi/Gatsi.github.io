@@ -103,6 +103,7 @@ The Blacksmith and Mystic Lion doors in the den show how far along each one is.
 - **Vex's Game.** Three cups: skulls, gold, or a curse. Pick one.
 - **The Bookie's Debt.** Guard him from five hyenas and he pays in a **free bet**: top stake, double odds.
 - **The Night Market.** Three random items at half price, for gold, gone by morning.
+- **The Fisherman.** 50 gold a cast, up to three casts. The river gives back one random item from any shop: often something small, sometimes a sword, a soul or a gem eye. Never a boss sash.
 
 Say no to any of them and nothing changes. Anything still waiting to be settled shows in the den.
 
